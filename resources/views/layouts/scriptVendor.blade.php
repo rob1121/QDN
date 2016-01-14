@@ -1,0 +1,10 @@
+<script src="/js/vendor/jquery.js"></script>
+<script src="/js/vendor/jquery-ui.js"></script>
+<script src="/js/vendor/jquery.validate.js"></script>
+<script src="/js/vendor/bootstrap.js"></script>
+<script src="/js/vendor/wow.js"></script>
+<script src="/js/vendor/amaran.js"></script>
+<script src="/js/vendor/jquery.waypoints.js"></script>
+<script src="/js/vendor/sticky.min.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/footer.js"></script>

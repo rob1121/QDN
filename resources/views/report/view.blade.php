@@ -234,11 +234,27 @@ $('span#upload-btn').on('click',function(){
 });
 
 $('input#upload-file').on('change', function(){
-    var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
-    $(this).parent().siblings('span#upload-btn').text(filename)
-    .append(" <i class='fa fa-pencil'></i>");
 
+    var $this = $(this),
+    filename = $this.val().replace(/C:\\fakepath\\/i, '');
+    $this.parent().siblings('span#upload-btn').text(filename)
+    .append(" <i class='fa fa-pencil'></i>");
+   if ($this.val() == '') {
+        $this.parent()
+            .siblings('span#upload-btn')
+            .children()
+            .remove();
+
+        $(this).parent()
+            .siblings('span#upload-btn')
+            .text('Select File..')
+            .prepend("<i class='fa fa-plus'></i> ");
+
+    }
 });
+
+
+
 });
 </script>
 @stop

@@ -14,6 +14,7 @@ class ComposerServiceProvider extends ServiceProvider {
     {
         $view->composer('*', 'App\Http\ViewComposers\GlobalComposer');
         $view->composer('report.create', 'App\Http\ViewComposers\FormOptionComposer');
+        $view->composer('report.view', 'App\Http\ViewComposers\RecordUpdateComposer');
     }
 
     public function register()

@@ -1,0 +1,16 @@
+{
+  "name": "ExampleApp",
+  "dependencies": {
+    "AmaranJS": "amaranjs#~0.5.4",
+    "bootstrap": "latest",
+    "jquery": "latest",
+    "font-awesome": "latest",
+    "wow": "latest",
+    "waypoints": "jquery-waypoints#~4.0.0",
+    "jquery-validation": "jquery.validation#~1.14.0",
+    "jquery-ui": "~1.11.4",
+    "select2-bootstrap-css": "~1.4.6",
+    "bootstrap-datepicker": "~1.5.1",
+    "PACE": "pace#~1.0.2"
+  }
+}

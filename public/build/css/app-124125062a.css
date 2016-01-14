@@ -1,0 +1,166 @@
+/*COUSTARD----------------------------------------------------------*/
+@font-face {
+  font-family: 'Coustard';
+  font-weight: 900;
+  font-style: normal;
+  src: url("/css/fonts/Coustard-900/Coustard-900.eot");
+  src: url("/css/fonts/Coustard-900/Coustard-900.eot?#iefix") format("embedded-opentype"), local("Coustard-Black"), local("Coustard-900"), url("/css/fonts/Coustard-900/Coustard-900.woff2") format("woff2"), url("/css/fonts/Coustard-900/Coustard-900.woff") format("woff"), url("/css/fonts/Coustard-900/Coustard-900.ttf") format("truetype"), url("/css/fonts/Coustard-900/Coustard-900.svg#Coustard") format("svg"); }
+
+/* LECKERLI-----------------------------------------------------*/
+@font-face {
+  font-family: 'Leckerli One';
+  font-weight: 400;
+  font-style: normal;
+  src: url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.eot");
+  src: url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.eot?#iefix") format("embedded-opentype"), local("Leckerli One"), local("Leckerli-One-regular"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.woff2") format("woff2"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.woff") format("woff"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.ttf") format("truetype"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.svg#LeckerliOne") format("svg"); }
+
+body {
+  overflow-y: scroll; }
+
+html,
+body {
+  background-color: #e9ece5;
+  height: 100%; }
+
+.select2-container .select2-choices .select2-search-field input,
+.select2-container .select2-choice, .select2-container .select2-choices,
+.error {
+  border-radius: 1px; }
+
+.error,
+.error .select2-choice.select2-default,
+.error .select2-choices {
+  color: #a94442;
+  border-color: #a94442;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
+
+.error:focus,
+.error .select2-choice.select2-default:focus,
+.error .select2-choices:focus {
+  border-color: #843534;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483; }
+
+.navbar .padder {
+  padding: 5em 2em 5em 2em; }
+
+.navbar-brand {
+  font-family: Coustard;
+  font-size: 50px;
+  font-weight: bold; }
+
+.navbar-brand p.subtitle {
+  font-family: Leckerli One;
+  margin-top: 10px;
+  font-size: 14px; }
+
+@media screen and (max-width: 350px) {
+  .navbar-brand {
+    font-size: 24px; }
+  .navbar-brand p.subtitle {
+    margin-top: -5px;
+    font-size: 7px; } }
+
+.navbar-brand, .navbar-nav li a {
+  color: #3b3a36; }
+
+.navbar.stuck {
+  background-color: #3b3a36;
+  position: fixed;
+  width: 100%;
+  color: #c0dfd9; }
+
+.stuck .navbar-brand {
+  font-size: 24px;
+  color: #b3c2bf; }
+
+.stuck .navbar-brand p.subtitle {
+  margin-top: -5px;
+  font-size: 7px;
+  color: #b3c2bf; }
+
+.stuck .navbar-nav li a {
+  color: #b3c2bf; }
+
+.navbar-brand:hover,
+.navbar-nav li a:hover,
+.navbar-brand:focus,
+.navbar-nav li a:focus {
+  color: #c0dfd9;
+  background-color: transparent;
+  border: 0px; }
+
+.stuck .navbar-brand:hover,
+.stuck .navbar-nav li a:hover,
+.stuck .navbar-brand:focus,
+.stuck .navbar-nav li a:focus,
+.active {
+  background-color: rgba(0, 0, 0, 0.1); }
+
+.dropdown-menu li a,
+.stuck .dropdown-menu li a {
+  color: #3b3a36; }
+
+.dropdown.open a:focus {
+  background-color: transparent; }
+
+.stuck .dropdown-menu li a:hover {
+  color: #3b3a36;
+  background-color: rgba(0, 0, 0, 0.1); }
+
+.dropdown {
+  cursor: pointer; }
+
+.modal-content {
+  border-radius: 0px; }
+
+.modal {
+  text-align: center;
+  padding: 0 !important; }
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+  /* Adjusts for spacing */ }
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle; }
+
+.modal-header {
+  background-color: #b3c2bf; }
+
+.modal-body {
+  background-color: #f5f5f5; }
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */ }
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px; }
+
+/* Set the fixed height of the footer here */
+#footer .row {
+  background-color: #3b3a36;
+  color: #e9ece5; }
+
+.error {
+  color: #a94442; }
+
+.form-control, .btn {
+  border-radius: 1px; }
+
+/*# sourceMappingURL=app.css.map */

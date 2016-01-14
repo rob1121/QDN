@@ -1,0 +1,30 @@
+/*COUSTARD----------------------------------------------------------*/
+@font-face {
+  font-family: 'Coustard';
+  font-weight: 900;
+  font-style: normal;
+  src: url('/css/fonts/Coustard-900/Coustard-900.eot');
+  src: url('/css/fonts/Coustard-900/Coustard-900.eot?#iefix') format('embedded-opentype'),
+       local('Coustard-Black'),
+       local('Coustard-900'),
+       url('/css/fonts/Coustard-900/Coustard-900.woff2') format('woff2'),
+       url('/css/fonts/Coustard-900/Coustard-900.woff') format('woff'),
+       url('/css/fonts/Coustard-900/Coustard-900.ttf') format('truetype'),
+       url('/css/fonts/Coustard-900/Coustard-900.svg#Coustard') format('svg');
+}
+
+/* LECKERLI-----------------------------------------------------*/
+@font-face {
+  font-family: 'Leckerli One';
+  font-weight: 400;
+  font-style: normal;
+  src: url('/css/fonts/Leckerli-One-regular/Leckerli-One-regular.eot');
+  src: url('/css/fonts/Leckerli-One-regular/Leckerli-One-regular.eot?#iefix') format('embedded-opentype'),
+       local('Leckerli One'),
+       local('Leckerli-One-regular'),
+       url('/css/fonts/Leckerli-One-regular/Leckerli-One-regular.woff2') format('woff2'),
+       url('/css/fonts/Leckerli-One-regular/Leckerli-One-regular.woff') format('woff'),
+       url('/css/fonts/Leckerli-One-regular/Leckerli-One-regular.ttf') format('truetype'),
+       url('/css/fonts/Leckerli-One-regular/Leckerli-One-regular.svg#LeckerliOne') format('svg');
+}
+

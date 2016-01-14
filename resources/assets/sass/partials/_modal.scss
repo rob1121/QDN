@@ -1,0 +1,31 @@
+// LOGIN MODAL DESIGN
+
+.modal-content {
+    border-radius: 0px;
+}
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px; /* Adjusts for spacing */
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.modal-header {
+  background-color: $dim-blue;
+}
+
+.modal-body {
+  background-color: #f5f5f5;
+}

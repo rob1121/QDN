@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @include('layouts.header')
+        {{-- CSS SECTION --}}
+        {{-- @include('layouts.cssVendor') --}}
+        <link rel="stylesheet" href="/css/all.css">
+        @yield('external-style')
+        <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
+        <script src="/vendor/js/pace.js"></script>
+        {{-- <script src="/js/vendor/pace.js"></script> --}}
+        @yield('style')
+    </head>
+    <body>
+        <div id="wrap">
+            {{-- HEADER SECTION --}}
+            @include('partial.nav')
+            {{-- WE CAN PASS SECOND PARAMETER AS AN VARIABLE FOR NAV IN ARRAY FORMAT "['uri' => $uri]" --}}
+            {{-- CONTENT SECTION --}}
+            @yield('content')
+        </div>
+        {{-- FOOTER SECTION --}}
+        @include('partial.footer')
+        {{-- SCRIPT LOCATION --}}
+        {{-- @include('layouts.scriptVendor') --}}
+        <script src="/js/all.js"></script>
+        <script src="/js/app.js"></script>
+        @yield('script')
+    </body>
+</html>

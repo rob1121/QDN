@@ -2,9 +2,6 @@
 namespace App\Http\ViewComposers;
 
 use Illuminate\Contracts\View\View;
-use App\OptionModels\Option;
-use App\OptionModels\Machine;
-use App\OptionModels\Station;
 use App\Employee;
 class RecordUpdateComposer {
 
@@ -34,6 +31,8 @@ class RecordUpdateComposer {
             'quality assurance',
             'others'
         ]);
+
+        $view->with('names', Employee::all('name'));
 
     }
 

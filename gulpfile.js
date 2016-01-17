@@ -21,13 +21,14 @@ mix.sass('app.scss')
         "jquery.js",
         "jquery-ui.js",
         "jquery.validate.js",
+        "additional-methods.js",
         "bootstrap.js",
         "wow.js",
         "amaran.js",
         "jquery.waypoints.js",
         "sticky.min.js"
     ], 'public/js/all.js')
-    .version('public/css/app.css','public/js/app.js');
+    .version('public/css/app.css', 'public/js/app.js');
 });
 /*
 elixir(function(mix) {
@@ -86,6 +87,10 @@ mix.copy(
     .copy(
         "resources/assets/vendor/jquery-validation/dist/jquery.validate.js",
         "resources/assets/js/jquery.validate.js"
+)
+    .copy(
+        "resources/assets/js/additional-methods.js",
+        "resources/assets/js/additional-methods.js"
 )
     .copy(
         "resources/assets/vendor/waypoints/lib/shortcuts/sticky.min.js",

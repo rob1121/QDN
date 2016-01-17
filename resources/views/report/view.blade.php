@@ -1,10 +1,13 @@
 @extends('layouts.app')
 @section('external-style')
-<link rel="stylesheet" href="/vendor/css/bootstrap-datepicker.css">
+    <link rel = "stylesheet" href="/vendor/css/select2.css">
+    <link rel = "stylesheet" href="/vendor/css/select2-bootstrap.css">
+    <link rel = "stylesheet" href="/vendor/css/bootstrap-datepicker.css">
 @stop
 @section('style')
 <style>
-.t {
+
+.col-xs-5 p {
 border-bottom: 1px solid grey;
 }
 
@@ -22,11 +25,10 @@ panel-body {
 padding:0px;
 }
 
-#cause_of_defect_description,
-#containment_action_textarea,
-#corrective_action_textarea,
-#preventive_action_textarea {
+#what {
 width: 100%;
+padding:15px;
+resize: none;
 }
 
 .panel .panel-heading {
@@ -49,10 +51,15 @@ input.form-control:focus {
     box-shadow: none;
 }
 
-.hide-file-uploader {
+input[type="file"]{
     display: none;
 }
 
+.error,
+.error .select2-choice.select2-default,
+.error .select2-choices {
+    box-shadow: none;
+}
 </style>
 @stop
 @section('content')
@@ -73,56 +80,88 @@ input.form-control:focus {
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Customer:</div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                        <p class="t"> {{ $qdn->customer }} </p>
+                        <p> {{ $qdn->customer }} </p>
                     </div>
                 </div>
                 <!-- PACKAGE TYPE -->
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Package Type:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5"><p class="t">{{ $qdn->package_type }}</p></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">
+                        Package Type:
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+                        <p>{{ $qdn->package_type }}</p>
+                    </div>
                 </div>
                 <!-- DEVICE NAME -->
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Device Name:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5"><p class="t">{{ $qdn->device_name }}</p></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">
+                        Device Name:
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+                        <p>{{ $qdn->device_name }}</p>
+                    </div>
                 </div>
                 <!-- LOT ID NUMBER -->
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Lot ID No.:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5"><p class="t">{{ $qdn->lot_id_number }}</p></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">
+                        Lot ID No.:
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+                        <p>{{ $qdn->lot_id_number }}</p>
+                    </div>
                 </div>
                 <!-- LOT QUANTITY -->
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Lot Quantity:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5"><p class="t">{{ $qdn->lot_quantity }}</p></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">
+                        Lot Quantity:
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+                        <p>{{ $qdn->lot_quantity }}</p>
+                    </div>
                 </div>
             </div>
             <!-- SECOND COLUMN -->
             <div class="col-lg-4 col-md-3 col-sm-6 text-left">
                 <!-- JOB ORDER NUMBER -->
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Job Order No.:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5"><p class="t">{{ $qdn->job_order_number }}</p></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">
+                        Job Order No.:
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+                        <p>{{ $qdn->job_order_number }}</p>
+                    </div>
                 </div>
                 <!-- MACHINE -->
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Machine:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5"><p class="t">{{ $qdn->machine }}</p></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">
+                        Machine:
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+                        <p>{{ $qdn->machine }}</p>
+                    </div>
                 </div>
                 <!-- STATION -->
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Station:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5"><p class="t">{{ $qdn->station }}</p></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">
+                        Station:
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+                        <p>{{ $qdn->station }}</p>
+                    </div>
                 </div>
                 <!-- MAJOR -->
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Major:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 text-left"><?=$qdn->major == "major" ? '[x]' : '[&nbsp;&nbsp;]';?></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 text-left">
+                        <?=$qdn->major == "major" ? '[x]' : '[&nbsp;&nbsp;]';?>
+                    </div>
                 </div>
                 <!-- MINOR -->
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Minor:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 text-left"><?=$qdn->major != "major" ? '[x]' : '[  ]';?></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 text-left">
+                        <?=$qdn->major != "major" ? '[x]' : '[&nbsp;&nbsp;]';?>
+                    </div>
                 </div>
             </div>
             <!-- THIRD COLUMN -->
@@ -130,21 +169,20 @@ input.form-control:focus {
                 <!-- QDN NO -->
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">QDN No.:</div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5"><p class="t" style='color:Red;font-weight:bold'>{{ $qdn->control_id }}</p></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+                        <p style='color:Red;font-weight:bold'>
+                            {{ $qdn->control_id }}
+                        </p>
+                    </div>
                 </div>
                 <!-- TEAM RESPONSIBLE -->
                 <div class="row">
-                    <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Team Responsible:</div>
+                    <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">
+                        Team Responsible:
+                    </div>
                     <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                        <p class="t">
-                            {{
-                                implode("<br>",array_flatten(
-                                $qdn->involvePerson()
-                                    ->select('department')
-                                    ->get()
-                                    ->toArray())
-                                )
-                            }}
+                        <p>
+                            {!! implode("<br>",$department) !!}
                         </p>
                     </div>
                 </div>
@@ -152,7 +190,7 @@ input.form-control:focus {
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Issued By:</div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                        <p class="t">
+                        <p>
                             {{ $qdn->involvePerson()->first()->originator_name }}
                         </p>
                     </div>
@@ -161,23 +199,25 @@ input.form-control:focus {
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Issued To:</div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                        <p class="t">
-                            {{
+                        <p>
+                            {!!
                                 implode("<br>",array_flatten(
                                 $qdn->involvePerson()
                                     ->select('receiver_name')
                                     ->get()
                                     ->toArray())
                                 )
-                            }}
+                            !!}
                         </p>
                     </div>
                 </div>
                 <!-- DATE AND TIME -->
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Date and Time:</div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">
+                        Date and Time:
+                    </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                        <p class="t">
+                        <p>
                             {{ Carbon::parse($qdn->created_at) }}
                         </p>
                     </div>
@@ -195,15 +235,22 @@ input.form-control:focus {
     </div>
     <!-- CONTAINEMENT ACTION WHO -->
     <!-- START OF FORM -->
-    <form method='POST' enctype="multipart/form-data" action=''>
+    <form
+        method  = 'POST'
+        action  = "{{ route('qdn_form_link', ['slug' => $qdn->slug]) }}"
+        enctype = "multipart/form-data"
+        id      = "completion"
+         novalidate
+     >
+    {!! csrf_field() !!}
         @include('report.partials._section1')
         <div class="text-right container">
             <button
-                type    ='submit'
-                name    ='submit-button'
-                id    ='submit-button'
-                onclick ="return confirm('Are You Sure You Want To Submit?')"
-                class   ="btn btn-default btn-lg"
+                type    = 'submit'
+                name    = 'submit-button'
+                id      = 'submit-button'
+                onclick = "return confirm('Are You Sure You Want To Submit?')"
+                class   = "btn btn-default btn-lg"
             >
                 <span class="fa fa-save"></span> UPDATE
             </button>
@@ -212,49 +259,7 @@ input.form-control:focus {
 </div>
 @endsection
 @section('script')
-<script src="/vendor/js/bootstrap-datepicker.js"></script>
-
-<script>
-$(function(){
-    $('#containment-action-taken').datepicker()
-        .on('change', function(){
-            $('#containment-action-taken').datepicker('hide');
-        });
-    $('#corrrective-action-taken').datepicker()
-        .on('change', function(){
-            $('#corrrective-action-taken').datepicker('hide');
-        });
-    $('#preventive-action-taken').datepicker()
-        .on('change', function(){
-            $('#preventive-action-taken').datepicker('hide');
-        });
-
-$('span#upload-btn').on('click',function(){
-    $(this).siblings('.hide-file-uploader').children('input#upload-file').click();
-});
-
-$('input#upload-file').on('change', function(){
-
-    var $this = $(this),
-    filename = $this.val().replace(/C:\\fakepath\\/i, '');
-    $this.parent().siblings('span#upload-btn').text(filename)
-    .append(" <i class='fa fa-pencil'></i>");
-   if ($this.val() == '') {
-        $this.parent()
-            .siblings('span#upload-btn')
-            .children()
-            .remove();
-
-        $(this).parent()
-            .siblings('span#upload-btn')
-            .text('Select File..')
-            .prepend("<i class='fa fa-plus'></i> ");
-
-    }
-});
-
-
-
-});
-</script>
+    <script src="/vendor/js/bootstrap-datepicker.js"></script>
+    <script src="/vendor/js/select2.min.js"></script>
+    <script src="/js/reportCompletion.js"></script>
 @stop

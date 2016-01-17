@@ -48,6 +48,11 @@ $('#qdn-form').validate({
             digits: true
         }
     },
+    messages: {
+        job_order_number: {
+            required: "type 'N/A' if this field is not applicable"
+        }
+    },
     errorClass: "error",
     errorElement: "span"
 });
@@ -154,9 +159,6 @@ $('#major').children('input').on('change', function() {
 });
 // ------------------------------------------------------------------
 //disable lot description if input radio is equal to no
-$('#lot-description').hide().find('input')
-    .val('N/A');
-$('#lot_quantity').val(0);
 
 $('#sort').click(function() {
     if ($(this).prop("checked") !== true) {

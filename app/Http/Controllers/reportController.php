@@ -16,6 +16,7 @@ use App\Employee;
 
 use App\Models\Info;
 use App\Models\CorrectiveAction;
+use App\Models\CauseOfDefect;
 use App\Models\ContainmentAction;
 use App\Models\PreventiveAction;
 use App\Models\InvolvePerson;
@@ -160,7 +161,39 @@ class reportController extends Controller
      */
     public function show($slug)
     {
-        $qdn = Info::findBySlug($slug)->first();
-        return view('report.view', compact('qdn'));
+        $qdn  = Info::where('slug', $slug)->first();
+
+        $department = $qdn->involvePerson()
+            ->select('department')
+            ->get()
+            ->toArray();
+
+        $department = array_unique(array_flatten($department));
+        return view('report.view', compact('qdn','department'));
+    }
+
+    public function save($slug, $request)
+    {
+        $info = Info::where('slug', $slug)->first();
+            $info->CauseOfDefect->update([
+                'cause_of_defect'             => $request->cause_of_defect,
+                'cause_of_defect_description' => $request->cause_of_defect_description,
+                'objective_evidence'          => $request->upload_cod
+            ]);
+            $info->ContainmentAction->update([
+                'what'               => $request->containment_action_textarea,
+                'who'                => $request->containment_action_who,
+                'objective_evidence' => $request->upload_containment_action
+        ]);
+            $info->CorrectiveAction->update([
+                'what'               => $request->corrective_action_textarea,
+                'who'                => $request->corrective_action_who,
+                'objective_evidence' => $request->upload_corrective_action
+        ]);
+            $info->PreventiveAction->update([
+                'what'               => $request->preventive_action_textarea,
+                'who'                => $request->preventive_action_who,
+                'objective_evidence' => $request->upload_preventive_action
+        ]);
     }
 }

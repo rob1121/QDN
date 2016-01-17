@@ -3,19 +3,25 @@
 // CRUD route of QDN
 Route::get('/report',
 [
-    'as' => 'issue_qdn',
+    'as'   => 'issue_qdn',
     'uses' => 'reportController@report'
 ]);
 
 Route::post('/report',
 [
-    'as' => 'issue_qdn',
+    'as'   => 'issue_qdn',
     'uses' => 'reportController@store'
 ]);
 
 Route::get('/report/{slug}',
 [
-    'as' => 'qdn_form_link',
+    'as'   => 'qdn_form_link',
     'uses' => 'reportController@show'
+]);
+
+Route::post('/report/{slug}',
+[
+    'as'   => 'qdn_form_link',
+    'uses' => 'reportController@save'
 ]);
 

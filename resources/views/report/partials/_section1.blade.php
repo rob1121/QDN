@@ -12,7 +12,7 @@
                     name  = 'disposition'
                     value = '{{ $disposition }}'
                     disabled
-                    <?=$qdn->disposition == Str::upper($disposition)
+                    <?=$qdn->disposition == $disposition
                         ? 'checked'
                         : '';?>
                 >
@@ -36,7 +36,7 @@
                     type  = 'radio'
                     name  = 'cause_of_defect'
                     value = '{{ $cod }}'
-                    <?=$qdn->causeOfDefect->cause_of_defect == Str::upper($cod)
+                    <?=$qdn->CauseOfDefect->cause_of_defect == $cod
                     ? 'checked'
                     : '';?>
                 >
@@ -66,7 +66,8 @@
             id          = 'what'
             name        = 'cause_of_defect_description'
             placeholder = 'Input Detailed Cause of Defect';
-        >{{ $qdn->causeOfDefect->cause_of_Defect_description }}</textarea>
+        >{{ $qdn->CauseOfDefect->cause_of_defect_description }}</textarea>
+        <br>
         <span id="count">Characters left: 250</span>
     </div>
 </div>
@@ -85,6 +86,7 @@
             name        = "containment_action_textarea"
             placeholder = 'Input Containment Action';
         >{{ $qdn->containmentAction->what }}</textarea>
+        <br>
         <span id="count">Characters left: 250</span>
     </div>
     <div class="col-sm-3">
@@ -149,7 +151,8 @@
                 name        = "corrective_action_textarea"
                 placeholder = 'Input Corrective Action';
             >{{ $qdn->correctiveAction->what }}</textarea>
-            <span id="count">Characters left: 250</span>
+            <br>
+        <span id="count">Characters left: 250</span>
         </div>
         <div class="col-sm-3">
             <br>
@@ -215,7 +218,8 @@
                 name        = "preventive_action_textarea"
                 placeholder = 'Input Preventive Action';
             >{{ $qdn->preventiveAction->what }}</textarea>
-            <span id="count">Characters left: 250</span>
+            <br>
+        <span id="count">Characters left: 250</span>
         </div>
         <div class="col-sm-3">
             <br>

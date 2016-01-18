@@ -60,6 +60,10 @@ input[type="file"]{
 .error .select2-choices {
     box-shadow: none;
 }
+
+.edit {
+    float:right;
+}
 </style>
 @stop
 @section('content')
@@ -71,7 +75,16 @@ input[type="file"]{
     <!-- PRODUCT DESCRIPTION/ PROBLEM DETAILS -->
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">PRODUCT DESCRIPTION/ PROBLEM DETAILS</h3>
+            <h3 class="panel-title">
+            PRODUCT DESCRIPTION/ PROBLEM DETAILS
+            @if ($currentUser->Employee->department == 'pe'
+                || $currentUser->access_level == 'Admin')
+            <a
+                class='edit'
+                href="/edit"
+            >edit <i class="fa fa-pencil"></i> </a>
+            @endif
+            </h3>
         </div>
         <div class="panel-body">
             <!-- FIRST COLUMN -->

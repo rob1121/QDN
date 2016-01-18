@@ -1,9 +1,19 @@
 $(function() {
-var count = 250;
+var count = 250,
+    textCount;
+$('textarea').each(function() {
+    var $this = $(this);
+    textCount = 250 - $this.val().length;
+
+    $this.siblings('#count').text('Characters left : ' + textCount);
+
+});
 $('textarea').on('keyup', function() {
     var $this = $(this),
-        textCount = $this.val().length,
-        left = count - textCount;
+        left;
+    textCount = $this.val().length;
+    left = count - textCount;
+
     text = $this.val().substring(0, 250);
 
     $this.siblings('#count').text('Characters left : ' + left);

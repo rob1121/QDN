@@ -3,7 +3,7 @@
     <head>
         @include('layouts.header')
         {{-- CSS SECTION --}}
-        @include('layouts.cssVendor')
+        <link rel="stylesheet" href="/css/all.css">
         <style>
             body {
                 overflow-y:hidden;

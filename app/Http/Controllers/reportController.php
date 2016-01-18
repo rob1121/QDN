@@ -172,28 +172,29 @@ class reportController extends Controller
         return view('report.view', compact('qdn','department'));
     }
 
-    public function save($slug, $request)
+    public function save($slug, Request $request)
     {
         $info = Info::where('slug', $slug)->first();
-            $info->CauseOfDefect->update([
+            $info->CauseOfDefect()->update([
                 'cause_of_defect'             => $request->cause_of_defect,
                 'cause_of_defect_description' => $request->cause_of_defect_description,
                 'objective_evidence'          => $request->upload_cod
             ]);
-            $info->ContainmentAction->update([
+            $info->ContainmentAction()->update([
                 'what'               => $request->containment_action_textarea,
                 'who'                => $request->containment_action_who,
                 'objective_evidence' => $request->upload_containment_action
         ]);
-            $info->CorrectiveAction->update([
+            $info->CorrectiveAction()->update([
                 'what'               => $request->corrective_action_textarea,
                 'who'                => $request->corrective_action_who,
                 'objective_evidence' => $request->upload_corrective_action
         ]);
-            $info->PreventiveAction->update([
+            $info->PreventiveAction()->update([
                 'what'               => $request->preventive_action_textarea,
                 'who'                => $request->preventive_action_who,
                 'objective_evidence' => $request->upload_preventive_action
         ]);
+            return $info->CauseOfDefect;
     }
 }

@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="/css/all.css">
         @yield('external-style')
         <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
-        <script src="/vendor/js/pace.js"></script>
+        <script  data-pace-options='{ "ajax": false }' src="/vendor/js/pace.js"></script>
         {{-- <script src="/js/vendor/pace.js"></script> --}}
         @yield('style')
     </head>

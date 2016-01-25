@@ -15,13 +15,19 @@ Route::post('/report',
 
 Route::get('/report/{slug}',
 [
-    'as'   => 'qdn_form_link',
+    'as'   => 'qdn_link',
     'uses' => 'reportController@show'
 ]);
 
-Route::post('/report/{slug}',
+Route::post('/draft/{slug}',
 [
-    'as'   => 'qdn_form_link',
-    'uses' => 'reportController@save'
+    'as'   => 'draft_link',
+    'uses' => 'reportController@draft'
+]);
+
+Route::post('/approval/{slug}',
+[
+    'as'   => 'approval_link',
+    'uses' => 'reportController@approval'
 ]);
 

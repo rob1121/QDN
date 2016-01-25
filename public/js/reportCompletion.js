@@ -183,4 +183,18 @@ $('#completion').validate({
     errorClass: "error",
     errorElement: "span"
 });
+
+$('button[type="submit"]').on('click', function() {
+    var $this = $(this),
+        action = "save as draft";
+
+    $('#completion').attr('action', linkDraft);
+
+    if ($this.attr('id') == "aprroval_button") {
+        action = "submit for approval";
+        $('#completion').attr('action', linkApproval);
+    }
+
+    return confirm('Are you sure you want to ' + action + '?');
+});
 });

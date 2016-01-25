@@ -37,7 +37,7 @@ background-color:#800000;
 color:#fff;
 }
 
-#submit-button {
+button[type="submit"] {
 margin: 25px 0px 50px 0px;
 }
 
@@ -250,7 +250,7 @@ input[type="file"]{
     <!-- START OF FORM -->
     <form
         method  = 'POST'
-        action  = "{{ route('qdn_form_link', ['slug' => $qdn->slug]) }}"
+        action  = "{{ route('draft_link', ['slug' => $qdn->slug]) }}"
         enctype = "multipart/form-data"
         id      = "completion"
          novalidate
@@ -260,12 +260,19 @@ input[type="file"]{
         <div class="text-right container">
             <button
                 type    = 'submit'
-                name    = 'submit-button'
-                id      = 'submit-button'
-                onclick = "return confirm('Are You Sure You Want To Submit?')"
+                name    = 'draft_button'
+                id      = 'draft_button'
                 class   = "btn btn-default btn-lg"
-            >
-                <span class="fa fa-save"></span> UPDATE
+            >Save as Draft
+            <span class="fa fa-save"></span>
+            </button>
+            <button
+                type    = 'submit'
+                name    = 'aprroval_button'
+                id      = 'aprroval_button'
+                class   = "btn btn-default btn-lg btn-primary"
+            >Submit for approvals
+                <span class="fa fa-paper-plane"></span>
             </button>
         </div>
     </form>

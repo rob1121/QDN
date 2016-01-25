@@ -13,22 +13,11 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
 mix.sass('app.scss')
-    .babel([
-        'nav.js',
-        'footer.js'
-    ], 'public/js/app.js')
-    .scripts([
-        "jquery.js",
-        "jquery-ui.js",
-        "jquery.validate.js",
-        "additional-methods.js",
-        "bootstrap.js",
-        "wow.js",
-        "amaran.js",
-        "jquery.waypoints.js",
-        "sticky.min.js"
-    ], 'public/js/all.js')
-    .version('public/css/app.css', 'public/js/app.js');
+    .version('public/css/app.css', 'public/js/app.js')
+    .copy("resources/assets/vendor/highcharts/modules/exporting.js",
+        "resources/assets/js/exporting.js")
+    .copy("resources/assets/js/exporting.js",
+        "public/vendor/js/exporting.js");
 });
 /*
 elixir(function(mix) {
@@ -125,16 +114,26 @@ mix.copy(
         "amaran.css",
         "pace.css"
     ], 'public/css/all.css')
-     .scripts([
+     .babel([
+        'nav.js',
+        'footer.js'
+    ], 'public/js/app.js')
+    .scripts([
         "jquery.js",
         "jquery-ui.js",
         "jquery.validate.js",
+        "additional-methods.js",
         "bootstrap.js",
         "wow.js",
         "amaran.js",
         "jquery.waypoints.js",
-        "sticky.min.js",
-        "pace.js"
-    ], 'public/js/all.js');
+        "sticky.min.js"
+    ], 'public/js/all.js').
+    .copy("resources/assets/vendor/highcharts/highcharts.js",
+        "resources/assets/js/highcharts.js")
+    .copy(
+        "resources/assets/js/highcharts.js",
+        "public/vendor/js/highcharts.js"
+)
 });
 */

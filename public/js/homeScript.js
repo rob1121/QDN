@@ -161,16 +161,16 @@ var podGraph = new Highcharts.Chart({
         defaultSeriesType: 'column',
         borderColor: '#ccc',
         alignTicks: false
-    //backgroundColor:'#eee',
-    //plotBackgroundColor:'#fff',
+        //backgroundColor:'#eee',
+        //plotBackgroundColor:'#fff',
     },
     title: {
         text: 'Pareto of Discrepancy'
     },
     tooltip: {
-        formatter: function() {
+        formatter: function () {
             if (this.series.name == '% Pareto') {
-                var pcnt = Highcharts.numberFormat((this.y / paretoCount * 100), 0, '.');
+                var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                 return pcnt + '%';
             }
             return this.y;
@@ -182,45 +182,43 @@ var podGraph = new Highcharts.Chart({
         }
     },
     xAxis: {
-        categories: legends,
+        categories: legends, //TITLE
         lineColor: '#999',
         lineWidth: 1,
         tickColor: '#666',
         tickLength: 3
     },
 
-    yAxis: [{
-        min: 0,
-        endOnTick: false,
-        lineColor: '#999',
-        lineWidth: 1,
-        tickColor: '#666',
-        tickWidth: 1,
-        tickLength: 3,
-        gridLineColor: '#ddd',
-        title: {
-            text: 'Counts',
-            rotation: 270
+    yAxis:[{
+        min:0,
+        endOnTick:false,
+        lineColor:'#999',
+        lineWidth:1,
+        tickColor:'#666',
+        tickWidth:1,
+        tickLength:3,
+        gridLineColor:'#ddd',
+        title:{
+            text:'Counts',
+            rotation:270
         }
-    }, {
-        title: {
-            text: '% Pareto',
-            rotation: 270
-        },
-        alignTicks: false,
-        gridLineWidth: 0,
-        lineColor: '#999',
-        lineWidth: 1,
-        tickColor: '#666',
-        tickWidth: 1,
-        tickLength: 3,
-        tickInterval: paretoCount / 4,
-        endOnTick: false,
-        opposite: true,
-        linkedTo: 0,
-        labels: {
-            formatter: function() {
-                var pcnt = Highcharts.numberFormat((this.value / paretoCount * 100), 0, '.');
+    },{
+        title:{text:'% Pareto',
+        rotation:270},
+        alignTicks:false,
+        gridLineWidth:0,
+        lineColor:'#999',
+        lineWidth:1,
+        tickColor:'#666',
+        tickWidth:1,
+        tickLength:3,
+        tickInterval: total / 4, //TOTAL
+        endOnTick:false,
+        opposite:true,
+        linkedTo:0,
+        labels:{
+            formatter:function(){
+                var pcnt = Highcharts.numberFormat((this.value / total * 100),0,'.'); //TOTAL
                 return pcnt + '%';
             }
         }
@@ -229,15 +227,15 @@ var podGraph = new Highcharts.Chart({
         //yAxis:0,
         name: 'Count',
         color: '#800000',
-        data: paretoFirst
+        data: bars
     }, {
         type: 'line',
         name: '% Pareto',
         color: '#000000',
         //yAxis:0,
-        data: paretoSecond
+        data: lines
     }]
-});
+}); //end of pareto
 
 $('#pod').on('show.bs.modal', function() {
     $('#podGraph').css('visibility', 'hidden');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Ajax\ajaxController;
 use Auth;
 
 use App\Models\Info;
@@ -13,10 +14,10 @@ use DB;
 use Carbon;
 use JavaScript;
 
-class HomeController extends Controller
+class HomeController extends ajaxController
 {
 
-    public $dt;
+    public $dateTime;
     /**
      * Create a new controller instance.
      *
@@ -24,7 +25,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->dt = Carbon::now('Asia/Manila');
+        $this->dateTime = Carbon::now('Asia/Manila');
         // $this->middleware('auth');
     }
 
@@ -36,33 +37,36 @@ class HomeController extends Controller
     public function index()
     {
         if (Auth::user()) {
-            $qdn = Info::all();
-            JavaScript::put('datus', [0,0,0,0,0,0,0,0,0,0,0,0]);
-            JavaScript::put('yearNow', Carbon::now('Asia/Manila')->year);
-            $info = Info::select(DB::raw('COUNT(discrepancy_category) as paretoFirst'))
-            ->groupBy('discrepancy_category')
-            ->where(
-                DB::raw('MONTH(created_at)'),
-                $this->dt->month
-            )
-            ->where(
-                    DB::raw('YEAR(created_at)'),
-                    $this->dt->year
-                )->get('paretoFirst');
-            $tbl = array_flatten($info->toArray());
-            $count = $info->count();
-            $legends = [];
+
+            $qdn  = Info::all();
+            $info = Info::pod( $this->dateTime->month, $this->dateTime->year )
+                ->get();
+
             $legend = 'A';
-
-            foreach ($info as $val) {
-
-                $legends[] = $legend++;
+            $lines = [];
+            foreach ($info as $value) {
+               $pod['legends'][]       = $legend++;
+               $pod['bars'][]          = $value->paretoFirst;
+               $pod['discrepancies'][] = $value->discrepancy_category;
+               $pod['lines'][]         = array_sum($lines) + $value
+                    ->paretoFirst;
             }
+            //counts per pareto of discrepancy
+            $total = array_sum($bars); //grand total
 
-            JavaScript::put('legends', $legends);
-            JavaScript::put('paretoFirst', $tbl);
-            JavaScript::put('paretoCount', $count);
-            return view('home');
+            $count = $info->count();
+
+            JavaScript::put('datus', [0,0,0,0,0,0,0,0,0,0,0,0]);
+            JavaScript::put('yearNow', $this->dateTime->year);
+            JavaScript::put('legends', $pod['legends']); //title
+            JavaScript::put('bars', $pod['bars']); //data
+            JavaScript::put('total', $pod['total']); //total
+            JavaScript::put('lines', $pod['lines']); // title 2nd
+            return view('home',
+                compact(
+                    'pod',
+                    'total'
+                ));
         }
         return view('welcome');
 
@@ -74,21 +78,20 @@ class HomeController extends Controller
      */
     public function ajax()
     {
-        $year = Carbon::now('Asia/Manila')->year;
-        $info = Info::select(
-                DB::raw('
-                    MONTH(created_at) as month,
-                    COUNT(MONTH(created_at)) as count
-                ')
-            )
-            ->where(DB::raw('YEAR(created_at)'), $year)
-            ->groupBy('month')
+        $info = Info::qdn($this->dateTime->year)->get();
+        $pod  = Info::pod( $this->dateTime->month, $this->dateTime->year)
             ->get();
-            $arr = ['qdn' => [0,0,0,0,0,0,0,0,0,0,0,0]];
-            foreach ($info as $elem) {
+
+        $arr = ['qdn' => [0,0,0,0,0,0,0,0,0,0,0,0]];
+
+        foreach ($info as $elem) {
             $arr['qdn'][$elem->month -1] = round($elem->count/4);
-            }
-            return $arr;
+        }
+        foreach ($pod as $elem) {
+            $arr['pod']['count'][]    = $elem->paretoFirst;
+            $arr['pod']['category'][] = $elem->discrepancy_category;
+        }
+        return $arr;
     }
 
     /**
@@ -98,49 +101,49 @@ class HomeController extends Controller
      */
     public function qdnData(Request $request)
     {
-switch ($request->input('setDate')) {
-    case 'today':
-    $tbl = Info::where(
-            DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'),
-            "=",
-            $this->dt->format('m-d-Y')
-        )->get();
-        break;
-    case 'week':
-        $tbl = Info::where(
-            DB::raw('WEEK(created_at)'),
-            "=",
-            $this->dt->weekOfYear
-        )->get();
-        break;
-    case 'month':
-        $tbl = Info::where(
-            DB::raw('MONTH(created_at)'),
-            "=",
-            $this->dt->month
-        )
-        ->where(
-                DB::raw('YEAR(created_at)'),
-                "=",
-                $this->dt->year
-            )->get();
+        switch ($request->input('setDate')) {
+            case 'today':
+            $tbl = Info::where(
+                    DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'),
+                    "=",
+                    $this->dateTime->format('m-d-Y')
+                )->get();
+                break;
+            case 'week':
+                $tbl = Info::where(
+                    DB::raw('WEEK(created_at)'),
+                    "=",
+                    $this->dateTime->weekOfYear
+                )->get();
+                break;
+            case 'month':
+                $tbl = Info::where(
+                    DB::raw('MONTH(created_at)'),
+                    "=",
+                    $this->dateTime->month
+                )
+                ->where(
+                        DB::raw('YEAR(created_at)'),
+                        "=",
+                        $this->dateTime->year
+                    )->get();
 
 
-        # code...
-        break;
-    case 'year':
-        $tbl = Info::where(
-            DB::raw('YEAR(created_at)'),
-            "=",
-            $this->dt->year
-        )->get();
-        # code...
-        break;
+                # code...
+                break;
+            case 'year':
+                $tbl = Info::where(
+                    DB::raw('YEAR(created_at)'),
+                    "=",
+                    $this->dateTime->year
+                )->get();
+                # code...
+                break;
 
-    default:
-        $tbl = Info::all();
-        break;
-}
+            default:
+                $tbl = Info::all();
+                break;
+        }
         return view('home.qdnData',compact('tbl'));
     }
 }

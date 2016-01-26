@@ -58,7 +58,8 @@
     .panel .panel-heading,
     .panel .panel-footer,
     .collapse {
-        border-radius : 0px;
+        border-radius: 0px;
+        border: 0px;
     }
 
     .well {

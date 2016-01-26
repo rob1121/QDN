@@ -8,6 +8,8 @@ use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
 use Carbon;
+use DB;
+
 class Info extends Model implements SluggableInterface
 {
     use SluggableTrait;
@@ -74,4 +76,26 @@ class Info extends Model implements SluggableInterface
         $this->attributes['control_id'] = $year . "-" . sprintf("%'.04d", $value);
     }
 
+    public function scopePod($query, $month, $year)
+    {
+        return $query->select(DB::raw(
+                'COUNT(discrepancy_category) as paretoFirst,
+                discrepancy_category'
+            ))
+            ->groupBy('discrepancy_category')
+            ->where(DB::raw('MONTH(created_at)'), $month)
+            ->where(DB::raw('YEAR(created_at)'), $year);
+    }
+
+    public function scopeQdn($query, $year)
+    {
+        $query->select(
+                DB::raw('
+                    MONTH(created_at) as month,
+                    COUNT(MONTH(created_at)) as count
+                ')
+            )
+            ->where(DB::raw('YEAR(created_at)'), $year)
+            ->groupBy('month');
+    }
 }

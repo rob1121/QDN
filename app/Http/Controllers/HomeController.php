@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Ajax\ajaxController;
 use Auth;
 
 use App\Models\Info;
@@ -14,7 +13,7 @@ use DB;
 use Carbon;
 use JavaScript;
 
-class HomeController extends ajaxController
+class HomeController extends Controller
 {
 
     public $dateTime;
@@ -23,6 +22,7 @@ class HomeController extends ajaxController
      *
      * @return void
      */
+
     public function __construct()
     {
         $this->dateTime = Carbon::now('Asia/Manila');
@@ -44,15 +44,16 @@ class HomeController extends ajaxController
 
             $legend = 'A';
             $lines = [];
+            $collection = 0;
             foreach ($info as $value) {
                $pod['legends'][]       = $legend++;
                $pod['bars'][]          = $value->paretoFirst;
                $pod['discrepancies'][] = $value->discrepancy_category;
-               $pod['lines'][]         = array_sum($lines) + $value
-                    ->paretoFirst;
+               $collection += $value->paretoFirst;
+               $pod['lines'][]         = $collection;
             }
             //counts per pareto of discrepancy
-            $total = array_sum($bars); //grand total
+            $total = array_sum($pod['bars']); //grand total
 
             $count = $info->count();
 
@@ -60,7 +61,7 @@ class HomeController extends ajaxController
             JavaScript::put('yearNow', $this->dateTime->year);
             JavaScript::put('legends', $pod['legends']); //title
             JavaScript::put('bars', $pod['bars']); //data
-            JavaScript::put('total', $pod['total']); //total
+            JavaScript::put('total', $total); //total
             JavaScript::put('lines', $pod['lines']); // title 2nd
             return view('home',
                 compact(

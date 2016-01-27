@@ -69,14 +69,24 @@
                         </th>
                     @endforeach
                 </thead>
-                {{ $limit = count($pod['bars']) }}
+                <?php $limit = count($pod['bars']); ?>
+
                 @for ($i = 0; $i < $limit; $i++)
+
                     <tr>
-                        <td>{{ $pod['legends'][$i-1] }}</td>
-                        <td>{{ $pod['discrepancies'][$i-1] }}</td>
-                        <td>{{ $pod['bars'][$i-1] }}</td>
+                        <td>{{ $pod['legends'][$i] }}</td>
+                        <td>{{ $pod['discrepancies'][$i] }}</td>
+                        <td>{{ $pod['bars'][$i] }}</td>
                     </tr>
+
                 @endfor
+
+                <tr class="warning">
+                    <td colspan="2" class="h4 text-left">
+                        <strong>{{ Str::upper('total :') }}</strong>
+                    </td>
+                    <td><strong>{{ $total }}</strong></td>
+                </tr>
 
             </table>
             </div>

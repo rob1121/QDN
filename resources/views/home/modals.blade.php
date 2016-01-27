@@ -62,32 +62,14 @@
             <table id="tblQdnMetrics" class="table table-bordered">
                 <thead>
                     @foreach (['Legend','Discrepancy','Count'] as $title)
-                        <th 
+                        <th
                             class = "text-center"
                             style = "background-color:#800; color:#fff"
                         >{{ $title }}
                         </th>
                     @endforeach
                 </thead>
-                <?php $limit = count($pod['bars']); ?>
-
-                @for ($i = 0; $i < $limit; $i++)
-
-                    <tr>
-                        <td>{{ $pod['legends'][$i] }}</td>
-                        <td>{{ $pod['discrepancies'][$i] }}</td>
-                        <td>{{ $pod['bars'][$i] }}</td>
-                    </tr>
-
-                @endfor
-
-                <tr class="warning">
-                    <td colspan="2" class="h4 text-left">
-                        <strong>{{ Str::upper('total :') }}</strong>
-                    </td>
-                    <td><strong>{{ $total }}</strong></td>
-                </tr>
-
+               <tbody id="pareto-data"></tbody>
             </table>
             </div>
             </div>

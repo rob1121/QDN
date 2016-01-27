@@ -23,6 +23,91 @@ function qdnData(givenDate, rowFile) {
     });
 }
 
+
+function requestData() {
+    $.ajax({
+        url: '/ajax',
+        success: function(point) {
+            if (datus != point.qdn) {
+                datus = point.qdn;
+                count = 1;
+
+                for (i = 0; i < point.qdn.length; i++) {
+
+                    $('#tblQdnMetrics')
+                        .find("td:nth-of-type(" + count + ")")
+                        .text(datus[i]);
+
+                    qdnMetrics.series[0].data[i].update(datus[i]);
+                    count += 1;
+
+                }
+
+            }
+            setTimeout(requestData, 1000);
+        },
+        cache: false
+    });
+}
+//======================================================================================
+$('#pod').on('show.bs.modal', function() {
+    $.ajax({
+        url: '/ajax',
+        success: function(point) {
+            bars = point.pod.bars;
+            category = point.pod.category;
+            legend = point.pod.legends;
+            lines = point.pod.lines;
+            total = point.pod.total;
+
+            podGraph.series[1].update(
+                {
+                    tooltip: {
+                        formatter: function() {
+                            if (podGraph.series.name == '% Pareto') {
+                                var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+                                return pcnt + '%';
+                            }
+                            return this.y;
+                        }
+                    }
+                });
+            podGraph.yAxis[1].update({
+                tickInterval: total / 4, //TOTAL
+                labels: {
+                    formatter: function() {
+                        var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+                        return pcnt + '%';
+                    }
+                }
+
+            });
+
+
+            var tbody = $("tbody#pareto-data");
+            tbody.empty();
+            for (i = 0; i < point.pod.lines.length; i++) {
+                tbody.append(
+                    $("<tr></tr>")
+                        .append("<td>" + legend[i] + "</td>")
+                        .append("<td>" + category[i] + "</td>")
+                        .append("<td>" + bars[i] + "</td>")
+                );
+                podGraph.series[1].data[i].update(lines[i]);
+                podGraph.series[0].data[i].update(bars[i]);
+                count += 1;
+
+            }
+            $("tbody#pareto-data").append(
+                $("<tr></tr>")
+                    .append("<td colspan='2' class='h4 text-left'><strong>TOTAL : </strong></td>")
+                    .append("<td>" + total + "</td>")
+            );
+
+        },
+        cache: false
+    });
+});
 $('#today').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
     qdnData('today', rowFile)
@@ -65,25 +150,6 @@ var qdnMetrics;
  * Request data from the server, add it to the graph and set a timeout
  * to request again
  */
-function requestData() {
-    $.ajax({
-        url: '/ajax',
-        success: function(point) {
-            if (datus != point.qdn) {
-                datus = point.qdn;
-                count = 1;
-                for (i = 0; i < point.qdn.length; i++) {
-                    $('#tblQdnMetrics').find("td:nth-of-type(" + count + ")").text(datus[i]);
-                    qdnMetrics.series[0].data[i].update(datus[i]);
-                    count += 1;
-                }
-
-            }
-            setTimeout(requestData, 1000);
-        },
-        cache: false
-    });
-}
 
 qdnMetrics = new Highcharts.Chart({ //start of qdnMetrics
     chart: {
@@ -161,14 +227,14 @@ var podGraph = new Highcharts.Chart({
         defaultSeriesType: 'column',
         borderColor: '#ccc',
         alignTicks: false
-        //backgroundColor:'#eee',
-        //plotBackgroundColor:'#fff',
+    //backgroundColor:'#eee',
+    //plotBackgroundColor:'#fff',
     },
     title: {
         text: 'Pareto of Discrepancy'
     },
     tooltip: {
-        formatter: function () {
+        formatter: function() {
             if (this.series.name == '% Pareto') {
                 var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                 return pcnt + '%';
@@ -189,36 +255,38 @@ var podGraph = new Highcharts.Chart({
         tickLength: 3
     },
 
-    yAxis:[{
-        min:0,
-        endOnTick:false,
-        lineColor:'#999',
-        lineWidth:1,
-        tickColor:'#666',
-        tickWidth:1,
-        tickLength:3,
-        gridLineColor:'#ddd',
-        title:{
-            text:'Counts',
-            rotation:270
+    yAxis: [{
+        min: 0,
+        endOnTick: false,
+        lineColor: '#999',
+        lineWidth: 1,
+        tickColor: '#666',
+        tickWidth: 1,
+        tickLength: 3,
+        gridLineColor: '#ddd',
+        title: {
+            text: 'Counts',
+            rotation: 270
         }
-    },{
-        title:{text:'% Pareto',
-        rotation:270},
-        alignTicks:false,
-        gridLineWidth:0,
-        lineColor:'#999',
-        lineWidth:1,
-        tickColor:'#666',
-        tickWidth:1,
-        tickLength:3,
+    }, {
+        title: {
+            text: '% Pareto',
+            rotation: 270
+        },
+        alignTicks: false,
+        gridLineWidth: 0,
+        lineColor: '#999',
+        lineWidth: 1,
+        tickColor: '#666',
+        tickWidth: 1,
+        tickLength: 3,
         tickInterval: total / 4, //TOTAL
-        endOnTick:false,
-        opposite:true,
-        linkedTo:0,
-        labels:{
-            formatter:function(){
-                var pcnt = Highcharts.numberFormat((this.value / total * 100),0,'.'); //TOTAL
+        endOnTick: false,
+        opposite: true,
+        linkedTo: 0,
+        labels: {
+            formatter: function() {
+                var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
                 return pcnt + '%';
             }
         }

@@ -88,10 +88,18 @@ class HomeController extends Controller
         foreach ($info as $elem) {
             $arr['qdn'][$elem->month -1] = round($elem->count/4);
         }
+        $legend = 'A';
+        $collectors = 0;
         foreach ($pod as $elem) {
-            $arr['pod']['count'][]    = $elem->paretoFirst;
+            $collectors += $elem->paretoFirst;
+            $arr['pod']['legends'][]  = $legend++;
+            $arr['pod']['lines'][]    = $collectors;
+            $arr['pod']['bars'][]     = $elem->paretoFirst;
             $arr['pod']['category'][] = $elem->discrepancy_category;
         }
+        $arr['pod']['bars'] = [1,1,1,1,1,1,1,1,7];
+        $arr['pod']['lines'] = [1,2,3,4,5,6,7,8,15];
+        $arr['pod']['total'] = array_sum($arr['pod']['bars']);
         return $arr;
     }
 

@@ -19,13 +19,13 @@ class HomeComposer {
     $view->with('charts',[
         ['QDN METRICS <br> &nbsp;', 'modalQdnMetrics'],
         ['PARETO OF DISCREPANCY <br> &nbsp;', 'pod'],
-        ['PARETO OF DISCREPANCY <br> ( ASSEMBLY )', 'pod_assembly'],
-        ['PARETO OF DISCREPANCY <br> ( ENVIRONMENT )', 'pod_environment'],
-        ['PARETO OF DISCREPANCY <br> ( FAILURE MODE )', 'pod_failure_mode'],
-        ['PARETO OF DISCREPANCY <br> ( MACHINE )', 'pod_machine'],
-        ['PARETO OF DISCREPANCY <br> ( MAN )', 'pod_man'],
-        ['PARETO OF DISCREPANCY <br> ( MATERIAL )', 'pod_material'],
-        ['PARETO OF DISCREPANCY <br> ( METHOD )', 'pod_method']
+        ['PARETO OF DISCREPANCY <br> ( ASSEMBLY )', 'assemblyModal'],
+        ['PARETO OF DISCREPANCY <br> ( ENVIRONMENT )', 'environmentModal'],
+        ['PARETO OF DISCREPANCY <br> ( FAILURE MODE )', 'failure_modeModal'],
+        ['PARETO OF DISCREPANCY <br> ( MACHINE )', 'machineModal'],
+        ['PARETO OF DISCREPANCY <br> ( MAN )', 'manModal'],
+        ['PARETO OF DISCREPANCY <br> ( MATERIAL )', 'materialModal'],
+        ['PARETO OF DISCREPANCY <br> ( METHOD )', 'methodModal']
     ]);
 
     $dt = Carbon::now('Asia/Manila');

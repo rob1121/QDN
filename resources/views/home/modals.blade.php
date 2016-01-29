@@ -76,3 +76,34 @@
         </div>
     </div>
 </div>
+
+
+
+{{-- ===================================================================== --}}
+
+@foreach ($charts as $chart)
+@if ($chart['id'] != 'pod' || $chart['id'] != 'modalQdnMetrics')
+    <div class="modal fade" id="{{ $chart['id'] }}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button
+                    type         = "button"
+                    class        = "close"
+                    data-dismiss = "modal"
+                    aria-hidden  = "true"
+                >&times;</button>
+                <h4 class="modal-title">
+                    {{ Str::Title($chart['title']) }}
+                </h4>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+           <div id="{{ $chart['graph'] }}"></div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+@endforeach

@@ -12,6 +12,7 @@ use DB;
 
 class Info extends Model implements SluggableInterface
 {
+    public $dateTime;
     use SluggableTrait;
 
     protected $sluggable = [
@@ -69,24 +70,62 @@ class Info extends Model implements SluggableInterface
     }
 
 
-    //model mutators-----------------------------------------------------------------------
+    //model mutators-----------------------------------------------------------
+    /**
+     * set control number fomart before save
+     */
    public function setControlIdAttribute($value) {
         $today = Carbon::now('Asia/Manila');
         $year  = $today->format('y');
         $this->attributes['control_id'] = $year . "-" . sprintf("%'.04d", $value);
     }
 
-    public function scopePod($query, $month, $year)
+    /**
+     * retrieving data from table for BMP graphs
+     */
+    public function scopePod($query, $month, $year, $select = 'all')
     {
+        if ($select == '' || $select == 'all') {
+
+            return $query->select(DB::raw(
+                    'COUNT(discrepancy_category) as paretoFirst,
+                    discrepancy_category as category'
+                ))
+                ->groupBy('discrepancy_category')
+                ->where(DB::raw('MONTH(created_at)'), $month)
+                ->where(DB::raw('YEAR(created_at)'), $year)
+                ->get();
+
+        }
+
+        if ($select == 'failureMode') {
+
+            return $query->select(DB::raw(
+                    'COUNT(failure_mode) as paretoFirst,
+                    failure_mode as category'
+                ))
+                ->groupBy('failure_mode')
+                ->where(DB::raw('MONTH(created_at)'), $month)
+                ->where(DB::raw('YEAR(created_at)'), $year)
+                ->get();
+
+        }
+
         return $query->select(DB::raw(
-                'COUNT(discrepancy_category) as paretoFirst,
-                discrepancy_category'
+                'COUNT(failure_mode) as paretoFirst,
+                failure_mode as category'
             ))
-            ->groupBy('discrepancy_category')
+            ->groupBy('failure_mode')
             ->where(DB::raw('MONTH(created_at)'), $month)
-            ->where(DB::raw('YEAR(created_at)'), $year);
+            ->where(DB::raw('YEAR(created_at)'), $year)
+            ->where('failure_mode', $select)
+            ->get();
+
     }
 
+    /**
+     * get qdndata for year round
+     */
     public function scopeQdn($query, $year)
     {
         $query->select(
@@ -98,4 +137,5 @@ class Info extends Model implements SluggableInterface
             ->where(DB::raw('YEAR(created_at)'), $year)
             ->groupBy('month');
     }
+
 }

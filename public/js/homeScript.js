@@ -21,22 +21,17 @@ function qdnData(givenDate, rowFile) {
         cache: false
     });
 }
-
-
-//======================================================================================
+//=============================================================================
 $('#modalQdnMetrics').on('show.bs.modal', function() {
     $.ajax({
         url: '/ajax',
         success: function(point) {
             count = 1;
-
             for (i = 0; i < point.qdn.length; i++) {
-
                 $('#tblQdnMetrics')
                     .find("td:nth-of-type(" + count + ")")
                     .text(point.qdn[i]);
                 count += 1;
-
             }
             qdnMetrics.series[0].setData(point.qdn);
         },
@@ -52,7 +47,6 @@ $('#pod').on('show.bs.modal', function() {
             legend = point.pod.legends;
             lines = point.pod.lines;
             total = point.pod.total;
-
             podGraph.tooltip.options.formatter = function() {
                 if (this.series.name == '% Pareto') {
                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
@@ -60,7 +54,6 @@ $('#pod').on('show.bs.modal', function() {
                 }
                 return this.y;
             };
-
             podGraph.yAxis[1].update({
                 tickInterval: total / 4, //TOTAL
                 labels: {
@@ -70,13 +63,11 @@ $('#pod').on('show.bs.modal', function() {
                     }
                 }
             });
-
             podGraph.xAxis[0].categories = legend;
             podGraph.series[1].setData(lines);
             podGraph.series[0].setData(bars);
             var tbody = $("tbody#pareto-data");
             tbody.empty();
-
             count = 1;
             for (i = 0; i < point.pod.lines.length; i++) {
                 tbody.append(
@@ -86,20 +77,247 @@ $('#pod').on('show.bs.modal', function() {
                     .append("<td>" + bars[i] + "</td>")
                 );
                 count += 1;
-
             }
             $("tbody#pareto-data").append(
                 $("<tr class='warning'></tr>")
                 .append("<td colspan='2' class='h4 text-left'><strong>TOTAL : </strong></td>")
                 .append("<td>" + total + "</td>")
             );
-
         },
         cache: false
     });
 });
-
-// ===========================================================================================
+$('#assemblyModal').on('show.bs.modal', function() {
+    $.ajax({
+        url: '/ajax',
+        success: function(point) {
+            bars = point.assembly.bars;
+            category = point.assembly.category;
+            legend = point.assembly.legends;
+            lines = point.assembly.lines;
+            total = point.assembly.total;
+            assemblyGraph.tooltip.options.formatter = function() {
+                if (this.series.name == '% Pareto') {
+                    var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+                    return pcnt + '%';
+                }
+                return this.y;
+            };
+            assemblyGraph.yAxis[1].update({
+                tickInterval: total / 4, //TOTAL
+                labels: {
+                    formatter: function() {
+                        var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+                        return pcnt + '%';
+                    }
+                }
+            });
+            assemblyGraph.xAxis[0].categories = legend;
+            assemblyGraph.series[1].setData(lines);
+            assemblyGraph.series[0].setData(bars);
+        },
+        cache: false
+    });
+});
+//=================================================================
+$('#environmentModal').on('show.bs.modal', function() {
+    $.ajax({
+        url: '/ajax',
+        success: function(point) {
+            bars = point.environment.bars;
+            category = point.environment.category;
+            legend = point.environment.legends;
+            lines = point.environment.lines;
+            total = point.environment.total;
+            environmentGraph.tooltip.options.formatter = function() {
+                if (this.series.name == '% Pareto') {
+                    var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+                    return pcnt + '%';
+                }
+                return this.y;
+            };
+            environmentGraph.yAxis[1].update({
+                tickInterval: total / 4, //TOTAL
+                labels: {
+                    formatter: function() {
+                        var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+                        return pcnt + '%';
+                    }
+                }
+            });
+            environmentGraph.xAxis[0].categories = legend;
+            environmentGraph.series[1].setData(lines);
+            environmentGraph.series[0].setData(bars);
+        },
+        cache: false
+    });
+});
+//====================================================================
+$('#failureModeModal').on('show.bs.modal', function() {
+    $.ajax({
+        url: '/ajax',
+        success: function(point) {
+            bars = point.failureMode.bars;
+            category = point.failureMode.category;
+            legend = point.failureMode.legends;
+            lines = point.failureMode.lines;
+            total = point.failureMode.total;
+            failureModeGraph.tooltip.options.formatter = function() {
+                if (this.series.name == '% Pareto') {
+                    var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+                    return pcnt + '%';
+                }
+                return this.y;
+            };
+            failureModeGraph.yAxis[1].update({
+                tickInterval: total / 4, //TOTAL
+                labels: {
+                    formatter: function() {
+                        var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+                        return pcnt + '%';
+                    }
+                }
+            });
+            failureModeGraph.xAxis[0].categories = legend;
+            failureModeGraph.series[1].setData(lines);
+            failureModeGraph.series[0].setData(bars);
+        },
+        cache: false
+    });
+});
+//====================================================================
+$('#machineModal').on('show.bs.modal', function() {
+    $.ajax({
+        url: '/ajax',
+        success: function(point) {
+            bars = point.machine.bars;
+            category = point.machine.category;
+            legend = point.machine.legends;
+            lines = point.machine.lines;
+            total = point.machine.total;
+            machineGraph.tooltip.options.formatter = function() {
+                if (this.series.name == '% Pareto') {
+                    var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+                    return pcnt + '%';
+                }
+                return this.y;
+            };
+            machineGraph.yAxis[1].update({
+                tickInterval: total / 4, //TOTAL
+                labels: {
+                    formatter: function() {
+                        var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+                        return pcnt + '%';
+                    }
+                }
+            });
+            machineGraph.xAxis[0].categories = legend;
+            machineGraph.series[1].setData(lines);
+            machineGraph.series[0].setData(bars);
+        },
+        cache: false
+    });
+});
+//====================================================================
+$('#manModal').on('show.bs.modal', function() {
+    $.ajax({
+        url: '/ajax',
+        success: function(point) {
+            bars = point.man.bars;
+            category = point.man.category;
+            legend = point.man.legends;
+            lines = point.man.lines;
+            total = point.man.total;
+            manGraph.tooltip.options.formatter = function() {
+                if (this.series.name == '% Pareto') {
+                    var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+                    return pcnt + '%';
+                }
+                return this.y;
+            };
+            manGraph.yAxis[1].update({
+                tickInterval: total / 4, //TOTAL
+                labels: {
+                    formatter: function() {
+                        var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+                        return pcnt + '%';
+                    }
+                }
+            });
+            manGraph.xAxis[0].categories = legend;
+            manGraph.series[1].setData(lines);
+            manGraph.series[0].setData(bars);
+        },
+        cache: false
+    });
+});
+//====================================================================
+$('#materialModal').on('show.bs.modal', function() {
+    $.ajax({
+        url: '/ajax',
+        success: function(point) {
+            bars = point.material.bars;
+            category = point.material.category;
+            legend = point.material.legends;
+            lines = point.material.lines;
+            total = point.material.total;
+            materialGraph.tooltip.options.formatter = function() {
+                if (this.series.name == '% Pareto') {
+                    var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+                    return pcnt + '%';
+                }
+                return this.y;
+            };
+            materialGraph.yAxis[1].update({
+                tickInterval: total / 4, //TOTAL
+                labels: {
+                    formatter: function() {
+                        var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+                        return pcnt + '%';
+                    }
+                }
+            });
+            materialGraph.xAxis[0].categories = legend;
+            materialGraph.series[1].setData(lines);
+            materialGraph.series[0].setData(bars);
+        },
+        cache: false
+    });
+});
+//====================================================================
+$('#processModal').on('show.bs.modal', function() {
+    $.ajax({
+        url: '/ajax',
+        success: function(point) {
+            bars = point.process.bars;
+            category = point.process.category;
+            legend = point.process.legends;
+            lines = point.process.lines;
+            total = point.process.total;
+            processGraph.tooltip.options.formatter = function() {
+                if (this.series.name == '% Pareto') {
+                    var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+                    return pcnt + '%';
+                }
+                return this.y;
+            };
+            processGraph.yAxis[1].update({
+                tickInterval: total / 4, //TOTAL
+                labels: {
+                    formatter: function() {
+                        var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+                        return pcnt + '%';
+                    }
+                }
+            });
+            processGraph.xAxis[0].categories = legend;
+            processGraph.series[1].setData(lines);
+            processGraph.series[0].setData(bars);
+        },
+        cache: false
+    });
+});
+// ============================================================================
 //start of pareto
 var chartContent = {
     chart: {
@@ -161,7 +379,6 @@ var chartContent = {
         color: '#000000'
     }]
 };
-
 var qdnMetrics = new Highcharts.Chart({ //start of qdnMetrics
     chart: {
         renderTo: 'qdnMetrics',
@@ -196,7 +413,6 @@ var qdnMetrics = new Highcharts.Chart({ //start of qdnMetrics
         name: 'Actual',
         type: 'column',
         color: '#800000'
-
     }, {
         name: 'Target',
         type: 'line',
@@ -204,9 +420,6 @@ var qdnMetrics = new Highcharts.Chart({ //start of qdnMetrics
         data: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
     }]
 }); //end of qdnMetrics
-
-
-
 $('#modalQdnMetrics').on('show.bs.modal', function() {
     $('#qdnMetrics').css('visibility', 'hidden');
 });
@@ -216,7 +429,6 @@ $('#modalQdnMetrics').on('shown.bs.modal', function() {
 });
 //======================================================
 var podGraph = new Highcharts.Chart(chartContent); //end of pareto
-
 $('#pod').on('show.bs.modal', function() {
     $('#podGraph').css('visibility', 'hidden');
 });
@@ -225,50 +437,123 @@ $('#pod').on('shown.bs.modal', function() {
     podGraph.reflow();
 });
 //======================================================
-chartGraph.chart.renderTo = 'assemblyGraph';
-chartGraph.title.text = 'Pareto of Discrepancy - Assembly';
+chartContent.chart.renderTo = 'assemblyGraph';
+chartContent.title.text = 'Pareto of Discrepancy - Assembly';
 var assemblyGraph = new Highcharts.Chart(chartContent); //end of pareto
-
-
-
-
+$('#assemblyModal').on('show.bs.modal', function() {
+    $('#assemblyGraph').css('visibility', 'hidden');
+});
+$('#assemblyModal').on('shown.bs.modal', function() {
+    $('#assemblyGraph').css('visibility', 'initial');
+    assemblyGraph.reflow();
+});
+//======================================================
+chartContent.chart.renderTo = 'environmentGraph';
+chartContent.title.text = 'Pareto of Discrepancy - Environment';
+var environmentGraph = new Highcharts.Chart(chartContent); //end of pareto
+$('#environmentModal').on('show.bs.modal', function() {
+    $('#environmentGraph').css('visibility', 'hidden');
+});
+$('#environmentModal').on('shown.bs.modal', function() {
+    $('#environmentGraph').css('visibility', 'initial');
+    environmentGraph.reflow();
+});
+//======================================================
+chartContent.chart.renderTo = 'failureModeGraph';
+chartContent.title.text = 'Pareto of Discrepancy - Environment';
+var failureModeGraph = new Highcharts.Chart(chartContent); //end of pareto
+$('#failureModeModal').on('show.bs.modal', function() {
+    $('#failureModeGraph').css('visibility', 'hidden');
+});
+$('#failureModeModal').on('shown.bs.modal', function() {
+    $('#failureModeGraph').css('visibility', 'initial');
+    failureModeGraph.reflow();
+});
+//======================================================
+chartContent.chart.renderTo = 'machineGraph';
+chartContent.title.text = 'Pareto of Discrepancy - Environment';
+var machineGraph = new Highcharts.Chart(chartContent); //end of pareto
+$('#machineModal').on('show.bs.modal', function() {
+    $('#machineGraph').css('visibility', 'hidden');
+});
+$('#machineModal').on('shown.bs.modal', function() {
+    $('#machineGraph').css('visibility', 'initial');
+    machineGraph.reflow();
+});
+//======================================================
+chartContent.chart.renderTo = 'manGraph';
+chartContent.title.text = 'Pareto of Discrepancy - Environment';
+var manGraph = new Highcharts.Chart(chartContent); //end of pareto
+$('#manModal').on('show.bs.modal', function() {
+    $('#manGraph').css('visibility', 'hidden');
+});
+$('#manModal').on('shown.bs.modal', function() {
+    $('#manGraph').css('visibility', 'initial');
+    manGraph.reflow();
+});
+//======================================================
+chartContent.chart.renderTo = 'materialGraph';
+chartContent.title.text = 'Pareto of Discrepancy - Environment';
+var materialGraph = new Highcharts.Chart(chartContent); //end of pareto
+$('#materialModal').on('show.bs.modal', function() {
+    $('#materialGraph').css('visibility', 'hidden');
+});
+$('#materialModal').on('shown.bs.modal', function() {
+    $('#materialGraph').css('visibility', 'initial');
+    materialGraph.reflow();
+});
+//======================================================
+chartContent.chart.renderTo = 'processGraph';
+chartContent.title.text = 'Pareto of Discrepancy - Environment';
+var processGraph = new Highcharts.Chart(chartContent); //end of pareto
+$('#processModal').on('show.bs.modal', function() {
+    $('#processGraph').css('visibility', 'hidden');
+});
+$('#processModal').on('shown.bs.modal', function() {
+    $('#processGraph').css('visibility', 'initial');
+    processGraph.reflow();
+});
+//====================================================
 $('#today').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
     qdnData('today', rowFile)
-
-    $('#week').collapse('hide');
-    $('#month').collapse('hide');
-    $('#year').collapse('hide');
+    $('.collapse').collapse('hide');
 });
-
 $('#week').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
     qdnData('week', rowFile)
-
-    $('#today').collapse('hide');
-    $('#month').collapse('hide');
-    $('#year').collapse('hide');
+    $('.collapse').collapse('hide');
 });
-
 $('#month').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
     qdnData('month', rowFile)
-
-    $('#today').collapse('hide');
-    $('#week').collapse('hide');
-    $('#year').collapse('hide');
+    $('.collapse').collapse('hide');
 });
-
 $('#year').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
     qdnData('year', rowFile)
-
-    $('#week').collapse('hide');
-    $('#month').collapse('hide');
-    $('#today').collapse('hide');
+    $('.collapse').collapse('hide');
 });
-
-
+$('#peVerification').on('show.bs.collapse', function() {
+    var rowFile = $(this).find("tbody");
+    qdnData('peVerification', rowFile)
+    $('.collapse').collapse('hide');
+});
+$('#incomplete').on('show.bs.collapse', function() {
+    var rowFile = $(this).find("tbody");
+    qdnData('incomplete', rowFile)
+    $('.collapse').collapse('hide');
+});
+$('#approval').on('show.bs.collapse', function() {
+    var rowFile = $(this).find("tbody");
+    qdnData('approval', rowFile)
+    $('.collapse').collapse('hide');
+});
+$('#qaVerification').on('show.bs.collapse', function() {
+    var rowFile = $(this).find("tbody");
+    qdnData('qaVerification', rowFile)
+    $('.collapse').collapse('hide');
+});
 $.ajaxSetup({
     headers: {
         'X-CSRF-Token': $('meta[name=_token]').attr('content')

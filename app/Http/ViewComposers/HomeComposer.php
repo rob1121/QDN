@@ -3,6 +3,7 @@ namespace App\Http\ViewComposers;
 
 use Illuminate\Contracts\View\View;
 use App\Models\Info;
+use App\Models\Closure;
 use Carbon;
 use DB;
 class HomeComposer {
@@ -17,15 +18,60 @@ class HomeComposer {
     {
 
     $view->with('charts',[
-        ['QDN METRICS <br> &nbsp;', 'modalQdnMetrics'],
-        ['PARETO OF DISCREPANCY <br> &nbsp;', 'pod'],
-        ['PARETO OF DISCREPANCY <br> ( ASSEMBLY )', 'assemblyModal'],
-        ['PARETO OF DISCREPANCY <br> ( ENVIRONMENT )', 'environmentModal'],
-        ['PARETO OF DISCREPANCY <br> ( FAILURE MODE )', 'failure_modeModal'],
-        ['PARETO OF DISCREPANCY <br> ( MACHINE )', 'machineModal'],
-        ['PARETO OF DISCREPANCY <br> ( MAN )', 'manModal'],
-        ['PARETO OF DISCREPANCY <br> ( MATERIAL )', 'materialModal'],
-        ['PARETO OF DISCREPANCY <br> ( METHOD )', 'methodModal']
+        [
+            'heading' => 'QDN METRICS <br> &nbsp;', 
+            'id'      => 'modalQdnMetrics',
+            'title'   => '',
+            'graph'   => 'qdnMetricsGraph'
+        ],
+        [
+            'heading' => 'PARETO OF DISCREPANCY <br> &nbsp;', 
+            'id'      => 'pod',
+            'title'   => '',
+            'graph'   => 'podGraph'
+        ],
+        [
+            'heading' => 'PARETO OF DISCREPANCY <br> ( FAILURE MODE )', 
+            'id'      => 'failureModeModal',
+            'title'   => 'Pareto of Discrepancy -  FAILURE MODE ',
+            'graph'   => 'failureModeGraph'
+        ],
+        [
+            'heading' => 'PARETO OF DISCREPANCY <br> ( ASSEMBLY )', 
+            'id'      => 'assemblyModal',
+            'title'   => 'Pareto of Discrepancy -  ASSEMBLY ',
+            'graph'   => 'assemblyGraph'
+        ],
+        [
+            'heading' => 'PARETO OF DISCREPANCY <br> ( ENVIRONMENT )', 
+            'id'      => 'environmentModal',
+            'title'   => 'Pareto of Discrepancy -  ENVIRONMENT ',
+            'graph'   => 'environmentGraph'
+        ],
+        [
+            'heading' => 'PARETO OF DISCREPANCY <br> ( MACHINE )', 
+            'id'      => 'machineModal',
+            'title'   => 'Pareto of Discrepancy -  MACHINE ',
+            'graph'   => 'machineGraph'
+        ],
+        [
+            'heading' => 'PARETO OF DISCREPANCY <br> ( MAN )', 
+            'id'      => 'manModal',
+            'title'   => 'Pareto of Discrepancy -  MAN ',
+            'graph'   => 'manGraph'
+        ],
+        [
+            'heading' => 'PARETO OF DISCREPANCY <br> ( MATERIAL )', 
+            'id'      => 'materialModal',
+            'title'   => 'Pareto of Discrepancy -  MATERIAL ',
+            'graph'   => 'materialGraph'
+        ],
+        [
+            'heading' => 'PARETO OF DISCREPANCY <br> ( METHOD / PROCESS )', 
+            'id'      => 'processModal',
+            'title'   => 'Pareto of Discrepancy - METHOD / PROCESS ',
+            'graph'   => 'processGraph'
+        ]
     ]);
 
     $dt = Carbon::now('Asia/Manila');
@@ -64,6 +110,28 @@ $view->with('counts',[
     [$week, 'week', 'Issued this week :'],
     [$month, 'month', 'Issued this month :'],
     [$year, 'year', 'Issued this year :']
+    ]);
+
+
+
+    $peVerification = Closure::where('status', 'p.e. verification')
+    ->count();
+
+    $incomplete = Closure::where('status', 'incomplete fill-up')
+    ->count();
+
+    $approval = Closure::where('status', 'incomplete approval')
+    ->count();
+
+    $qaVerification = Closure::where('status', 'q.a. verification')
+    ->count();
+
+
+$view->with('status',[
+    [$peVerification, 'peVerification', 'P.E. Verification :'],
+    [$incomplete, 'incomplete', 'Incomplete fill-up:'],
+    [$approval, 'approval', 'Incomplete approval :'],
+    [$qaVerification, 'qaVerification', 'Q.A. Verification :']
     ]);
     }
 

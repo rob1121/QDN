@@ -44,31 +44,70 @@ class HomeController extends Controller
 
     }
 
+
+    /**
+     * array function for getting data for graphs
+     */
+    protected function arrayCollection($collection)
+        {
+            $arr        = [];
+            $legend     = 'A';
+            $collectors = 0;
+
+            foreach ($collection as $elem) {
+
+                $collectors += $elem->paretoFirst;
+                $arr['legends'][]  = $legend++;
+                $arr['lines'][]    = $collectors;
+                $arr['bars'][]     = $elem->paretoFirst;
+                $arr['category'][] = $elem->category;
+
+            }
+            $arr['total'] = 0;
+
+            if (isset($arr['bars'])) {
+            $arr['total'] = array_sum($arr['bars']);
+            }
+
+            return $arr;
+        }
+
     /**
      * ajax call for highchart live update
      * @return [type] [description]
      */
     public function ajax()
     {
-        $info = Info::qdn($this->dateTime->year)->get();
-        $pod  = Info::pod( $this->dateTime->month, $this->dateTime->year)
-            ->get();
+        //date
+        $month    = $this->dateTime->month;
+        $year     = $this->dateTime->year;
+
+        //retrieve data collection
+        $info        = Info::qdn($year)->get();
+        $pod         = Info::pod( $month, $year);
+        $failureMode = Info::pod( $month, $year, 'failureMode');
+        $assembly    = Info::pod( $month, $year, 'assembly');
+        $environment = Info::pod( $month, $year, 'environment');
+        $machine     = Info::pod( $month, $year, 'machine');
+        $man         = Info::pod( $month, $year, 'man');
+        $material    = Info::pod( $month, $year, 'material');
+        $process     = Info::pod( $month, $year, 'method / process');
 
         $arr = ['qdn' => [0,0,0,0,0,0,0,0,0,0,0,0]];
 
         foreach ($info as $elem) {
             $arr['qdn'][$elem->month -1] = round($elem->count/4);
         }
-        $legend = 'A';
-        $collectors = 0;
-        foreach ($pod as $elem) {
-            $collectors += $elem->paretoFirst;
-            $arr['pod']['legends'][]  = $legend++;
-            $arr['pod']['lines'][]    = $collectors;
-            $arr['pod']['bars'][]     = $elem->paretoFirst;
-            $arr['pod']['category'][] = $elem->discrepancy_category;
-        }
-        $arr['pod']['total'] = array_sum($arr['pod']['bars']);
+
+        $arr['pod']         = $this->arrayCollection($pod);
+        $arr['failureMode'] = $this->arrayCollection($failureMode);
+        $arr['assembly']    = $this->arrayCollection($assembly);
+        $arr['environment'] = $this->arrayCollection($environment);
+        $arr['machine']     = $this->arrayCollection($machine);
+        $arr['man']         = $this->arrayCollection($man);
+        $arr['material']    = $this->arrayCollection($material);
+        $arr['process']     = $this->arrayCollection($process);
+
         return $arr;
     }
 
@@ -105,9 +144,6 @@ class HomeController extends Controller
                         "=",
                         $this->dateTime->year
                     )->get();
-
-
-                # code...
                 break;
             case 'year':
                 $tbl = Info::where(
@@ -115,7 +151,6 @@ class HomeController extends Controller
                     "=",
                     $this->dateTime->year
                 )->get();
-                # code...
                 break;
 
             default:
@@ -124,4 +159,6 @@ class HomeController extends Controller
         }
         return view('home.qdnData',compact('tbl'));
     }
+
+
 }

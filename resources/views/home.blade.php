@@ -1,16 +1,6 @@
 @extends('layouts.app')
 @section('style')
 <style>
-    .modal-body,
-    .table {
-        padding-top: 0px;
-        padding-bottom: 0px;
-    }
-
-    .table {
-        background-color: #fff;
-        margin-bottom: 0px;
-    }
 
     .brighten {
         background-color: #fff;
@@ -45,6 +35,21 @@
         margin: 0px;
         padding: 0px;
     }
+
+
+
+    .modal-body  {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+
+    .table {
+        background-color: #fff;
+        margin-bottom: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
     .panel {
         border: 0px;
     }
@@ -69,13 +74,12 @@
          -webkit-box-shadow: 0px;
          box-shadow: 0px;
     }
-
 </style>
 @stop
 @section('content')
 
 
-<!-- Count content -->
+<!-- Count content=================================================== -->
 <div class="container">
 <legend class="h1">Counts: </legend>
 @foreach ($counts as $panel)
@@ -129,26 +133,79 @@
 @endforeach
 </div>
 
-{{-- MODAL LINKS --}}
+{{-- MODAL LINKS ==========================================================--}}
 <div class="container" id="link">
 @include('errors.validationErrors')
 <legend class="h1">Graphs: </legend>
 @foreach ($charts as $chart)
     <a
         data-toggle = "modal"
-        href        = '#{{ $chart[1] }}'
+        href        = "#{{ $chart['id'] }}"
     >
             <div class="col-xs-4" style="color: #800">
                 <div class="row text-center table-bordered brighten ">
                     <i class="fa fa-bar-chart fa-5x"></i>
-                    <br><strong class="text-muted">{!! $chart[0] !!}</strong>
+                    <br><strong class="text-muted">{!! $chart['heading'] !!}</strong>
                 </div>
             </div>
     </a>
 @endforeach
 </div>
+{{-- STATUS =========================================================--}}
 
+<div class="container">
+<legend class="h1">Status: </legend>
+@foreach ($status as $panel)
+<div class="col-xs-3 h2">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ $panel[2] }}</h3>
+        </div>
+        <div class="panel-body">
+            {{ $panel[0] }}
+        </div>
+        <a class="h5" href="#">
+            <div
+                class         = "panel-footer"
+                data-toggle   = "collapse"
+                href          = "#{{ $panel[1] }}"
+                aria-expanded = "false"
+                aria-controls = "{{ $panel[1] }}"
+            >
+                <span class="pull-left">View Details</span>
+                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                <div class="clearfix"></div>
+            </div>
+        </a>
+    </div>
+</div>
+@endforeach
+</div>
 
+<div class="container" id="">
+
+@foreach ($status as $panel)
+    <div class="collapse" id="{{ $panel[1] }}">
+      <div class="well">
+      <legend>{{ $panel[2] }}</legend>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Problem Desciption</th>
+                    <th>Trap Location</th>
+                    <th>Customer</th>
+                    <th>Receiver Name</th>
+                    <th>Issued Date / Time</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    </div>
+@endforeach
+</div>
 @include('home.modals')
 @endsection
 

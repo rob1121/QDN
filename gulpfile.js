@@ -13,11 +13,7 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
 mix.sass('app.scss')
-    .version('public/css/app.css', 'public/js/app.js')
-    .copy("resources/assets/vendor/highcharts/modules/exporting.js",
-        "resources/assets/js/exporting.js")
-    .copy("resources/assets/js/exporting.js",
-        "public/vendor/js/exporting.js");
+    .version('public/css/app.css', 'public/js/app.js');
 });
 /*
 elixir(function(mix) {
@@ -135,5 +131,9 @@ mix.copy(
         "resources/assets/js/highcharts.js",
         "public/vendor/js/highcharts.js"
 )
+    .copy("resources/assets/vendor/highcharts/modules/exporting.js",
+        "resources/assets/js/exporting.js")
+    .copy("resources/assets/js/exporting.js",
+        "public/vendor/js/exporting.js");
 });
 */

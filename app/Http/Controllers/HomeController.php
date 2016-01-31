@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 
 use App\Models\Info;
+use App\Models\Closure;
 use DB;
 use Carbon;
 use JavaScript;
@@ -118,46 +119,19 @@ class HomeController extends Controller
      */
     public function qdnData(Request $request)
     {
-        switch ($request->input('setDate')) {
-            case 'today':
-            $tbl = Info::where(
-                    DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'),
-                    "=",
-                    $this->dateTime->format('m-d-Y')
-                )->get();
-                break;
-            case 'week':
-                $tbl = Info::where(
-                    DB::raw('WEEK(created_at)'),
-                    "=",
-                    $this->dateTime->weekOfYear
-                )->get();
-                break;
-            case 'month':
-                $tbl = Info::where(
-                    DB::raw('MONTH(created_at)'),
-                    "=",
-                    $this->dateTime->month
-                )
-                ->where(
-                        DB::raw('YEAR(created_at)'),
-                        "=",
-                        $this->dateTime->year
-                    )->get();
-                break;
-            case 'year':
-                $tbl = Info::where(
-                    DB::raw('YEAR(created_at)'),
-                    "=",
-                    $this->dateTime->year
-                )->get();
-                break;
-
-            default:
-                $tbl = Info::all();
-                break;
-        }
+       $tbl = Info::issued($request->input('setDate'))->get();
         return view('home.qdnData',compact('tbl'));
+    }
+
+    /**
+     * ajax call for qdn issuance updates
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function AjaxStatus(Request $request)
+    {
+       $tbl = Closure::status($request->input('status'))->get();
+        return view('home.status',compact('tbl'));
     }
 
 

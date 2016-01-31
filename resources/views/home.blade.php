@@ -151,6 +151,7 @@
     </a>
 @endforeach
 </div>
+
 {{-- STATUS =========================================================--}}
 
 <div class="container">
@@ -182,6 +183,7 @@
 @endforeach
 </div>
 
+{{-- container for collapse data filtered by status----================================= --}}
 <div class="container" id="">
 
 @foreach ($status as $panel)

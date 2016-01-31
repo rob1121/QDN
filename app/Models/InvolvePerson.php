@@ -17,7 +17,7 @@ class InvolvePerson extends Model
 
     // DEFINE RELATIONSHIPS --------------------------------------------------
     public function info() {
-        return $this->belongsTo('Info');
+        return $this->belongsTo('App\Models\Info');
     }
 
 }

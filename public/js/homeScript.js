@@ -21,6 +21,29 @@ function qdnData(givenDate, rowFile) {
         cache: false
     });
 }
+function status(status, rowFile) {
+    $.ajax({
+        url: '/status',
+        type: 'GET',
+        data: {
+            status: status
+        },
+        success: function(data) {
+            if (data != '') {
+                rowFile.append(data);
+            } else {
+                rowFile.empty();
+                rowFile.append('<tr></tr>');
+                $('<td></td>', {
+                    colspan: "10",
+                    class: "text-center",
+                    text: "No data to show"
+                }).appendTo(rowFile.children('tr'));
+            }
+        },
+        cache: false
+    });
+}
 //=============================================================================
 $('#modalQdnMetrics').on('show.bs.modal', function() {
     $.ajax({
@@ -72,16 +95,16 @@ $('#pod').on('show.bs.modal', function() {
             for (i = 0; i < point.pod.lines.length; i++) {
                 tbody.append(
                     $("<tr></tr>")
-                    .append("<td>" + legend[i] + "</td>")
-                    .append("<td>" + category[i] + "</td>")
-                    .append("<td>" + bars[i] + "</td>")
+                        .append("<td>" + legend[i] + "</td>")
+                        .append("<td>" + category[i] + "</td>")
+                        .append("<td>" + bars[i] + "</td>")
                 );
                 count += 1;
             }
             $("tbody#pareto-data").append(
                 $("<tr class='warning'></tr>")
-                .append("<td colspan='2' class='h4 text-left'><strong>TOTAL : </strong></td>")
-                .append("<td>" + total + "</td>")
+                    .append("<td colspan='2' class='h4 text-left'><strong>TOTAL : </strong></td>")
+                    .append("<td>" + total + "</td>")
             );
         },
         cache: false
@@ -460,7 +483,7 @@ $('#environmentModal').on('shown.bs.modal', function() {
 });
 //======================================================
 chartContent.chart.renderTo = 'failureModeGraph';
-chartContent.title.text = 'Pareto of Discrepancy - Environment';
+chartContent.title.text = 'Pareto of Discrepancy - Failure Mode';
 var failureModeGraph = new Highcharts.Chart(chartContent); //end of pareto
 $('#failureModeModal').on('show.bs.modal', function() {
     $('#failureModeGraph').css('visibility', 'hidden');
@@ -471,7 +494,7 @@ $('#failureModeModal').on('shown.bs.modal', function() {
 });
 //======================================================
 chartContent.chart.renderTo = 'machineGraph';
-chartContent.title.text = 'Pareto of Discrepancy - Environment';
+chartContent.title.text = 'Pareto of Discrepancy - Machine';
 var machineGraph = new Highcharts.Chart(chartContent); //end of pareto
 $('#machineModal').on('show.bs.modal', function() {
     $('#machineGraph').css('visibility', 'hidden');
@@ -482,7 +505,7 @@ $('#machineModal').on('shown.bs.modal', function() {
 });
 //======================================================
 chartContent.chart.renderTo = 'manGraph';
-chartContent.title.text = 'Pareto of Discrepancy - Environment';
+chartContent.title.text = 'Pareto of Discrepancy - Man';
 var manGraph = new Highcharts.Chart(chartContent); //end of pareto
 $('#manModal').on('show.bs.modal', function() {
     $('#manGraph').css('visibility', 'hidden');
@@ -493,7 +516,7 @@ $('#manModal').on('shown.bs.modal', function() {
 });
 //======================================================
 chartContent.chart.renderTo = 'materialGraph';
-chartContent.title.text = 'Pareto of Discrepancy - Environment';
+chartContent.title.text = 'Pareto of Discrepancy - Material';
 var materialGraph = new Highcharts.Chart(chartContent); //end of pareto
 $('#materialModal').on('show.bs.modal', function() {
     $('#materialGraph').css('visibility', 'hidden');
@@ -504,7 +527,7 @@ $('#materialModal').on('shown.bs.modal', function() {
 });
 //======================================================
 chartContent.chart.renderTo = 'processGraph';
-chartContent.title.text = 'Pareto of Discrepancy - Environment';
+chartContent.title.text = 'Pareto of Discrepancy - Method / Process';
 var processGraph = new Highcharts.Chart(chartContent); //end of pareto
 $('#processModal').on('show.bs.modal', function() {
     $('#processGraph').css('visibility', 'hidden');
@@ -534,24 +557,26 @@ $('#year').on('show.bs.collapse', function() {
     qdnData('year', rowFile)
     $('.collapse').collapse('hide');
 });
+
+//=============================================================
 $('#peVerification').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
-    qdnData('peVerification', rowFile)
+    status('p.e.verification', rowFile)
     $('.collapse').collapse('hide');
 });
 $('#incomplete').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
-    qdnData('incomplete', rowFile)
+    status('incomplete fill-up', rowFile)
     $('.collapse').collapse('hide');
 });
 $('#approval').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
-    qdnData('approval', rowFile)
+    status('incomplete approval', rowFile)
     $('.collapse').collapse('hide');
 });
 $('#qaVerification').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
-    qdnData('qaVerification', rowFile)
+    status('q.a. verification', rowFile)
     $('.collapse').collapse('hide');
 });
 $.ajaxSetup({

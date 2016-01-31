@@ -2,140 +2,175 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
+use Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
-
-use Carbon;
 use DB;
+use Illuminate\Database\Eloquent\Model;
 
-class Info extends Model implements SluggableInterface
-{
-    public $dateTime;
-    use SluggableTrait;
+class Info extends Model implements SluggableInterface {
+	public $dateTime;
+	use SluggableTrait;
 
-    protected $sluggable = [
-        'build_from' => 'problem_description',
-        'save_to'    => 'slug',
-    ];
+	protected $sluggable = [
+		'build_from' => 'problem_description',
+		'save_to'    => 'slug',
+	];
 
-    protected $fillable = [
-        'control_id',
-        'customer',
-        'package_type',
-        'device_name',
-        'lot_id_number',
-        'lot_quantity',
-        'job_order_number',
-        'machine',
-        'station',
-        'date',
-        'year',
-        'month',
-        'major',
-        'disposition',
-        'problem_description',
-        'failure_mode',
-        'discrepancy_category',
-        'quantity',
-    ];
+	protected $fillable = [
+		'control_id',
+		'customer',
+		'package_type',
+		'device_name',
+		'lot_id_number',
+		'lot_quantity',
+		'job_order_number',
+		'machine',
+		'station',
+		'date',
+		'year',
+		'month',
+		'major',
+		'disposition',
+		'problem_description',
+		'failure_mode',
+		'discrepancy_category',
+		'quantity',
+	];
 
-    // DEFINE RELATIONSHIPS --------------------------------------------------
-    public function causeOfDefect() {
-        return $this->hasOne('App\Models\CauseOfDefect'); // this matches the Eloquent model
-    }
-    public function containmentAction() {
-        return $this->hasOne('App\Models\ContainmentAction'); // this matches the Eloquent model
-    }
+	// DEFINE RELATIONSHIPS --------------------------------------------------
+	public function causeOfDefect() {
+		return $this->hasOne('App\Models\CauseOfDefect'); // this matches the Eloquent model
+	}
+	public function containmentAction() {
+		return $this->hasOne('App\Models\ContainmentAction'); // this matches the Eloquent model
+	}
 
-    public function correctiveAction() {
-        return $this->hasOne('App\Models\CorrectiveAction'); // this matches the Eloquent model
-    }
+	public function correctiveAction() {
+		return $this->hasOne('App\Models\CorrectiveAction'); // this matches the Eloquent model
+	}
 
-    public function preventiveAction() {
-        return $this->hasOne('App\Models\PreventiveAction'); // this matches the Eloquent model
-    }
+	public function preventiveAction() {
+		return $this->hasOne('App\Models\PreventiveAction'); // this matches the Eloquent model
+	}
 
-    public function qdnCycle() {
-        return $this->hasOne('App\Models\Qdncycle'); // this matches the Eloquent model
-    }
+	public function qdnCycle() {
+		return $this->hasOne('App\Models\Qdncycle'); // this matches the Eloquent model
+	}
 
-    public function closure() {
-        return $this->hasOne('App\Models\Closure'); // this matches the Eloquent model
-    }
+	public function closure() {
+		return $this->hasOne('App\Models\Closure'); // this matches the Eloquent model
+	}
 
-    public function involvePerson() {
-        return $this->hasMany('App\Models\InvolvePerson');
-    }
+	public function involvePerson() {
+		return $this->hasMany('App\Models\InvolvePerson');
+	}
 
+	//model mutators-----------------------------------------------------------
+	/**
+	 * set control number fomart before save
+	 */
+	public function setControlIdAttribute($value) {
+		$today                          = Carbon::now('Asia/Manila');
+		$year                           = $today->format('y');
+		$this->attributes['control_id'] = $year . "-" . sprintf("%'.04d", $value);
+	}
 
-    //model mutators-----------------------------------------------------------
-    /**
-     * set control number fomart before save
-     */
-   public function setControlIdAttribute($value) {
-        $today = Carbon::now('Asia/Manila');
-        $year  = $today->format('y');
-        $this->attributes['control_id'] = $year . "-" . sprintf("%'.04d", $value);
-    }
+	/**
+	 * retrieving data from table for BMP graphs
+	 */
+	public function scopePod($query, $month, $year, $select = 'all') {
+		if ($select == '' || $select == 'all') {
 
-    /**
-     * retrieving data from table for BMP graphs
-     */
-    public function scopePod($query, $month, $year, $select = 'all')
-    {
-        if ($select == '' || $select == 'all') {
-
-            return $query->select(DB::raw(
-                    'COUNT(discrepancy_category) as paretoFirst,
+			return $query->select(DB::raw(
+				'COUNT(discrepancy_category) as paretoFirst,
                     discrepancy_category as category'
-                ))
-                ->groupBy('discrepancy_category')
-                ->where(DB::raw('MONTH(created_at)'), $month)
-                ->where(DB::raw('YEAR(created_at)'), $year)
-                ->get();
+			))
+				->groupBy('discrepancy_category')
+				->where(DB::raw('MONTH(created_at)'), $month)
+				->where(DB::raw('YEAR(created_at)'), $year)
+				->get();
 
-        }
+		}
 
-        if ($select == 'failureMode') {
+		if ($select == 'failureMode') {
 
-            return $query->select(DB::raw(
-                    'COUNT(failure_mode) as paretoFirst,
+			return $query->select(DB::raw(
+				'COUNT(failure_mode) as paretoFirst,
                     failure_mode as category'
-                ))
-                ->groupBy('failure_mode')
-                ->where(DB::raw('MONTH(created_at)'), $month)
-                ->where(DB::raw('YEAR(created_at)'), $year)
-                ->get();
+			))
+				->groupBy('failure_mode')
+				->where(DB::raw('MONTH(created_at)'), $month)
+				->where(DB::raw('YEAR(created_at)'), $year)
+				->get();
 
-        }
+		}
 
-        return $query->select(DB::raw(
-                'COUNT(failure_mode) as paretoFirst,
+		return $query->select(DB::raw(
+			'COUNT(failure_mode) as paretoFirst,
                 failure_mode as category'
-            ))
-            ->groupBy('failure_mode')
-            ->where(DB::raw('MONTH(created_at)'), $month)
-            ->where(DB::raw('YEAR(created_at)'), $year)
-            ->where('failure_mode', $select)
-            ->get();
+		))
+			->groupBy('failure_mode')
+			->where(DB::raw('MONTH(created_at)'), $month)
+			->where(DB::raw('YEAR(created_at)'), $year)
+			->where('failure_mode', $select)
+			->get();
 
-    }
+	}
 
-    /**
-     * get qdndata for year round
-     */
-    public function scopeQdn($query, $year)
-    {
-        $query->select(
-                DB::raw('
+	/**
+	 * get qdndata for year round
+	 */
+	public function scopeQdn($query, $year) {
+		$query->select(
+			DB::raw('
                     MONTH(created_at) as month,
                     COUNT(MONTH(created_at)) as count
                 ')
-            )
-            ->where(DB::raw('YEAR(created_at)'), $year)
-            ->groupBy('month');
-    }
+		)
+			->where(DB::raw('YEAR(created_at)'), $year)
+			->groupBy('month');
+	}
+
+	/**
+	 * get qdndata for year round
+	 */
+	public function scopeIssued($query, $date) {
+		switch ($date) {
+		case 'today':
+			$query->where(
+				DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'),
+				"=",
+				Carbon::now('Asia/Manila')->format('m-d-Y')
+			)->get();
+			break;
+		case 'week':
+			$query->where(
+				DB::raw('WEEK(created_at)'),
+				"=",
+				Carbon::now('Asia/Manila')->weekOfYear
+			)->get();
+			break;
+		case 'month':
+			$query->where(
+				DB::raw('MONTH(created_at)'),
+				"=",
+				Carbon::now('Asia/Manila')->month
+			)
+				->where(
+					DB::raw('YEAR(created_at)'),
+					"=",
+					Carbon::now('Asia/Manila')->year
+				)->get();
+			break;
+		case 'year':
+			$query->where(
+				DB::raw('YEAR(created_at)'),
+				"=",
+				Carbon::now('Asia/Manila')->year
+			)->get();
+			break;
+		}
+	}
 
 }

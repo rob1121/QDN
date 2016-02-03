@@ -160,8 +160,7 @@ return [
         App\Providers\ComposerServiceProvider::class,
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
-        Serverfireteam\Panel\PanelServiceProvider::class
-
+        Barryvdh\DomPDF\ServiceProvider::class
     ],
 
     /*
@@ -210,8 +209,8 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-        'Str'       => Illuminate\Support\Str::class
-
+        'Str'       => Illuminate\Support\Str::class,
+        'PDF'       => Barryvdh\DomPDF\Facade::class
     ],
 
 ];

@@ -1,7 +1,11 @@
 @foreach ($tbl as $row)
 
     <tr>
-        <td>{{ Str::title($row->control_id) }}</td>
+        <td>
+            <a href={{ route('qdn_link', ['slug' => $row->slug]) }}>
+                {{ Str::title($row->control_id) }}
+            </a>
+        </td>
         <td>{{ Str::title($row->problem_description) }}</td>
         <td>{{ Str::upper($row->station) }}</td>
         <td>{{ $row->customer }}</td>

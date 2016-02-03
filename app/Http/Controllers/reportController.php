@@ -15,7 +15,7 @@ use Carbon;
 use Auth;
 use Flash;
 use JavaScript;
-
+use PDF;
 class reportController extends CrudController
 {
     public function __construct()
@@ -92,5 +92,13 @@ class reportController extends CrudController
         // send email
         Flash::success('Successfully save! Issued QDN is now subject for Approval!');
         return redirect('/');
+    }
+
+    public function pdf($slug)
+    {
+        $qdn  = Info::where('slug', $slug)->first();
+        
+        return PDF::loadHTML(view('pdf.print', compact('qdn')))->stream();
+        // return file_get_contents('/');
     }
 }

@@ -31,3 +31,11 @@ Route::post('/approval/{slug}',
     'uses' => 'reportController@approval'
 ]);
 
+
+Route::get('/report/{slug}/pdf',
+[
+    'as'   => 'pdf',
+    'uses' => 'reportController@pdf'
+]);
+
+   

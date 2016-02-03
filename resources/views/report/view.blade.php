@@ -72,6 +72,12 @@ input[type="file"]{
 <center><H1 style='color:#800000'>QUALITY DEVIATION NOTICE</H1></center>
 <!-- START -->
 <div class="container" style='font-size:12px;padding:0px'>
+<a 
+    href="{{ route('pdf', ['slug'=> $qdn->slug]) }}" 
+    class="btn btn-default"
+>Print <i class="fa fa-print"></i>
+
+</a>
     <!-- PRODUCT DESCRIPTION/ PROBLEM DETAILS -->
     <div class="panel panel-default">
         <div class="panel-heading">

@@ -32,6 +32,13 @@ class RecordUpdateComposer {
             'others'
         ]);
 
+        $view->with('approvers', [
+            'production',
+            'process',
+            'quality assurance',
+            'others'
+        ]);
+
         $view->with('names', Employee::all('name'));
 
     }

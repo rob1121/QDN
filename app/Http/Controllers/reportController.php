@@ -97,8 +97,15 @@ class reportController extends CrudController
     public function pdf($slug)
     {
         $qdn  = Info::where('slug', $slug)->first();
+
+        $department = $qdn->involvePerson()
+            ->select('department')
+            ->get()
+            ->toArray();
+
+        $department   = array_unique(array_flatten($department));
         
-        return PDF::loadHTML(view('pdf.print', compact('qdn')))->stream();
+        return PDF::loadHTML(view('pdf.print', compact('qdn','department')))->stream();
         // return file_get_contents('/');
     }
 }

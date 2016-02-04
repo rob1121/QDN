@@ -247,7 +247,7 @@ input[type="file"]{
                 <?=
                 $qdn->problem_description == ""
                     ? "<br/><br/>"
-                    : $qdn->problem_description . "<br/><br/>";
+                    : $qdn->problem_description."<br/><br/>";
                 ?>
             </div>
         </div>

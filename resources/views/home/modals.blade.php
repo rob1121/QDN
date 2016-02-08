@@ -100,6 +100,18 @@
             <div class="modal-body">
             <div class="row">
            <div id="{{ $chart['graph'] }}"></div>
+               <table id="{{ $chart['table'] }}" class="table table-bordered">
+                <thead>
+                    @foreach (['Legend','Discrepancy','Count'] as $title)
+                        <th
+                            class = "text-center"
+                            style = "background-color:#800; color:#fff"
+                        >{{ $title }}
+                        </th>
+                    @endforeach
+                </thead>
+               <tbody id="pareto-data"></tbody>
+            </table>
             </div>
             </div>
         </div>

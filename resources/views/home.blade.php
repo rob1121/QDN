@@ -18,7 +18,7 @@
         -webkit-transform: scale(1.03);
         transform: scale(1.03);
         position: relative;
-        z-index: 99999;
+        z-index: 1;
     }
 
     #link {
@@ -74,6 +74,9 @@
          -webkit-box-shadow: 0px;
          box-shadow: 0px;
     }
+    select.form-control:focus {
+        box-shadow: none;
+    }
 </style>
 @stop
 @section('content')
@@ -91,13 +94,9 @@
         <div class="panel-body">
             {{ $panel[0] }}
         </div>
-        <a class="h5" href="#">
+        <a class="h5" target="_blank" href="/pareto?category={{ $panel[3] }}">
             <div
                 class         = "panel-footer"
-                data-toggle   = "collapse"
-                href          = "#{{ $panel[1] }}"
-                aria-expanded = "false"
-                aria-controls = "{{ $panel[1] }}"
             >
                 <span class="pull-left">View Details</span>
                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -108,35 +107,39 @@
 </div>
 @endforeach
 </div>
-<div class="container">
-
-@foreach ($counts as $panel)
-    <div class="collapse" id="{{ $panel[1] }}">
-      <div class="well">
-      <legend>{{ $panel[2] }}</legend>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Problem Desciption</th>
-                    <th>Trap Location</th>
-                    <th>Customer</th>
-                    <th>Receiver Name</th>
-                    <th>Issued Date / Time</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    </div>
-@endforeach
-</div>
 
 {{-- MODAL LINKS ==========================================================--}}
 <div class="container" id="link">
 @include('errors.validationErrors')
 <legend class="h1">Graphs: </legend>
+<div class="col-xs-12" style="padding-left:5px;padding-bottom:12px">
+    <div class="form-group">
+        <div class="col-xs-6">
+            <select name="month" id="month" class="form-control input-lg">
+                @foreach ($months as $month)
+                    <option
+                    value="{{ $month }}"
+                    @if (Str::title($month) == Carbon::now('Asia/Manila')->format('F'))
+                        selected
+                    @endif
+                    >{{ Str::title($month) }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-xs-6">
+            <select name="year" id="year" class="form-control input-lg">
+                @foreach ($years as $year)
+                    <option
+                    value="{{ $year }}"
+                    @if ($year == Carbon::now('Asia/Manila')->format('Y'))
+                        selected
+                    @endif
+                    >{{ Str::title($year) }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+</div>
 @foreach ($charts as $chart)
     <a
         data-toggle = "modal"
@@ -166,8 +169,7 @@
             {{ $panel[0] }}
         </div>
         <a class="h5" href="#">
-            <div
-                class         = "panel-footer"
+            <div class    = "panel-footer"
                 data-toggle   = "collapse"
                 href          = "#{{ $panel[1] }}"
                 aria-expanded = "false"
@@ -190,7 +192,8 @@
     <div class="collapse" id="{{ $panel[1] }}">
       <div class="well">
       <legend>{{ $panel[2] }}</legend>
-        <table class="table table-hover">
+
+        <table class="table table-hover"  id="table-content">
             <thead>
                 <tr>
                     <th>#</th>

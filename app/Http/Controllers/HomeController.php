@@ -13,6 +13,7 @@ use App\Models\Closure;
 use DB;
 use Carbon;
 use JavaScript;
+use Str;
 
 class HomeController extends Controller
 {
@@ -77,15 +78,15 @@ class HomeController extends Controller
      * ajax call for highchart live update
      * @return [type] [description]
      */
-    public function ajax()
+    public function ajax(Request $request)
     {
         //date
-        $month    = $this->dateTime->month;
-        $year     = $this->dateTime->year;
+        $month    = Carbon::parse($request->input('month'))->format('m');
+        $year     = $request->input('year');
 
         //retrieve data collection
         $info        = Info::qdn($year)->get();
-        $pod         = Info::pod( $month, $year);
+        $pod         = Info::pod( $month, $year, '');
         $failureMode = Info::pod( $month, $year, 'failureMode');
         $assembly    = Info::pod( $month, $year, 'assembly');
         $environment = Info::pod( $month, $year, 'environment');
@@ -133,6 +134,5 @@ class HomeController extends Controller
        $tbl = Closure::status($request->input('status'))->get();
         return view('home.status',compact('tbl'));
     }
-
 
 }

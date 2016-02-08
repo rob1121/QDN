@@ -46,8 +46,12 @@ margin: 25px 0px 50px 0px;
 fieldset[disabled] .form-control {
     background-color: #fff;
 }
-
-input.form-control:focus {
+.error,
+.select2-choice,
+.select2-choice:focus,
+.error .select2-choices,
+input.form-control:focus,
+.error .select2-choice.select2-default {
     box-shadow: none;
 }
 
@@ -55,14 +59,13 @@ input[type="file"]{
     display: none;
 }
 
-.error,
-.error .select2-choice.select2-default,
-.error .select2-choices {
-    box-shadow: none;
-}
-
 .edit {
     float:right;
+}
+
+.btn-print {
+    border-radius: 50%;
+    margin-bottom:5px;
 }
 </style>
 @stop
@@ -72,12 +75,18 @@ input[type="file"]{
 <center><H1 style='color:#800000'>QUALITY DEVIATION NOTICE</H1></center>
 <!-- START -->
 <div class="container" style='font-size:12px;padding:0px'>
-<a 
-    href="{{ route('pdf', ['slug'=> $qdn->slug]) }}" 
-    class="btn btn-default"
->Print <i class="fa fa-print"></i>
+<div class="container">
+    <a
+        target         = "_blank"
+        href           = "{{ route('pdf', ['slug'=> $qdn->slug]) }}"
+        class          = "btn btn-default btn-print pull-right"
+        data-toggle    = "tooltip"
+        data-placement = "right"
+        title          = "print page"
+    ><i class="fa fa-print"></i>
 
 </a>
+</div>
     <!-- PRODUCT DESCRIPTION/ PROBLEM DETAILS -->
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -247,7 +256,7 @@ input[type="file"]{
                 <?=
                 $qdn->problem_description == ""
                     ? "<br/><br/>"
-                    : $qdn->problem_description."<br/><br/>";
+                    : $qdn->problem_description;
                 ?>
             </div>
         </div>

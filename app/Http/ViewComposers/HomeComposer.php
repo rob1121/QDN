@@ -19,58 +19,67 @@ class HomeComposer {
 
     $view->with('charts',[
         [
-            'heading' => 'QDN METRICS <br> &nbsp;', 
+            'heading' => 'QDN METRICS <br> &nbsp;',
             'id'      => 'modalQdnMetrics',
             'title'   => '',
-            'graph'   => 'qdnMetricsGraph'
+            'graph'   => 'qdnMetricsGraph',
+            'table'   => 'qdnMetricsTable'
         ],
         [
-            'heading' => 'PARETO OF DISCREPANCY <br> &nbsp;', 
+            'heading' => 'PARETO OF DISCREPANCY <br> &nbsp;',
             'id'      => 'pod',
             'title'   => '',
-            'graph'   => 'podGraph'
+            'graph'   => 'podGraph',
+            'table'   => 'podTable'
         ],
         [
-            'heading' => 'PARETO OF DISCREPANCY <br> ( FAILURE MODE )', 
+            'heading' => 'PARETO OF DISCREPANCY <br> ( FAILURE MODE )',
             'id'      => 'failureModeModal',
             'title'   => 'Pareto of Discrepancy -  FAILURE MODE ',
-            'graph'   => 'failureModeGraph'
+            'graph'   => 'failureModeGraph',
+            'table'   => 'failureModeTable'
         ],
         [
-            'heading' => 'PARETO OF DISCREPANCY <br> ( ASSEMBLY )', 
+            'heading' => 'PARETO OF DISCREPANCY <br> ( ASSEMBLY )',
             'id'      => 'assemblyModal',
             'title'   => 'Pareto of Discrepancy -  ASSEMBLY ',
-            'graph'   => 'assemblyGraph'
+            'graph'   => 'assemblyGraph',
+            'table'   => 'assemblyTable'
         ],
         [
-            'heading' => 'PARETO OF DISCREPANCY <br> ( ENVIRONMENT )', 
+            'heading' => 'PARETO OF DISCREPANCY <br> ( ENVIRONMENT )',
             'id'      => 'environmentModal',
             'title'   => 'Pareto of Discrepancy -  ENVIRONMENT ',
-            'graph'   => 'environmentGraph'
+            'graph'   => 'environmentGraph',
+            'table'   => 'environmentTable'
         ],
         [
-            'heading' => 'PARETO OF DISCREPANCY <br> ( MACHINE )', 
+            'heading' => 'PARETO OF DISCREPANCY <br> ( MACHINE )',
             'id'      => 'machineModal',
             'title'   => 'Pareto of Discrepancy -  MACHINE ',
-            'graph'   => 'machineGraph'
+            'graph'   => 'machineGraph',
+            'table'   => 'machineTable'
         ],
         [
-            'heading' => 'PARETO OF DISCREPANCY <br> ( MAN )', 
+            'heading' => 'PARETO OF DISCREPANCY <br> ( MAN )',
             'id'      => 'manModal',
             'title'   => 'Pareto of Discrepancy -  MAN ',
-            'graph'   => 'manGraph'
+            'graph'   => 'manGraph',
+            'table'   => 'manTable'
         ],
         [
-            'heading' => 'PARETO OF DISCREPANCY <br> ( MATERIAL )', 
+            'heading' => 'PARETO OF DISCREPANCY <br> ( MATERIAL )',
             'id'      => 'materialModal',
             'title'   => 'Pareto of Discrepancy -  MATERIAL ',
-            'graph'   => 'materialGraph'
+            'graph'   => 'materialGraph',
+            'table'   => 'materialTable'
         ],
         [
-            'heading' => 'PARETO OF DISCREPANCY <br> ( METHOD / PROCESS )', 
+            'heading' => 'PARETO OF DISCREPANCY <br> ( METHOD / PROCESS )',
             'id'      => 'processModal',
             'title'   => 'Pareto of Discrepancy - METHOD / PROCESS ',
-            'graph'   => 'processGraph'
+            'graph'   => 'processGraph',
+            'table'   => 'processTable'
         ]
     ]);
 
@@ -105,34 +114,40 @@ class HomeComposer {
             $dt->year
         )->count();
 
-$view->with('counts',[
-    [$today, 'today', 'Issued today :'],
-    [$week, 'week', 'Issued this week :'],
-    [$month, 'month', 'Issued this month :'],
-    [$year, 'year', 'Issued this year :']
-    ]);
+    $view->with('counts',[
+            [$today, 'today-col', 'Issued today :', 'today'],
+            [$week, 'week-col', 'Issued this week :', 'week'],
+            [$month, 'month-col', 'Issued this month :', 'month'],
+            [$year, 'year-col', 'Issued this year :', 'year']
+        ]);
 
 
 
-    $peVerification = Closure::where('status', 'p.e. verification')
-    ->count();
+        $peVerification = Closure::where('status', 'p.e. verification')
+        ->count();
 
-    $incomplete = Closure::where('status', 'incomplete fill-up')
-    ->count();
+        $incomplete = Closure::where('status', 'incomplete fill-up')
+        ->count();
 
-    $approval = Closure::where('status', 'incomplete approval')
-    ->count();
+        $approval = Closure::where('status', 'incomplete approval')
+        ->count();
 
-    $qaVerification = Closure::where('status', 'q.a. verification')
-    ->count();
+        $qaVerification = Closure::where('status', 'q.a. verification')
+        ->count();
 
 
-$view->with('status',[
-    [$peVerification, 'peVerification', 'P.E. Verification :'],
-    [$incomplete, 'incomplete', 'Incomplete fill-up:'],
-    [$approval, 'approval', 'Incomplete approval :'],
-    [$qaVerification, 'qaVerification', 'Q.A. Verification :']
-    ]);
+    $view->with('status',[
+            [$peVerification, 'peVerification', 'P.E. Verification :'],
+            [$incomplete, 'incomplete', 'Incomplete fill-up:'],
+            [$approval, 'approval', 'Incomplete approval :'],
+            [$qaVerification, 'qaVerification', 'Q.A. Verification :']
+        ]);
+    $yearOption = Info::select(DB::raw('YEAR(created_at) as year'))
+        ->groupBy('year')
+        ->get()
+        ->toArray();
+    $view->with('months',['january','february','march','april','may','june','july','august','september','october','november','december']);
+    $view->with('years', array_flatten($yearOption));
     }
 
 }

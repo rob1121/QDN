@@ -1,4 +1,8 @@
 function qdnData(givenDate, rowFile) {
+
+    rowFile.empty();
+    var loader = '<tr><td colspan="6"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    rowFile.append(loader);
     $.ajax({
         url: '/qdn-data',
         type: 'GET',
@@ -6,10 +10,10 @@ function qdnData(givenDate, rowFile) {
             setDate: givenDate
         },
         success: function(data) {
+            rowFile.empty();
             if (data != '') {
                 rowFile.append(data);
             } else {
-                rowFile.empty();
                 rowFile.append('<tr></tr>');
                 $('<td></td>', {
                     colspan: "10",
@@ -18,10 +22,16 @@ function qdnData(givenDate, rowFile) {
                 }).appendTo(rowFile.children('tr'));
             }
         },
+        error: function(givenDate, rowFile) {
+            qdnData(givenDate, rowFile);
+        },
         cache: false
     });
 }
 function status(status, rowFile) {
+    rowFile.empty();
+    var loader = '<tr><td colspan="6"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    rowFile.append(loader);
     $.ajax({
         url: '/status',
         type: 'GET',
@@ -29,10 +39,11 @@ function status(status, rowFile) {
             status: status
         },
         success: function(data) {
+            rowFile.empty();
+
             if (data != '') {
                 rowFile.append(data);
             } else {
-                rowFile.empty();
                 rowFile.append('<tr></tr>');
                 $('<td></td>', {
                     colspan: "10",
@@ -41,13 +52,23 @@ function status(status, rowFile) {
                 }).appendTo(rowFile.children('tr'));
             }
         },
+        error: function(status, rowFile) {
+            status(status, rowFile);
+        },
         cache: false
     });
 }
 //=============================================================================
 $('#modalQdnMetrics').on('show.bs.modal', function() {
+    var year = $('#year option:selected').val(),
+        month = $('#month option:selected').val();
     $.ajax({
         url: '/ajax',
+        method: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
         success: function(point) {
             count = 1;
             for (i = 0; i < point.qdn.length; i++) {
@@ -62,8 +83,20 @@ $('#modalQdnMetrics').on('show.bs.modal', function() {
     });
 });
 $('#pod').on('show.bs.modal', function() {
+    var tbody = $("#tblQdnMetrics tbody#pareto-data"),
+        year = $('#year option:selected').val(),
+        month = $('#month option:selected').val(),
+        loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    tbody.empty();
+    tbody.append(loader);
+
     $.ajax({
         url: '/ajax',
+        method: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
         success: function(point) {
             bars = point.pod.bars;
             category = point.pod.category;
@@ -89,30 +122,44 @@ $('#pod').on('show.bs.modal', function() {
             podGraph.xAxis[0].categories = legend;
             podGraph.series[1].setData(lines);
             podGraph.series[0].setData(bars);
-            var tbody = $("tbody#pareto-data");
             tbody.empty();
-            count = 1;
-            for (i = 0; i < point.pod.lines.length; i++) {
+            if (total == 0) {
+                tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+            } else {
+                count = 1;
+                for (i = 0; i < point.pod.lines.length; i++) {
+                    tbody.append(
+                        $("<tr></tr>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + bars[i] + "</a></td>")
+                    );
+                    count += 1;
+                }
                 tbody.append(
-                    $("<tr></tr>")
-                        .append("<td>" + legend[i] + "</td>")
-                        .append("<td>" + category[i] + "</td>")
-                        .append("<td>" + bars[i] + "</td>")
+                    $("<tr class='warning'></tr>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'>" + total + "</a></td>")
                 );
-                count += 1;
             }
-            $("tbody#pareto-data").append(
-                $("<tr class='warning'></tr>")
-                    .append("<td colspan='2' class='h4 text-left'><strong>TOTAL : </strong></td>")
-                    .append("<td>" + total + "</td>")
-            );
         },
         cache: false
     });
 });
 $('#assemblyModal').on('show.bs.modal', function() {
+    var tbody = $("#assemblyTable tbody#pareto-data"),
+        year = $('#year option:selected').val(),
+        month = $('#month option:selected').val(),
+        loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    tbody.empty();
+    tbody.append(loader);
     $.ajax({
         url: '/ajax',
+        method: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
         success: function(point) {
             bars = point.assembly.bars;
             category = point.assembly.category;
@@ -138,14 +185,45 @@ $('#assemblyModal').on('show.bs.modal', function() {
             assemblyGraph.xAxis[0].categories = legend;
             assemblyGraph.series[1].setData(lines);
             assemblyGraph.series[0].setData(bars);
+            tbody.empty();
+            if (total == 0) {
+                tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+            } else {
+                count = 1;
+                for (i = 0; i < point.assembly.lines.length; i++) {
+                    tbody.append(
+                        $("<tr></tr>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                    );
+                    count += 1;
+                }
+                tbody.append(
+                    $("<tr class='warning'></tr>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                );
+            }
         },
         cache: false
     });
 });
 //=================================================================
 $('#environmentModal').on('show.bs.modal', function() {
+    var tbody = $("#environmentTable tbody#pareto-data"),
+        year = $('#year option:selected').val(),
+        month = $('#month option:selected').val(),
+        loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    tbody.empty();
+    tbody.append(loader);
     $.ajax({
         url: '/ajax',
+        method: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
         success: function(point) {
             bars = point.environment.bars;
             category = point.environment.category;
@@ -171,14 +249,45 @@ $('#environmentModal').on('show.bs.modal', function() {
             environmentGraph.xAxis[0].categories = legend;
             environmentGraph.series[1].setData(lines);
             environmentGraph.series[0].setData(bars);
+            tbody.empty();
+            if (total == 0) {
+                tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+            } else {
+                count = 1;
+                for (i = 0; i < point.environment.lines.length; i++) {
+                    tbody.append(
+                        $("<tr></tr>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                    );
+                    count += 1;
+                }
+                tbody.append(
+                    $("<tr class='warning'></tr>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                );
+            }
         },
         cache: false
     });
 });
 //====================================================================
 $('#failureModeModal').on('show.bs.modal', function() {
+    var tbody = $("#failureModeTable tbody#pareto-data"),
+        year = $('#year option:selected').val(),
+        month = $('#month option:selected').val(),
+        loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    tbody.empty();
+    tbody.append(loader);
     $.ajax({
         url: '/ajax',
+        method: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
         success: function(point) {
             bars = point.failureMode.bars;
             category = point.failureMode.category;
@@ -204,14 +313,45 @@ $('#failureModeModal').on('show.bs.modal', function() {
             failureModeGraph.xAxis[0].categories = legend;
             failureModeGraph.series[1].setData(lines);
             failureModeGraph.series[0].setData(bars);
+            tbody.empty();
+            if (total == 0) {
+                tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+            } else {
+                count = 1;
+                for (i = 0; i < point.failureMode.lines.length; i++) {
+                    tbody.append(
+                        $("<tr></tr>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                    );
+                    count += 1;
+                }
+                tbody.append(
+                    $("<tr class='warning'></tr>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'>" + total + "</a></td>")
+                );
+            }
         },
         cache: false
     });
 });
 //====================================================================
 $('#machineModal').on('show.bs.modal', function() {
+    var tbody = $("#machineTable tbody#pareto-data"),
+        year = $('#year option:selected').val(),
+        month = $('#month option:selected').val(),
+        loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    tbody.empty();
+    tbody.append(loader);
     $.ajax({
         url: '/ajax',
+        method: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
         success: function(point) {
             bars = point.machine.bars;
             category = point.machine.category;
@@ -237,14 +377,45 @@ $('#machineModal').on('show.bs.modal', function() {
             machineGraph.xAxis[0].categories = legend;
             machineGraph.series[1].setData(lines);
             machineGraph.series[0].setData(bars);
+            tbody.empty();
+            if (total == 0) {
+                tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+            } else {
+                count = 1;
+                for (i = 0; i < point.machine.lines.length; i++) {
+                    tbody.append(
+                        $("<tr></tr>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                    );
+                    count += 1;
+                }
+                tbody.append(
+                    $("<tr class='warning'></tr>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                );
+            }
         },
         cache: false
     });
 });
 //====================================================================
 $('#manModal').on('show.bs.modal', function() {
+    var tbody = $("#manTable tbody#pareto-data"),
+        year = $('#year option:selected').val(),
+        month = $('#month option:selected').val(),
+        loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    tbody.empty();
+    tbody.append(loader);
     $.ajax({
         url: '/ajax',
+        method: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
         success: function(point) {
             bars = point.man.bars;
             category = point.man.category;
@@ -270,14 +441,45 @@ $('#manModal').on('show.bs.modal', function() {
             manGraph.xAxis[0].categories = legend;
             manGraph.series[1].setData(lines);
             manGraph.series[0].setData(bars);
+            tbody.empty();
+            if (total == 0) {
+                tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+            } else {
+                count = 1;
+                for (i = 0; i < point.man.lines.length; i++) {
+                    tbody.append(
+                        $("<tr></tr>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                    );
+                    count += 1;
+                }
+                tbody.append(
+                    $("<tr class='warning'></tr>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                );
+            }
         },
         cache: false
     });
 });
 //====================================================================
 $('#materialModal').on('show.bs.modal', function() {
+    var tbody = $("#materialTable tbody#pareto-data"),
+        year = $('#year option:selected').val(),
+        month = $('#month option:selected').val(),
+        loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    tbody.empty();
+    tbody.append(loader);
     $.ajax({
         url: '/ajax',
+        method: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
         success: function(point) {
             bars = point.material.bars;
             category = point.material.category;
@@ -303,14 +505,45 @@ $('#materialModal').on('show.bs.modal', function() {
             materialGraph.xAxis[0].categories = legend;
             materialGraph.series[1].setData(lines);
             materialGraph.series[0].setData(bars);
+            tbody.empty();
+            if (total == 0) {
+                tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+            } else {
+                count = 1;
+                for (i = 0; i < point.material.lines.length; i++) {
+                    tbody.append(
+                        $("<tr></tr>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                    );
+                    count += 1;
+                }
+                tbody.append(
+                    $("<tr class='warning'></tr>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                );
+            }
         },
         cache: false
     });
 });
 //====================================================================
 $('#processModal').on('show.bs.modal', function() {
+    var tbody = $("#processTable tbody#pareto-data"),
+        year = $('#year option:selected').val(),
+        month = $('#month option:selected').val(),
+        loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    tbody.empty();
+    tbody.append(loader);
     $.ajax({
         url: '/ajax',
+        method: 'GET',
+        data: {
+            month: month,
+            year: year
+        },
         success: function(point) {
             bars = point.process.bars;
             category = point.process.category;
@@ -336,6 +569,26 @@ $('#processModal').on('show.bs.modal', function() {
             processGraph.xAxis[0].categories = legend;
             processGraph.series[1].setData(lines);
             processGraph.series[0].setData(bars);
+            tbody.empty();
+            if (total == 0) {
+                tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+            } else {
+                count = 1;
+                for (i = 0; i < point.process.lines.length; i++) {
+                    tbody.append(
+                        $("<tr></tr>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                    );
+                    count += 1;
+                }
+                tbody.append(
+                    $("<tr class='warning'></tr>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                );
+            }
         },
         cache: false
     });
@@ -536,44 +789,26 @@ $('#processModal').on('shown.bs.modal', function() {
     $('#processGraph').css('visibility', 'initial');
     processGraph.reflow();
 });
-//====================================================
-$('#today').on('show.bs.collapse', function() {
-    var rowFile = $(this).find("tbody");
-    qdnData('today', rowFile)
-    $('.collapse').collapse('hide');
-});
-$('#week').on('show.bs.collapse', function() {
-    var rowFile = $(this).find("tbody");
-    qdnData('week', rowFile)
-    $('.collapse').collapse('hide');
-});
-$('#month').on('show.bs.collapse', function() {
-    var rowFile = $(this).find("tbody");
-    qdnData('month', rowFile)
-    $('.collapse').collapse('hide');
-});
-$('#year').on('show.bs.collapse', function() {
-    var rowFile = $(this).find("tbody");
-    qdnData('year', rowFile)
-    $('.collapse').collapse('hide');
-});
 
 //=============================================================
 $('#peVerification').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
-    status('p.e.verification', rowFile)
+    status('p.e. verification', rowFile)
     $('.collapse').collapse('hide');
 });
+
 $('#incomplete').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
     status('incomplete fill-up', rowFile)
     $('.collapse').collapse('hide');
 });
+
 $('#approval').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
     status('incomplete approval', rowFile)
     $('.collapse').collapse('hide');
 });
+
 $('#qaVerification').on('show.bs.collapse', function() {
     var rowFile = $(this).find("tbody");
     status('q.a. verification', rowFile)

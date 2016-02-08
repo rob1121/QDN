@@ -38,4 +38,4 @@ Route::get('/report/{slug}/pdf',
     'uses' => 'reportController@pdf'
 ]);
 
-   
+

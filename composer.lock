@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a4de1486222f4f832e56fc82f250fa0c",
-    "content-hash": "cb89fcb7e61783436e0742240739d5e5",
+    "hash": "2ab3ca368c838df43031b60541498060",
+    "content-hash": "87fe0bda26007fc7bdfebe414fb1ca34",
     "packages": [
         {
             "name": "barryvdh/elfinder-flysystem-driver",
@@ -2366,6 +2366,63 @@
                 "laravel"
             ],
             "time": "2016-01-24 13:40:18"
+        },
+        {
+            "name": "spatie/laravel-backup",
+            "version": "2.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-backup.git",
+                "reference": "500636666443bccac9447eae0417551f2841c857"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/500636666443bccac9447eae0417551f2841c857",
+                "reference": "500636666443bccac9447eae0417551f2841c857",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "5.*",
+                "illuminate/support": "5.*",
+                "php": "^5.4.0|^7.0",
+                "symfony/finder": "^2.6|^3.0"
+            },
+            "require-dev": {
+                "laravel/framework": "5.*",
+                "mockery/mockery": "0.9.*",
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Backup\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://murze.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Backup command for Laravel 5 applications",
+            "homepage": "https://github.com/spatie/laravel-backup",
+            "keywords": [
+                "backup",
+                "database",
+                "laravel 5",
+                "laravel-backup",
+                "mysql",
+                "spatie"
+            ],
+            "time": "2016-01-08 19:41:17"
         },
         {
             "name": "studio-42/elfinder",

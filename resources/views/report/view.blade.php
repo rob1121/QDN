@@ -64,8 +64,7 @@ input[type="file"]{
 }
 
 .btn-print {
-    border-radius: 50%;
-    margin-bottom:5px;
+    margin-bottom: 12px;
 }
 </style>
 @stop
@@ -79,12 +78,12 @@ input[type="file"]{
     <a
         target         = "_blank"
         href           = "{{ route('pdf', ['slug'=> $qdn->slug]) }}"
-        class          = "btn btn-default btn-print pull-right"
+        class          = "pull-right"
         data-toggle    = "tooltip"
         data-placement = "right"
         title          = "print page"
-    ><i class="fa fa-print"></i>
-
+    >
+        <i class="fa fa-print fa-2x"></i>
 </a>
 </div>
     <!-- PRODUCT DESCRIPTION/ PROBLEM DETAILS -->
@@ -254,10 +253,10 @@ input[type="file"]{
             <div class="container text-center col-lg-12 col-sm-12">
                 <br/><br/>
                 <?=
-                $qdn->problem_description == ""
-                    ? "<br/><br/>"
-                    : $qdn->problem_description;
-                ?>
+$qdn->problem_description == ""
+? "<br/><br/>"
+: $qdn->problem_description;
+?>
             </div>
         </div>
     </div>

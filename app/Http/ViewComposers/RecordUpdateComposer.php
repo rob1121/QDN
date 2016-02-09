@@ -18,7 +18,7 @@ class RecordUpdateComposer {
             'use as is',
             'ncmr#',
             'rework',
-            'split lot',
+                'split lot',
             'shutdown',
             'shipback',
         ]);

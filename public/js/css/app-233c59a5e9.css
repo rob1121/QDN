@@ -14,16 +14,11 @@
   src: url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.eot");
   src: url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.eot?#iefix") format("embedded-opentype"), local("Leckerli One"), local("Leckerli-One-regular"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.woff2") format("woff2"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.woff") format("woff"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.ttf") format("truetype"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.svg#LeckerliOne") format("svg"); }
 
-body {
-  overflow-y: scroll; }
+.error {
+  color: #a94442; }
 
-html,
-body {
-  background-color: #e9ece5;
-  height: 100%; }
-
-.pace .pace-progress {
-  background: #800000; }
+.form-control, .btn {
+  border-radius: 1px; }
 
 .select2-container .select2-choices .select2-search-field input,
 .select2-container .select2-choice, .select2-container .select2-choices,
@@ -113,6 +108,10 @@ body {
 .dropdown {
   cursor: pointer; }
 
+.dropdown.open .dropdown-menu {
+  border-radius: 0px;
+  box-shadow: 0 0px 0px transparent; }
+
 .modal-content {
   border-radius: 0px; }
 
@@ -169,10 +168,15 @@ body {
   background-color: rgba(34, 34, 34, 0.5);
   color: #f5f5f5; }
 
-.error {
-  color: #a94442; }
+body {
+  overflow-y: scroll; }
 
-.form-control, .btn {
-  border-radius: 1px; }
+html,
+body {
+  background-color: #e9ece5;
+  height: 100%; }
+
+.pace .pace-progress {
+  background: #800000; }
 
 /*# sourceMappingURL=app.css.map */

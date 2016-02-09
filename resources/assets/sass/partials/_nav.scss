@@ -79,3 +79,9 @@
     cursor: pointer;
 }
 
+.dropdown.open .dropdown-menu {
+    border-radius: 0px;
+    -webkit-box-shadow: 0 0px 0px rgba(0,0,0,0);
+    box-shadow: 0 0px 0px rgba(0,0,0,0);
+}
+    

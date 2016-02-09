@@ -55,7 +55,7 @@
     {{-- filter by discrepancy category --}}
     <div class="col-xs-3">
         <div class="form-group">
-            <label for="DiscrepancyCategory">Discrepancy Category:
+            <label for="DiscrepancyCategory">Category:
                 <select
                     name  = "DiscrepancyCategory"
                     id    = "DiscrepancyCategory"
@@ -80,7 +80,7 @@
     {{-- filter by failure mode --}}
     <div class="col-xs-2">
         <div class="form-group">
-            <label for="FailureMode">Failure Mode:
+            <label for="FailureMode">Source:
                 <select
                     name  = "FailureMode"
                     id    = "FailureMode"
@@ -114,7 +114,7 @@
                         placeholder = "Search"
                     >
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default btn-lg"><i class="fa fa-search"></i></button>
+                        <button type="button" class="btn btn-default btn-lg" id="SearchButton"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
             </label>
@@ -139,7 +139,7 @@
                     href="#"
                     data-col="problem_description"
                 >
-                    {{ Str::title('problem description') }} <i></i>
+                    {{ Str::title('description') }} <i></i>
                 </a>
             </th>
 
@@ -148,7 +148,7 @@
                     href="#"
                     data-col="discrepancy_category"
                 >
-                    {{ Str::title('discrepancy category') }} <i></i>
+                    {{ Str::title('category') }} <i></i>
                 </a>
             </th>
 
@@ -157,7 +157,7 @@
                     href="#"
                     data-col="failure_mode"
                 >
-                    {{ Str::title('failure mode') }} <i></i>
+                    {{ Str::title('Source') }} <i></i>
                 </a>
             </th>
 
@@ -166,12 +166,12 @@
                     href="#"
                     data-col="created_at"
                 >
-                    {{ Str::title('date / time') }} <i></i>
+                    {{ Str::title('timestamps') }} <i></i>
                 </a>
             </th>
 
             <th>
-            {{ Str::title('receiver name') }}</th>
+            {{ Str::title('recipient') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -218,7 +218,7 @@
             FailureMode = $('#FailureMode option:selected').val(),
             discrepancy = $('#DiscrepancyCategory option:selected').val(),
             tbody       = $('table').find('tbody'),
-            ajaxCall    = function( column, sort, start, end, year, month, discrepancy, FailureMode ) {
+            ajaxCall    = function( column, sort, start, end, year, month, discrepancy, FailureMode, text ) {
                 $.ajax({
                     url: '/pareto-ajax',
                     type: 'get',
@@ -230,7 +230,8 @@
                         year        : year,
                         month       : month,
                         discrepancy : discrepancy,
-                        FailureMode    : FailureMode
+                        FailureMode : FailureMode,
+                        text        : text
                     },
                     success: function (data) {
                         if (data != '') {
@@ -274,7 +275,7 @@
 
                 //make ajax request
                 tbody.empty();
-                ajaxCall(column, sort, start, end, year, month, discrepancy, FailureMode);
+                ajaxCall(column, sort, start, end, year, month, discrepancy, FailureMode, '');
             });
 
 // =======================================on scroll reach to bottom========================================
@@ -285,7 +286,7 @@
                 if (self.scrollTop() + self.height() == $(document).height()) {
                     loader.show();
                     start = Number(start) + Number(end);
-                    ajaxCall(column, sort, start, end, year, month, discrepancy, FailureMode);
+                    ajaxCall(column, sort, start, end, year, month, discrepancy, FailureMode, '');
                 }
             });
 //==========================================  SELECT BOX FILTERS ======================================================
@@ -299,7 +300,39 @@
          loader.show();
          start = 0;
          tbody.empty();
-        ajaxCall(column, sort, start, end, year, month, discrepancy, FailureMode);
+        ajaxCall(column, sort, start, end, year, month, discrepancy, FailureMode, '');
+    });
+    $('#SearchKeyword').keyup(function() {
+        if (event.keyCode == 13) {
+
+            var text = $(this).val();
+
+             year = $('#year option:selected').val();
+             $('#month').val('');
+             $('#FailureMode').val('');
+             $('#DiscrepancyCategory').val('');
+             //make ajax request
+             loader.show();
+             start = 0;
+             tbody.empty();
+            ajaxCall(column, sort, start, end, year, month, discrepancy, FailureMode, text );
+
+        }
+    });
+    $('#SearchButton').click(function (e) {
+        e.preventDefault();
+
+        var text = $('#SearchKeyword').val();
+
+         year = $('#year option:selected').val();
+         $('#month option:selected').val('');
+         $('#FailureMode').val('');
+         $('#DiscrepancyCategory').val('');
+         //make ajax request
+         loader.show();
+         start = 0;
+         tbody.empty();
+        ajaxCall(column, sort, start, end, year, month, discrepancy, FailureMode, text );
     });
 //==========================================AJAX SETUP======================================================
             $.ajaxSetup({

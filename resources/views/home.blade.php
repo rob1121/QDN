@@ -91,7 +91,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">{{ $panel[2] }}</h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" id="{{ $panel[4] }}">
             {{ $panel[0] }}
         </div>
         <a class="h5" target="_blank" href="/pareto?category={{ $panel[3] }}">
@@ -165,7 +165,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">{{ $panel[2] }}</h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" id="{{ $panel[3] }}">
             {{ $panel[0] }}
         </div>
         <a class="h5" href="#">
@@ -218,4 +218,33 @@
     <script src="/vendor/js/highcharts.js"></script>
     <script src="/vendor/js/exporting.js"></script>
     <script src="/js/homeScript.js"></script>
+    <script>
+        $(function () {
+            var interval = 5000;  // 1000 = 1 second, 3000 = 3 seconds
+            function doAjax() {
+                $.ajax({
+                        type: 'get',
+                        url: '/count',
+                        success: function (count) {
+
+                            $('#text-today').text(count.today);
+                            $('#text-week').text(count.week);
+                            $('#text-month').text(count.month);
+                            $('#text-year').text(count.year);
+
+                            $('#text-peVerification').text(count.PeVerification);
+                            $('#text-incomplete').text(count.Incomplete);
+                            $('#text-approval').text(count.Approval);
+                            $('#text-qaVerification').text(count.QaVerification);
+
+                        },
+                        complete: function (count) {
+                                // Schedule the next
+                                setTimeout(doAjax, interval);
+                        }
+                });
+            }
+            setTimeout(doAjax, interval);
+        });
+    </script>
 @stop

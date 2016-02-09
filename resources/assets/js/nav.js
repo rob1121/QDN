@@ -15,18 +15,16 @@ var sticky = new Waypoint.Sticky({
     element: $('.navbar')[0],
     handler: function(direction) {
 
-        if ($('.navbar').hasClass('stuck')) {
+            if ($('.navbar').hasClass('stuck')) {
 
-            $('.navbar').addClass('navbar-fixed-top');
-            $('.navbar.stuck .container').removeClass('padder', 100);
+                $('.navbar').addClass('navbar-fixed-top  animated fadeIn');
+                $('.navbar.stuck .container').removeClass('padder', 100);
+            } else {
 
-        } else {
-
-            $('.navbar').removeClass('navbar-fixed-top');
-            $('.navbar').find('.container').addClass('padder', 100);
-
-        }
-    },
-    offset: -1
-});
+                $('.navbar').removeClass('navbar-fixed-top  animated fadeIn');
+                $('.navbar').find('.container').addClass('padder', 500);
+            }
+        },
+        offset: -200
+    });
 });

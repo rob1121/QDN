@@ -35,8 +35,7 @@ class ParetoController extends Controller
 
                 $table = Info::where(DB::raw('YEAR(created_at)'), $year)
                     ->where(DB::raw('MONTH(created_at)'), $month)
-                    ->skip(0)
-                    ->take(10)
+                    ->show(0, 10)
                     ->get();
 
             } elseif ('failureMode' == $category || 'fmTotal' == $category) {
@@ -44,16 +43,14 @@ class ParetoController extends Controller
                 $table = Info::where(DB::raw('YEAR(created_at)'), $year)
                     ->where(DB::raw('MONTH(created_at)'), $month)
                     ->where('failure_mode', $discrepancy)
-                    ->skip(0)
-                    ->take(10)
+                    ->show(0, 10)
                     ->get();
 
             } elseif (('pod' == $category)) {
 
                 $table = Info::where(DB::raw('YEAR(created_at)'), $year)
                     ->where('discrepancy_category', $discrepancy)
-                    ->skip(0)
-                    ->take(10)
+                    ->show(0, 10)
                     ->get();
 
             } elseif ('today' == $category) {
@@ -63,8 +60,7 @@ class ParetoController extends Controller
                     "=",
                     $this->dateTime->format('m-d-Y')
                 )
-                    ->skip(0)
-                    ->take(10)
+                    ->show(0, 10)
                     ->get();
 
             } elseif ('week' == $category) {
@@ -74,8 +70,7 @@ class ParetoController extends Controller
                     "=",
                     $this->dateTime->weekOfYear
                 )
-                    ->skip(0)
-                    ->take(10)
+                    ->show(0, 10)
                     ->get();
 
             } elseif ('month' == $category) {
@@ -90,8 +85,7 @@ class ParetoController extends Controller
                         "=",
                         $this->dateTime->year
                     )
-                    ->skip(0)
-                    ->take(10)
+                    ->show(0, 10)
                     ->get();
 
             } elseif ('year' == $category) {
@@ -100,8 +94,7 @@ class ParetoController extends Controller
                     "=",
                     $this->dateTime->year
                 )
-                    ->skip(0)
-                    ->take(10)
+                    ->show(0, 10)
                     ->get();
 
             } else {
@@ -109,8 +102,7 @@ class ParetoController extends Controller
                 $table = Info::where(DB::raw('YEAR(created_at)'), $year)
                     ->where(DB::raw('MONTH(created_at)'), $month)
                     ->where('discrepancy_category', $discrepancy)
-                    ->skip(0)
-                    ->take(10)
+                    ->show(0, 10)
                     ->get();
 
             }
@@ -136,13 +128,8 @@ class ParetoController extends Controller
 
             $tbl = info::orderBy($column, $sort)
                 ->where(DB::raw('YEAR(created_at)'), 'LIKE', "%" . $year . "%")
-                ->where('problem_description', 'LIKE', "%" . $text . "%")
-                ->orWhere('discrepancy_category', 'LIKE', "%" . $text . "%")
-                ->orWhere('customer', 'LIKE', "%" . $text . "%")
-                ->orWhere('station', 'LIKE', "%" . $text . "%")
-                ->orWhere('failure_mode', 'LIKE', "%" . $text . "%")
-                ->skip($request->input('start'))
-                ->take($request->input('end'))
+                ->search($text)
+                ->show($request->input('start'), $request->input('end'))
                 ->get();
 
         } else {
@@ -155,8 +142,7 @@ class ParetoController extends Controller
                 ->where(DB::raw('MONTH(created_at)'), $condition, $month)
                 ->where('discrepancy_category', 'LIKE', '%' . $discrepancy . '%')
                 ->where('failure_mode', 'LIKE', '%' . $FailureMode)
-                ->skip($request->input('start'))
-                ->take($request->input('end'))
+                ->show($request->input('start'), $request->input('end'))
                 ->get();
 
         }

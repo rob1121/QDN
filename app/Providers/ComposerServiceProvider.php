@@ -1,9 +1,11 @@
 <?php
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-class ComposerServiceProvider extends ServiceProvider {
+use Illuminate\Support\ServiceProvider;
+
+class ComposerServiceProvider extends ServiceProvider
+{
 
     /**
      * Register bindings in the container.
@@ -14,7 +16,7 @@ class ComposerServiceProvider extends ServiceProvider {
     {
         $view->composer('*', 'App\Http\ViewComposers\GlobalComposer');
         $view->composer('report.create', 'App\Http\ViewComposers\FormOptionComposer');
-        $view->composer(['report.view','pdf.print'],'App\Http\ViewComposers\RecordUpdateComposer');
+        $view->composer(['report.view', 'pdf.print', 'report.pe.view'], 'App\Http\ViewComposers\RecordUpdateComposer');
 
         $view->composer('home', 'App\Http\ViewComposers\HomeComposer');
         $view->composer('home.pareto', 'App\Http\ViewComposers\HomeComposer');

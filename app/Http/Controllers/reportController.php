@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Requests\QdnCreateRequest;
 use App\Http\Controllers\report\CrudController;
-
+use App\Http\Requests\QdnCreateRequest;
 use App\Models\Info;
-
-use Str;
-use Carbon;
-use Auth;
 use Flash;
+use Illuminate\Http\Request;
 use JavaScript;
 use PDF;
+
 class reportController extends CrudController
 {
     public function __construct()
@@ -52,7 +46,7 @@ class reportController extends CrudController
      */
     public function show($slug)
     {
-        $qdn  = Info::where('slug', $slug)->first();
+        $qdn = Info::where('slug', $slug)->first();
 
         $department = $qdn->involvePerson()
             ->select('department')
@@ -66,7 +60,7 @@ class reportController extends CrudController
         JavaScript::put('linkDraft', $linkDraft);
         JavaScript::put('linkApproval', $linkApproval);
 
-        return view('report.view', compact('qdn','department'));
+        return view('report.view', compact('qdn', 'department'));
     }
 
     /**
@@ -75,7 +69,8 @@ class reportController extends CrudController
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function draft($slug, Request $request){
+    public function draft($slug, Request $request)
+    {
         $this->save($slug, $request);
         Flash::success('Successfully save! Issued QDN are save as draft and still subject for completion!');
         return redirect('/');
@@ -87,7 +82,8 @@ class reportController extends CrudController
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function approval($slug, Request $request){
+    public function approval($slug, Request $request)
+    {
         $this->save($slug, $request);
         // send email
         Flash::success('Successfully save! Issued QDN is now subject for Approval!');
@@ -96,7 +92,22 @@ class reportController extends CrudController
 
     public function pdf($slug)
     {
-        $qdn  = Info::where('slug', $slug)->first();
+        $qdn = Info::where('slug', $slug)->first();
+
+        $department = $qdn->involvePerson()
+            ->select('department')
+            ->get()
+            ->toArray();
+
+        $department = array_unique(array_flatten($department));
+
+        return PDF::loadHTML(view('pdf.print', compact('qdn', 'department')))->stream();
+        // return file_get_contents('/');
+    }
+
+    public function peApproval($slug)
+    {
+        $qdn = Info::where('slug', $slug)->first();
 
         $department = $qdn->involvePerson()
             ->select('department')
@@ -104,8 +115,12 @@ class reportController extends CrudController
             ->toArray();
 
         $department   = array_unique(array_flatten($department));
-        
-        return PDF::loadHTML(view('pdf.print', compact('qdn','department')))->stream();
-        // return file_get_contents('/');
+        $linkDraft    = route('draft_link', ['slug' => $slug]);
+        $linkApproval = route('approval_link', ['slug' => $slug]);
+
+        JavaScript::put('linkDraft', $linkDraft);
+        JavaScript::put('linkApproval', $linkApproval);
+
+        return view('report.pe.view', compact('qdn', 'department'));
     }
 }

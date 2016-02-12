@@ -79,7 +79,7 @@ $('#completion').validate({
             required: true
         },
         upload_cod: {
-            extension: "xls|csv|jpeg|png|pdf|doc|docx"
+            extension: "xls|csv|jpeg|png|pdf|doc|docx|jpg"
         },
         cause_of_defect_description: {
             required: true,
@@ -98,7 +98,7 @@ $('#completion').validate({
             required: true
         },
         upload_containment_action: {
-            extension: "xls|csv|jpeg|png|pdf|doc|docx"
+            extension: "xls|csv|jpeg|png|pdf|doc|docx|jpg"
         },
         corrective_action_textarea: {
             required: true,
@@ -112,7 +112,7 @@ $('#completion').validate({
             required: true
         },
         upload_corrective_action: {
-            extension: "xls|csv|jpeg|png|pdf|doc|docx"
+            extension: "xls|csv|jpeg|png|pdf|doc|docx|jpg"
         },
         preventive_action_textarea: {
             required: true,
@@ -126,7 +126,7 @@ $('#completion').validate({
             required: true
         },
         upload_preventive_action: {
-            extension: "xls|csv|jpeg|png|pdf|doc|docx"
+            extension: "xls|csv|jpeg|png|pdf|doc|docx|jpg"
         }
     },
     messages: {

@@ -26,5 +26,19 @@
         <script src="/js/all.js"></script>
         <script src="/js/app.js"></script>
         @yield('script')
+
+        <!-- login form validation if user is not logged in only -->
+        @if (! $currentUser)
+            <script src="/js/form-validate.js"></script>
+            <script>
+                $(function () {
+                    var ValidationText = $('form').find('span.help-block').text();
+
+                    if (ValidationText) {
+                        $('#login').modal('show');
+                    }
+                });
+            </script>
+        @endif
     </body>
 </html>

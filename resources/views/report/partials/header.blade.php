@@ -2,29 +2,30 @@
 <!-- HEADING -->
 <center><H1 style='color:#800000'>QUALITY DEVIATION NOTICE</H1></center>
 <!-- START -->
-<div class="container">
-    <a
-        target         = "_blank"
-        href           = "{{ route('pdf', ['slug'=> $qdn->slug]) }}"
-        class          = "pull-right"
-        data-toggle    = "tooltip"
-        data-placement = "right"
-        title          = "print page"
-    >
-        <i class="fa fa-print fa-2x"></i>
-</a>
-</div>
     <!-- PRODUCT DESCRIPTION/ PROBLEM DETAILS -->
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
             PRODUCT DESCRIPTION/ PROBLEM DETAILS
-            @if ($currentUser->Employee->department == 'pe'
+            @if ($currentUser->Employee->department == 'process'
                 || $currentUser->access_level == 'Admin')
-            <a
-                class='edit'
-                href="/edit"
-            >edit <i class="fa fa-pencil"></i> </a>
+                <a
+                    target         = "_blank"
+                    href           = "{{ route('pdf', ['slug'=> $qdn->slug]) }}"
+                    class          = "edit link"
+                >
+                    print
+                    <i class="fa fa-print"></i>
+                </a>
+
+                <a
+                    class       = 'edit link'
+                    data-toggle = 'modal'
+                    href        = '#edit'
+                >
+                    {{ $qdn->closure->status == 'p.e. verification' ? 'verify' : 'edit' }}
+                    <i class="fa fa-edit"></i>
+                </a>
             @endif
             </h3>
         </div>

@@ -2,7 +2,7 @@
 
     <tr>
         <td>
-            <a href={{ route('qdn_link', ['slug' => $row->slug]) }}>
+            <a href={{ route('qdn_link', ['slug' => $row->info->slug]) }}>
                 {{ Str::title($row->info->control_id) }}
             </a>
         </td>

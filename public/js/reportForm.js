@@ -1,5 +1,44 @@
 
 $(function() {
+
+function selectedDiscrepancyCategory(radio, select_discrepancy_minor, select_discrepancy_major) {
+
+    //remove previous content and append with new
+    $('#discrepancy_category').empty();
+    $('<option>', {
+        value: '',
+        text: ''
+    }).appendTo('#discrepancy_category');
+    //minor options is trigger when minor radio is clicked---------------------
+    if (radio == "minor") {
+        $.each(select_discrepancy_minor, function(index, value) {
+            $('<option>', {
+                value: value,
+                text: value
+            }).appendTo('#discrepancy_category');
+        });
+    } else {
+        //major----------------------------------------------------------------
+        $.each(select_discrepancy_major, function(index, value) {
+            if (value.length > 1) {
+                $('<optgroup>', {
+                    label: index
+                }).appendTo('#discrepancy_category');
+                $.each(value, function(index, value) {
+                    $('<option>', {
+                        value: value,
+                        text: value
+                    }).appendTo('#discrepancy_category optgroup:last');
+                });
+            } else {
+                $('<option>', {
+                    value: value,
+                    text: value
+                }).appendTo('#discrepancy_category');
+            }
+        });
+    }
+}
 //form validations---------------------------------------------------------
 $('#qdn-form').validate({
     ignore: '',
@@ -17,6 +56,10 @@ $('#qdn-form').validate({
             required: true
         },
         lot_quantity: {
+            required: true,
+            digits: true
+        },
+        quantity: {
             required: true,
             digits: true
         },
@@ -41,7 +84,7 @@ $('#qdn-form').validate({
         problem_description: {
             required: true,
             minlength: 10,
-            maxlenghth: 250
+            maxlength: 250
         },
         quantity: {
             required: true,
@@ -56,6 +99,7 @@ $('#qdn-form').validate({
     errorClass: "error",
     errorElement: "span"
 });
+
 $('select').select2().change(function() {
     $(this).valid();
 });
@@ -120,42 +164,15 @@ $('#customer').on('change', function() {
     }
 });
 //major and minor discrepancy category--------------------------------
+
+if (typeof category !== 'undefined') {
+    selectedDiscrepancyCategory(category, select_discrepancy_minor, select_discrepancy_major);
+    $('#discrepancy_category').val(discrepancy_category);
+} else {
+    selectedDiscrepancyCategory('minor', select_discrepancy_minor, select_discrepancy_major);
+}
 $('#major').children('input').on('change', function() {
-    //remove previous content and append with new
-    $('#discrepancy_category').empty();
-    $('<option>', {
-        value: '',
-        text: ''
-    }).appendTo('#discrepancy_category');
-    //minor options is trigger when minor radio is clicked---------------------
-    if ($(this).val() == "minor") {
-        $.each(select_discrepancy_minor, function(index, value) {
-            $('<option>', {
-                value: value,
-                text: value
-            }).appendTo('#discrepancy_category');
-        });
-    } else {
-        //major----------------------------------------------------------------
-        $.each(select_discrepancy_major, function(index, value) {
-            if (value.length > 1) {
-                $('<optgroup>', {
-                    label: index
-                }).appendTo('#discrepancy_category');
-                $.each(value, function(index, value) {
-                    $('<option>', {
-                        value: value,
-                        text: value
-                    }).appendTo('#discrepancy_category optgroup:last');
-                });
-            } else {
-                $('<option>', {
-                    value: value,
-                    text: value
-                }).appendTo('#discrepancy_category');
-            }
-        });
-    }
+    selectedDiscrepancyCategory($(this).val(), select_discrepancy_minor, select_discrepancy_major);
 });
 // ------------------------------------------------------------------
 //disable lot description if input radio is equal to no

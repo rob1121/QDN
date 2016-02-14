@@ -184,7 +184,7 @@ $('#completion').validate({
     errorElement: "span"
 });
 
-$('button[type="submit"]').on('click', function() {
+$('#btn-group button').on('click', function() {
     var $this = $(this),
         action = "save as draft";
 
@@ -197,4 +197,27 @@ $('button[type="submit"]').on('click', function() {
 
     return confirm('Are you sure you want to ' + action + '?');
 });
+
+/**
+ * function to use for modal submit button
+ */
+$('#submit').on('click', function(e) {
+    e.preventDefault();
+    if ($('#qdn-form').valid()) {
+        $.ajax({
+            url: window.location.href + '/store',
+            type: 'get',
+            data: $('#qdn-form').serializeArray(),
+            success: function(data) {
+                alert('success')
+            }
+        });
+    }
+});
+});
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-Token': $('meta[name=_token]').attr('content')
+    }
 });

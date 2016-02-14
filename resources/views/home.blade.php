@@ -84,6 +84,7 @@
 
 <!-- Count content=================================================== -->
 <div class="container">
+@include('errors.validationErrors')
 <legend class="h1">Counts: </legend>
 @foreach ($counts as $panel)
 <div class="col-xs-3 h2">
@@ -110,7 +111,6 @@
 
 {{-- MODAL LINKS ==========================================================--}}
 <div class="container" id="link">
-@include('errors.validationErrors')
 <legend class="h1">Graphs: </legend>
 <div class="col-xs-12" style="padding-left:5px;padding-bottom:12px">
     <div class="form-group">

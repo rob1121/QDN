@@ -60,6 +60,7 @@ input[type="file"]{
 
 .edit {
     float:right;
+    padding-left:10px;
 }
 
 .btn-print {
@@ -80,5 +81,16 @@ body .container {
     font-size:13px;
     padding:0px;
 }
+
+select {
+visibility: hidden;
+}
+.form-control:focus,
+#s2id_receiver_name .select2-choices,
+.select2-dropdown-open .select2-choice,
+.select2-container-active .select2-default {
+box-shadow: none;
+}
 </style>
+@yield('substyle')
 @stop

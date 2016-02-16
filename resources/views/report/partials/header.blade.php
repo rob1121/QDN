@@ -186,6 +186,7 @@
                         ? "<br/><br/>"
                         : $qdn->problem_description
                 }}
+                 {{ $qdn->discrepancy_category }}
             </div>
         </div>
     </div>

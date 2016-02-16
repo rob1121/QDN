@@ -9,6 +9,7 @@ use App\Models\Info;
 use App\Models\InvolvePerson;
 use App\Models\PreventiveAction;
 use App\Models\QdnCycle;
+use App\OptionModels\Option;
 use Illuminate\Database\Seeder;
 
 class infoSeeder extends Seeder {
@@ -26,9 +27,12 @@ class infoSeeder extends Seeder {
 			$receiver = $employee->random();
 			$close_by = Employee::where('station', 'quality assurance')->first();
 
+			// $major = $faker->randomElement(['major', 'minor']);
+			$major = 'major';
+
 			$info = Info::create([
 				'control_id'           => $index,
-				'customer'             => $faker->company,
+				'customer'             => $faker->randomElement(array_flatten(Option::all('customer')->toArray())),
 				'package_type'         => $faker->firstNameFemale,
 				'device_name'          => $faker->address,
 				'lot_id_number'        => $faker->randomDigit,
@@ -37,7 +41,7 @@ class infoSeeder extends Seeder {
 				'machine'              => $faker->randomElement(['at01', 'at02', 'at03', 'at04', 'at05']),
 				'station'              => $faker->randomElement(['pl1', 'pl2', 'pl3', 'pl4', 'pl5']),
 				'created_at'           => $faker->dateTimeThisMonth,
-				'major'                => $faker->randomElement(['major', 'minor']),
+				'major'                => $major,
 				'disposition'          => $faker->randomElement(['use as is', 'ncmr#', 'rework', 'split lot', 'shutdown', 'ship back']),
 				'problem_description'  => $faker->paragraph(2),
 				'failure_mode'         => $faker->randomelement(['assembly',

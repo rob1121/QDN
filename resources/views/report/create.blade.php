@@ -27,19 +27,19 @@ box-shadow: none;
         novalidate
         >
         @include('report.partials.sectionOne',
-            [
-            'btn'=>'<!-- SUBMIT BUTTON -->
-            <div class="form-group col-xs-12">
-                <button
-                type  = "submit"
-                name  = "submit"
-                class = "btn btn-lg btn-primary"
-                >
-                <i class="fa fa-save"></i> Submit
-                </button>
-            </div>',
-            'hidden'=>'hidden'
-            ]
+        [
+        'btn'=>'<!-- SUBMIT BUTTON -->
+        <div class="form-group col-xs-12">
+            <button
+            type  = "submit"
+            name  = "submit"
+            class = "btn btn-lg btn-primary"
+            >
+            <i class="fa fa-save"></i> Submit
+            </button>
+        </div>',
+        'hidden'=>'hidden'
+        ]
         )
     </form>
 </div>

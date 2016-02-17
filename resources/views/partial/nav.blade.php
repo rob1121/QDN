@@ -44,7 +44,7 @@
                 </li>
             @else
                 {{-- MENU IF USER IS NOT LOGGED IN --}}
-                <li><a href="#login" data-toggle="modal" ><i class="fa fa-sign-in"></i> Login</a></li>
+                <!-- <li><a href="#login" data-toggle="modal" ><i class="fa fa-sign-in"></i> Login</a></li> -->
             @endif
         </ul>
         </div>

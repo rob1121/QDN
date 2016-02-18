@@ -4,9 +4,6 @@
 body {
 background-color: #fff;
 /*background-image: url(img/background-imager/Elegant_Background-7.jpg);*/
--webkit-background-size: cover;
--moz-background-size: cover;
--o-background-size: cover;
 background-size: cover;
 }
 #company-name {
@@ -38,114 +35,113 @@ padding-bottom:280px;
 background-color: #fff;
 }
 .main-button {
-    font-size:50px;
-    padding: 10px 50px 10px 50px;
+font-size:50px;
+padding: 10px 50px 10px 50px;
 }
 input.form-control:focus {
 box-shadow: none;
 border:1px solid #66afe9;
-color:#fff;
 padding:24px 15px 24px 15px;
 }
 input.form-control {
-
 padding:24px 15px 24px 15px;
 }
 </style>
 @stop
 @section('content')
 <div class="container main-top">
-<form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}" id="login-form" novalidate>
-                        {!! csrf_field() !!}
-
-                        <div class="form-group{{ $errors->has('employee_id') ? ' has-error' : '' }}">
-
-                            <div class="col-md-offset-3 col-md-6">
-                                <input 
-                                type="text" 
-                                class="form-control" 
-                                name="employee_id" 
-                                value="{{ old('employee_id') }}" 
-                                id="employee_id"
-                                placeholder="Input Employee ID"
-                                >
-
-                                @if ($errors->has('employee_id'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('employee_id') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-
-                            <div class="col-md-offset-3 col-md-6">
-                                <input 
-                                type="password" 
-                                class="form-control" 
-                                name="password" 
-                                id="password"
-                                placeholder="Input Password"
-                                >
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-3 text-center">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fa fa-btn fa-sign-in"></i> Login
-                                </button>
-
-                            </div>
-                        </div>
-                    </form>
+    <form
+        class  = "form-horizontal"
+        role   = "form"
+        method = "POST"
+        action = "{{ url('/login') }}"
+        id     = "login-form"
+        novalidate
+        >
+        {!! csrf_field() !!}
+        <div class="form-group{{ $errors->has('employee_id') ? ' has-error' : '' }}">
+            <div class="col-md-offset-3 col-md-6">
+                <input
+                type        = "text"
+                class       = "form-control"
+                name        = "employee_id"
+                value       = "{{ old('employee_id') }}"
+                id          = "employee_id"
+                placeholder = "Input Employee ID"
+                >
+                @if ($errors->has('employee_id'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('employee_id') }}</strong>
+                </span>
+                @endif
+            </div>
+        </div>
+        <div class="form-group
+            {{ $errors->has('password') ? ' has-error' : '' }}"
+            >
+            <div class="col-md-offset-3 col-md-6">
+                <input
+                type        = "password"
+                class       = "form-control"
+                name        = "password"
+                id          = "password"
+                placeholder = "Input Password"
+                >
+                @if ($errors->has('password'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </span>
+                @endif
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fa fa-btn fa-sign-in"></i> Login
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
 <!-- ============= carousel ==================================== -->
 <div id="carousel-id" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-        <li data-target="#carousel-id" data-slide-to="0" class="active"></li>
-        <li data-target="#carousel-id" data-slide-to="1" class=""></li>
-        <li data-target="#carousel-id" data-slide-to="2" class=""></li>
-        <li data-target="#carousel-id" data-slide-to="3" class=""></li>
-        <li data-target="#carousel-id" data-slide-to="4" class=""></li>
-        <li data-target="#carousel-id" data-slide-to="5" class=""></li>
+        <li data-target = "#carousel-id" data-slide-to="0" class="active"></li>
+        <li data-target = "#carousel-id" data-slide-to="1" class=""></li>
+        <li data-target = "#carousel-id" data-slide-to="2" class=""></li>
+        <li data-target = "#carousel-id" data-slide-to="3" class=""></li>
+        <li data-target = "#carousel-id" data-slide-to="4" class=""></li>
+        <li data-target = "#carousel-id" data-slide-to="5" class=""></li>
     </ol>
     <div class="carousel-inner">
         <div class="item active">
-            <img data-src="holder.js/900x500/auto/#777:#7a7a7a/text:First slide"
+            <img
             alt="First slide"
             src="http://www.stigp.com/images/banner/home-banner-1.jpg"
             >
         </div>
         <div class="item">
-            <img data-src="holder.js/900x500/auto/#666:#6a6a6a/text:Second slide"
-            alt="Second slide"
-            src="http://www.stigp.com/images/banner/home-banner-2.jpg"
+            <img
+            alt = "Second slide"
+            src = "http://www.stigp.com/images/banner/home-banner-2.jpg"
             >
         </div>
         <div class="item">
-            <img data-src="holder.js/900x500/auto/#555:#5a5a5a/text:Third slide"
-            alt="Third slide"
-            src="http://www.stigp.com/images/banner/home-banner-3.jpg"
+            <img
+            alt = "Third slide"
+            src = "http://www.stigp.com/images/banner/home-banner-3.jpg"
             >
         </div>
         <div class="item">
-            <img data-src="holder.js/900x500/auto/#555:#5a5a5a/text:Third slide"
-            alt="Third slide"
-            src="http://www.stigp.com/images/banner/home-banner-6.jpg"
+            <img
+            alt = "Third slide"
+            src = "http://www.stigp.com/images/banner/home-banner-6.jpg"
             >
         </div>
         <div class="item">
-            <img data-src="holder.js/900x500/auto/#555:#5a5a5a/text:Third slide"
-            alt="Third slide"
-            src="http://www.stigp.com/images/banner/home-banner-5.jpg"
+            <img
+            alt = "Third slide"
+            src = "http://www.stigp.com/images/banner/home-banner-5.jpg"
             >
         </div>
     </div>
@@ -168,6 +164,20 @@ padding:24px 15px 24px 15px;
 @stop
 @section('script')
 <script>
-              new WOW().init();
+$(function() {
+  new WOW().init();
+  $('#login-form').validate({
+    rules: {
+      employee_id: {
+        required: true
+      },
+      password: {
+        required: true
+      }
+    },
+    errorClass: "error",
+    errorElement: "span"
+  });
+});
 </script>
 @stop

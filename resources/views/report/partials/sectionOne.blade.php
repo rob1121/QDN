@@ -2,6 +2,8 @@
 <div class="col-sm-12">
     <h1>QDN Issuance</h1>
     <div class="form-group col-sm-4">
+        <span>Customer:
+        </span>
         <select
             class = "form-control"
             name  = 'customer'
@@ -10,17 +12,18 @@
             <option value=""></option>
             @foreach ($customers as $customer)
             <option value="{{ $customer->customer }}"
-            @if (isset($qdn) && $qdn->customer == $customer->customer)
+                @if (isset($qdn) && $qdn->customer == $customer->customer)
                 selected
-            @endif
-            >
+                @endif
+                >
                 {{ Str::upper($customer->customer) }}
             </option>
             @endforeach
             <option value="not yet specified">Not Yet Specified</option>
         </select>
     </div>
-    <div class="form-group col-sm-3" hidden id="not-yet-specified">
+    <div class="form-group col-sm-5" hidden id="not-yet-specified">
+        <br>
         <input
         type        = "text"
         name        = "customerField"
@@ -48,6 +51,7 @@
 <div class="col-sm-12" id='lot-description' {{ $hidden }}>
     <!-- INPUT PACKAGE TYPE -->
     <div class="form-group col-sm-4">
+        <span>Package Type:</span>
         <input
         type         = 'text'
         autocomplete = "off"
@@ -60,6 +64,7 @@
     </div>
     <!-- INPUT DEVICE NAME -->
     <div class="form-group col-sm-4">
+        <span>Device Name:</span>
         <input
         type         = 'text'
         autocomplete = "off"
@@ -72,6 +77,7 @@
     </div>
     <!-- INPUT LOT ID NUMBER -->
     <div class="form-group col-sm-4">
+        <span>Lot ID Number:</span>
         <input
         type         = 'text'
         autocomplete = "off"
@@ -84,6 +90,7 @@
     </div>
     <!-- INPUT LOT QUANTITY -->
     <div class="form-group col-sm-4">
+        <span>Lot Quantity:</span>
         <input
         type         = 'text'
         autocomplete = "off"
@@ -98,6 +105,7 @@
 <div class="col-sm-12">
     <!-- INPUT JOB ORDER NO. -->
     <div class="form-group col-sm-3">
+        <span>Job Order Number:</span>
         <input
         type         = 'text'
         autocomplete = "off"
@@ -110,6 +118,7 @@
     </div>
     <!-- SELECT MACHINE -->
     <div class="form-group col-sm-3">
+        <span>Machine:</span>
         <select
             class = "form-control"
             name  = 'machine'
@@ -119,7 +128,7 @@
             @foreach ($machines as $machine)
             <option value="{{ $machine->name }}"
                 @if (isset($qdn) && $qdn->machine == $machine->name)
-                    selected
+                selected
                 @endif
             >{{ Str::upper($machine->name) }}</option>
             @endforeach
@@ -127,6 +136,7 @@
     </div>
     <div class="form-group col-sm-3">
         <!-- SELECT STATION -->
+        <span>Station:</span>
         <select
             class = "form-control"
             name  = "station"
@@ -136,7 +146,7 @@
             @foreach ($stations as $station)
             <option value="{{ $station->station }}"
                 @if (isset($qdn) && $qdn->station == $station->station)
-                    selected
+                selected
                 @endif
             >{{ Str::upper($station->station) }}</option>
             @endforeach
@@ -146,6 +156,7 @@
 <div class="col-sm-12">
     <!-- SELECT EMPLOYEE INVOLVED -->
     <div class="form-group col-sm-6">
+        <span>Issued To:</span>
         <select
             class = "form-control"
             name  = "receiver_name[]"
@@ -156,7 +167,7 @@
             @foreach ($employees as $employee)
             <option value="{{ $employee->name }}"
                 @if (isset($qdn) && in_array($employee->name, array_flatten($qdn->involvePerson()->select('receiver_name')->get()->toArray())))
-                    selected
+                selected
                 @endif
             >{{ Str::title($employee->name) }}</option>
             @endforeach
@@ -173,7 +184,7 @@
             name  = 'major'
             value = 'major'
             @if (isset($qdn) && $qdn->major == 'major')
-                checked
+            checked
             @endif
             >
             Major
@@ -182,7 +193,7 @@
             name  = 'major'
             value = 'minor'
             @if ((isset($qdn) && $qdn->major == 'minor') || ! isset($qdn))
-                checked
+            checked
             @endif
             >
             Minor
@@ -192,6 +203,7 @@
 <div class="col-sm-12">
     <div class="form-group col-sm-6">
         <!-- SELECT FAILURE MODE -->
+        <span>Failure Mode:</span>
         <select
             name  = "failure_mode"
             id    = "failure_mode"
@@ -200,9 +212,9 @@
             <option value=""></option>
             @foreach ($select_failure_mode as $option)
             <option value="{{ $option }}"
-            @if (isset($qdn) && $qdn->failure_mode == $option)
+                @if (isset($qdn) && $qdn->failure_mode == $option)
                 selected
-            @endif
+                @endif
             >{{ Str::title($option) }}</option>
             @endforeach
         </select>
@@ -211,6 +223,7 @@
 <div class="col-sm-12">
     <!-- SELECT FOR MINOR -->
     <div class="form-group col-sm-6" id="categories">
+        <span>Discrepancy Category:</span>
         <select
             name  = "discrepancy_category"
             id    = "discrepancy_category"
@@ -223,6 +236,7 @@
         </select>
     </div>
     <div class="form-group col-sm-3" id="quantity-field" {{ $hidden }}>
+        <span>Quantity:</span>
         <input type  = "text"
         name         = "quantity"
         autocomplete = "off"
@@ -234,6 +248,7 @@
     </div>
     <!-- TEXTAREA OF PROBLEM DESCRIPTION -->
     <div class="form-group col-sm-12">
+        <span for="problem_description">Problem Description:</span>
         <textarea  name = 'problem_description'
         id              = 'problem_description'
         placeholder     = 'Enter Detailed Information'
@@ -241,6 +256,5 @@
         class           = 'form-control'
         >{{ isset($qdn) ? $qdn->problem_description : '' }}</textarea>
     </div>
-
     {!! isset($btn) ? $btn : '' !!}
 </div>

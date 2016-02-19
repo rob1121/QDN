@@ -65,9 +65,10 @@ padding:24px 15px 24px 15px;
                 type        = "text"
                 class       = "form-control"
                 name        = "employee_id"
-                value       = "{{ old('employee_id') }}"
                 id          = "employee_id"
+                autocomplete = "off"
                 placeholder = "Input Employee ID"
+                value       = "{{ old('employee_id') }}"
                 >
                 @if ($errors->has('employee_id'))
                 <span class="help-block">

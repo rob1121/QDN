@@ -3,12 +3,12 @@
     padding: 5em 2em 5em 2em;
 }
 .navbar-brand {
-    font-family: Coustard;
+    font-family: $big-font;
     font-size: 50px;
     font-weight: bold;
 }
 .navbar-brand p.subtitle {
-    font-family:Leckerli One;
+    font-family:$subtitle-font;
     margin-top: 10px;
     font-size: 14px;
 }

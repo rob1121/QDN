@@ -14,15 +14,26 @@
                 >
                 @include('report.partials.sectionOne',['hidden'=>''])
                 <div class="modal-footer">
-                    <button
-                    type  = "submit"
-                    name  = "submit"
-                    id    = "submit"
-                    class = "btn btn-lg btn-primary"
-                    style = "margin-left:32px"
-                    >
-                    <i class="fa fa-save"></i> Save changes
-                    </button>
+                    <div class="btn-group">
+                        <button
+                        type  = "submit"
+                        name  = "submit"
+                        id    = "submit"
+                        class = "btn btn-lg btn-default"
+                        >
+                        Save as Draft <i class="fa fa-save"></i><br>
+                        <small>and come back soon</small>
+                        </button>
+                        <button
+                        type  = "submit"
+                        name  = "submit"
+                        id    = "submit"
+                        class = "btn btn-lg btn-success text-center"
+                        >
+                        Send Confirmation <i class="fa fa-paper-plane"></i><br>
+                        <small>and proceed for completion</small>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

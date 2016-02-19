@@ -11,7 +11,7 @@
         {{-- <script src="/js/vendor/pace.js"></script> --}}
         @yield('style')
     </head>
-    <body>
+    <body hidden>
         <div id="wrap">
             {{-- HEADER SECTION --}}
             @include('partial.nav')
@@ -25,6 +25,11 @@
         {{-- @include('layouts.scriptVendor') --}}
         <script src="/js/all.js"></script>
         <script src="/js/app.js"></script>
+        <script>
+        $(function() {
+            $('body').show();
+        });
+        </script>
         @yield('script')
     </body>
 </html>

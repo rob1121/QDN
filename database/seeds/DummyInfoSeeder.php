@@ -11,7 +11,6 @@ use App\Models\PreventiveAction;
 use App\Models\QdnCycle;
 use App\OptionModels\Option;
 use Illuminate\Database\Seeder;
-
 class DummyInfoSeeder extends Seeder {
 	/**
 	 * Run the database seeds.

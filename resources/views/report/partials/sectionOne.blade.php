@@ -178,26 +178,41 @@
 <div class="col-sm-12">
     <div class="form-group col-sm-12">
         <label>Non Conformity Level</label>
-        <label id="major">
-            <input
-            type  = 'radio'
-            name  = 'major'
-            value = 'major'
-            @if (isset($qdn) && $qdn->major == 'major')
-            checked
-            @endif
-            >
-            Major
-            <input
-            type  = 'radio'
-            name  = 'major'
-            value = 'minor'
-            @if ((isset($qdn) && $qdn->major == 'minor') || ! isset($qdn))
-            checked
-            @endif
-            >
-            Minor
-        </label>
+        <br>
+        <div class="btn-group" data-toggle="buttons" id="btn-major">
+            <label class="btn btn-default major
+                @if (isset($qdn) && $qdn->major == 'major')
+                active
+                @endif
+                ">
+                <input
+                type  = 'radio'
+                id    = 'major'
+                name  = 'major'
+                value = 'major'
+                @if (isset($qdn) && $qdn->major == 'major')
+                checked
+                @endif
+                >
+                Major
+            </label>
+            <label class="btn btn-default minor
+                @if ((isset($qdn) && $qdn->major == 'minor') || ! isset($qdn))
+                active
+                @endif
+                ">
+                <input
+                type  = 'radio'
+                id    = 'major'
+                name  = 'major'
+                value = 'minor'
+                @if ((isset($qdn) && $qdn->major == 'minor') || ! isset($qdn))
+                checked
+                @endif
+                >
+                Minor
+            </label>
+        </div>
     </div>
 </div>
 <div class="col-sm-12">

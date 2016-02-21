@@ -13,26 +13,44 @@
                 novalidate
                 >
                 @include('report.partials.sectionOne',['hidden'=>''])
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                    <label>QDN Validity</label>
+                    <br>
+                        <div class="btn-group" data-toggle="buttons" id="validate">
+                            <label class="btn btn-default incomplete">
+                                <input type="radio" name="status" id="status" value="incomplete"> Valid
+                            </label>
+                            <label class="btn btn-default invalid">
+                                <input type="radio" name="status" id="status" value="cancelled"> Invalid
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div class="modal-footer">
-                    <div class="btn-group">
-                        <button
-                        type  = "submit"
-                        name  = "submit"
-                        id    = "submit"
-                        class = "btn btn-lg btn-default"
-                        >
-                        Save as Draft <i class="fa fa-save"></i><br>
-                        <small>and come back soon</small>
-                        </button>
-                        <button
-                        type  = "submit"
-                        name  = "submit"
-                        id    = "submit"
-                        class = "btn btn-lg btn-success text-center"
-                        >
-                        Send Confirmation <i class="fa fa-paper-plane"></i><br>
-                        <small>and proceed for completion</small>
-                        </button>
+                    <div class="col-md-12">
+                        <div class="btn-group">
+                            <button
+                            type  = "submit"
+                            name  = "submit"
+                            id    = "draft-button"
+                            class = "btn btn-lg btn-default"
+                            style = "margin:5px"
+                            >
+                            Save as Draft <i class="fa fa-save"></i><br>
+                            <small>and come back soon</small>
+                            </button>
+                            <button
+                            type  = "submit"
+                            name  = "submit"
+                            id    = "verification-btn"
+                            class = "btn btn-lg btn-primary text-center"
+                            style = "margin:5px"
+                            >
+                            Confirm Changes <i class="fa fa-paper-plane"></i><br>
+                            <small>and send notification</small>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </form>

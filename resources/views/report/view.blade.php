@@ -43,4 +43,45 @@
 </form>
 @include('report.partials.modal')
 @stop
-@include('report.partials.script')
+@section('script')
+    <script src="/vendor/js/bootstrap-datepicker.js"></script>
+    <script src="/vendor/js/select2.min.js"></script>
+    <script src="/js/reportCompletion.js"></script>
+    <script src="/js/reportForm.js"></script>
+    <script type="text/javascript">
+$(function() {
+$('#draft-button').on('click', function(e) {
+    e.preventDefault();
+    if (confirm('Are you sure you want to save as draft only?')) {
+        $.ajax({
+            url: '/',
+            type: 'get',
+            data: {},
+            success: function() {
+                $('.customer').text($('#customer').val().toUpperCase());
+                $('.package_type').text($('#package_type').val().toUpperCase());
+
+                    $.amaran({
+        'theme'     :'awesome ok',
+        'content'   :{
+            title:'Draft Saved!',
+            message:'',
+            info:'Come back soon to verify the issue!',
+            icon:'fa fa-save'
+        },
+        'position'  :'bottom right',
+        'outEffect' :'fadeOut'
+    });
+
+
+            }
+
+        });
+        $('#edit').modal('hide');
+    }
+
+});
+});
+    </script>
+@stop
+

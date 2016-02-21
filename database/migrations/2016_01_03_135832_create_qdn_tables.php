@@ -66,6 +66,7 @@ class CreateQdnTables extends Migration {
 			$table->integer('info_id')->unsigned()->unique();
 			$table->string('containment_action_taken');
 			$table->string('corrective_action_taken');
+			$table->string('verified_by');
 			$table->string('close_by');
 			$table->string('date_sign');
 			$table->string('production');

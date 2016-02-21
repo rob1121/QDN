@@ -171,7 +171,7 @@ if (typeof category !== 'undefined') {
 } else {
     selectedDiscrepancyCategory('minor', select_discrepancy_minor, select_discrepancy_major);
 }
-$('#major').children('input').on('change', function() {
+$('#btn-major').find('input:radio').on('change', function() {
     selectedDiscrepancyCategory($(this).val(), select_discrepancy_minor, select_discrepancy_major);
 });
 // ------------------------------------------------------------------

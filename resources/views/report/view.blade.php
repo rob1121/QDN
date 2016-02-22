@@ -6,7 +6,7 @@
 @include('report.partials.style')
 @section('content')
 <div class="container">
-    @include('report.partials.header', ['hidden' => 'hidden', 'disabled' => 'disabled'])
+    @include('report.partials.header')
     <!-- START OF FORM -->
     <form
         method  = 'POST'

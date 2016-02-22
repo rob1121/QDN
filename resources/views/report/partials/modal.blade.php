@@ -6,7 +6,7 @@
                 <h4 class="modal-title">EDIT: PRODUCT DESCRIPTION/ PROBLEM DETAILS</h4>
             </div>
             <form
-                action = "{{ route('sectionOneSaveAsDraft',['slug' => $qdn->slug]) }}"
+                action = "{{ route('SectionOneSaveAndProceed',['slug' => $qdn->slug]) }}"
                 method = "get"
                 role   = "form"
                 id     = "qdn-form"
@@ -15,8 +15,8 @@
                 @include('report.partials.sectionOne',['hidden'=>''])
                 <div class="col-sm-12">
                     <div class="col-sm-12">
-                    <label>QDN Validity</label>
-                    <br>
+                        <label>QDN Validity:</label>
+                        <br>
                         <div class="btn-group" data-toggle="buttons" id="validate">
                             <label class="btn btn-default valid active">
                                 <input type="radio" name="status" id="status" value="incomplete fill-up" checked> Valid
@@ -25,6 +25,30 @@
                                 <input type="radio" name="status" id="status" value="cancelled"> Invalid
                             </label>
                         </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-sm-12">
+                    <div class="col-sm-12">
+                        <br>
+                        <label>Disposition:</label>
+                        <br>
+                        <div class="btn-group" data-toggle="buttons" id="dispositions">
+                            @foreach ($disposition_check as $disposition)
+                            <label class="btn btn-default
+                                {{ $qdn->disposition == $disposition || $disposition == 'use as is' ? 'active' : '' }}
+                                ">
+                                <input
+                                type  = 'radio'
+                                name  = 'disposition'
+                                value = '{{ $disposition }}'
+                                {{ $qdn->disposition == $disposition || $disposition == 'use as is' ? 'checked' : '' }}
+                                >
+                                {{ Str::upper($disposition) }}
+                            </label>
+                            @endforeach
+                        </div>
+                        <hr>
                     </div>
                 </div>
                 <div class="modal-footer">

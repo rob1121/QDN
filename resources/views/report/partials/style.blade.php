@@ -110,6 +110,12 @@ select {
   background-color: #ec971f;
   border-color: #d58512;
 }
+#dispositions .active,
+#dispositions .active:hover {
+  color: #fff;
+  background-color: #3071a9;
+  border-color: #285e8e;
+}
 
 .invalid.active,
 .invalid.active:hover {
@@ -125,6 +131,14 @@ select {
 .control_id {
   color:Red;
   font-weight:bold;
+}
+
+div.modal-dialog {
+width : 50% ;
+}
+
+#qdn-form {
+  margin-top:-20px;
 }
 </style>
 @yield('substyle')

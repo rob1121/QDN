@@ -2,12 +2,20 @@
 
 Route::get('/report/{slug}/verified',
 	[
-		'as' => 'sectionOneSaveAsDraft',
+		'as'   => 'SectionOneSaveAndProceed',
 		'uses' => 'ActionController@SectionOneSaveAndProceed',
 	]);
 
 Route::get('/report/{slug}/ajax',
 	[
-		'as' => 'section_one_ajax',
+		'as'   => 'SectionOneSaveAsDraft',
 		'uses' => 'ActionController@SectionOneSaveAsDraft',
+	]);
+
+//====================== section two =======================
+
+Route::get('/report/incomplete/{slug}',
+	[
+		'as'   => 'ForIncompleteFillUp',
+		'uses' => 'ActionController@ForIncompleteFillUp',
 	]);

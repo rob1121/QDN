@@ -197,11 +197,11 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Problem Desciption</th>
-                    <th>Trap Location</th>
+                    <th class="col-md-6">Desciption</th>
+                    <th>Station</th>
                     <th>Customer</th>
-                    <th>Receiver Name</th>
-                    <th>Issued Date / Time</th>
+                    <th>Receiver</th>
+                    <th>Timestamp</th>
                 </tr>
             </thead>
             <tbody>

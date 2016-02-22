@@ -104,16 +104,27 @@ select {
   border-color: #ac2925;
 }
 
-.invalid.active,
-.invalid.active:hover,
 .minor.active,
 .minor.active:hover {
   color: #fff;
   background-color: #ec971f;
   border-color: #d58512;
 }
+
+.invalid.active,
+.invalid.active:hover {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+
 .amaran.awesome.ok .bold {
   text-align: left;
+}
+
+.control_id {
+  color:Red;
+  font-weight:bold;
 }
 </style>
 @yield('substyle')

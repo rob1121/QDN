@@ -6,8 +6,8 @@
                 <h4 class="modal-title">EDIT: PRODUCT DESCRIPTION/ PROBLEM DETAILS</h4>
             </div>
             <form
-                action = "/"
-                method = "POST"
+                action = "{{ route('sectionOneSaveAsDraft',['slug' => $qdn->slug]) }}"
+                method = "get"
                 role   = "form"
                 id     = "qdn-form"
                 novalidate
@@ -18,8 +18,8 @@
                     <label>QDN Validity</label>
                     <br>
                         <div class="btn-group" data-toggle="buttons" id="validate">
-                            <label class="btn btn-default incomplete">
-                                <input type="radio" name="status" id="status" value="incomplete"> Valid
+                            <label class="btn btn-default valid active">
+                                <input type="radio" name="status" id="status" value="incomplete fill-up" checked> Valid
                             </label>
                             <label class="btn btn-default invalid">
                                 <input type="radio" name="status" id="status" value="cancelled"> Invalid

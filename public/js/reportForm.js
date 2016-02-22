@@ -7,7 +7,7 @@ function selectedDiscrepancyCategory(radio, select_discrepancy_minor, select_dis
     $('#discrepancy_category').empty();
     $('<option>', {
         value: '',
-        text: ''
+        text: '',
     }).appendTo('#discrepancy_category');
     //minor options is trigger when minor radio is clicked---------------------
     if (radio == "minor") {
@@ -38,6 +38,7 @@ function selectedDiscrepancyCategory(radio, select_discrepancy_minor, select_dis
             }
         });
     }
+    $("#discrepancy_category").select2("val", discrepancy_category.length ? discrepancy_category : '');
 }
 //form validations---------------------------------------------------------
 $('#qdn-form').validate({
@@ -167,10 +168,12 @@ $('#customer').on('change', function() {
 
 if (typeof category !== 'undefined') {
     selectedDiscrepancyCategory(category, select_discrepancy_minor, select_discrepancy_major);
-    $('#discrepancy_category').val(discrepancy_category);
+    $("#discrepancy_category").select2("val", discrepancy_category);
+
 } else {
     selectedDiscrepancyCategory('minor', select_discrepancy_minor, select_discrepancy_major);
 }
+
 $('#btn-major').find('input:radio').on('change', function() {
     selectedDiscrepancyCategory($(this).val(), select_discrepancy_minor, select_discrepancy_major);
 });

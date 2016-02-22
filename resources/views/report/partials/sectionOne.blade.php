@@ -59,7 +59,7 @@
         name         = 'package_type'
         id           = 'package_type'
         class        = 'form-control'
-        value        = {{ isset($qdn) ? $qdn->package_type : 'N/A' }}
+        value        = "{{ isset($qdn) ? $qdn->package_type : 'N/A' }}"
         >
     </div>
     <!-- INPUT DEVICE NAME -->
@@ -72,7 +72,7 @@
         name         = 'device_name'
         id           = 'device_name'
         class        = 'form-control'
-        value        = {{ isset($qdn) ? $qdn->device_name : 'N/A' }}
+        value        = "{{ isset($qdn) ? $qdn->device_name : 'N/A' }}"
         >
     </div>
     <!-- INPUT LOT ID NUMBER -->
@@ -85,7 +85,7 @@
         name         = 'lot_id_number'
         id           = 'lot_id_number'
         class        = "form-control"
-        value        = {{ isset($qdn) ? $qdn->lot_id_number : 'N/A' }}
+        value        = "{{ isset($qdn) ? $qdn->lot_id_number : 'N/A' }}"
         >
     </div>
     <!-- INPUT LOT QUANTITY -->
@@ -98,7 +98,7 @@
         name         = 'lot_quantity'
         id           = 'lot_quantity'
         class        = "form-control"
-        value        = {{ isset($qdn) ? $qdn->lot_quantity : 0 }}
+        value        = "{{ isset($qdn) ? $qdn->lot_quantity : 0 }}"
         >
     </div>
 </div>
@@ -113,7 +113,7 @@
         name         = 'job_order_number'
         id           = 'job_order_number'
         class        = "form-control"
-        value = {{ isset($qdn) ? $qdn->job_order_number : '' }}
+        value        = "{{ isset($qdn) ? $qdn->job_order_number : '' }}"
         >
     </div>
     <!-- SELECT MACHINE -->
@@ -165,11 +165,23 @@
             required
             >
             @foreach ($employees as $employee)
-            <option value="{{ $employee->name }}"
-                @if (isset($qdn) && in_array($employee->name, array_flatten($qdn->involvePerson()->select('receiver_name')->get()->toArray())))
-                selected
+                @if ($employee->name != $currentUser->employee->name)
+                    @if (isset($qdn))
+                        <?php $orig_name = Str::title($qdn->involvePerson()->first()->originator_name);?>
+                        @if ($employee->name != $orig_name)
+                            <?php $collection = array_flatten($qdn->involvePerson()->select('receiver_name')->get()->toArray());?>
+                            <?php $selected = in_array($employee->name, $collection) ? 'selected' : '';?>
+
+                            <option value="{{ $employee->name }}" {{ $selected }}>
+                                {{ Str::title($employee->name) }}
+                            </option>
+                        @endif
+                    @else
+                        <option value="{{ $employee->name }}">
+                            {{ Str::title($employee->name) }}
+                        </option>
+                    @endif
                 @endif
-            >{{ Str::title($employee->name) }}</option>
             @endforeach
         </select>
     </div>

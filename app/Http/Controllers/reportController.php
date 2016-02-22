@@ -55,6 +55,7 @@ class reportController extends CrudController {
 		JavaScript::put('linkApproval', $linkApproval);
 		JavaScript::put('category', $qdn->major);
 		JavaScript::put('discrepancy_category', $qdn->discrepancy_category);
+		JavaScript::put('qdn', $qdn);
 
 		return view('report.view', compact('qdn', 'department'));
 	}
@@ -124,11 +125,5 @@ class reportController extends CrudController {
 		JavaScript::put('linkApproval', $linkApproval);
 
 		return view('report.approval.view', compact('qdn', 'department'));
-	}
-
-	public function peVerification(Request $request, Info $slug) {
-		$slug->update($request->all());
-		// $slug->involvePerson()->update($request->all());
-
 	}
 }

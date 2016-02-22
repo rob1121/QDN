@@ -53,7 +53,7 @@
                     Device Name:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p>{{ Str::upper($qdn->device_name) }}</p>
+                    <p class="device_name">{{ Str::upper($qdn->device_name) }}</p>
                 </div>
             </div>
             <!-- LOT ID NUMBER -->
@@ -62,7 +62,7 @@
                     Lot ID No.:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p>{{ Str::upper($qdn->lot_id_number) }}</p>
+                    <p class="lot_id_number">{{ Str::upper($qdn->lot_id_number) }}</p>
                 </div>
             </div>
             <!-- LOT QUANTITY -->
@@ -71,7 +71,7 @@
                     Lot Quantity:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p>{{ $qdn->lot_quantity }}</p>
+                    <p class="lot_quantity">{{ $qdn->lot_quantity }}</p>
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
                     Job Order No.:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p>{{ $qdn->job_order_number }}</p>
+                    <p class="job_order_number">{{ $qdn->job_order_number }}</p>
                 </div>
             </div>
             <!-- MACHINE -->
@@ -92,7 +92,7 @@
                     Machine:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p>{{ Str::upper($qdn->machine) }}</p>
+                    <p class="machine">{{ Str::upper($qdn->machine) }}</p>
                 </div>
             </div>
             <!-- STATION -->
@@ -101,20 +101,20 @@
                     Station:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p>{{ Str::upper($qdn->station) }}</p>
+                    <p class="station">{{ Str::upper($qdn->station) }}</p>
                 </div>
             </div>
             <!-- MAJOR -->
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Major:</div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 text-left">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 text-left text-major">
                     {{ $qdn->major == "major" ? '[x]' : '[&nbsp;&nbsp;]' }}
                 </div>
             </div>
             <!-- MINOR -->
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Minor:</div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 text-left">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 text-left text-minor">
                     {{ $qdn->major != "major" ? '[x]' : '[&nbsp;&nbsp;]' }}
                 </div>
             </div>
@@ -125,7 +125,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">QDN No.:</div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p style='color:Red;font-weight:bold'>
+                    <p class="control_id">
                         {{ $qdn->control_id }}
                     </p>
                 </div>
@@ -136,8 +136,8 @@
                     Team Responsible:
                 </div>
                 <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p>
-                        {!! Str::title(implode("<br>",$department)) !!}
+                    <p class="team_responsible">
+                        {!! Str::upper(implode("<br>",$department)) !!}
                     </p>
                 </div>
             </div>
@@ -145,7 +145,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Issued By:</div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p>
+                    <p class="originator_name">
                         {{ Str::title($qdn->involvePerson()->first()->originator_name) }}
                     </p>
                 </div>
@@ -154,7 +154,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Issued To:</div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p>
+                    <p class="receiver_name">
                         {!!
                         Str::title(implode("<br>",array_flatten(
                         $qdn->involvePerson()
@@ -178,7 +178,7 @@
                 </div>
             </div>
         </div>
-        <div class="container text-center col-lg-12 col-sm-12">
+        <div class="container text-center col-lg-12 col-sm-12 problem_description">
             <br/><br/>
             {{
             $qdn->problem_description == ""

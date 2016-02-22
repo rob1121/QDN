@@ -19,12 +19,6 @@ Route::get('/report/{slug}',
 		'uses' => 'reportController@show',
 	]);
 
-Route::get('/report/{slug}/store',
-	[
-		'as'   => 'qdn_link_post',
-		'uses' => 'reportController@peVerification',
-	]);
-
 Route::post('/draft/{slug}',
 	[
 		'as'   => 'draft_link',

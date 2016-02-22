@@ -139,15 +139,15 @@
     </head>
     <body>
     <?php
-    $count = 0;
-    $names = $qdn->involvePerson()->get();
-     ?>
+$count = 0;
+$names = $qdn->involvePerson()->get();
+?>
 
       @foreach ($names as $name)
       @if ($count != 0)
         <div class="page-break"></div>
       @endif
-      <?php $count += 1; ?>
+      <?php $count += 1;?>
             <h3 class="logo">{{ Str::upper('quality deviation notice') }}</h3>
         <table id="frame">
             <tr>
@@ -163,23 +163,23 @@
                         <table>
                             <tr>
                                 <td class="label">Customer: </td>
-                                <td class="field">{{ $qdn->customer }}</td>
+                                <td class="field">{{ Str::upper($qdn->customer) }}</td>
                             </tr>
                             <tr>
                                 <td class = "label">Package Type: </td>
-                                <td class = "field">{{ $qdn->package_type }}
+                                <td class = "field">{{ Str::upper($qdn->package_type) }}
                                 </tr>
                                 <tr>
                                     <td class = "label">Device Name: </td>
-                                    <td class = "field">{{ $qdn->device_name }}</td>
+                                    <td class = "field">{{ Str::upper($qdn->device_name) }}</td>
                                 </tr>
                                 <tr>
                                     <td class = "label">Lot ID No.: </td>
-                                    <td class = "field">{{ $qdn->lot_id_number }}</td>
+                                    <td class = "field">{{ Str::upper($qdn->lot_id_number) }}</td>
                                 </tr>
                                 <tr>
                                     <td class = "label">Lot Quantity.: </td>
-                                    <td class = "field">{{ $qdn->lot_quantity }}</td>
+                                    <td class = "field">{{ Str::upper($qdn->lot_quantity) }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -189,7 +189,7 @@
                             <table>
                                 <tr>
                                     <td class = "label">Job Order No.:</td>
-                                    <td class = "field">{{ $qdn->job_order_number }}</td>
+                                    <td class = "field">{{ Str::upper($qdn->job_order_number) }}</td>
                                 </tr>
                                 <tr>
                                     <td class = "label">Machine:</td>
@@ -213,10 +213,10 @@
                                     <td class = "label">Minor:</td>
                                     <td>
                                         <?=
-                                        $qdn->major == "minor"
-                                        ? '[&nbsp;x&nbsp;]'
-                                        : '[&nbsp;&nbsp;&nbsp;&nbsp;]';
-                                        ?>
+$qdn->major == "minor"
+? '[&nbsp;x&nbsp;]'
+: '[&nbsp;&nbsp;&nbsp;&nbsp;]';
+?>
                                     </td>
                                 </tr>
                             </table>
@@ -236,18 +236,18 @@
                                 <tr>
                                     <td class = "label">Team Responsible:</td>
                                     <td class = "field">
-                                        {{ $name->department }}
+                                        {{ Str::upper($name->department) }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class = "label">Issued By:</td>
                                     <td class = "field">
-                                        {{ $name->originator_name }}
+                                        {{ Str::title($name->originator_name) }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class = "label">Issued To:</td>
-                                    <td class = "field">{{ $name->receiver_name }}
+                                    <td class = "field">{{ Str::title($name->receiver_name) }}
                                     </td>
                                 </tr>
                                 <tr>

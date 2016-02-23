@@ -28,6 +28,9 @@ margin-bottom:0px;
 padding-top:140px;
 padding-bottom:50px;
 }
+.main-top {
+padding-bottom:150px;
+}
 #wrap {
 background-color: #fff;
 }

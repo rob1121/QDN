@@ -116,7 +116,7 @@ var select_discrepancy_major = {
         'DATECODE DISCREPANCY': ['DATECODE DISCREPANCY'],
         'MARKING PROBLEM': ['MARKING PROBLEM'],
         'MIXED DEVICE': ['MIXED DEVICE'],
-        'LABEL ISSUE': [
+        'LEAD ISSUE': [
             'BENT LEAD',
             'LEAD CONTAMINATION',
             'LEAD DISCOLORATION',

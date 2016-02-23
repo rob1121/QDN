@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EmailQdnNotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Closure;
 use App\Models\Info;
@@ -9,11 +10,13 @@ use Auth;
 use Carbon;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use JavaScript;
 
 class HomeController extends Controller {
 
 	public $dateTime;
+
 	/**
 	 * Create a new controller instance.
 	 *
@@ -33,6 +36,7 @@ class HomeController extends Controller {
 	public function index() {
 		if (Auth::user()) {
 			JavaScript::put('yearNow', $this->dateTime->year);
+			Event::fire(new EmailQdnNotificationEvent());
 			return view('home');
 		}
 		return view('welcome');
@@ -123,32 +127,23 @@ class HomeController extends Controller {
 		return view('home.status', compact('tbl'));
 	}
 
+	/**
+	 * count data per graphs
+	 * @return [type] [description]
+	 */
 	public function counter() {
 
-		$today = Info::where(DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'), "=", $this->dateTime->format('m-d-Y'))
-			->count();
+		$qdn = Info::whereYear('create_at', $this->dateTime->year)->get();
+		$year = $qdn->count();
+		$month = $qdn->whereMonth('create_at', $this->dateTime->month)->count();
+		$week = $qdn->where(DB::raw('WEEK(created_at)'), $this->dateTime->weekOfYear)->count();
+		$today = $qdn->whereDate('create_at', $this->dateTime->format('Y-m-d'))->count();
 
-		$month = Info::where(DB::raw('MONTH(created_at)'), "=", $this->dateTime->month)
-			->where(DB::raw('YEAR(created_at)'), "=", $this->dateTime->year)
-			->count();
-
-		$week = Info::where(DB::raw('WEEK(created_at)'), "=", $this->dateTime->weekOfYear)
-			->count();
-
-		$year = Info::where(DB::raw('YEAR(created_at)'), "=", $this->dateTime->year)
-			->count();
-
-		$peVerification = Closure::where('status', 'p.e. verification')
-			->count();
-
-		$incomplete = Closure::where('status', 'incomplete fill-up')
-			->count();
-
-		$approval = Closure::where('status', 'incomplete approval')
-			->count();
-
-		$qaVerification = Closure::where('status', 'q.a. verification')
-			->count();
+		$closure = Closure::all();
+		$peVerification = $closure->whereStatus('p.e. verification')->count();
+		$incomplete = $closure->whereStatus('incomplete fill-up')->count();
+		$approval = $closure->whereStatus('incomplete approval')->count();
+		$qaVerification = $closure->whereStatus('q.a. verification')->count();
 
 		$arr = [
 			'today' => $today,

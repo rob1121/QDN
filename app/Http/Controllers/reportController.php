@@ -11,6 +11,7 @@ use JavaScript;
 use PDF;
 
 class reportController extends CrudController {
+
 	public function __construct() {
 		$this->middleware('auth');
 	}
@@ -40,15 +41,15 @@ class reportController extends CrudController {
 	 * @return [type]       [description]
 	 */
 	public function show($slug) {
-		$qdn = Info::where('slug', $slug)->first();
+		$qdn = Info::whereSlug($slug)->first();
 
 		$department = $qdn->involvePerson()
 			->select('department')
 			->get()
 			->toArray();
 
-		$department   = array_unique(array_flatten($department));
-		$linkDraft    = route('draft_link', ['slug' => $slug]);
+		$department = array_unique(array_flatten($department));
+		$linkDraft = route('draft_link', ['slug' => $slug]);
 		$linkApproval = route('approval_link', ['slug' => $slug]);
 
 		JavaScript::put('linkDraft', $linkDraft);
@@ -90,16 +91,10 @@ class reportController extends CrudController {
 	 * @param  [type] $slug [description]
 	 * @return [type]       [description]
 	 */
+
 	public function pdf($slug) {
-		$qdn = Info::where('slug', $slug)->first();
-
-		$department = $qdn->involvePerson()
-			->select('department')
-			->get()
-			->toArray();
-
-		$department = array_unique(array_flatten($department));
-
+		$qdn = Info::whereSlug($slug)->first();
+		$department = getDepartment($qdn);
 		return PDF::loadHTML(view('pdf.print', compact('qdn', 'department')))->stream();
 		// return file_get_contents('/');
 	}
@@ -110,20 +105,27 @@ class reportController extends CrudController {
 	 * @return [type]       [description]
 	 */
 	public function approval($slug) {
-		$qdn = Info::where('slug', $slug)->first();
+		$qdn = Info::whereSlug($slug)->first();
 
-		$department = $qdn->involvePerson()
-			->select('department')
-			->get()
-			->toArray();
-
-		$department   = array_unique(array_flatten($department));
-		$linkDraft    = route('draft_link', ['slug' => $slug]);
+		$department = getDepartment($qdn);
+		$linkDraft = route('draft_link', ['slug' => $slug]);
 		$linkApproval = route('approval_link', ['slug' => $slug]);
 
 		JavaScript::put('linkDraft', $linkDraft);
 		JavaScript::put('linkApproval', $linkApproval);
 
 		return view('report.approval.view', compact('qdn', 'department'));
+	}
+
+	/**
+	 * get unique department
+	 * @param  [type] $qdn [description]
+	 * @return [type]      [description]
+	 */
+	public function getDepartment($qdn) {
+		return array_unique(array_flatten($qdn->involvePerson()
+				->select('department')
+				->get()
+				->toArray()));
 	}
 }

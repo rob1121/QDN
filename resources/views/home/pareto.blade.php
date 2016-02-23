@@ -137,7 +137,7 @@ vertical-align: middle;
                         # <i class="fa fa-sort-down"></i>
                     </a>
                 </th>
-                <th class="col-md-6">
+                <th class="col-md-5">
                     <a
                         href="#"
                         data-col="problem_description"

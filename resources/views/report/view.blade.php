@@ -76,6 +76,7 @@ $('#draft-button').on('click', function(e) {
                 $('.text-major').html($('#major:checked').val() == 'major' ? '[x]' : '[&nbsp;&nbsp;]');
                 $('.text-minor').html($('#major:checked').val() == 'minor' ? '[x]' : '[&nbsp;&nbsp;]');
                 $('.control_id').text($('#control_id').val());
+                $('input.disposition[value="' + $('#dispositions input:checked').val() + '"]').prop('checked', true);
                 // team res
              $('.team_responsible').html(department.join("<br>").toUpperCase());
 

@@ -104,18 +104,21 @@ select {
   border-color: #ac2925;
 }
 
+#dispositions .active,
+#dispositions .active:hover,
 .minor.active,
 .minor.active:hover {
   color: #fff;
   background-color: #ec971f;
   border-color: #d58512;
 }
-#dispositions .active,
+
+/*#dispositions .active,
 #dispositions .active:hover {
   color: #fff;
   background-color: #3071a9;
   border-color: #285e8e;
-}
+}*/
 
 .invalid.active,
 .invalid.active:hover {

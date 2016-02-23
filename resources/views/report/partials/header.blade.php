@@ -146,7 +146,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Issued By:</div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="originator_name">
-                        {{ Str::title($qdn->involvePerson()->first()->originator_name) }}
+                        {{ Str::title($qdn->involvePerson()->select('originator_name')->first()->originator_name) }}
                     </p>
                 </div>
             </div>

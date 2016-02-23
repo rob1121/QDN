@@ -1,55 +1,20 @@
-'use strict';
 
-$(function () {
-    //NAV ACTIVE MENU---------------------------------------------------------
-    $('.navbar li a[href="' + location.pathname + '"]').addClass('active');
-    //nav dropdown style--------------------------------------
-    $(".dropdown").on('mouseover', function () {
-        $(this).addClass('open');
-        $(this).children('a.dropdown-toggle').attr('aria-expanded', 'true');
-    });
-    $(".dropdown").on('mouseout', function () {
-        $(this).removeClass('open');
-        $(this).children('a.dropdown-toggle').attr('aria-expanded', 'false');
-    });
-    //waypoint nav-------------------------------------------
-    var sticky = new Waypoint.Sticky({
-        element: $('.navbar')[0],
-        handler: function handler(direction) {
-
-            if ($('.navbar').hasClass('stuck')) {
-
-                $('.navbar').addClass('navbar-fixed-top  animated fadeIn');
-                $('.navbar.stuck .container').removeClass('padder', 100);
-            } else {
-
-                $('.navbar').removeClass('navbar-fixed-top  animated fadeIn');
-                $('.navbar').find('.container').addClass('padder', 500);
-            }
-        },
-        offset: -200
-    });
+// tooltip js------------------------------------------------------------------------------------------------------
+$('[data-toggle="tooltip"]').tooltip();
+$(window).scroll(function() {
+    var top = $('#toTop');
+    if ($(this).scrollTop() != 0) {
+        top.fadeIn();
+    } else {
+        top.fadeOut();
+    }
 });
-//smooth scrolling--------------------------------------------------------------------------------------------------
-(function ($) {
 
-    // tooltip js------------------------------------------------------------------------------------------------------
-    $('[data-toggle="tooltip"]').tooltip();
-    $(window).scroll(function () {
-        var top = $('#toTop');
-        if ($(this).scrollTop() != 0) {
-            top.fadeIn();
-        } else {
-            top.fadeOut();
-        }
-    });
-
-    // backto top js----------------------------------------------------------------------------------------------------
-    $('#toTop').click(function () {
-        $("html, body").animate({
-            scrollTop: 0
-        }, 600);
-        return false;
-    });
-})(jQuery);
+// backto top js----------------------------------------------------------------------------------------------------
+$('#toTop').click(function() {
+    $("html, body").animate({
+        scrollTop: 0
+    }, 600);
+    return false;
+});
 //# sourceMappingURL=app.js.map

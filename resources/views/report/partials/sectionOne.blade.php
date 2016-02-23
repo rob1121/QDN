@@ -167,10 +167,10 @@
             @foreach ($employees as $employee)
                 @if ($employee->name != $currentUser->employee->name)
                     @if (isset($qdn))
-                        <?php $orig_name = Str::title($qdn->involvePerson()->first()->originator_name);?>
+                        <?php $orig_name = Str::title($qdn->involvePerson()->select('originator_name')->first()->originator_name);?>
                         @if ($employee->name != $orig_name)
                             <?php $collection = array_flatten($qdn->involvePerson()->select('receiver_name')->get()->toArray());?>
-                            <?php $selected   = in_array($employee->name, $collection) ? 'selected' : '';?>
+                            <?php $selected = in_array($employee->name, $collection) ? 'selected' : '';?>
 
                             <option value="{{ $employee->name }}" {{ $selected }}>
                                 {{ Str::title($employee->name) }}

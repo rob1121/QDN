@@ -15,7 +15,7 @@
 				<ul>
 					<li>DCC</li>
 					<li>IPNR</li>
-					<li>PROCESS TRAVELER</li>
+					<li>Temp. and RH Monitoring</li>
 				</ul>
 				<div class="col-md-12">
 					<h4>Need Help?</h4>

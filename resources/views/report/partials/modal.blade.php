@@ -1,3 +1,11 @@
+<?php
+function dispositionCondition($qdn, $disposition) {
+	if ('' == $qdn) {
+		return 'use as is' == $disposition;
+	}
+	return $qdn == $disposition;
+}
+?>
 <div class="modal fade" id="edit">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -36,13 +44,13 @@
                         <div class="btn-group" data-toggle="buttons" id="dispositions">
                             @foreach ($disposition_check as $disposition)
                             <label class="btn btn-default
-                                {{ $qdn->disposition == $disposition || $disposition == 'use as is' ? 'active' : '' }}
+                                {{  dispositionCondition($qdn->disposition, $disposition) ? 'active' : '' }}
                                 ">
                                 <input
                                 type  = 'radio'
                                 name  = 'disposition'
                                 value = '{{ $disposition }}'
-                                {{ $qdn->disposition == $disposition || $disposition == 'use as is' ? 'checked' : '' }}
+                                {{ dispositionCondition($qdn->disposition, $disposition) ? 'checked' : '' }}
                                 >
                                 {{ Str::upper($disposition) }}
                             </label>

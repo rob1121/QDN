@@ -16,9 +16,6 @@ a.carousel-control .fa {
 margin:100% 0 100% 0;
 vertical-align: middle;
 }
-.item {
-height: 600px;
-}
 .item img {
 width:100%;
 height:100%;
@@ -29,7 +26,7 @@ margin-bottom:0px;
 .main-top,
 .main-bottom {
 padding-top:140px;
-padding-bottom:280px;
+padding-bottom:50px;
 }
 #wrap {
 background-color: #fff;
@@ -105,7 +102,7 @@ padding:24px 15px 24px 15px;
     </form>
 </div>
 <!-- ============= carousel ==================================== -->
-<div id="carousel-id" class="carousel slide" data-ride="carousel">
+<div id="carousel-id" class="carousel slide wow fadeIn" data-wow-offset="400" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target = "#carousel-id" data-slide-to="0" class="active"></li>
         <li data-target = "#carousel-id" data-slide-to="1" class=""></li>
@@ -118,47 +115,49 @@ padding:24px 15px 24px 15px;
         <div class="item active">
             <img
             alt="First slide"
-            src="http://www.stigp.com/images/banner/home-banner-1.jpg"
+            src="http://www.telfordgp.com/images/banner/home-banner-1.jpg"
             >
         </div>
         <div class="item">
             <img
             alt = "Second slide"
-            src = "http://www.stigp.com/images/banner/home-banner-2.jpg"
+            src = "http://www.telfordgp.com/images/banner/home-banner-2.jpg"
             >
         </div>
         <div class="item">
             <img
             alt = "Third slide"
-            src = "http://www.stigp.com/images/banner/home-banner-3.jpg"
+            src = "http://www.telfordgp.com/images/banner/home-banner-3.jpg"
             >
         </div>
         <div class="item">
             <img
             alt = "Third slide"
-            src = "http://www.stigp.com/images/banner/home-banner-6.jpg"
+            src = "http://www.telfordgp.com/images/banner/home-banner-6.jpg"
             >
         </div>
         <div class="item">
             <img
             alt = "Third slide"
-            src = "http://www.stigp.com/images/banner/home-banner-5.jpg"
+            src = "http://www.telfordgp.com/images/banner/home-banner-5.jpg"
             >
         </div>
     </div>
-    <a class="left carousel-control" href="#carousel-id" data-slide="prev"><span class="fa fa-chevron-left fa-5x"></span></a>
-    <a class="right carousel-control" href="#carousel-id" data-slide="next"><span class="fa fa-chevron-right fa-5x"></span></a>
 </div>
 <!-- ========================== telford ================================= -->
-<div class="container main-bottom wow fadeInLeft" data-wow-offset="450">
-    <h1 class="text-center"><i class="fa fa-fort-awesome fa-2x"></i></h1>
-    <h1 class="text-center" id="company-name">
+<div class="container main-bottom">
+    <h1 class="text-center wow fadeInDown" id="company-name" data-wow-offset="250"><i class="fa fa-fort-awesome fa-2x"></i>
     Telford Svc. Phils., Inc.
     </h1>
-    <h3 class="help-block text-center">
+    <h3 class="help-block text-center wow fadeIn" data-wow-offset="250">
     Telford Building, Linares St. Barangay Javalera Gen. Trias, Cavite Philippines, 4117
     </h3 class="help-block text-center">
-    <h3 class="help-block text-center">
+    <br><br><br>
+    <!-- ====================================== brief description of telford ====================================== -->
+    <h3 class="help-block text-center wow fadeIn" data-wow-offset="250"><em>Telford Svc. Phils. Inc. was incorporated in 2000 to provide backend semiconductor manufacturing services such as taping, de-taping as well as inspection and other related activities such as IC programming to MNCs in South Philippines.
+    It has established successful strong 'partnership programs' with renowned MNCs.</em></h3>
+    <br><br><br>
+    <h3 class="help-block text-right wow fadeIn" data-wow-offset="250">
     {{ Carbon::now('Asia/Manila')->format('m/d/Y h:i:s A') }}
     </h3>
 </div>
@@ -166,19 +165,19 @@ padding:24px 15px 24px 15px;
 @section('script')
 <script>
 $(function() {
-  new WOW().init();
-  $('#login-form').validate({
-    rules: {
-      employee_id: {
-        required: true
-      },
-      password: {
-        required: true
-      }
-    },
-    errorClass: "error",
-    errorElement: "span"
-  });
+new WOW().init();
+$('#login-form').validate({
+rules: {
+employee_id: {
+required: true
+},
+password: {
+required: true
+}
+},
+errorClass: "error",
+errorElement: "span"
+});
 });
 </script>
 @stop

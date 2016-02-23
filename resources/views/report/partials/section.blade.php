@@ -10,6 +10,7 @@
                 <input
                 type  = 'radio'
                 name  = 'disposition'
+                class = 'disposition'
                 value = '{{ $disposition }}'
                 disabled
                 {{

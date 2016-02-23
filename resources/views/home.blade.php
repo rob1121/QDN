@@ -95,7 +95,7 @@
         <div class="panel-body" id="{{ $panel[4] }}">
             {{ $panel[0] }}
         </div>
-        <a class="h5" target="_blank" href="/pareto?category={{ $panel[3] }}">
+        <a class="h5" href="/pareto?category={{ $panel[3] }}">
             <div
                 class         = "panel-footer"
             >
@@ -197,7 +197,7 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th class="col-md-6">Desciption</th>
+                    <th class="col-md-5">Desciption</th>
                     <th>Station</th>
                     <th>Customer</th>
                     <th>Receiver</th>

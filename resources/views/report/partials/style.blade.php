@@ -144,5 +144,4 @@ width : 50% ;
   margin-top:-20px;
 }
 </style>
-@yield('substyle')
 @stop

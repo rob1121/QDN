@@ -1,65 +1,72 @@
-
 .navbar .padder {
-    padding: 5em 2em 5em 2em;
+  padding: 5em 2em 5em 2em;
 }
+
 .navbar-brand {
-    font-family: $big-font;
-    font-size: 50px;
-    font-weight: bold;
+  font-family: $big-font;
+  font-size: 50px;
+  font-weight: bold;
 }
+
 .navbar-brand p.subtitle {
-    font-family:$subtitle-font;
-    margin-top: 10px;
-    font-size: 14px;
+  font-family: $subtitle-font;
+  margin-top: 10px;
+  font-size: 14px;
 }
 
 @media screen and (max-width: 350px) {
-    .navbar-brand {
-        font-size: 24px;
-    }
-    .navbar-brand p.subtitle {
-        margin-top: -5px;
-        font-size: 7px;
-    }
+  .navbar-brand {
+    font-size: 24px;
+  }
+
+  .navbar-brand p.subtitle {
+    margin-top: -5px;
+    font-size: 7px;
+  }
 }
-.navbar-brand, .navbar-nav li a {
-    color:$dim-grey;
+
+.navbar-brand,
+.navbar-nav li a {
+  color: $dim-grey;
 }
 
 .navbar.stuck {
-    background-color: $dim-grey;
-    position:fixed;
-    width:100%;
-    color:$light-blue;
+  background-color: $dim-grey;
+  position: fixed;
+  width: 100%;
+  color: $light-blue;
 }
+
 .stuck .navbar-brand {
-    font-size: 24px;
-    color:$dim-blue;
+  font-size: 24px;
+  color: $dim-blue;
 }
+
 .stuck .navbar-brand p.subtitle {
-    margin-top: -5px;
-    font-size: 7px;
-    color:$dim-blue;
+  margin-top: -5px;
+  font-size: 7px;
+  color: $dim-blue;
 }
+
 .stuck .navbar-nav li a {
-    color:$dim-blue;
+  color: $dim-blue;
 }
 
 .navbar-brand:hover,
 .navbar-nav li a:hover,
 .navbar-brand:focus,
 .navbar-nav li a:focus {
-    color:$light-blue;
-    background-color: rgba(0,0,0,0);
-    border: 0px;
-
+  color: #214E76;
+  background-color: rgba(0, 0, 0, 0);
+  border: 0px;
 }
+
 .stuck .navbar-brand:hover,
 .stuck .navbar-nav li a:hover,
 .stuck .navbar-brand:focus,
 .stuck .navbar-nav li a:focus,
 .active {
-    background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-menu li a,
@@ -68,20 +75,20 @@
 }
 
 .dropdown.open a:focus {
-    background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
 }
+
 .stuck .dropdown-menu li a:hover {
-    color: $dim-grey;
-    background-color: rgba(0,0,0,0.1);
+  color: $dim-grey;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .dropdown {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .dropdown.open .dropdown-menu {
-    border-radius: 0px;
-    -webkit-box-shadow: 0 0px 0px rgba(0,0,0,0);
-    box-shadow: 0 0px 0px rgba(0,0,0,0);
+  border-radius: 0px;
+  -webkit-box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
 }
-    

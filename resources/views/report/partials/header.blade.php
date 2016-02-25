@@ -7,8 +7,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">
         PRODUCT DESCRIPTION/ PROBLEM DETAILS
-        @if ($currentUser->Employee->department == 'process'
-        || $currentUser->access_level == 'Admin')
+        @if ($show)
         <a
             target         = "_blank"
             href           = "{{ route('pdf', ['slug'=> $qdn->slug]) }}"

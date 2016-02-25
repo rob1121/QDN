@@ -40,17 +40,16 @@ class reportController extends CrudController {
 	 * @param  [type] $slug [description]
 	 * @return [type]       [description]
 	 */
-	public function show($slug) {
-		$qdn = Info::whereSlug($slug)->first();
-
+	public function show(Info $slug) {
+		$qdn        = $slug;
 		$department = $qdn->involvePerson()
 			->select('department')
 			->get()
 			->toArray();
 
-		$department = array_unique(array_flatten($department));
-		$linkDraft = route('draft_link', ['slug' => $slug]);
-		$linkApproval = route('approval_link', ['slug' => $slug]);
+		$department   = array_unique(array_flatten($department));
+		$linkDraft    = route('draft_link', ['slug' => $qdn->slug]);
+		$linkApproval = route('approval_link', ['slug' => $qdn->slug]);
 
 		JavaScript::put('linkDraft', $linkDraft);
 		JavaScript::put('linkApproval', $linkApproval);
@@ -67,7 +66,7 @@ class reportController extends CrudController {
 	 * @param  Request $request [description]
 	 * @return [type]           [description]
 	 */
-	public function draft($slug, Request $request) {
+	public function draft(Info $slug, Request $request) {
 		$this->save($slug, $request);
 		Flash::success('Successfully save! Issued QDN are save as draft and still subject for completion!');
 		return redirect('/');
@@ -79,8 +78,9 @@ class reportController extends CrudController {
 	 * @param  Request $request [description]
 	 * @return [type]           [description]
 	 */
-	public function forApproval($slug, Request $request) {
+	public function forApproval(Info $slug, Request $request) {
 		$this->save($slug, $request);
+		$slug->closure()->update(['status' => 'incomplete approval']);
 		// send email
 		Flash::success('Successfully save! Issued QDN is now subject for Approval!');
 		return redirect('/');
@@ -92,9 +92,9 @@ class reportController extends CrudController {
 	 * @return [type]       [description]
 	 */
 
-	public function pdf($slug) {
-		$qdn = Info::whereSlug($slug)->first();
-		$department = getDepartment($qdn);
+	public function pdf(Info $slug) {
+		$qdn        = $slug;
+		$department = $this->getDepartment($qdn);
 		return PDF::loadHTML(view('pdf.print', compact('qdn', 'department')))->stream();
 		// return file_get_contents('/');
 	}
@@ -104,16 +104,17 @@ class reportController extends CrudController {
 	 * @param  [type] $slug [description]
 	 * @return [type]       [description]
 	 */
-	public function approval($slug) {
-		$qdn = Info::whereSlug($slug)->first();
-
-		$department = getDepartment($qdn);
-		$linkDraft = route('draft_link', ['slug' => $slug]);
-		$linkApproval = route('approval_link', ['slug' => $slug]);
+	public function approval(Info $slug) {
+		$qdn          = $slug;
+		$department   = $this->getDepartment($qdn);
+		$linkDraft    = route('draft_link', ['slug' => $slug->slug]);
+		$linkApproval = route('approval_link', ['slug' => $slug->slug]);
 
 		JavaScript::put('linkDraft', $linkDraft);
 		JavaScript::put('linkApproval', $linkApproval);
-
+		JavaScript::put('category', $qdn->major);
+		JavaScript::put('discrepancy_category', $qdn->discrepancy_category);
+		JavaScript::put('qdn', $qdn);
 		return view('report.approval.view', compact('qdn', 'department'));
 	}
 

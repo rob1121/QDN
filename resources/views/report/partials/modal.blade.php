@@ -72,6 +72,7 @@ function dispositionCondition($qdn, $disposition) {
                             Save as Draft <i class="fa fa-save"></i><br>
                             <small>and come back soon</small>
                             </button>
+                            @if ($currentUser->employee->department == 'process')
                             <button
                             type  = "submit"
                             name  = "submit"
@@ -82,6 +83,7 @@ function dispositionCondition($qdn, $disposition) {
                             Confirm Changes <i class="fa fa-paper-plane"></i><br>
                             <small>and send notification</small>
                             </button>
+                            @endif
                         </div>
                     </div>
                 </div>

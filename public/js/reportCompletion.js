@@ -184,18 +184,24 @@ $('#completion').validate({
     errorElement: "span"
 });
 
-$('#btn-group button').on('click', function() {
-    var $this = $(this),
+$('#btn-group button').on('click', function(e) {
+    e.preventDefault();
+    var self = $(this),
+        form = $('form#completion'),
         action = "save as draft";
 
-    $('#completion').attr('action', linkDraft);
+    form.attr('action', linkDraft);
 
-    if ($this.attr('id') == "aprroval_button") {
+    if (self.attr('id') == "aprroval_button") {
         action = "submit for approval";
-        $('#completion').attr('action', linkApproval);
+        form.attr('action', linkApproval);
     }
 
-    return confirm('Are you sure you want to ' + action + '?');
+    if (confirm('Are you sure you want to ' + action + '?')) {
+        form.submit();
+    }
+
+
 });
 
 /**

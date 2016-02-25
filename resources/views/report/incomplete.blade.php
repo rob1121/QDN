@@ -18,7 +18,7 @@
         {!! csrf_field() !!}
         @include('report.partials.section', ['hidden' => '', 'disabled' => ''])
     </div>
-    @if ($qdn->closure->status == 'incomplete')
+    @if ($qdn->closure->status == 'incomplete fill-up' && $show)
     <div class="text-right container" id="btn-group">
         <button
         type    = 'submit'
@@ -42,17 +42,7 @@
     @endif
 </form>
 @stop
-@section('script')
-    <script src="/vendor/js/bootstrap-datepicker.js"></script>
-    <script src="/vendor/js/select2.min.js"></script>
-    <script src="/js/reportCompletion.js"></script>
-    <script type="text/javascript">
-$(function() {
-//======================= PE verification button ===================================
-$('#verification-btn').on('click', function(e) {
-    return confirm('Are you sure you want to confirm changes and proceed the form for completion?');
-});
-});
-    </script>
-@stop
+@push('scripts')
+@include('report.partials.script')
+@endpush
 

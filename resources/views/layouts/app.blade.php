@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
         <script  data-pace-options='{ "ajax": false }' src="/vendor/js/pace.js"></script>
         @yield('style')
+        @stack('style')
     </head>
     <body hidden>
         <div id="wrap">
@@ -24,11 +25,12 @@
         {{-- @include('layouts.scriptVendor') --}}
         <script src="/js/all.js"></script>
         <script src="/js/app.js"></script>
+        @yield('script')
+        @stack('scripts')
         <script>
         $(function() {
-            $('body').show();
+            $('body').fadeIn();
         });
         </script>
-        @yield('script')
     </body>
 </html>

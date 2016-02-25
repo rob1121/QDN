@@ -74,7 +74,8 @@
     margin-top: -5px;
     font-size: 7px; } }
 
-.navbar-brand, .navbar-nav li a {
+.navbar-brand,
+.navbar-nav li a {
   color: #3b3a36; }
 
 .navbar.stuck {
@@ -99,7 +100,7 @@
 .navbar-nav li a:hover,
 .navbar-brand:focus,
 .navbar-nav li a:focus {
-  color: #c0dfd9;
+  color: #214E76;
   background-color: transparent;
   border: 0px; }
 

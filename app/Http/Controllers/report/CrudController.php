@@ -16,9 +16,13 @@ use Auth;
 use Carbon;
 
 class CrudController extends Controller {
-
-	public function save($slug, $request) {
-		$info = Info::where('slug', $slug)->first();
+	/**
+	 * update qdn database
+	 * @param  [type] $slug    [description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function save($info, $request) {
 		$info->CauseOfDefect()->update([
 			'cause_of_defect'             => $request->cause_of_defect,
 			'cause_of_defect_description' => $request->cause_of_defect_description,
@@ -40,7 +44,10 @@ class CrudController extends Controller {
 			'objective_evidence' => $request->upload_preventive_action,
 		]);
 	}
-
+	/**
+	 * insert new qdn to the database
+	 * @param [type] $request [description]
+	 */
 	public function add($request) {
 		$currentUser = Auth::user();
 		$currentYear = Carbon::now('Asia/Manila')->format('y');
@@ -70,7 +77,7 @@ class CrudController extends Controller {
 			'machine'              => $request->machine,
 			'station'              => $request->station,
 			'major'                => $request->major,
-			'disposition'          => '',
+			'disposition'          => 'use as is',
 			'problem_description'  => $request->problem_description,
 			'failure_mode'         => $request->failure_mode,
 			'discrepancy_category' => $request->discrepancy_category,

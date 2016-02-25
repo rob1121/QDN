@@ -46,6 +46,23 @@ padding:24px 15px 24px 15px;
 input.form-control {
 padding:24px 15px 24px 15px;
 }
+.btn-primary {
+    background-color: #800000;
+    border:0px;
+}
+.btn-primary:hover {
+    background-color: #800000;
+  -webkit-filter: brightness(110%);
+  -webkit-transform: scale(1.03);
+  transform: scale(1.03);
+
+
+        /*border: 1px solid #800;*/
+        -webkit-transform: scale(1.03);
+        transform: scale(1.03);
+        position: relative;
+        z-index: 1;
+}
 </style>
 @stop
 @section('content')

@@ -18,7 +18,7 @@
         {!! csrf_field() !!}
         @include('report.partials.section', ['hidden' => 'hidden', 'disabled' => 'disabled'])
     </div>
-    @if ($qdn->closure->status == 'incomplete')
+    @if ($qdn->closure->status == 'incomplete fill-up' && $show)
     <div class="text-right container" id="btn-group">
         <button
         type    = 'submit'
@@ -43,11 +43,8 @@
 </form>
 @include('report.partials.modal')
 @stop
-@section('script')
-    <script src="/vendor/js/bootstrap-datepicker.js"></script>
-    <script src="/vendor/js/select2.min.js"></script>
-    <script src="/js/reportCompletion.js"></script>
-    <script src="/js/reportForm.js"></script>
+@push('scripts')
+@include('report.partials.script')
     <script type="text/javascript">
 $(function() {
 $('#draft-button').on('click', function(e) {
@@ -110,5 +107,5 @@ $('#verification-btn').on('click', function(e) {
 });
 });
     </script>
-@stop
+@endpush
 

@@ -41,6 +41,7 @@
     </div>
     @endif
 </form>
+@include('report.partials.modal')
 @stop
 @push('scripts')
 @include('report.partials.script')

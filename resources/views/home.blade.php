@@ -187,7 +187,6 @@
 
 {{-- container for collapse data filtered by status----================================= --}}
 <div class="container" id="">
-
 @foreach ($status as $panel)
     <div class="collapse" id="{{ $panel[1] }}">
       <div class="well">

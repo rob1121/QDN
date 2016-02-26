@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\EmailQdnNotificationEvent;
 use App\Http\Controllers\report\CrudController;
 use App\Http\Requests\QdnCreateRequest;
 use App\Models\Info;
+use Event;
 use Flash;
 use Illuminate\Http\Request;
 use JavaScript;
@@ -30,8 +32,14 @@ class reportController extends CrudController {
 	 * @return [type]                    [description]
 	 */
 	public function store(QdnCreateRequest $request) {
-		$this->add($request);
-		Flash::success('Success! Team responsible will be notified regarding the issue via email!');
+		Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!');
+		if (Info::isExist($request)->count() == 0) {
+			$this->add($request);
+			//send email notification
+			Event::fire(new EmailQdnNotificationEvent());
+			Flash::success('Success! Team responsible will be notified regarding the issue via email!');
+		}
+
 		return redirect('/');
 	}
 

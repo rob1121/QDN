@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Events\EmailQdnNotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Info;
 use App\Models\InvolvePerson;
+use Event;
+use Flash;
 use Illuminate\Http\Request;
 use JavaScript;
-use Laracasts\Flash\Flash as Flash;
 
 class ActionController extends Controller {
 
@@ -53,7 +55,7 @@ class ActionController extends Controller {
 	 */
 	public function SectionOneSaveAndProceed(Request $request, Info $slug) {
 		//send mail
-		// Event::fire(new EmailQdnNotificationEvent());
+		Event::fire(new EmailQdnNotificationEvent());
 		$this->SectionOneUpdate($request, $slug);
 		$slug->closure()->update(['status' => $request->status]);
 
@@ -95,6 +97,21 @@ class ActionController extends Controller {
 
 		$department = array_unique(array_flatten($department));
 		return view('report.incomplete', compact('qdn', 'department'));
+	}
+
+	/**
+	 * view of qdn that are for closure
+	 * @param Info $slug [description]
+	 */
+	public function QaVerification(Info $slug) {
+		// view qdn
+	}
+
+	public function QaVerificationUpdate(Info $slug, Request $request) {
+		// update qdn closures
+		// send email notification
+		// add flash alert notification
+		// view home page
 	}
 
 }

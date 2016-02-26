@@ -225,7 +225,7 @@ $('#discrepancy_category').on('change', function() {
         $("#quantity-field").fadeIn(300);
     } else {
         $("#quantity-field").fadeOut(300);
-        $("#quantity-field").val(0);
+        $("#quantity").val(0);
     }
 });
 });

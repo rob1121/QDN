@@ -16,14 +16,16 @@
             print
             <i class="fa fa-print"></i>
         </a>
+        @if ($currentUser->access_level == 'Admin' || strpos(Request::url(), 'report/'.$qdn->slug) != 0)
         <a
             class       = 'edit link'
             data-toggle = 'modal'
             href        = '#edit'
             >
-            {{ $qdn->closure->status == 'p.e. verification' ? 'verify' : 'edit' }}
+            {{ $qdn->closure->status == 'p.e. verification' && $currentUser->employee->department == 'process' ? 'verify' : 'edit' }}
             <i class="fa fa-edit"></i>
         </a>
+        @endif
         @endif
         </h3>
     </div>

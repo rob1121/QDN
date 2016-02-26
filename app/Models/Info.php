@@ -188,5 +188,20 @@ class Info extends Model implements SluggableInterface {
 		$query->skip($start)
 			->take($take);
 	}
+	public function scopeIsExist($query, $request) {
+		$query->whereCustomer($request->customer)
+			->wherePackage_type($request->package_type)
+			->whereDevice_name($request->device_name)
+			->whereLot_id_number($request->lot_id_number)
+			->whereLot_quantity($request->lot_quantity)
+			->whereJob_order_number($request->job_order_number)
+			->whereMachine($request->machine)
+			->whereStation($request->station)
+			->whereMajor($request->major)
+			->whereProblem_description($request->problem_description)
+			->whereFailure_mode($request->failure_mode)
+			->whereDiscrepancy_category($request->discrepancy_category)
+			->whereQuantity($request->quantity);
+	}
 
 }

@@ -131,11 +131,11 @@ class HomeController extends Controller {
 	 */
 	public function counter() {
 
-		$qdn   = Info::whereYear('create_at', $this->dateTime->year)->get();
+		$qdn   = Info::whereYear('created_at', '=', $this->dateTime->year)->get();
 		$year  = $qdn->count();
-		$month = $qdn->whereMonth('create_at', $this->dateTime->month)->count();
+		$month = $qdn->whereMonth('created_at', '=', $this->dateTime->month)->count();
 		$week  = $qdn->where(DB::raw('WEEK(created_at)'), $this->dateTime->weekOfYear)->count();
-		$today = $qdn->whereDate('create_at', $this->dateTime->format('Y-m-d'))->count();
+		$today = $qdn->whereDate('created_at', '=', $this->dateTime->format('Y-m-d'))->count();
 
 		$closure        = Closure::all();
 		$peVerification = $closure->whereStatus('p.e. verification')->count();

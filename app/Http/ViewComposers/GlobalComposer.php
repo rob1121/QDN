@@ -14,7 +14,9 @@ class GlobalComposer {
 	 */
 	public function compose(View $view) {
 		$view->with('currentUser', Auth::user());
-		$view->with('show', Auth::user()->Employee->department == 'process' || Auth::user()->access_level == 'Admin');
+		if (Auth::user()) {
+			$view->with('show', Auth::user()->Employee->department == 'process' || Auth::user()->access_level == 'Admin');
+		}
 	}
 
 }

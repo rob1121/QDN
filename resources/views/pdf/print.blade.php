@@ -1,3 +1,10 @@
+<?php
+$qdn->major == "minor"
+? '[&nbsp;x&nbsp;]'
+: '[&nbsp;&nbsp;&nbsp;&nbsp;]';
+$count = 0;
+$names = $qdn->involvePerson()->get();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -118,37 +125,28 @@
         border:0px;
         text-align: right;
         }
-
         #signature {
-            text-align: center;
-            padding-top:40px;
-            font-weight:bold;
-
+        text-align: center;
+        padding-top:40px;
+        font-weight:bold;
         }
-
         #signature-label {
-            border-top:1px solid black;
-            margin: 0px 10px 0px 10px;
-            font-weight:bold;
+        border-top:1px solid black;
+        margin: 0px 10px 0px 10px;
+        font-weight:bold;
         }
-
         .page-break {
-            page-break-after: always;
+        page-break-after: always;
         }
         </style>
     </head>
     <body>
-    <?php
-$count = 0;
-$names = $qdn->involvePerson()->get();
-?>
-
-      @foreach ($names as $name)
-      @if ($count != 0)
+        @foreach ($names as $name)
+        @if ($count != 0)
         <div class="page-break"></div>
-      @endif
-      <?php $count += 1;?>
-            <h3 class="logo">{{ Str::upper('quality deviation notice') }}</h3>
+        @endif
+        <?php $count += 1;?>
+        <h3 class="logo">{{ Str::upper('quality deviation notice') }}</h3>
         <table id="frame">
             <tr>
                 <td colspan="3" class="title">
@@ -212,11 +210,7 @@ $names = $qdn->involvePerson()->get();
                                 <tr>
                                     <td class = "label">Minor:</td>
                                     <td>
-                                        <?=
-$qdn->major == "minor"
-? '[&nbsp;x&nbsp;]'
-: '[&nbsp;&nbsp;&nbsp;&nbsp;]';
-?>
+                                        {{ $qdn->major }}
                                     </td>
                                 </tr>
                             </table>
@@ -295,32 +289,67 @@ $qdn->major == "minor"
                 {{-- THIRD SECTION --}}
                 <tr>
                     <td colspan="3" id="s3">
-                    <div class="s3">
-                        <table>
-                            <tr>
-                                @foreach ($cod_check as $cod)
-                                <td>
-                                    {{
-                                    $qdn->CauseOfDefect->cause_of_defect == $cod
-                                    ? '[&nbsp;x&nbsp;]'
-                                    : '[&nbsp;&nbsp;&nbsp;&nbsp;]'
-                                    }}
-                                    <strong>{{ Str::upper($cod) }}</strong>
-                                </td>
-                                @endforeach
+                        <div class="s3">
+                            <table>
+                                <tr>
+                                    @foreach ($cod_check as $cod)
+                                    <td>
+                                        {{
+                                        $qdn->CauseOfDefect->cause_of_defect == $cod
+                                        ? '[&nbsp;x&nbsp;]'
+                                        : '[&nbsp;&nbsp;&nbsp;&nbsp;]'
+                                        }}
+                                        <strong>{{ Str::upper($cod) }}</strong>
+                                    </td>
+                                    @endforeach
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="comment" colspan="3">
+                        {{ $qdn->CauseOfDefect->cause_of_defect_description }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title" colspan='3'>
+                        {{ Str::upper('containment action:') }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="s4">
+                            <table>
+                                <tr>
+                                    <td><strong>WHAT</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="what">{{ $qdn->containmentAction->what }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="s4">
+                            <table>
+                                <tr>
+                                    <td style="width:50%"><strong>WHO</strong></td>
+                                    <td style="width:50%"><strong>WHEN</strong></td>
+                                </tr>
+                                <tr>
+                                    <td class="who">{{ $qdn->containmentAction->who }}</td>                            <td class="when">{{
+                                    Carbon::parse($qdn->containmentAction->updated_at)
+                                    ->format('m/d/Y')
+                                }}</td>
                             </tr>
                         </table>
                     </div>
                 </td>
             </tr>
             <tr>
-                <td class="comment" colspan="3">
-                    {{ $qdn->CauseOfDefect->cause_of_defect_description }}
-                </td>
-            </tr>
-            <tr>
                 <td class="title" colspan='3'>
-                    {{ Str::upper('containment action:') }}
+                    {{ Str::upper('corrective action:') }}
                 </td>
             </tr>
             <tr>
@@ -331,7 +360,7 @@ $qdn->major == "minor"
                                 <td><strong>WHAT</strong></td>
                             </tr>
                             <tr>
-                                <td class="what">{{ $qdn->containmentAction->what }}</td>
+                                <td class="what">{{ $qdn->correctiveAction->what }}</td>
                             </tr>
                         </table>
                     </div>
@@ -344,29 +373,29 @@ $qdn->major == "minor"
                                 <td style="width:50%"><strong>WHEN</strong></td>
                             </tr>
                             <tr>
-                                <td class="who">{{ $qdn->containmentAction->who }}</td>                            <td class="when">{{
-                                Carbon::parse($qdn->containmentAction->updated_at)
-                                ->format('m/d/Y')
-                            }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="title" colspan='3'>
-                {{ Str::upper('corrective action:') }}
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div class="s4">
+                                <td class="who">{{ $qdn->correctiveAction->who }}</td>
+                                <td class="when">{{
+                                    Carbon::parse($qdn->correctiveAction->updated_at)
+                                    ->format('m/d/Y')
+                                }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="title" colspan='3'>
+                    {{ Str::upper('preventive action:') }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><div class="s4">
                     <table>
                         <tr>
                             <td><strong>WHAT</strong></td>
                         </tr>
                         <tr>
-                            <td class="what">{{ $qdn->correctiveAction->what }}</td>
+                            <td class="what">{{ $qdn->preventiveAction->what }}</td>
                         </tr>
                     </table>
                 </div>
@@ -379,152 +408,115 @@ $qdn->major == "minor"
                             <td style="width:50%"><strong>WHEN</strong></td>
                         </tr>
                         <tr>
-                            <td class="who">{{ $qdn->correctiveAction->who }}</td>
+                            <td class="who">{{ $qdn->preventiveAction->who }}</td>
                             <td class="when">{{
-                            Carbon::parse($qdn->correctiveAction->updated_at)
-                            ->format('m/d/Y')
-                        }}</td>
-                    </tr>
-                </table>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td class="title" colspan='3'>
-            {{ Str::upper('preventive action:') }}
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"><div class="s4">
-            <table>
-                <tr>
-                    <td><strong>WHAT</strong></td>
-                </tr>
-                <tr>
-                    <td class="what">{{ $qdn->preventiveAction->what }}</td>
-                </tr>
-            </table>
-        </div>
-    </td>
-    <td>
-        <div class="s4">
-            <table>
-                <tr>
-                    <td style="width:50%"><strong>WHO</strong></td>
-                    <td style="width:50%"><strong>WHEN</strong></td>
-                </tr>
-                <tr>
-                    <td class="who">{{ $qdn->preventiveAction->who }}</td>
-                    <td class="when">{{
-                    Carbon::parse($qdn->preventiveAction->updated_at)
-                    ->format('m/d/Y')
-                }}</td>
-            </tr>
-        </table>
-    </div>
-</td>
-</tr>
-<tr>
-<td colspan='3' class="title">
-    {{ Str::upper('approvals:') }}
-</td>
-</tr>
-<tr>
-<td colspan="3">
-    <div class="approval-by" >
-        <table>
-        <tr>
-            <td id="signature">{{ Str::upper($qdn->closure->production) }}</td>
-            <td id="signature">{{ Str::upper($qdn->closure->process_engineering) }}</td>
-            <td id="signature">{{ Str::upper($qdn->closure->quality_assurance) }}</td>
-            <td id="signature">{{ Str::upper($qdn->closure->other_department) }}</td>
-        </tr>
-            <tr>
-                @foreach ($approvers as $approver)
-                <td style="text-align: center;">
-                <div id="signature-label">{{ Str::upper($approver) }}</div></td>
-                @endforeach
-            </tr>
-        </table>
-    </div>
-</td>
-</tr>
-<tr>
-<td colspan='3' class="title">
-    {{ Str::upper('verified by:') }}
-</td>
-</tr>
-<tr>
-<td colspan="3">
-    <div class="verified-by">
-        <table>
-        <tr>
-            <td style="text-align: left;padding-left:32px;width:85%"><strong>CONTAINMENT ACTION/S TAKEN?</strong></td>
-            <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] YES</strong></td>
-            <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] NO</strong></td>
-            <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] NO</strong></td>
-        </tr>
-        <tr>
-            <td style="text-align: left;padding-left:32px;width:85%"><strong>CORRECTIVE ACTION/S TAKEN?</strong></td>
-            <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] YES</strong></td>
-            <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] NO</strong></td>
-            <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] NO</strong></td>
-        </tr>
-            <tr>
-                <td colspan="2" style="text-align: left;width:60%;padding-top:30px">
-                    <table>
-                        <tr>
-                            <td style="padding-left:32px;width:20%;text-align:right">
-                                <strong>Verified By:</strong>
-                            </td>
-                            <td>
-                                <div
-                                style="
-                                    border-bottom:1px solid black;
-                                    width:50%;
-                                    text-align:center;
-                                    font-weight:bold;
-                                "
-                                >{{ Str::upper($qdn->closure->close_by) }}
-                                </div>
-                            </td>
+                                Carbon::parse($qdn->preventiveAction->updated_at)
+                                ->format('m/d/Y')
+                            }}</td>
                         </tr>
                     </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='3' class="title">
+                {{ Str::upper('approvals:') }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div class="approval-by" >
+                    <table>
+                        <tr>
+                            <td id="signature">{{ Str::upper($qdn->closure->production) }}</td>
+                            <td id="signature">{{ Str::upper($qdn->closure->process_engineering) }}</td>
+                            <td id="signature">{{ Str::upper($qdn->closure->quality_assurance) }}</td>
+                            <td id="signature">{{ Str::upper($qdn->closure->other_department) }}</td>
+                        </tr>
+                        <tr>
+                            @foreach ($approvers as $approver)
+                            <td style="text-align: center;">
+                                <div id="signature-label">{{ Str::upper($approver) }}</div></td>
+                                @endforeach
+                            </tr>
+                        </table>
+                    </div>
                 </td>
-                <td  colspan="2" style="text-align: left;width:40%">
-                    <table>
-                        <tr>
-                            <td style="padding-left:32px;width:20%;text-align:right">
-                                <strong>Date:</strong>
-                            </td>
-
-                            <td>
-                                <div
-                                style="
-                                    border-bottom:1px solid black;
-                                    width:50%;
-                                    text-align:center;
-                                    font-weight:bold;
-                                "
-                                >{{ Carbon::parse($qdn->closure->updated_at)->format('m/d/Y') }}
-                                </div>
-                            </td>
-
-                        </tr>
-                    </table>
+            </tr>
+            <tr>
+                <td colspan='3' class="title">
+                    {{ Str::upper('verified by:') }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="verified-by">
+                        <table>
+                            <tr>
+                                <td style="text-align: left;padding-left:32px;width:85%"><strong>CONTAINMENT ACTION/S TAKEN?</strong></td>
+                                <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] YES</strong></td>
+                                <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] NO</strong></td>
+                                <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] NO</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;padding-left:32px;width:85%"><strong>CORRECTIVE ACTION/S TAKEN?</strong></td>
+                                <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] YES</strong></td>
+                                <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] NO</strong></td>
+                                <td style="text-align: left;width:5%"><strong>[&nbsp;x&nbsp;] NO</strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left;width:60%;padding-top:30px">
+                                    <table>
+                                        <tr>
+                                            <td style="padding-left:32px;width:20%;text-align:right">
+                                                <strong>Verified By:</strong>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    style="
+                                                    border-bottom:1px solid black;
+                                                    width:50%;
+                                                    text-align:center;
+                                                    font-weight:bold;
+                                                    "
+                                                    >{{ Str::upper($qdn->closure->close_by) }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td  colspan="2" style="text-align: left;width:40%">
+                                    <table>
+                                        <tr>
+                                            <td style="padding-left:32px;width:20%;text-align:right">
+                                                <strong>Date:</strong>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    style="
+                                                    border-bottom:1px solid black;
+                                                    width:50%;
+                                                    text-align:center;
+                                                    font-weight:bold;
+                                                    "
+                                                    >{{ Carbon::parse($qdn->closure->updated_at)->format('m/d/Y') }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </td>
             </tr>
         </table>
-    </div>
-</td>
-</tr>
-</table>
-<table id="frame" style="border:0px;font-weight:bold">
-    <tr>
-        <td id="comp-name" colspan="2">Telford Svc. Phils Inc.</td>
-        <td id="rev">Rev. ##</td>
-    </tr>
-</table>
-      @endforeach
-</body>
+        <table id="frame" style="border:0px;font-weight:bold">
+            <tr>
+                <td id="comp-name" colspan="2">Telford Svc. Phils Inc.</td>
+                <td id="rev">Rev. ##</td>
+            </tr>
+        </table>
+        @endforeach
+    </body>
 </html>

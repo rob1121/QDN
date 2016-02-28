@@ -1,0 +1,4 @@
+tasks:
+  ☐ create event / listener that will listen and log every database activity. @critical
+  ☐ create relationship from log table to info table @critical
+  ✘ create char counter for create.blade.php of maximum 250 @high @cancelled (16-02-28 01:28)

@@ -32,7 +32,7 @@
     </div>
     <div class="panel-body">
         <div class="col-xs-12">
-            <div class="container">
+            <div class="container" id="cause-of-defect-section">
                 @foreach ($cod_check as $cod)
                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-6 pull-left">
                     <input

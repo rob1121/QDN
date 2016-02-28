@@ -1,9 +1,6 @@
 <?php
-//this is for my decision making if im gonna cotinue on interface or continue with this extends only
-namespace App\Http\Controllers\report;
-
+namespace App\repo;
 use App\Employee;
-use App\Http\Controllers\Controller;
 use App\Models\CauseOfDefect;
 use App\Models\Closure;
 use App\Models\ContainmentAction;
@@ -14,8 +11,33 @@ use App\Models\PreventiveAction;
 use App\Models\QdnCycle;
 use Auth;
 use Carbon;
+use JavaScript;
 
-class CrudController extends Controller {
+class InfoRepository implements InfoRepositoryInterface {
+	public function view($qdn, $view) {
+		$department = $this->department($qdn);
+		JavaScript::put('link', $this->links($qdn->slug));
+		JavaScript::put('qdn', $qdn);
+		return view($view, compact('qdn', 'department'));
+	}
+
+	public function links($slug) {
+		return [
+			'linkDraft'    => route('draft_link', ['slug' => $slug]),
+			'linkApproval' => route('approval_link', ['slug' => $slug]),
+		];
+	}
+
+	/**
+	 * get department of each
+	 * @param  [type] $qdn [description]
+	 * @return [type]      [description]
+	 */
+	public function department($qdn) {
+		$department        = $qdn->involvePerson()->select('department')->get()->toArray();
+		return $department = array_unique(array_flatten($department));
+	}
+
 	/**
 	 * update qdn database
 	 * @param  [type] $slug    [description]

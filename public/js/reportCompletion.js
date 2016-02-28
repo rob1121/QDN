@@ -181,7 +181,14 @@ $('#completion').validate({
 
     },
     errorClass: "error",
-    errorElement: "span"
+    errorElement: "span",
+    errorPlacement: function(error, element) {
+        if (element.is("input:radio")) {
+            error.insertAfter(element.parents('#cause-of-defect-section'));
+        } else {
+            error.insertAfter(element);
+        }
+    }
 });
 
 $('#btn-group button').on('click', function(e) {
@@ -190,11 +197,11 @@ $('#btn-group button').on('click', function(e) {
         form = $('form#completion'),
         action = "save as draft";
 
-    form.attr('action', linkDraft);
+    form.attr('action', link.linkDraft);
 
     if (self.attr('id') == "aprroval_button") {
         action = "submit for approval";
-        form.attr('action', linkApproval);
+        form.attr('action', link.linkApproval);
     }
 
     if (confirm('Are you sure you want to ' + action + '?')) {

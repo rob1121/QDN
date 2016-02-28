@@ -38,7 +38,7 @@ function selectedDiscrepancyCategory(radio, select_discrepancy_minor, select_dis
             }
         });
     }
-    $("#discrepancy_category").select2("val", discrepancy_category.length ? discrepancy_category : '');
+    $("#discrepancy_category").select2("val", typeof qdn !== 'undefined' ? qdn.discrepancy_category : '');
 }
 //form validations---------------------------------------------------------
 $('#qdn-form').validate({
@@ -168,7 +168,7 @@ $('#customer').on('change', function() {
 
 if (typeof category !== 'undefined') {
     selectedDiscrepancyCategory(category, select_discrepancy_minor, select_discrepancy_major);
-    $("#discrepancy_category").select2("val", discrepancy_category);
+    $("#discrepancy_category").select2("val", qdn.discrepancy_category);
 
 } else {
     selectedDiscrepancyCategory('minor', select_discrepancy_minor, select_discrepancy_major);

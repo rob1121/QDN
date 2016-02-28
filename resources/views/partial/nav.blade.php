@@ -1,3 +1,6 @@
+<?php
+$url = Request::url();
+?>
 <nav class="navbar" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="padder container">
@@ -20,8 +23,15 @@
             @if ($currentUser)
                  <ul class="nav navbar-nav navbar-left">
                     {{-- MENU IF USER IS LOGGED IN --}}
-                    <li><a href="/">Home</a></li>
-                    <li><a href="{{ route('issue_qdn') }}">Issue QDN</a></li>
+                    <li
+                    @if ($url == route('home') || $url == route('pareto'))
+                        class="active"
+                    @<?php endif ?>><a href="{{ route('home') }}">Home</a></li>
+                    <li
+                    @if ($url === route('issue_qdn'))
+                        class="active"
+                    @endif
+                    ><a href="{{ route('issue_qdn') }}">Issue QDN</a></li>
                 </ul>
             @endif
          <ul class="nav navbar-nav navbar-right">

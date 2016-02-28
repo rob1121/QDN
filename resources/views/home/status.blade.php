@@ -39,7 +39,7 @@ default:
                                 )
          !!}
          </td>
-        <td>{{ Str::title($row->info->created_at) }}</td>
+        <td>{{ Carbon::parse($row->info->created_at)->diffForHumans() }}</td>
     </tr>
 
 @endforeach

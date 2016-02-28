@@ -5,25 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Closure;
 use App\Models\Info;
+use App\repo\HomeRepository;
 use Auth;
-use Carbon;
-use DB;
 use Illuminate\Http\Request;
 use JavaScript;
 
 class HomeController extends Controller {
-
-	public $dateTime;
+	private $home;
 
 	/**
 	 * Create a new controller instance.
 	 *
 	 * @return void
 	 */
-
-	public function __construct() {
-		$this->dateTime = Carbon::now('Asia/Manila');
-		// $this->middleware('auth');
+	public function __construct(HomeRepository $home) {
+		$this->home = $home;
 	}
 
 	/**
@@ -32,39 +28,15 @@ class HomeController extends Controller {
 	 * @return Response
 	 */
 	public function index() {
-		if (Auth::user()) {
-			JavaScript::put('yearNow', $this->dateTime->year);
-			// Event::fire(new EmailQdnNotificationEvent());
-			return view('home');
-		}
-		return view('welcome');
-
+		JavaScript::put('yearNow', $this->home->dateTime()->year);
+		return view(Auth::user() ? 'home' : 'welcome');
 	}
 
 	/**
 	 * array function for getting data for graphs
 	 */
 	protected function arrayCollection($collection) {
-		$arr        = [];
-		$legend     = 'A';
-		$collectors = 0;
-
-		foreach ($collection as $elem) {
-
-			$collectors += $elem->paretoFirst;
-			$arr['legends'][]  = $legend++;
-			$arr['lines'][]    = $collectors;
-			$arr['bars'][]     = $elem->paretoFirst;
-			$arr['category'][] = $elem->category;
-
-		}
-		$arr['total'] = 0;
-
-		if (isset($arr['bars'])) {
-			$arr['total'] = array_sum($arr['bars']);
-		}
-
-		return $arr;
+		return $this->home->collection($collection);
 	}
 
 	/**
@@ -72,36 +44,7 @@ class HomeController extends Controller {
 	 * @return [type] [description]
 	 */
 	public function ajax(Request $request) {
-		//date
-		$month = Carbon::parse($request->input('month'))->format('m');
-		$year  = $request->input('year');
-
-		//retrieve data collection
-		$info        = Info::qdn($year)->get();
-		$pod         = Info::pod($month, $year, '');
-		$failureMode = Info::pod($month, $year, 'failureMode');
-		$assembly    = Info::pod($month, $year, 'assembly');
-		$environment = Info::pod($month, $year, 'environment');
-		$machine     = Info::pod($month, $year, 'machine');
-		$man         = Info::pod($month, $year, 'man');
-		$material    = Info::pod($month, $year, 'material');
-		$process     = Info::pod($month, $year, 'method / process');
-
-		$arr = ['qdn' => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
-
-		foreach ($info as $elem) {
-			$arr['qdn'][$elem->month - 1] = round($elem->count / 4);
-		}
-
-		$arr['pod']         = $this->arrayCollection($pod);
-		$arr['failureMode'] = $this->arrayCollection($failureMode);
-		$arr['assembly']    = $this->arrayCollection($assembly);
-		$arr['environment'] = $this->arrayCollection($environment);
-		$arr['machine']     = $this->arrayCollection($machine);
-		$arr['man']         = $this->arrayCollection($man);
-		$arr['material']    = $this->arrayCollection($material);
-		$arr['process']     = $this->arrayCollection($process);
-
+		$arr = $this->home->highChartData($request);
 		return $arr;
 	}
 
@@ -130,29 +73,6 @@ class HomeController extends Controller {
 	 * @return [type] [description]
 	 */
 	public function counter() {
-
-		$qdn   = Info::whereYear('created_at', '=', $this->dateTime->year)->get();
-		$year  = $qdn->count();
-		$month = $qdn->whereMonth('created_at', '=', $this->dateTime->month)->count();
-		$week  = $qdn->where(DB::raw('WEEK(created_at)'), $this->dateTime->weekOfYear)->count();
-		$today = $qdn->whereDate('created_at', '=', $this->dateTime->format('Y-m-d'))->count();
-
-		$closure        = Closure::all();
-		$peVerification = $closure->whereStatus('p.e. verification')->count();
-		$incomplete     = $closure->whereStatus('incomplete fill-up')->count();
-		$approval       = $closure->whereStatus('incomplete approval')->count();
-		$qaVerification = $closure->whereStatus('q.a. verification')->count();
-
-		$arr = [
-			'today'          => $today,
-			'week'           => $week,
-			'year'           => $year,
-			'PeVerification' => $peVerification,
-			'Incompomplete'  => $incomplete,
-			'Approval'       => $approval,
-			'QaVerification' => $qaVerification,
-		];
-
-		return $arr;
+		return $this->home->counter();
 	}
 }

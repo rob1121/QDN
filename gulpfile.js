@@ -13,7 +13,10 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
 mix.sass('app.scss')
-    .version(['public/css/app.css', 'public/js/app.js']);
+    .version(['public/css/app.css'])
+    .browserSync({
+        proxy: 'qdn.me'
+    });
 });
 /*
 elixir(function(mix) {
@@ -134,6 +137,7 @@ mix.copy(
     .copy("resources/assets/vendor/highcharts/modules/exporting.js",
         "resources/assets/js/exporting.js")
     .copy("resources/assets/js/exporting.js",
-        "public/vendor/js/exporting.js");
+        "public/vendor/js/exporting.js")
+        .version(['public/css/app.css', 'public/js/app.js']);
 });
 */

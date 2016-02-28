@@ -2,50 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Employee;
-use App\Events\EmailQdnNotificationEvent;
-use App\Http\Controllers\Controller;
 use App\Models\Info;
-use App\Models\InvolvePerson;
-use Event;
+use App\repo\InfoRepository;
 use Flash;
 use Illuminate\Http\Request;
-use JavaScript;
 
 class ActionController extends Controller {
+	protected $qdn;
 
 	/**
 	 * authentication protected
 	 */
-	public function __construct() {
+	public function __construct(InfoRepository $qdn) {
 		$this->middleware('auth');
-	}
-
-	/**
-	 * method to update data in section one
-	 * @param [type] $request [description]
-	 * @param [type] $slug    [description]
-	 */
-	public function SectionOneUpdate($request, $slug) {
-		$slug->update($request->all());
-		$arr_names     = [];
-		$involvePerson = $slug->involvePerson()->first();
-		$emp_dept      = [];
-		foreach (array_unique($request->receiver_name) as $name) {
-			$emp         = Employee::whereName($name)->first();
-			$emp_dept[]  = $emp->station;
-			$arr_names[] = new InvolvePerson([
-				'department'      => $emp->station,
-				'originator_id'   => $involvePerson->originator_id,
-				'originator_name' => $involvePerson->originator_name,
-				'receiver_id'     => $emp->user_id,
-				'receiver_name'   => $name]);
-		}
-
-		$slug->involvePerson()->delete();
-		$slug->involvePerson()->saveMany($arr_names);
-		$collection = ['emp_dept' => $emp_dept, 'slug' => $slug];
-		return $collection;
+		$this->qdn = $qdn;
 	}
 
 	/**
@@ -55,8 +25,8 @@ class ActionController extends Controller {
 	 */
 	public function SectionOneSaveAndProceed(Request $request, Info $slug) {
 		//send mail
-		Event::fire(new EmailQdnNotificationEvent());
-		$this->SectionOneUpdate($request, $slug);
+		// Event::fire(new EmailQdnNotificationEvent());
+		$this->qdn->SectionOneUpdate($request, $slug);
 		$slug->closure()->update(['status' => $request->status]);
 
 		Flash::success('Successfully Verified !! QDN are now ready for completion!');
@@ -70,7 +40,7 @@ class ActionController extends Controller {
 	 * @param Info    $slug    [description]
 	 */
 	public function SectionOneSaveAsDraft(Request $request, Info $slug) {
-		$collection = $this->SectionOneUpdate($request, $slug);
+		$collection = $this->qdn->SectionOneUpdate($request, $slug);
 		return array_add($request->all(), 'department', $collection['emp_dept']);
 	}
 
@@ -79,26 +49,55 @@ class ActionController extends Controller {
 	 * @param Info $slug [description]
 	 */
 	public function ForIncompleteFillUp(Info $slug) {
-		$qdn        = $slug;
-		$department = $qdn->involvePerson()
-			->select('department')
-			->get()
-			->toArray();
-
-		$department   = array_unique(array_flatten($department));
-		$linkDraft    = route('draft_link', ['slug' => $qdn->slug]);
-		$linkApproval = route('approval_link', ['slug' => $qdn->slug]);
-
-		JavaScript::put('linkDraft', $linkDraft);
-		JavaScript::put('linkApproval', $linkApproval);
-		JavaScript::put('category', $qdn->major);
-		JavaScript::put('discrepancy_category', $qdn->discrepancy_category);
-		JavaScript::put('qdn', $qdn);
-
-		$department = array_unique(array_flatten($department));
-		return view('report.incomplete', compact('qdn', 'department'));
+		return $this->qdn->view($slug, 'report.incomplete');
 	}
 
+	/**
+	 * update tables and redirect to home
+	 * @param  [type]  $slug    [description]
+	 * @param  Request $request [description]
+	 * @return [type]           [description]
+	 */
+	public function draft(Info $slug, Request $request) {
+		$this->qdn->save($slug, $request);
+		Flash::success('Successfully save! Issued QDN are save as draft and still subject for completion!');
+		return redirect('/');
+	}
+
+	/**
+	 * update tables, send email and redirect to home
+	 * @param  [type]  $slug    [description]
+	 * @param  Request $request [description]
+	 * @return [type]           [description]
+	 */
+	public function forApproval(Info $slug, Request $request) {
+		$this->qdn->save($slug, $request);
+		$slug->closure()->update(['status' => 'incomplete approval']);
+		// send email
+		Flash::success('Successfully save! Issued QDN is now subject for Approval!');
+		return redirect('/');
+	}
+
+	/**
+	 * function for approval form
+	 * @param  [type] $slug [description]
+	 * @return [type]       [description]
+	 */
+	public function approval(Info $slug) {
+		return $this->qdn->view($slug, 'report.approval.view');
+	}
+
+	/**
+	 * approval post method that update cycletime and closure table
+	 * @param Info $slug [description]
+	 */
+	public function UpdateForApprroval(Info $slug) {
+		//update closure and qdncycle table
+		//fire event log
+		//fire email notif event
+		//flash success alert message
+		//return home page
+	}
 	/**
 	 * view of qdn that are for closure
 	 * @param Info $slug [description]

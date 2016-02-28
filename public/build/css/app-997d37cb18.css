@@ -108,19 +108,13 @@
 .stuck .navbar-nav li a:hover,
 .stuck .navbar-brand:focus,
 .stuck .navbar-nav li a:focus,
-.active {
-  background-color: rgba(0, 0, 0, 0.1); }
+.active,
+li.dropdown.open > .dropdown-toggle {
+  background-color: rgba(33, 78, 118, 0.1); }
 
 .dropdown-menu li a,
 .stuck .dropdown-menu li a {
   color: #3b3a36; }
-
-.dropdown.open a:focus {
-  background-color: transparent; }
-
-.stuck .dropdown-menu li a:hover {
-  color: #3b3a36;
-  background-color: rgba(0, 0, 0, 0.1); }
 
 .dropdown {
   cursor: pointer; }

@@ -22,13 +22,13 @@ Route::get('/report/{slug}',
 Route::post('/draft/{slug}',
 	[
 		'as'   => 'draft_link',
-		'uses' => 'ActionController@draft',
+		'uses' => 'reportController@draft',
 	]);
 
 Route::post('/approval/{slug}',
 	[
 		'as'   => 'approval_link',
-		'uses' => 'ActionController@forApproval',
+		'uses' => 'reportController@forApproval',
 	]);
 
 Route::get('/report/{slug}/pdf',
@@ -39,8 +39,8 @@ Route::get('/report/{slug}/pdf',
 
 Route::get('report/approval/{slug}',
 	['as'  => 'approval',
-		'uses' => 'ActionController@approval']);
+		'uses' => 'reportController@approval']);
 
 Route::post('report/approval/{slug}',
 	['as'  => 'UpdateForApprroval',
-		'uses' => 'ActionController@UpdateForApprroval']);
+		'uses' => 'reportController@UpdateForApprroval']);

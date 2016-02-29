@@ -28,22 +28,11 @@ class InfoRepository implements InfoRepositoryInterface {
 		];
 	}
 
-	/**
-	 * get department of each
-	 * @param  [type] $qdn [description]
-	 * @return [type]      [description]
-	 */
 	public function department($qdn) {
 		$department        = $qdn->involvePerson()->select('department')->get()->toArray();
 		return $department = array_unique(array_flatten($department));
 	}
 
-	/**
-	 * update qdn database
-	 * @param  [type] $slug    [description]
-	 * @param  [type] $request [description]
-	 * @return [type]          [description]
-	 */
 	public function save($info, $request) {
 		$info->CauseOfDefect()->update([
 			'cause_of_defect'             => $request->cause_of_defect,
@@ -66,10 +55,7 @@ class InfoRepository implements InfoRepositoryInterface {
 			'objective_evidence' => $request->upload_preventive_action,
 		]);
 	}
-	/**
-	 * insert new qdn to the database
-	 * @param [type] $request [description]
-	 */
+
 	public function add($request) {
 		$currentUser = Auth::user();
 		$currentYear = Carbon::now('Asia/Manila')->format('y');
@@ -84,8 +70,7 @@ class InfoRepository implements InfoRepositoryInterface {
 		: 1;
 
 		//customer
-		$customer = $request->customer == "not yet specified"
-		? $request->customerField
+		$customer = "not yet specified" == $request->customer ? $request->customerField
 		: $request->customer;
 
 		$info = Info::create([
@@ -168,19 +153,7 @@ class InfoRepository implements InfoRepositoryInterface {
 			'quality_assurance_cycle_time'   => '',
 			'other_department_cycle_time'    => '',
 		]);
-
-	}
-
-	/**
-	 * get unique department
-	 * @param  [type] $qdn [description]
-	 * @return [type]      [description]
-	 */
-	public function getDepartment($qdn) {
-		return array_unique(array_flatten($qdn->involvePerson()
-				->select('department')
-				->get()
-				->toArray()));
+		return $info;
 	}
 
 	/**
@@ -208,5 +181,12 @@ class InfoRepository implements InfoRepositoryInterface {
 		$slug->involvePerson()->saveMany($arr_names);
 		$collection = ['emp_dept' => $emp_dept, 'slug' => $slug];
 		return $collection;
+	}
+
+	public function UpdateClosureStatus($request, $qdn) {
+		$qdn->closure()->update([
+			'status'         => $request->status,
+			'pe_verified_by' => Auth::user()->employee->name,
+		]);
 	}
 }

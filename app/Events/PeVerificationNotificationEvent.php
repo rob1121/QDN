@@ -6,7 +6,7 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class EmailQdnNotificationEvent extends Event {
+class PeVerificationNotificationEvent extends Event {
 	use SerializesModels;
 
 	/**
@@ -14,16 +14,14 @@ class EmailQdnNotificationEvent extends Event {
 	 *
 	 * @return void
 	 */
-	public function __construct($qdn) {
-		$data = [
-			'qdn' => $qdn,
-		];
-		Mail::send('notifications.issue_qdn', $data, function ($message) use ($qdn) {
+	public function __construct($qdn, $msg) {
+		$data = ['qdn' => array_add($qdn, 'msg', $msg)];
+		Mail::send('notifications.pe_verification', $data, function ($message) use ($qdn) {
 			$message->from('robinsonlegaspi@astigp.com', 'Rob');
 			$message->replyTo('robinsonlegaspi@astigp.com', 'Rob');
 			$message->sender('robinsonlegaspi@astigp.com', 'Rob');
 			$message->to('robinsonlegaspi@astigp.com', 'Robinson Legaspi')
-				->subject('QDN - ' . $qdn->problem_description . ' - Subject for PE Verification');
+				->subject('QDN - ' . $qdn->problem_description . ' - Subject for Completion');
 		});
 	}
 

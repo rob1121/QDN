@@ -68,7 +68,7 @@ class HomeRepository {
 		$qdn   = Info::whereYear('created_at', '=', $date->year)->get();
 		$month = Info::whereMonth('created_at', '=', $date->month)->count();
 		$today = Info::whereDate('created_at', '=', $date->format('Y-m-d'))->count();
-		$week  = $qdn->where(DB::raw('WEEK(created_at)'), $date->weekOfYear)->count();
+		$week  = Info::where(DB::raw('WEEK(created_at)'), $date->weekOfYear)->count();
 		$year  = $qdn->count();
 
 		$closure        = Closure::all();

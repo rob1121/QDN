@@ -12,8 +12,17 @@ class EventServiceProvider extends ServiceProvider {
 	 * @var array
 	 */
 	protected $listen = [
-		'App\Events\EmailQdnNotificationEvent' => [
+		'App\Events\EmailQdnNotificationEvent'       => [
 			'App\Listeners\EmailQdnNotificationEventListener',
+		],
+		'App\Events\PeVerificationNotificationEvent' => [
+			'App\Listeners\PeVerificationNotificationEventListener',
+		],
+		'App\Events\ApprovalNotificationEvent'       => [
+			'App\Listeners\ApprovalNotificationEventListener',
+		],
+		'App\Events\QaVerificationNotificationEvent' => [
+			'App\Listeners\QaVerificationNotificationEventListener',
 		],
 	];
 

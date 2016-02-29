@@ -17,7 +17,7 @@ class ActionController extends Controller {
 		$this->middleware('auth');
 		$this->qdn = $qdn;
 	}
-
+//========================================== PE VERIFICATION =====================================
 	/**
 	 * method in section one that will save the status if pe decided to validate qdn
 	 * @param Request $request [description]
@@ -43,7 +43,7 @@ class ActionController extends Controller {
 		$collection = $this->qdn->SectionOneUpdate($request, $slug);
 		return array_add($request->all(), 'department', $collection['emp_dept']);
 	}
-
+//=========================== FOR QDN COMPLETION =================================================
 	/**
 	 * this method is for completing the ca, cn, pa table
 	 * @param Info $slug [description]
@@ -77,7 +77,7 @@ class ActionController extends Controller {
 		Flash::success('Successfully save! Issued QDN is now subject for Approval!');
 		return redirect('/');
 	}
-
+//===================================== FOR QDN APPROVALS =========================================
 	/**
 	 * function for approval form
 	 * @param  [type] $slug [description]
@@ -98,6 +98,8 @@ class ActionController extends Controller {
 		//flash success alert message
 		//return home page
 	}
+
+//================================= FOR QA VERIFICATION ==================================================
 	/**
 	 * view of qdn that are for closure
 	 * @param Info $slug [description]

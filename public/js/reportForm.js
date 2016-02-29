@@ -166,8 +166,8 @@ $('#customer').on('change', function() {
 });
 //major and minor discrepancy category--------------------------------
 
-if (typeof category !== 'undefined') {
-    selectedDiscrepancyCategory(category, select_discrepancy_minor, select_discrepancy_major);
+if (typeof qdn !== 'undefined') {
+    selectedDiscrepancyCategory(qdn.major, select_discrepancy_minor, select_discrepancy_major);
     $("#discrepancy_category").select2("val", qdn.discrepancy_category);
 
 } else {

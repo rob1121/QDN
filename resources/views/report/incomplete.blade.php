@@ -16,7 +16,10 @@
         novalidate
         >
         {!! csrf_field() !!}
-        @include('report.partials.section', ['hidden' => '', 'disabled' => ''])
+        @include('report.partials.section', [
+            'hidden' => $qdn->closure->status == 'incomplete fill-up'? '':'hidden',
+            'disabled' => $qdn->closure->status == 'incomplete fill-up'? '':'disabled'
+        ])
     </div>
     @if ($qdn->closure->status == 'incomplete fill-up' && $show)
     <div class="text-right container" id="btn-group">
@@ -46,4 +49,3 @@
 @push('scripts')
 @include('report.partials.script')
 @endpush
-

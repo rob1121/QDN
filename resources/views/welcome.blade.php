@@ -41,10 +41,10 @@ padding: 10px 50px 10px 50px;
 input.form-control:focus {
 box-shadow: none;
 border:1px solid #66afe9;
-padding:24px 15px 24px 15px;
+height:50px;
 }
 input.form-control {
-padding:24px 15px 24px 15px;
+height:50px;
 }
 .btn-primary {
     background-color: #800000;

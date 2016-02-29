@@ -16,6 +16,7 @@ class Closure extends Model {
 		'process_engineering',
 		'quality_assurance',
 		'other_department',
+		'pe_verified_by',
 		'status',
 	];
 

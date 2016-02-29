@@ -46,10 +46,7 @@ $url = Request::url();
                         @if ($currentUser->access_level == 'Admin')
                             <li><a href="/admin" style="border-bottom:1px solid #f5f5f5">Login as admin</a></li>
                         @endif
-                        <li><a href="/logout"
-                            onclick="return confirm('Are you sure you want to logout?')"
-
-                        >Logout</a></li>
+                        <li><a data-toggle="modal" href='#sig-out'>Logout</a></li>
                     </ul>
                 </li>
             @else
@@ -60,3 +57,12 @@ $url = Request::url();
         </div>
     </div><!-- /.navbar-collapse -->
 </nav>
+<div class="modal" id="sig-out">
+    <div class="modal-dialog">
+        <div class="modal-content text-center" style="padding:32px 0px 32px 0px;">
+            <div class="col-md-12" style="margin-bottom:24px"><em class="lead">Are you sure you want to sign out?</em></div>
+                <a type="button" class="btn btn-default" data-dismiss="modal">No</a>
+                <a class="btn btn-primary" href="/logout">Yes</a>
+        </div>
+    </div>
+</div>

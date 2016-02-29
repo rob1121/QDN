@@ -6,33 +6,37 @@ function dispositionCondition($qdn, $disposition) {
 	return $qdn == $disposition;
 }
 ?>
-<div class="modal fade" id="edit">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">EDIT: PRODUCT DESCRIPTION/ PROBLEM DETAILS</h4>
-            </div>
-            <form
-                action = "{{ route('SectionOneSaveAndProceed',['slug' => $qdn->slug]) }}"
-                method = "get"
-                role   = "form"
-                id     = "qdn-form"
-                novalidate
-                >
+<form
+    action = "{{ route('SectionOneSaveAndProceed',['slug' => $qdn->slug]) }}"
+    method = "get"
+    role   = "form"
+    id     = "qdn-form"
+    novalidate
+    >
+    <div class="modal" id="edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">EDIT: PRODUCT DESCRIPTION/ PROBLEM DETAILS</h4>
+                </div>
                 @include('report.partials.sectionOne',['hidden'=>''])
                 <div class="col-sm-12">
                     <div class="col-sm-12">
                         <label>QDN Validity:</label>
                         <br>
                         <div class="btn-group" data-toggle="buttons" id="validate">
-                            <label class="btn btn-default valid active">
-                                <input type="radio" name="status" id="status" value="incomplete fill-up" checked> Valid
+                            <label class="btn btn-default valid {{ $qdn->closure->status !== 'cancelled' ? 'active':'' }}">
+                                <input type="radio" name="status" id="status" value="incomplete fill-up"  {{ $qdn->closure->status !== 'cancelled' ? 'checked':'' }}> Valid
                             </label>
-                            <label class="btn btn-default invalid">
-                                <input type="radio" name="status" id="status" value="cancelled"> Invalid
+                            <label class="btn btn-default invalid {{ $qdn->closure->status =='cancelled' ? 'active':''}}">
+                                <input type="radio" name="status" id="status" value="cancelled" {{ $qdn->closure->status =='cancelled' ? 'checked':''}}> Invalid
                             </label>
                         </div>
+                    </div>
+                    <div class="col-md-12">
+                    <br>
+                        <a data-toggle="modal" class="text-default" href='#validation-modal'>Input Validation Report <i class="fa fa-edit"></i></a>
                     </div>
                 </div>
                 <br>
@@ -87,7 +91,38 @@ function dispositionCondition($qdn, $disposition) {
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+    <!-- ================================================== VALIDATION MESSAGE MODAL ================================================ -->
+    <div class="modal" id="validation-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Write Validation Output:</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea
+                    rows        = "10"
+                    class       = "form-control"
+                    name        = "ValidationMessage"
+                    id          = "validation-message"
+                    placeholder = "Input Message. . ."
+                    ></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button
+                    type         = "button"
+                    id           = "submit-btn"
+                    class        = "btn btn-default"
+                    data-dismiss = "modal"
+                    >
+                    Done
+                    <i class="fa fa-check"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

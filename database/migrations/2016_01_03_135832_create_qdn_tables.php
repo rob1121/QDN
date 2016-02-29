@@ -73,6 +73,7 @@ class CreateQdnTables extends Migration {
 			$table->string('process_engineering');
 			$table->string('quality_assurance');
 			$table->string('other_department');
+			$table->string('pe_verified_by');
 			$table->string('status');
 			$table->timestamps();
 		});

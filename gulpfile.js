@@ -15,7 +15,7 @@ elixir(function(mix) {
 mix.sass('app.scss')
     .version(['public/css/app.css'])
     .browserSync({
-        proxy: 'qdn.me'
+        proxy: 'qdn.dev'
     });
 });
 /*

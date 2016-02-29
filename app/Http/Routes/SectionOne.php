@@ -3,13 +3,13 @@
 Route::get('/report/{slug}/verified',
 	[
 		'as'   => 'SectionOneSaveAndProceed',
-		'uses' => 'ActionController@SectionOneSaveAndProceed',
+		'uses' => 'reportController@SectionOneSaveAndProceed',
 	]);
 
 Route::get('/report/{slug}/ajax',
 	[
 		'as'   => 'SectionOneSaveAsDraft',
-		'uses' => 'ActionController@SectionOneSaveAsDraft',
+		'uses' => 'reportController@SectionOneSaveAsDraft',
 	]);
 
 //====================== section two =======================
@@ -17,17 +17,17 @@ Route::get('/report/{slug}/ajax',
 Route::get('/report/incomplete/{slug}',
 	[
 		'as'   => 'ForIncompleteFillUp',
-		'uses' => 'ActionController@ForIncompleteFillUp',
+		'uses' => 'reportController@ForIncompleteFillUp',
 	]);
 //====================== qdn closure section =======================
 
 Route::get('/report/qa-verification/{slug}',
 	[
 		'as'   => 'qa_verification',
-		'uses' => 'ActionController@QaVerification',
+		'uses' => 'reportController@QaVerification',
 	]);
 Route::post('/report/qa-verification/{slug}',
 	[
 		'as'   => 'qa_verification',
-		'uses' => 'ActionController@QaVerification',
+		'uses' => 'reportController@QaVerification',
 	]);

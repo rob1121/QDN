@@ -38,6 +38,11 @@ body {
     .col425 {width: 425px!important;}
     .col380 {width: 380px!important;}
     }*/
+th {
+  background-color:#800000;
+  color:#ffffff;
+  border: 1px solid black;
+}
 
   </style>
 </head>
@@ -53,7 +58,7 @@ body {
     <![endif]-->
     <table bgcolor="#ffffff" align="center" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td bgcolor="#44525f" class="header">
+        <td bgcolor="#800000" class="header">
           <!--[if (gte mso 9)|(IE)]>
             <table width="525" align="left" cellpadding="0" cellspacing="0" border="0">
               <tr>
@@ -65,12 +70,12 @@ body {
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td class="subhead" style="padding: 0 0 0 3px;">
-                      PIPs
+                      QDN
                     </td>
                   </tr>
                   <tr>
                     <td class="h1" style="padding: 5px 0 0 0;">
-                      PIPs Candidates' Approval Status
+                      Quality Deviation Notice
                     </td>
                   </tr>
                 </table>
@@ -89,30 +94,35 @@ body {
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td class="h2">
-                Below is the list of PIPs Candidates for your review and approval!
+                This is to inform you that QDN with a control number <strong>{{ $qdn->control_id }}</strong> has been issued to:
+                @foreach ($qdn->involvePerson as $person)
+                  <li>{{ $person->name ." " . "(" . $person->department . ")" }}</li>
+                @endforeach
               </td>
             </tr>
             <tr>
               <td class="bodycopy">
-                <table>
+                <table style="border-collapse: collapse;border: 1px solid black;">
                   <thead>
 
                   <tr>
                     <th>#</th>
-                    <th>Date Occured</th>
-                    <th>Trap</th>
+                    <th>Description</th>
+                    <th>Station</th>
+                    <th>Failure Mode</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Timestamps</th>
                   </tr>
                   </thead>
                   <tbody>
-                    <?php $number = 0;?>
-                    @foreach ($table as $row)
-                    {{-- {{ $number = $number + 1; }} --}}
-                      <tr <?php echo $number++ % 2 == 0 ? 'bgcolor="#e5e5ff"' : 'bgcolor="#ffffff"'; ?> >
-                        <td><span>{{ Str::title($row->control_no) }}</span></td>
-                        <td>{{ Carbon::parse(Str::title($row->date))->format('m/d/Y') }}</td>
-                        <td>{{ Str::title($row->trap) }}</td>
-                      </tr>
-                    @endforeach
+                  <td style="border: 1px solid black;">{{ $qdn->control_id }}</td>
+                  <td style="border: 1px solid black;">{{ Str::title($qdn->problem_description) }}</td>
+                  <td style="border: 1px solid black;">{{ Str::upper($qdn->station) }}</td>
+                  <td style="border: 1px solid black;">{{ Str::title($qdn->failure_mode) }}</td>
+                  <td style="border: 1px solid black;">{{ Str::title($qdn->discrepancy_category) }}</td>
+                  <td style="border: 1px solid black;">{{ Str::title($qdn->closure->status) }}</td>
+                  <td style="border: 1px solid black;">{{ $qdn->created_at) }}</td>
                   </tbody>
                 </table>
               </td>
@@ -132,16 +142,11 @@ body {
               <td>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td class="bodycopy">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus adipiscing felis, sit amet blandit ipsum volutpat sed. Morbi porttitor, eget accumsan dictum, nisi libero ultricies ipsum, in posuere mauris neque at erat.
-                    </td>
-                  </tr>
-                  <tr>
                     <td style="padding: 20px 0 0 0;">
                       <table class="buttonwrapper" bgcolor="#e05443" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td class="button" height="45">
-                            <a href="#">Claim yours!</a>
+                          <td class="button" height="45" bgcolor="#428bca">
+                            <a href="#">Visit the page</a>
                           </td>
                         </tr>
                       </table>
@@ -159,17 +164,12 @@ body {
         </td>
       </tr>
       <tr>
-        <td class="innerpadding bodycopy">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempus adipiscing felis, sit amet blandit ipsum volutpat sed. Morbi porttitor, eget accumsan dictum, nisi libero ultricies ipsum, in posuere mauris neque at erat.
-        </td>
-      </tr>
-      <tr>
-        <td class="footer" bgcolor="#44525f">
+        <td class="footer" bgcolor="#222222">
           <table width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td align="center" class="footercopy">
                 &reg; Telford Services Philippines, Incorporation {{ date('Y') }}<br/>
-                <span class="hide">Maintained by Qa Department. For any queries</span>
+                <span class="hide">Maintained by QA Department. For any queries</span>
                 <a href="mailto:robinson.legaspi@astigp.com" class="unsubscribe"><font color="#ffffff">Email me</font></a>
               </td>
             </tr>

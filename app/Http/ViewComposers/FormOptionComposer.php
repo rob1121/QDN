@@ -26,10 +26,10 @@ class FormOptionComposer {
 			'method / process',
 		]);
 
-		$view->with('customers', Option::all('customer'));
-		$view->with('machines', Machine::all('name'));
-		$view->with('stations', Station::all('station'));
-		$view->with('employees', Employee::all('name'));
+		$view->with('customers', Option::orderBy('customer')->select('customer')->get());
+		$view->with('machines', Machine::orderBy('name')->select('name')->get());
+		$view->with('stations', Station::orderBy('station')->select('station')->get());
+		$view->with('employees', Employee::orderBy('name')->select('name')->get());
 
 	}
 

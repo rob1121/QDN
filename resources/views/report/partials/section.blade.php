@@ -110,11 +110,7 @@
                 <option value="{{ $qdn->containmentAction->who }}" selected>
                     {{ $qdn->containmentAction->who }}
                 </option>
-                @foreach ($names as $name)
-                @if ($currentUser->employee->name != $name->name)
-                <option value="{{ $name->name }}">{{ $name->name }}</option>
-                @endif
-                @endforeach
+
             </select>
         </div>
         <!-- CONTAINEMENT ACTION WHEN -->
@@ -181,11 +177,7 @@
                     <option value="{{ $qdn->correctiveAction->who }}" selected>
                         {{ $qdn->correctiveAction->who }}
                     </option>
-                    @foreach ($names as $name)
-                    @if ($currentUser->employee->name != $name->name)
-                    <option value="{{ $name->name }}">{{ $name->name }}</option>
-                    @endif
-                    @endforeach
+
                 </select>
             </div>
             <!-- CORRECTIVE ACTION/S WHEN -->
@@ -253,11 +245,7 @@
                     <option value="{{ $qdn->preventiveAction->who }}" selected>
                         {{ $qdn->preventiveAction->who }}
                     </option>
-                    @foreach ($names as $name)
-                    @if ($currentUser->employee->name != $name->name)
-                    <option value="{{ $name->name }}">{{ $name->name }}</option>
-                    @endif
-                    @endforeach
+
                 </select>
             </div>
             <!-- PREVENTIVE ACTION/S WHEN -->

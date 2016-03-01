@@ -138,7 +138,7 @@
                 </div>
                 <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="team_responsible">
-                        {!! Str::upper(implode("<br>",$department)) !!}
+                    {!! Str::upper($department) !!}
                     </p>
                 </div>
             </div>
@@ -147,7 +147,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Issued By:</div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="originator_name">
-                        {{ Str::title($qdn->involvePerson()->select('originator_name')->first()->originator_name) }}
+                        {!! $originator_name !!}
                     </p>
                 </div>
             </div>
@@ -156,14 +156,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Issued To:</div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="receiver_name">
-                        {!!
-                        Str::title(implode("<br>",array_flatten(
-                        $qdn->involvePerson()
-                        ->select('receiver_name')
-                        ->get()
-                        ->toArray()))
-                        )
-                        !!}
+                        {!! implode("<br/>", $receiver_name) !!}
                     </p>
                 </div>
             </div>

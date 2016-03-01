@@ -181,7 +181,7 @@ vertical-align: middle;
                 <td>{{ Str::title($row->discrepancy_category) }}</td>
                 <td>{{ Str::title($row->failure_mode) }}</td>
                 <td>{{ Carbon::parse($row->created_at)->diffForHumans() }}</td>
-                <td>@foreach ($row->involvePerson()->select('receiver_name')->get() as $name)
+                <td>@foreach ($row->involvePerson as $name)
                     <li>{{ $name->receiver_name }}</li>
                 @endforeach</td>
             </tr>

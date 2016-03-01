@@ -111,7 +111,9 @@
                     {{ $qdn->containmentAction->who }}
                 </option>
                 @foreach ($names as $name)
+                @if ($currentUser->employee->name != $name->name)
                 <option value="{{ $name->name }}">{{ $name->name }}</option>
+                @endif
                 @endforeach
             </select>
         </div>
@@ -180,7 +182,9 @@
                         {{ $qdn->correctiveAction->who }}
                     </option>
                     @foreach ($names as $name)
+                    @if ($currentUser->employee->name != $name->name)
                     <option value="{{ $name->name }}">{{ $name->name }}</option>
+                    @endif
                     @endforeach
                 </select>
             </div>
@@ -250,7 +254,9 @@
                         {{ $qdn->preventiveAction->who }}
                     </option>
                     @foreach ($names as $name)
+                    @if ($currentUser->employee->name != $name->name)
                     <option value="{{ $name->name }}">{{ $name->name }}</option>
+                    @endif
                     @endforeach
                 </select>
             </div>

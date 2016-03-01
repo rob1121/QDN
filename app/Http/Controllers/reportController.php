@@ -124,7 +124,7 @@ class reportController extends Controller {
 		$this->qdn->save($slug, $request);
 		$slug->closure()->update(['status' => 'incomplete approval']);
 
-		Event::fire(new ApprovalNotificationEvent($slug, $request->ValidationMessage));
+		// Event::fire(new ApprovalNotificationEvent($slug, $request->ValidationMessage));
 		Flash::success('Successfully save! Issued QDN is now subject for Approval!');
 		return redirect('/');
 	}

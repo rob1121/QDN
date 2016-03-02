@@ -163,22 +163,13 @@
             multiple
             required
             >
-            @foreach ($employees as $employee)
-                @if ($employee->name != $currentUser->employee->name)
-                    @if (isset($qdn))
-                        @if ($employee->name != $originator_name)
-                            <?php $selected = in_array($employee->name, $receiver_name) ? 'selected' : '';?>
-
-                            <option value="{{ $employee->name }}" {{ $selected }}>
-                                {{ Str::title($employee->name) }}
-                            </option>
-                        @endif
-                    @else
-                        <option value="{{ $employee->name }}">
-                            {{ Str::title($employee->name) }}
-                        </option>
-                    @endif
-                @endif
+            @foreach ($qdn->involvePerson->pluck('receiver_name') as $name)
+            <option value="{{ $name }}" selected>{{ $name }}</option>
+            @endforeach
+            @foreach (collect($employees->toArray())->flatten()->diff($qdn->involvePerson->pluck('receiver_name','originator_name')->flatten()) as $employee)
+            <option value="{{ $employee }}">
+                {{ Str::title($employee) }}
+            </option>
             @endforeach
         </select>
     </div>

@@ -14,19 +14,11 @@ use Carbon;
 use JavaScript;
 
 class InfoRepository implements InfoRepositoryInterface {
-	public function view($qdn, $view) {
-		$receiver_name = array_flatten($qdn
-				->involvePerson()
-				->select('receiver_name')
-				->get()
-				->toArray());
-		$originator_name = $qdn->involvePerson->first()->originator_name;
-		$department      = implode("<br/>", $this->department($qdn));
 
+	public function view($qdn, $view) {
 		JavaScript::put('link', $this->links($qdn->slug));
 		JavaScript::put('qdn', $qdn);
-
-		return view($view, compact('qdn', 'department', 'receiver_name', 'originator_name'));
+		return view($view, compact('qdn'));
 	}
 
 	public function links($slug) {
@@ -34,11 +26,6 @@ class InfoRepository implements InfoRepositoryInterface {
 			'linkDraft'    => route('draft_link', ['slug' => $slug]),
 			'linkApproval' => route('approval_link', ['slug' => $slug]),
 		];
-	}
-
-	public function department($qdn) {
-		$department        = $qdn->involvePerson()->select('department')->get()->toArray();
-		return $department = array_unique(array_flatten($department));
 	}
 
 	public function save($info, $request) {

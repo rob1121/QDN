@@ -18,13 +18,6 @@ interface InfoRepositoryInterface {
 	public function links($slug);
 
 	/**
-	 * get department of each
-	 * @param  [type] $qdn [description]
-	 * @return [type]      [description]
-	 */
-	public function department($slug);
-
-	/**
 	 * update qdn database
 	 * @param  [type] $slug    [description]
 	 * @param  [type] $request [description]

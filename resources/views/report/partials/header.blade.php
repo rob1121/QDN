@@ -138,7 +138,9 @@
                 </div>
                 <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="team_responsible">
-                    {!! Str::upper($department) !!}
+                    @foreach ($qdn->involvePerson->unique('department') as $employee)
+                        {{ Str::upper($employee->department) }} <br>
+                    @endforeach
                     </p>
                 </div>
             </div>
@@ -147,7 +149,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Issued By:</div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="originator_name">
-                        {!! $originator_name !!}
+                        {{ $qdn->involvePerson->first()->originator_name }}
                     </p>
                 </div>
             </div>
@@ -156,7 +158,9 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Issued To:</div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="receiver_name">
-                        {!! implode("<br/>", $receiver_name) !!}
+                        @foreach ($qdn->involvePerson as $employee)
+                            {{ $employee->receiver_name }} <br>
+                        @endforeach
                     </p>
                 </div>
             </div>

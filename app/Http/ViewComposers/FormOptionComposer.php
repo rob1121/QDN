@@ -6,6 +6,7 @@ use App\OptionModels\Machine;
 use App\OptionModels\Option;
 use App\OptionModels\Station;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class FormOptionComposer {
 
@@ -29,7 +30,7 @@ class FormOptionComposer {
 		$view->with('customers', Option::orderBy('customer')->select('customer')->get());
 		$view->with('machines', Machine::orderBy('name')->select('name')->get());
 		$view->with('stations', Station::orderBy('station')->select('station')->get());
-		$view->with('employees', Employee::orderBy('name')->select('name')->get());
+		$view->with('employees', Employee::orderBy('name')->select('name')->where('name', '<>', Auth::user()->employee->name)->get());
 
 	}
 

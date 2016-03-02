@@ -114,7 +114,7 @@
                                 <td style="border: 1px solid black;">{{ Str::title($qdn->failure_mode) }}</td>
                                 <td style="border: 1px solid black;">{{ Str::title($qdn->discrepancy_category) }}</td>
                                 <td style="border: 1px solid black;">{{ Str::title($qdn->closure->status) }}</td>
-                                <td style="border: 1px solid black;">{{ Carbon::parse($qdn->updated_at)->diffForHumans() }}</td>
+                                <td style="border: 1px solid black;">{{ $qdn->updated_at }}</td>
                               </tbody>
                             </table>
                           </td>
@@ -140,7 +140,7 @@
                                     </tr>
                                     <tr>
                                       <td>
-                                        {{ $qdn->closure->pe_verified_by }}
+                                         {{ "- ".$qdn->closure->pe_verified_by }}
                                       </td>
                                     </tr>
                                     <tr>

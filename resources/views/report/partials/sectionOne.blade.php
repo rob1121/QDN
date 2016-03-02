@@ -1,6 +1,5 @@
 {{-- CUSTOMER OPTIONS --}}
 <div class="col-sm-12">
-    <h1>QDN Issuance</h1>
     <div class="form-group col-sm-4">
         <span>Customer:
         </span>

@@ -113,12 +113,6 @@ select {
   border-color: #d58512;
 }
 
-/*#dispositions .active,
-#dispositions .active:hover {
-  color: #fff;
-  background-color: #3071a9;
-  border-color: #285e8e;
-}*/
 
 .invalid.active,
 .invalid.active:hover {

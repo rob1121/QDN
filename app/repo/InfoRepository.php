@@ -15,13 +15,17 @@ use JavaScript;
 
 class InfoRepository implements InfoRepositoryInterface {
 	public function view($qdn, $view) {
-
-		$receiver_name   = array_flatten($qdn->involvePerson()->select('receiver_name')->get()->toArray());
-		$originator_name = $qdn->involvePerson()->select('originator_name')->first()->originator_name;
+		$receiver_name = array_flatten($qdn
+				->involvePerson()
+				->select('receiver_name')
+				->get()
+				->toArray());
+		$originator_name = $qdn->involvePerson->first()->originator_name;
 		$department      = implode("<br/>", $this->department($qdn));
 
 		JavaScript::put('link', $this->links($qdn->slug));
 		JavaScript::put('qdn', $qdn);
+
 		return view($view, compact('qdn', 'department', 'receiver_name', 'originator_name'));
 	}
 

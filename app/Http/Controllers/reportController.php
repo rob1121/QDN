@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ApprovalNotificationEvent;
 use App\Events\EmailQdnNotificationEvent;
 use App\Events\PeVerificationNotificationEvent;
 use App\Http\Requests\QdnCreateRequest;
@@ -124,7 +125,7 @@ class reportController extends Controller {
 		$this->qdn->save($slug, $request);
 		$slug->closure()->update(['status' => 'incomplete approval']);
 
-		// Event::fire(new ApprovalNotificationEvent($slug, $request->ValidationMessage));
+		Event::fire(new ApprovalNotificationEvent($slug));
 		Flash::success('Successfully save! Issued QDN is now subject for Approval!');
 		return redirect('/');
 	}

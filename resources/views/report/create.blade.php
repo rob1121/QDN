@@ -33,56 +33,62 @@ border-color: #d58512;
 @section('content')
 <div class="container">
     @include('errors.validationErrors')
-    <!-- ==================================== form start======================================== =======================-->
-    <form
-        action = "{{ route('issue_qdn') }}"
-        method = "POST"
-        role   = "form"
-        id     = "qdn-form"
-        novalidate
-        >
-        {{ csrf_field() }}
-        @include('report.partials.sectionOne',['hidden'=>'hidden'])
-        <!-- SUBMIT BUTTON -->
-        <div class="form-group col-xs-12">
-            <button
-            type  = "button"
-            name  = "submit"
-            class = "btn btn-lg btn-primary"
-            >
-            <i class="fa fa-save"></i> Submit
-            </button>
-        </div>
-        <!-- //========================== modal for confirmation message =============================== -->
-        <div class="modal" id="confirm-submit">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Confirm Submission</h4>
-                    </div>
-                    <div class="modal-body">
-                        <em>Are you certain with all your inputs? If yes click</em>
-                        <strong class="label label-primary">Confirm Submission</strong>
-                        <br><br>
-                        <em>to edit click </em>
-                        <strong class="label label-default">Cancel</strong>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
-                        <span class="fa fa-times-circle"></span>
-                        Cancel
-                        </button>
-                        <button type="submit" id="btn-confirm" class="btn btn-primary">
-                        <span class="fa fa-check-circle"></span>
-                        Confirm Submission
-                        </button>
+    <!-- ==================================== form start===============================================================-->
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form
+                action = "{{ route('issue_qdn') }}"
+                method = "POST"
+                role   = "form"
+                id     = "qdn-form"
+                novalidate
+                >
+                <div class="col-md-12">
+    <legend class="h1">QDN Issuance</legend class="h1"></div>
+                {{ csrf_field() }}
+                @include('report.partials.sectionOne',['hidden'=>'hidden'])
+                <!-- SUBMIT BUTTON -->
+                <div class="form-group col-xs-12">
+                    <button
+                    type  = "button"
+                    name  = "submit"
+                    class = "btn btn-lg btn-primary"
+                    >
+                    <i class="fa fa-save"></i> Submit
+                    </button>
+                </div>
+                <!-- //========================== modal for confirmation message =============================== -->
+                <div class="modal" id="confirm-submit">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Confirm Submission</h4>
+                            </div>
+                            <div class="modal-body">
+                                <em>Are you certain with all your inputs? If yes click</em>
+                                <strong class="label label-primary">Confirm Submission</strong>
+                                <br><br>
+                                <em>to edit click </em>
+                                <strong class="label label-default">Cancel</strong>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                <span class="fa fa-times-circle"></span>
+                                Cancel
+                                </button>
+                                <button type="submit" id="btn-confirm" class="btn btn-primary">
+                                <span class="fa fa-check-circle"></span>
+                                Confirm Submission
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
-    </form>
-        <!-- ================================================= form end =================================== -->
+    </div>
+    <!-- ================================================= form end =================================== -->
 </div>
 @stop
 <!-- ============================================ script ==============================================================  -->
@@ -95,6 +101,9 @@ border-color: #d58512;
 $(function() {
 $('button[name="submit"]').on('click', function () {
 $('#confirm-submit').modal('show');
+$('#btn-confirm').click(function(){
+$('#confirm-submit').modal('hide');
+});
 });
 });
 </script>

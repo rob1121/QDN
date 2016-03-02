@@ -65,7 +65,13 @@
         $('#edit').modal('hide');
     });
        $('#validation-modal').on('hidden.bs.modal', function () {
-        $('#edit').modal('show');
+            if ($('#validation-modal h4#validation-msg').text() == "Write Validation Output:"){
+                $('#validation-modal h4#validation-msg').text('Add Comment (optional):');
+                $('#edit').modal('show');
+            }
+       });
+       $('#edit').on('show.bs.modal', function () {
+ $('#validation-modal h4#validation-msg').text('Write Validation Output:');
        });
     });
 </script>

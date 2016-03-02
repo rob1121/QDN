@@ -122,7 +122,7 @@ th {
                   <td style="border: 1px solid black;">{{ Str::title($qdn->failure_mode) }}</td>
                   <td style="border: 1px solid black;">{{ Str::title($qdn->discrepancy_category) }}</td>
                   <td style="border: 1px solid black;">{{ Str::title($qdn->closure->status) }}</td>
-                  <td style="border: 1px solid black;">{{ $qdn->created_at) }}</td>
+                  <td style="border-right: ;r: 1px solid black;">{{ $qdn->created_at }}</td>
                   </tbody>
                 </table>
               </td>

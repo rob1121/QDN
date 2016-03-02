@@ -13,9 +13,10 @@ class GlobalComposer {
 	 * @return void
 	 */
 	public function compose(View $view) {
-		$view->with('currentUser', Auth::user());
-		if (Auth::user()) {
-			$view->with('show', Auth::user()->Employee->department == 'process' || Auth::user()->access_level == 'Admin');
+		$currentUser = Auth::user();
+		$view->with('currentUser', $currentUser);
+		if ($currentUser) {
+			$view->with('show', 'process' == $currentUser->Employee->department || 'Admin' == $currentUser->access_level);
 		}
 	}
 

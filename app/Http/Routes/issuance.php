@@ -37,7 +37,7 @@ Route::get('/report/{slug}/pdf',
 		'uses' => 'reportController@pdf',
 	]);
 
-Route::get('report/approval/{slug}',
+Route::get('/report/approval/{slug}',
 	['as'  => 'approval',
 		'uses' => 'reportController@approval']);
 

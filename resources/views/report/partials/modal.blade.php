@@ -36,7 +36,7 @@ function dispositionCondition($qdn, $disposition) {
                     </div>
                     <div class="col-md-12">
                     <br>
-                        <a data-toggle="modal" class="text-default" href='#validation-modal'>Input Validation Report <i class="fa fa-edit"></i></a>
+                        <a data-toggle="modal" href='#validation-modal'>Input Validation Report <i class="fa fa-edit"></i></a>
                     </div>
                 </div>
                 <br>
@@ -94,13 +94,13 @@ function dispositionCondition($qdn, $disposition) {
             </div>
         </div>
     </div>
-    <!-- ================================================== VALIDATION MESSAGE MODAL ================================================ -->
+    <!-- ========================================== VALIDATION MESSAGE MODAL ================================================ -->
     <div class="modal" id="validation-modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Write Validation Output:</h4>
+                    <h4 class="modal-title" id="validation-msg">Write Validation Output:</h4>
                 </div>
                 <div class="modal-body">
                     <textarea
@@ -125,4 +125,5 @@ function dispositionCondition($qdn, $disposition) {
             </div>
         </div>
     </div>
+
 </form>

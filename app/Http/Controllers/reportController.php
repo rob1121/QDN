@@ -78,7 +78,6 @@ class reportController extends Controller {
 	public function SectionOneSaveAndProceed(Request $request, Info $slug) {
 		$this->qdn->SectionOneUpdate($request, $slug);
 		$this->qdn->UpdateClosureStatus($request, $slug);
-
 		Event::fire(new PeVerificationNotificationEvent($slug, $request->ValidationMessage));
 		Flash::success('Successfully Verified !! QDN are now ready for completion!');
 		return redirect('/');
@@ -136,6 +135,7 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function approval(Info $slug) {
+
 		return $this->qdn->view($slug, 'report.approval.view');
 	}
 
@@ -143,12 +143,16 @@ class reportController extends Controller {
 	 * approval post method that update cycletime and closure table
 	 * @param Info $slug [description]
 	 */
-	public function UpdateForApprroval(Info $slug) {
+	public function UpdateForApprroval(Info $slug, Request $request) {
 		//update closure and qdncycle table
+		$this->qdn->approverUpdate($request, $slug);
 		//fire event log
 		//fire email notif event
+		Event::fire(new ApprovalNotificationEvent($slug));
 		//flash success alert message
+		Flash::success('Successfully updated! Issued QDN still waiting for other approvers!');
 		//return home page
+		return redirect('/');
 	}
 
 //================================= FOR QA VERIFICATION ==================================================

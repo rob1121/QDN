@@ -44,4 +44,12 @@ interface InfoRepositoryInterface {
 	 * @param [type] $qdn     [description]
 	 */
 	public function UpdateClosureStatus($request, $qdn);
+
+	/**
+	 * update function for approver
+	 * @param  [type] $request [description]
+	 * @param  [type] $qdn     [description]
+	 * @return [type]          [description]
+	 */
+	public function approverUpdate($request, $qdn);
 }

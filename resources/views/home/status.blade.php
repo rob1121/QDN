@@ -9,7 +9,7 @@ case 'incomplete fill-up':
 case 'incomplete approval':
 	$link = 'approval';
 	break;
-case 'q.a verification':
+case 'q.a. verification':
 	$link = 'qa_verification';
 	break;
 

@@ -35,7 +35,7 @@ function dispositionCondition($qdn, $disposition) {
                         </div>
                     </div>
                     <div class="col-md-12">
-                    <br>
+                        <br>
                         <a data-toggle="modal" href='#validation-modal'>Input Validation Report <i class="fa fa-edit"></i></a>
                     </div>
                 </div>

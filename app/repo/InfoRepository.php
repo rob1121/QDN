@@ -184,4 +184,24 @@ class InfoRepository implements InfoRepositoryInterface {
 			'pe_verified_by' => Auth::user()->employee->name,
 		]);
 	}
+
+	public function approverUpdate($request, $qdn) {
+		$user   = Auth::user()->employee;
+		$column = str_replace(' ', '_', $user->department);
+		$qdn->closure()->update([$column => $user->name]);
+
+		if ('reject' == $request->approver_radio) {
+			$qdn->closure()->update(['status' => 'incomplete fill-up']);
+		} else {
+			if ($qdn->closure->where('production', '')
+				->orWhere('process_engineering', '')
+				->orWhere('quality_assurance', '')
+				->orWhere('other_department', '')->count()
+			) {
+				$qdn->closure()->update(['status' => 'incomplete approval']);
+			} else {
+				$qdn->closure()->update(['status' => 'q.a. verification']);
+			}
+		}
+	}
 }

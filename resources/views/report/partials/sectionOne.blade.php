@@ -163,10 +163,20 @@
             multiple
             required
             >
-            @foreach ($qdn->involvePerson->pluck('receiver_name') as $name)
+            @if (isset($qdn))
+            <?php $receiver_name = $qdn->involvePerson;?>
+
+            @foreach ($receiver_name->pluck('receiver_name') as $name)
             <option value="{{ $name }}" selected>{{ $name }}</option>
             @endforeach
-            @foreach (collect($employees->toArray())->flatten()->diff($qdn->involvePerson->pluck('receiver_name','originator_name')->flatten()) as $employee)
+            @endif
+
+            <?php $employeeList = collect($employees->toArray())->flatten();?>
+            @foreach ( isset($qdn)
+                ? $employeeList->diff($receiver_name->pluck('receiver_name','originator_name')->flatten())
+                : $employeeList
+                as $employee
+            )
             <option value="{{ $employee }}">
                 {{ Str::title($employee) }}
             </option>

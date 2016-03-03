@@ -193,15 +193,16 @@ class InfoRepository implements InfoRepositoryInterface {
 		if ('reject' == $request->approver_radio) {
 			$qdn->closure()->update(['status' => 'incomplete fill-up']);
 		} else {
-			if ($qdn->closure->where('production', '')
-				->orWhere('process_engineering', '')
-				->orWhere('quality_assurance', '')
-				->orWhere('other_department', '')->count()
-			) {
-				$qdn->closure()->update(['status' => 'incomplete approval']);
-			} else {
-				$qdn->closure()->update(['status' => 'q.a. verification']);
-			}
+			$this->updateStatus($qdn)
+			? $qdn->closure()->update(['status' => 'incomplete approval'])
+			: $qdn->closure()->update(['status' => 'q.a. verification']);
 		}
+	}
+
+	public function updateStatus($qdn) {
+		return $qdn->closure->where('production', '')
+			->orWhere('process_engineering', '')
+			->orWhere('quality_assurance', '')
+			->orWhere('other_department', '')->count();
 	}
 }

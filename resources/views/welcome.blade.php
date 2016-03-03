@@ -47,26 +47,33 @@ input.form-control {
 height:50px;
 }
 .btn-primary {
-    background-color: #800000;
-    border:0px;
+background-color: #800000;
+border:0px;
 }
 .btn-primary:hover {
-    background-color: #800000;
-  -webkit-filter: brightness(110%);
-  -webkit-transform: scale(1.03);
-  transform: scale(1.03);
-
-
-        /*border: 1px solid #800;*/
-        -webkit-transform: scale(1.03);
-        transform: scale(1.03);
-        position: relative;
-        z-index: 1;
+background-color: #800000;
+-webkit-filter: brightness(110%);
+-webkit-transform: scale(1.03);
+transform: scale(1.03);
+/*border: 1px solid #800;*/
+-webkit-transform: scale(1.03);
+transform: scale(1.03);
+position: relative;
+z-index: 1;
+}
+.jumbotron {
+    background-color: #fff;
+    padding: 64px 0px 128px 0px;
 }
 </style>
 @stop
 @section('content')
-<div class="container main-top">
+<div class="jumbotron text-center">
+    <h1><strong>The Simple Way to Monitor Quality Hits</strong></h1>
+    <h2>It's awesome. And it's easy</h2>
+    <p><a href="#login" class="btn btn-primary btn-lg" id="login-lnk">Login <i class="fa fa-sign-in"></i></a></p>
+</div>
+<div class="container main-top" id="login">
     <form
         class  = "form-horizontal"
         role   = "form"
@@ -197,6 +204,25 @@ required: true
 },
 errorClass: "error",
 errorElement: "span"
+});
+// ===================== scrollspy =========================================
+$("#login-lnk").on('click', function(event){
+
+  // Prevent default anchor click behavior
+  event.preventDefault();
+
+  // Store hash (#)
+  var hash = this.hash;
+
+  // Using jQuery's animate() method to add smooth page scroll
+  // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area (the speed of the animation)
+  $('html, body').animate({
+    scrollTop: $(hash).offset().top
+  }, 800, function(){
+
+    // Add hash (#) to URL when done scrolling (default click behavior)
+    window.location.hash = hash;
+  });
 });
 });
 </script>

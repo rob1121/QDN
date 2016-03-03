@@ -144,14 +144,11 @@ class reportController extends Controller {
 	 * @param Info $slug [description]
 	 */
 	public function UpdateForApprroval(Info $slug, Request $request) {
-		//update closure and qdncycle table
-		$this->qdn->approverUpdate($request, $slug);
+		$this->qdn->approverUpdate($request, $slug); //update closure and qdncycle table
 		//fire event log
 		//fire email notif event
-		Event::fire(new ApprovalNotificationEvent($slug));
-		//flash success alert message
-		Flash::success('Successfully updated! Issued QDN still waiting for other approvers!');
-		//return home page
+		Event::fire(new ApprovalNotificationEvent($slug)); //flash success alert message
+		Flash::success('Successfully updated! Issued QDN still waiting for other approvers!'); //return home page
 		return redirect('/');
 	}
 

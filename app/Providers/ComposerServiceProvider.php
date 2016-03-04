@@ -14,11 +14,11 @@ class ComposerServiceProvider extends ServiceProvider {
 	public function boot(ViewFactory $view) {
 		$view->composer('*', 'App\Http\ViewComposers\GlobalComposer');
 		$view->composer(
-			['report.create', 'report.view', 'report.approval.view', 'report.incomplete'],
+			['report.create', 'report.view', 'report.IncompleteApproval', 'report.incomplete', 'report.QaVerification'],
 			'App\Http\ViewComposers\FormOptionComposer'
 		);
 		$view->composer(
-			['report.view', 'pdf.print', 'report.approval.view', 'report.incomplete'],
+			['report.view', 'pdf.print', 'report.IncompleteApproval', 'report.incomplete', 'report.QaVerification'],
 			'App\Http\ViewComposers\RecordUpdateComposer'
 		);
 

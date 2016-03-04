@@ -30,6 +30,13 @@
   src: url("/css/fonts/Arvo-regular/Arvo-regular.eot");
   src: url("/css/fonts/Arvo-regular/Arvo-regular.eot?#iefix") format("embedded-opentype"), local("Arvo"), local("Arvo-regular"), url("/css/fonts/Arvo-regular/Arvo-regular.woff2") format("woff2"), url("/css/fonts/Arvo-regular/Arvo-regular.woff") format("woff"), url("/css/fonts/Arvo-regular/Arvo-regular.ttf") format("truetype"), url("/css/fonts/Arvo-regular/Arvo-regular.svg#Arvo") format("svg"); }
 
+@font-face {
+  font-family: 'Abril Fatface';
+  font-weight: 400;
+  font-style: normal;
+  src: url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.eot");
+  src: url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.eot?#iefix") format("embedded-opentype"), local("Abril Fatface"), local("Abril-Fatface-regular"), url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.woff2") format("woff2"), url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.woff") format("woff"), url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.ttf") format("truetype"), url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.svg#AbrilFatface") format("svg"); }
+
 .error {
   color: #a94442; }
 

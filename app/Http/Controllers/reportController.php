@@ -6,6 +6,7 @@ use App\Events\ApprovalNotificationEvent;
 use App\Events\EmailQdnNotificationEvent;
 use App\Events\PeVerificationNotificationEvent;
 use App\Http\Requests\QdnCreateRequest;
+use App\Models\closure;
 use App\Models\Info;
 use App\repo\InfoRepository;
 use Event;
@@ -135,8 +136,7 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function approval(Info $slug) {
-
-		return $this->qdn->view($slug, 'report.approval.view');
+		return $this->qdn->view($slug, 'report.IncompleteApproval');
 	}
 
 	/**
@@ -159,12 +159,13 @@ class reportController extends Controller {
 	 */
 	public function QaVerification(Info $slug) {
 		// view qdn
+		return $this->qdn->view($slug, 'report.QaVerification');
 	}
 
 	public function QaVerificationUpdate(Info $slug, Request $request) {
-		// update qdn closures
+		$this->qdn->sectionEigthClosure($slug, $request); // update qdn closures
 		// send email notification
-		// add flash alert notification
-		// view home page
+		Flash::success('Successfully updated! Issued QDN are now closed!'); // add flash alert notification
+		return redirect('/'); // view home page
 	}
 }

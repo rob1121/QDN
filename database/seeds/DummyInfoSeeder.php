@@ -127,8 +127,8 @@ class DummyInfoSeeder extends Seeder {
 
 			Closure::create([
 				'info_id'                  => $info->id,
-				'containment_action_taken' => $faker->randomElement(['YES', 'NO']),
-				'corrective_action_taken'  => $faker->randomElement(['YES', 'NO']),
+				'containment_action_taken' => $faker->randomElement(['yes', 'no']),
+				'corrective_action_taken'  => $faker->randomElement(['yes', 'no']),
 				'close_by'                 => $close_by->name,
 				'created_at'               => $info->created_at,
 				'production'               => $employee->where('department', 'production')->random()->name,

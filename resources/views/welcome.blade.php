@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 @section('style')
 <style>
@@ -48,9 +49,12 @@ height:50px;
 }
 .btn-primary {
 background-color: #800000;
+    color:#fff;
 border:0px;
 }
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus {
+    color:#fff;
 background-color: #800000;
 -webkit-filter: brightness(110%);
 -webkit-transform: scale(1.03);
@@ -65,13 +69,40 @@ z-index: 1;
     background-color: #fff;
     padding: 64px 0px 128px 0px;
 }
+
+.jumbotron>h1 {
+    font-family: 'Abril Fatface';
+    color:#800000;
+}
+
+.typed-cursor{
+    opacity: 1;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
 </style>
 @stop
 @section('content')
 <div class="jumbotron text-center">
-    <h1><strong>The Simple Way to Monitor Quality Hits</strong></h1>
-    <h2>It's awesome. And it's easy</h2>
-    <p><a href="#login" class="btn btn-primary btn-lg" id="login-lnk">Login <i class="fa fa-sign-in"></i></a></p>
+    <h1 class="header wow fadeIn"><strong>The Simple Way to Monitor Quality Hits</strong></h1>
+    <h2 ><span class="sub-title"></span></h2>
+    <p><a href="#login" class="btn btn-default btn-lg" id="login-lnk">Login <i class="fa fa-sign-in"></i></a></p>
 </div>
 <div class="container main-top" id="login">
     <form
@@ -190,8 +221,14 @@ z-index: 1;
 </div>
 @stop
 @section('script')
+<script src="/vendor/js/wow.js"></script>
+<script src="/vendor/js/typed.min.js"></script>
 <script>
 $(function() {
+    $(".sub-title").typed({
+           strings: ["^800It's awesome. ^300And it's easy."],
+           typeSpeed: 0
+         });
 new WOW().init();
 $('#login-form').validate({
 rules: {
@@ -224,6 +261,7 @@ $("#login-lnk").on('click', function(event){
     window.location.hash = hash;
   });
 });
+
 });
 </script>
 @stop

@@ -10,10 +10,9 @@ var elixir = require('laravel-elixir');
  | file for our application, as well as copying vendor resources.
  |
  */
-
+ 
 elixir(function(mix) {
-mix.sass('app.scss')
-    .version(['public/css/app.css'])
+mix.sass('app.scss').version(['public/css/app.css'])
     .browserSync({
         proxy: 'qdn.me'
     });
@@ -66,7 +65,7 @@ mix.copy(
 )
     .copy(
         "resources/assets/vendor/wow/dist/wow.min.js",
-        "resources/assets/js/wow.js"
+        "public/vendor/js/wow.js"
 )
     .copy(
         "resources/assets/vendor/waypoints/lib/jquery.waypoints.js",
@@ -106,6 +105,10 @@ mix.copy(
     "resources/assets/js/pace.js",
     "public/vendor/js/pace.js"
 )
+.copy(
+    "resources/assets/vendor/typed.js/dist/typed.min.js",
+    "public/vendor/js/typed.min.js"
+)
 .styles([
         "bootstrap.css",
         "font-awesome.css",
@@ -123,7 +126,6 @@ mix.copy(
         "jquery.validate.js",
         "additional-methods.js",
         "bootstrap.js",
-        "wow.js",
         "amaran.js",
         "jquery.waypoints.js",
         "sticky.min.js"

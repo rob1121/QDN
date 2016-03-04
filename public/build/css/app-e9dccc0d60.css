@@ -14,6 +14,29 @@
   src: url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.eot");
   src: url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.eot?#iefix") format("embedded-opentype"), local("Leckerli One"), local("Leckerli-One-regular"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.woff2") format("woff2"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.woff") format("woff"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.ttf") format("truetype"), url("/css/fonts/Leckerli-One-regular/Leckerli-One-regular.svg#LeckerliOne") format("svg"); }
 
+/* Capriola-----------------------------------------------------*/
+@font-face {
+  font-family: 'Capriola';
+  font-weight: 400;
+  font-style: normal;
+  src: url("/css/fonts/Capriola-regular/Capriola-regular.eot");
+  src: url("/css/fonts/Capriola-regular/Capriola-regular.eot?#iefix") format("embedded-opentype"), local("Capriola Regular"), local("Capriola-regular"), url("/css/fonts/Capriola-regular/Capriola-regular.woff2") format("woff2"), url("/css/fonts/Capriola-regular/Capriola-regular.woff") format("woff"), url("/css/fonts/Capriola-regular/Capriola-regular.ttf") format("truetype"), url("/css/fonts/Capriola-regular/Capriola-regular.svg#Capriola") format("svg"); }
+
+/* Arvo-----------------------------------------------------*/
+@font-face {
+  font-family: 'Arvo';
+  font-weight: 400;
+  font-style: normal;
+  src: url("/css/fonts/Arvo-regular/Arvo-regular.eot");
+  src: url("/css/fonts/Arvo-regular/Arvo-regular.eot?#iefix") format("embedded-opentype"), local("Arvo"), local("Arvo-regular"), url("/css/fonts/Arvo-regular/Arvo-regular.woff2") format("woff2"), url("/css/fonts/Arvo-regular/Arvo-regular.woff") format("woff"), url("/css/fonts/Arvo-regular/Arvo-regular.ttf") format("truetype"), url("/css/fonts/Arvo-regular/Arvo-regular.svg#Arvo") format("svg"); }
+
+@font-face {
+  font-family: 'Abril Fatface';
+  font-weight: 400;
+  font-style: normal;
+  src: url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.eot");
+  src: url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.eot?#iefix") format("embedded-opentype"), local("Abril Fatface"), local("Abril-Fatface-regular"), url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.woff2") format("woff2"), url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.woff") format("woff"), url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.ttf") format("truetype"), url("/css/fonts/Abril-Fatface-regular/Abril-Fatface-regular.svg#AbrilFatface") format("svg"); }
+
 .error {
   color: #a94442; }
 
@@ -42,12 +65,12 @@
   padding: 5em 2em 5em 2em; }
 
 .navbar-brand {
-  font-family: Coustard;
+  font-family: "Coustard";
   font-size: 50px;
   font-weight: bold; }
 
 .navbar-brand p.subtitle {
-  font-family: Leckerli One;
+  font-family: "Capriola";
   margin-top: 10px;
   font-size: 14px; }
 
@@ -58,7 +81,8 @@
     margin-top: -5px;
     font-size: 7px; } }
 
-.navbar-brand, .navbar-nav li a {
+.navbar-brand,
+.navbar-nav li a {
   color: #3b3a36; }
 
 .navbar.stuck {
@@ -83,7 +107,7 @@
 .navbar-nav li a:hover,
 .navbar-brand:focus,
 .navbar-nav li a:focus {
-  color: #c0dfd9;
+  color: #214E76;
   background-color: transparent;
   border: 0px; }
 
@@ -91,19 +115,13 @@
 .stuck .navbar-nav li a:hover,
 .stuck .navbar-brand:focus,
 .stuck .navbar-nav li a:focus,
-.active {
-  background-color: rgba(0, 0, 0, 0.1); }
+.active,
+li.dropdown.open > .dropdown-toggle {
+  background-color: rgba(33, 78, 118, 0.1); }
 
 .dropdown-menu li a,
 .stuck .dropdown-menu li a {
   color: #3b3a36; }
-
-.dropdown.open a:focus {
-  background-color: transparent; }
-
-.stuck .dropdown-menu li a:hover {
-  color: #3b3a36;
-  background-color: rgba(0, 0, 0, 0.1); }
 
 .dropdown {
   cursor: pointer; }

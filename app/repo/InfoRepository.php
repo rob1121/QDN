@@ -188,6 +188,8 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function approverUpdate($request, $qdn) {
 		$user   = Auth::user()->employee;
 		$column = str_replace(' ', '_', $user->department);
+		$column = 'process' == $column ? 'process_engineering' : $column;
+		$column = 'other' == $column ? 'other_department' : $column;
 		$qdn->closure()->update([$column => $user->name]);
 
 		if ('reject' == $request->approver_radio) {
@@ -200,9 +202,18 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function updateStatus($qdn) {
-		return $qdn->closure->where('production', '')
-			->orWhere('process_engineering', '')
-			->orWhere('quality_assurance', '')
-			->orWhere('other_department', '')->count();
+		$qdn     = Info::whereSlug("test-only-msg")->with('closure')->first();
+		$closure = $qdn->closure;
+		return $closure->other_department && $closure->production && $closure->quality_assurance && $closure->process_engineering ? 0 : 1;
+	}
+
+	public function sectionEigthClosure($qdn, $request) {
+		Closure::where('info_id', $qdn->id)
+			->update(['containment_action_taken' => $request->containment_action_taken,
+				'corrective_action_taken'            => $request->corrective_action_taken,
+				'close_by'                           => Auth::user()->employee->name,
+				'date_sign'                          => Carbon::now('Asia/Manila'),
+				'status'                             => 'closed',
+			]);
 	}
 }

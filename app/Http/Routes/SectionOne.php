@@ -26,8 +26,9 @@ Route::get('/report/qa-verification/{slug}',
 		'as'   => 'qa_verification',
 		'uses' => 'reportController@QaVerification',
 	]);
+
 Route::post('/report/qa-verification/{slug}',
 	[
-		'as'   => 'qa_verification',
-		'uses' => 'reportController@QaVerification',
+		'as'   => 'QaVerificationUpdate',
+		'uses' => 'reportController@QaVerificationUpdate',
 	]);

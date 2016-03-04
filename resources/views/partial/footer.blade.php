@@ -19,6 +19,10 @@
 				</ul>
 				<div class="col-md-12">
 					<h4>Need Help?</h4>
+					<span class="fa-stack fa-4x">
+					  <i class="fa fa-circle fa-stack-2x" ></i>
+					  <i class="fa fa-user fa-stack-1x fa-inverse" style="color:#222"></i>
+					</span>
 					<address>
 						<p>
 							<strong>Robinson L. Legaspi</strong> <br>

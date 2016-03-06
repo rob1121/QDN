@@ -12,7 +12,7 @@ use JavaScript;
 
 class HomeController extends Controller {
 	private $home;
-
+	protected $user;
 	/**
 	 * Create a new controller instance.
 	 *
@@ -20,6 +20,7 @@ class HomeController extends Controller {
 	 */
 	public function __construct(HomeRepository $home) {
 		$this->home = $home;
+		$this->user = Auth::user();
 	}
 
 	/**
@@ -29,7 +30,7 @@ class HomeController extends Controller {
 	 */
 	public function index() {
 		JavaScript::put('yearNow', $this->home->dateTime()->year);
-		return view(Auth::user() ? 'home' : 'welcome');
+		return view($this->user ? 'home' : 'welcome');
 	}
 
 	/**

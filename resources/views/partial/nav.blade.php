@@ -50,6 +50,7 @@ $url = Request::url();
                     </ul>
                 </li>
             @else
+            <li class="text-center footer-logo h1">TELFORD</li>
                 {{-- MENU IF USER IS NOT LOGGED IN --}}
                 <!-- <li><a href="#login" data-toggle="modal" ><i class="fa fa-sign-in"></i> Login</a></li> -->
             @endif

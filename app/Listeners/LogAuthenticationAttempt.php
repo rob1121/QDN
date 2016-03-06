@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\PeVerificationNotificationEvent;
+use Illuminate\Auth\Events\Attempting;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class PeVerificationNotificationEventListener implements ShouldQueue {
+class LogAuthenticationAttempt implements ShouldQueue {
 	use InteractsWithQueue;
 	/**
 	 * Create the event listener.
@@ -20,10 +20,10 @@ class PeVerificationNotificationEventListener implements ShouldQueue {
 	/**
 	 * Handle the event.
 	 *
-	 * @param  PeVerificationNotificationEvent  $event
+	 * @param  Attempting  $event
 	 * @return void
 	 */
-	public function handle(PeVerificationNotificationEvent $event) {
-		//
+	public function handle(Attempting $event) {
+
 	}
 }

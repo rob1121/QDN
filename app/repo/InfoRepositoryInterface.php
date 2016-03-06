@@ -32,6 +32,19 @@ interface InfoRepositoryInterface {
 	public function add($request);
 
 	/**
+	 * insert on info table
+	 * @param [type] $request [description]
+	 */
+	public function AddInfo($request);
+
+	/**
+	 * [AddInvolvePerson description]
+	 * @param [type] $request [description]
+	 * @param [type] $id      [description]
+	 */
+	public function AddInvolvePerson($request, $id);
+
+	/**
 	 * method to update data in section one
 	 * @param [type] $request [description]
 	 * @param [type] $slug    [description]

@@ -24,6 +24,28 @@ class EventServiceProvider extends ServiceProvider {
 		'App\Events\QaVerificationNotificationEvent' => [
 			'App\Listeners\QaVerificationNotificationEventListener',
 		],
+		'App\Events\QdnClosedNotificationEvent'      => [
+			'App\Listeners\QdnClosedNotificationEventListener',
+		],
+		'App\Events\EventLogs'                       => [
+			'App\Listeners\EventLogsListener',
+		],
+
+		'Illuminate\Auth\Events\Attempting'          => [
+			'App\Listeners\LogAuthenticationAttempt',
+		],
+
+		'Illuminate\Auth\Events\Login'               => [
+			'App\Listeners\LogSuccessfulLogin',
+		],
+
+		'Illuminate\Auth\Events\Logout'              => [
+			'App\Listeners\LogSuccessfulLogout',
+		],
+
+		'Illuminate\Auth\Events\Lockout'             => [
+			'App\Listeners\LogLockout',
+		],
 	];
 
 	/**
@@ -34,7 +56,7 @@ class EventServiceProvider extends ServiceProvider {
 	 */
 	public function boot(DispatcherContract $events) {
 		parent::boot($events);
-
-		//
+		$events->listen('event.name', function ($foo, $bar) {
+		});
 	}
 }

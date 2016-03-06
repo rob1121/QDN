@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\PeVerificationNotificationEvent;
+use App\Events\QdnClosedNotificationEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class PeVerificationNotificationEventListener implements ShouldQueue {
+class QdnClosedNotificationEventListener implements ShouldQueue {
 	use InteractsWithQueue;
 	/**
 	 * Create the event listener.
@@ -20,10 +20,10 @@ class PeVerificationNotificationEventListener implements ShouldQueue {
 	/**
 	 * Handle the event.
 	 *
-	 * @param  PeVerificationNotificationEvent  $event
+	 * @param  QdnClosedNotificationEvent  $event
 	 * @return void
 	 */
-	public function handle(PeVerificationNotificationEvent $event) {
+	public function handle(QdnClosedNotificationEvent $event) {
 		//
 	}
 }

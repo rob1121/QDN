@@ -21,6 +21,8 @@ body {
 #footer .row{
     background-color: $dim-grey;
     color:$light-grey;
+    padding-top:32px;
+    padding-bottom:32px;
 }
 
 #toTop {
@@ -31,3 +33,10 @@ body {
   display: none;
   background-color: rgba(34, 34, 34, 0.5);
   color: #f5f5f5; }
+
+  .footer-logo {
+    padding-left: 15px;
+    padding-right: 15px;
+    color:#fff;
+    background-color:#800000;
+  }

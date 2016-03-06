@@ -101,7 +101,7 @@
 						<label class="btn btn-default btn-lg" id="radio-approve">
 							<input
 							type  = "radio"
-							name  = "containment_action_taken"
+							name  = "ValidationResult"
 							value = "approve"
 							>
 							Approve <i class="fa fa-check"></i>
@@ -109,7 +109,7 @@
 						<label class="btn btn-default btn-lg" id="radio-reject">
 							<input
 							type  = "radio"
-							name  = "containment_action_taken"
+							name  = "ValidationResult"
 							value = "reject"
 							>
 							Reject <i class="fa fa-times"></i>

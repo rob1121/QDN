@@ -66,6 +66,10 @@ class Info extends Model implements SluggableInterface {
 		return $this->hasMany('App\Models\InvolvePerson');
 	}
 
+	public function eventLog() {
+		return $this->hasMany('App\Models\EventLogs');
+	}
+
 	//model mutators-----------------------------------------------------------
 	/**
 	 * set control number fomart before save

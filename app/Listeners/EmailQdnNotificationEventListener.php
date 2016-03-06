@@ -3,8 +3,11 @@
 namespace App\Listeners;
 
 use App\Events\EmailQdnNotificationEvent;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 
-class EmailQdnNotificationEventListener {
+class EmailQdnNotificationEventListener implements ShouldQueue {
+	use InteractsWithQueue;
 	/**
 	 * Create the event listener.
 	 *

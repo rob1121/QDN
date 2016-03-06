@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 @section('style')
 <style>
@@ -47,24 +46,7 @@ height:50px;
 input.form-control {
 height:50px;
 }
-.btn-primary {
-background-color: #800000;
-    color:#fff;
-border:0px;
-}
-.btn-primary:hover,
-.btn-primary:focus {
-    color:#fff;
-background-color: #800000;
--webkit-filter: brightness(110%);
--webkit-transform: scale(1.03);
-transform: scale(1.03);
-/*border: 1px solid #800;*/
--webkit-transform: scale(1.03);
-transform: scale(1.03);
-position: relative;
-z-index: 1;
-}
+
 .jumbotron {
     background-color: #fff;
     padding: 64px 0px 128px 0px;
@@ -95,6 +77,29 @@ z-index: 1;
     0% { opacity:1; }
     50% { opacity:0; }
     100% { opacity:1; }
+}
+.carousel-fade .carousel-inner .item {
+  opacity: .5;
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+}
+.carousel-fade .carousel-inner .active {
+  opacity: 1;
+}
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+}
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+  opacity: 1;
+}
+.carousel-fade .carousel-control {
+  z-index: 2;
 }
 </style>
 @stop
@@ -160,14 +165,13 @@ z-index: 1;
     </form>
 </div>
 <!-- ============= carousel ==================================== -->
-<div id="carousel-id" class="carousel slide wow fadeIn" data-wow-offset="400" data-ride="carousel">
+<div id="carousel-id" class="carousel slide carousel-fade wow fadeIn" data-wow-offset="400" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target = "#carousel-id" data-slide-to="0" class="active"></li>
         <li data-target = "#carousel-id" data-slide-to="1" class=""></li>
         <li data-target = "#carousel-id" data-slide-to="2" class=""></li>
         <li data-target = "#carousel-id" data-slide-to="3" class=""></li>
         <li data-target = "#carousel-id" data-slide-to="4" class=""></li>
-        <li data-target = "#carousel-id" data-slide-to="5" class=""></li>
     </ol>
     <div class="carousel-inner">
         <div class="item active">
@@ -259,6 +263,7 @@ $("#login-lnk").on('click', function(event){
 
     // Add hash (#) to URL when done scrolling (default click behavior)
     window.location.hash = hash;
+    $('#employee_id').focus();
   });
 });
 

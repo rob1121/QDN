@@ -1,3 +1,9 @@
+<?php
+$show = $currentUser->employee->department == 'production' && $qdn->closure->production == '')
+				|| ($currentUser->employee->department == 'process' && $qdn->closure->process_engineering == '')
+				|| ($currentUser->employee->department == 'quality assurance' && $qdn->closure->quality_assurance == '')
+				|| ($currentUser->employee->department == 'other' && $qdn->closure->other_department == '');
+?>
 @extends('layouts.app')
 @include('report.partials.style')
 @push('style')
@@ -35,12 +41,7 @@
 				<h3 class="panel-title">APPROVALS:</h3>
 			</div>
 			<div class="panel-body" id="approval-body">
-				@if (
-				($currentUser->employee->department == 'production' && $qdn->closure->production == '')
-				|| ($currentUser->employee->department == 'process' && $qdn->closure->process_engineering == '')
-				|| ($currentUser->employee->department == 'quality assurance' && $qdn->closure->quality_assurance == '')
-				|| ($currentUser->employee->department == 'other' && $qdn->closure->other_department == '')
-				)
+				@if ($show)
 				<div class="col-md-12 text-center">
 					<div class="btn-group" data-toggle="buttons" id="approval-btn-group">
 						<label class="btn btn-default btn-lg" id="section7-approve">
@@ -53,9 +54,8 @@
 						</label>
 					</div>
 				</div>
-				@else
-					@include('report.partials.sectionSeven')
 				@endif
+					@include('report.partials.sectionSeven',['show' => $show]);
 			</div>
 		</div>
 	</form>

@@ -52,73 +52,43 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function add($request) {
-		$currentUser = Auth::user();
+		$info = $this->AddInfo($request);
+		$id   = ['info_id' => $info->id];
+
+		$this->AddInvolvePerson($request, $info->id);
+		CauseOfDefect::create($id);
+		CorrectiveAction::create($id);
+		ContainmentAction::create($id);
+		PreventiveAction::create($id);
+		QdnCycle::create($id);
+		Closure::create(['info_id' => $info->id, 'status' => 'p.e. verification']);
+		return $info;
+	}
+
+	public function AddInfo($request) {
 		$currentYear = Carbon::now('Asia/Manila')->format('y');
 
 		$lastIn     = Info::orderBy('id', 'desc')->first();
 		$lastInYear = substr($lastIn->control_id, 0, 2);
 		$lastInId   = substr($lastIn->control_id, 3);
-
-		//control_id
-		$control_id = $currentYear == $lastInYear
-		? $lastInId + 1
-		: 1;
-
-		//customer
-		$customer = "not yet specified" == $request->customer ? $request->customerField
-		: $request->customer;
-
-		$info = Info::create([
-			'control_id'           => $control_id,
-			'customer'             => $customer,
-			'package_type'         => $request->package_type,
-			'device_name'          => $request->device_name,
-			'lot_id_number'        => $request->lot_id_number,
-			'lot_quantity'         => $request->lot_quantity,
-			'job_order_number'     => $request->job_order_number,
-			'machine'              => $request->machine,
-			'station'              => $request->station,
-			'major'                => $request->major,
-			'disposition'          => 'use as is',
-			'problem_description'  => $request->problem_description,
-			'failure_mode'         => $request->failure_mode,
-			'discrepancy_category' => $request->discrepancy_category,
-			'quantity'             => $request->quantity,
+		$control_id = $currentYear == $lastInYear ? $lastInId + 1 : 1;
+		$customer   = "not yet specified" == $request->customer ? $request->customerField : $request->customer;
+		$info       = Info::create($request->all());
+		$info->update([
+			'disposition' => 'use as is',
+			'control_id'  => $control_id,
+			'customer'    => $customer,
 		]);
+		return $info;
+	}
 
-		CauseOfDefect::create([
-			'info_id'                     => $info->id,
-			'cause_of_defect'             => '',
-			'cause_of_defect_description' => '',
-			'objective_evidence'          => '',
-		]);
-
-		CorrectiveAction::create([
-			'info_id'            => $info->id,
-			'what'               => '',
-			'who'                => '',
-			'objective_evidence' => '',
-		]);
-
-		ContainmentAction::create([
-			'info_id'            => $info->id,
-			'what'               => '',
-			'who'                => '',
-			'objective_evidence' => '',
-		]);
-
-		PreventiveAction::create([
-			'info_id'            => $info->id,
-			'what'               => '',
-			'who'                => '',
-			'objective_evidence' => '',
-		]);
-
+	public function AddInvolvePerson($request, $id) {
+		$currentUser = Auth::user();
 		foreach ($request->receiver_name as $name) {
 			$person = Employee::findBy('name', $name)->first();
 
 			InvolvePerson::create([
-				'info_id'         => $info->id,
+				'info_id'         => $id,
 				'department'      => $person->department,
 				'originator_id'   => $currentUser->employee_id,
 				'originator_name' => $currentUser->employee->name,
@@ -126,36 +96,8 @@ class InfoRepository implements InfoRepositoryInterface {
 				'receiver_name'   => $person->name,
 			]);
 		}
-
-		Closure::create([
-			'info_id'                  => $info->id,
-			'containment_action_taken' => '',
-			'corrective_action_taken'  => '',
-			'close_by'                 => '',
-			'date_sign'                => '',
-			'production'               => '',
-			'process_engineering'      => '',
-			'quality_assurance'        => '',
-			'other_department'         => '',
-			'status'                   => 'p.e. verification',
-		]);
-
-		QdnCycle::create([
-			'info_id'                        => $info->id,
-			'cycle_time'                     => '',
-			'production_cycle_time'          => '',
-			'process_engineering_cycle_time' => '',
-			'quality_assurance_cycle_time'   => '',
-			'other_department_cycle_time'    => '',
-		]);
-		return $info;
 	}
 
-	/**
-	 * method to update data in section one
-	 * @param [type] $request [description]
-	 * @param [type] $slug    [description]
-	 */
 	public function SectionOneUpdate($request, $slug) {
 		$slug->update($request->all());
 		$arr_names     = [];
@@ -209,11 +151,12 @@ class InfoRepository implements InfoRepositoryInterface {
 
 	public function sectionEigthClosure($qdn, $request) {
 		Closure::where('info_id', $qdn->id)
-			->update(['containment_action_taken' => $request->containment_action_taken,
-				'corrective_action_taken'            => $request->corrective_action_taken,
-				'close_by'                           => Auth::user()->employee->name,
-				'date_sign'                          => Carbon::now('Asia/Manila'),
-				'status'                             => 'closed',
+			->update([
+				'containment_action_taken' => $request->containment_action_taken,
+				'corrective_action_taken'  => $request->corrective_action_taken,
+				'close_by'                 => Auth::user()->employee->name,
+				'date_sign'                => Carbon::now('Asia/Manila'),
+				'status'                   => 'closed',
 			]);
 	}
 }

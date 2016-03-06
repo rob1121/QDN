@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Events\ApprovalNotificationEvent;
-use App\Events\EmailQdnNotificationEvent;
+use App\Events\EventLogs;
 use App\Events\PeVerificationNotificationEvent;
 use App\Http\Requests\QdnCreateRequest;
 use App\Models\closure;
 use App\Models\Info;
 use App\repo\InfoRepository;
+use Auth;
 use Event;
 use Flash;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ use PDF;
 
 class reportController extends Controller {
 	protected $qdn;
+	private $user;
 
 	/**
 	 * QDN Info Dependency Injection
@@ -23,7 +25,8 @@ class reportController extends Controller {
 	 */
 	public function __construct(InfoRepository $qdn) {
 		$this->middleware('auth');
-		$this->qdn = $qdn;
+		$this->qdn  = $qdn;
+		$this->user = Auth::user();
 	}
 
 	/**
@@ -32,6 +35,7 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function pdf(Info $slug) {
+		Event::fire(new EventLogs($this->user, 'download' . $slug->control_id));
 		$qdn = $slug;
 		return PDF::loadHTML(view('pdf.print', compact('qdn')))->stream();
 	}
@@ -54,6 +58,8 @@ class reportController extends Controller {
 		Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!');
 		if (Info::isExist($request)->count() == 0) {
 			$qdn = $this->qdn->add($request);
+
+			Event::fire(new EventLogs($this->user, 'issue QDN' . $qdn->control_id));
 			Event::fire(new EmailQdnNotificationEvent($qdn));
 			Flash::success('Success! Team responsible will be notified regarding the issue via email!');
 		}
@@ -68,6 +74,7 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function show(Info $slug) {
+		Event::fire(new EventLogs($this->user, 'view' . $slug->control_id));
 		return $this->qdn->view($slug, 'report.view');
 	}
 
@@ -79,6 +86,7 @@ class reportController extends Controller {
 	public function SectionOneSaveAndProceed(Request $request, Info $slug) {
 		$this->qdn->SectionOneUpdate($request, $slug);
 		$this->qdn->UpdateClosureStatus($request, $slug);
+		Event::fire(new EventLogs($this->user, 'P.E. validate' . $slug->control_id, $request->status . ": " . $request->ValidationMessage));
 		Event::fire(new PeVerificationNotificationEvent($slug, $request->ValidationMessage));
 		Flash::success('Successfully Verified !! QDN are now ready for completion!');
 		return redirect('/');
@@ -91,6 +99,7 @@ class reportController extends Controller {
 	 */
 	public function SectionOneSaveAsDraft(Request $request, Info $slug) {
 		$collection = $this->qdn->SectionOneUpdate($request, $slug);
+		Event::fire(new EventLogs($this->user, 'P.E. save as draft and not yet validate' . $slug->control_id));
 		return array_add($request->all(), 'department', $collection['emp_dept']);
 	}
 
@@ -100,6 +109,7 @@ class reportController extends Controller {
 	 * @param Info $slug [description]
 	 */
 	public function ForIncompleteFillUp(Info $slug) {
+		Event::fire(new EventLogs($this->user, 'view' . $slug->control_id));
 		return $this->qdn->view($slug, 'report.incomplete');
 	}
 
@@ -111,6 +121,7 @@ class reportController extends Controller {
 	 */
 	public function draft(Info $slug, Request $request) {
 		$this->qdn->save($slug, $request);
+		Event::fire(new EventLogs($this->user, 'Incomplete: save as draft' . $slug->control_id));
 		Flash::success('Successfully save! Issued QDN are save as draft and still subject for completion!');
 		return redirect('/');
 	}
@@ -125,6 +136,7 @@ class reportController extends Controller {
 		$this->qdn->save($slug, $request);
 		$slug->closure()->update(['status' => 'incomplete approval']);
 
+		Event::fire(new EventLogs($this->user, 'Incomplete: save and proceed' . $slug->control_id));
 		Event::fire(new ApprovalNotificationEvent($slug));
 		Flash::success('Successfully save! Issued QDN is now subject for Approval!');
 		return redirect('/');
@@ -136,6 +148,7 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function approval(Info $slug) {
+		Event::fire(new EventLogs($this->user, 'view' . $slug->control_id));
 		return $this->qdn->view($slug, 'report.IncompleteApproval');
 	}
 
@@ -145,8 +158,7 @@ class reportController extends Controller {
 	 */
 	public function UpdateForApprroval(Info $slug, Request $request) {
 		$this->qdn->approverUpdate($request, $slug); //update closure and qdncycle table
-		//fire event log
-		//fire email notif event
+		Event::fire(new EventLogs($this->user, 'view' . $slug->control_id, $request->approver_radio . ": " . $request->ApproverMessage)); //fire email notif event
 		Event::fire(new ApprovalNotificationEvent($slug)); //flash success alert message
 		Flash::success('Successfully updated! Issued QDN still waiting for other approvers!'); //return home page
 		return redirect('/');
@@ -158,12 +170,14 @@ class reportController extends Controller {
 	 * @param Info $slug [description]
 	 */
 	public function QaVerification(Info $slug) {
+		Event::fire(new EventLogs($this->user, 'view' . $slug->control_id));
 		// view qdn
 		return $this->qdn->view($slug, 'report.QaVerification');
 	}
 
 	public function QaVerificationUpdate(Info $slug, Request $request) {
 		$this->qdn->sectionEigthClosure($slug, $request); // update qdn closures
+		Event::fire(new EventLogs($this->user, 'Verify' . $slug->control_id, $request->ValidationResult . ": " . $request->ApproverMessage)); //event logs
 		// send email notification
 		Flash::success('Successfully updated! Issued QDN are now closed!'); // add flash alert notification
 		return redirect('/'); // view home page

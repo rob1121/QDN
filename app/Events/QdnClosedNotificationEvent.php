@@ -4,29 +4,27 @@ namespace App\Events;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class QdnClosedNotificationEvent extends Event
-{
-    use SerializesModels;
+class QdnClosedNotificationEvent extends Event {
+	use SerializesModels;
+	public $qdn;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+	/**
+	 * Create a new event instance.
+	 *
+	 * @return void
+	 */
+	public function __construct($qdn) {
+		$qdn->load('involvePerson');
+		$this->qdn = $qdn;
+	}
 
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
-    {
-        return [];
-    }
+	/**
+	 * Get the channels the event should be broadcast on.
+	 *
+	 * @return array
+	 */
+	public function broadcastOn() {
+		return [];
+	}
 }

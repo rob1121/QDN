@@ -5,6 +5,8 @@ namespace App\Listeners;
 use App\Events\QaVerificationNotificationEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Mail;
+use Str;
 
 class QaVerificationNotificationEventListener implements ShouldQueue {
 	use InteractsWithQueue;
@@ -24,6 +26,13 @@ class QaVerificationNotificationEventListener implements ShouldQueue {
 	 * @return void
 	 */
 	public function handle(QaVerificationNotificationEvent $event) {
-		//
+		$data = ['qdn' => $event->qdn, 'msg' => $event->msg];
+		Mail::send('notifications.pe_verification', $data, function ($message) use ($event) {
+			$message->from('robinsonlegaspi@astigp.com', 'Rob');
+			$message->replyTo('robinsonlegaspi@astigp.com', 'Rob');
+			$message->sender('robinsonlegaspi@astigp.com', 'Rob');
+			$message->to('robinsonlegaspi@astigp.com', 'Robinson Legaspi')
+				->subject('QDN: ' . Str::title($event->qdn->problem_description) . ' - ' . $event->qdn->closure->status);
+		});
 	}
 }

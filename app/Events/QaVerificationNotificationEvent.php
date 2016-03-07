@@ -4,29 +4,27 @@ namespace App\Events;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class QaVerificationNotificationEvent extends Event
-{
-    use SerializesModels;
+class QaVerificationNotificationEvent extends Event {
+	use SerializesModels;
+	public $qdn;
+	public $msg;
+	/**
+	 * Create a new event instance.
+	 *
+	 * @return void
+	 */
+	public function __construct($qdn, $msg = '') {
+		$this->qdn = $qdn->load('involvePerson');
+		$this->msg = $msg;
+	}
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
-    {
-        return [];
-    }
+	/**
+	 * Get the channels the event should be broadcast on.
+	 *
+	 * @return array
+	 */
+	public function broadcastOn() {
+		return [];
+	}
 }

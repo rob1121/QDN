@@ -24,6 +24,13 @@ class ApprovalNotificationEventListener implements ShouldQueue {
 	 * @return void
 	 */
 	public function handle(ApprovalNotificationEvent $event) {
-		//
+		$data = ['qdn' => $event->qdn, 'msg' => $event->msg];
+		Mail::send('notifications.pe_verification', $data, function ($message) use ($event) {
+			$message->from('robinsonlegaspi@astigp.com', 'Rob');
+			$message->replyTo('robinsonlegaspi@astigp.com', 'Rob');
+			$message->sender('robinsonlegaspi@astigp.com', 'Rob');
+			$message->to('robinsonlegaspi@astigp.com', 'Robinson Legaspi')
+				->subject('QDN: ' . Str::title($event->qdn->problem_description) . ' - ' . $event->qdn->closure->status);
+		});
 	}
 }

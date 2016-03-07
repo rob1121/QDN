@@ -1,6 +1,10 @@
 <?php
 namespace App\repo;
 use App\Employee;
+use App\Events\ApprovalNotificationEvent;
+use App\Events\EventLogs;
+use App\Events\PeVerificationNotificationEvent;
+use App\Events\QdnClosedNotificationEvent;
 use App\Models\CauseOfDefect;
 use App\Models\Closure;
 use App\Models\ContainmentAction;
@@ -11,11 +15,17 @@ use App\Models\PreventiveAction;
 use App\Models\QdnCycle;
 use Auth;
 use Carbon;
+use Event;
+use Flash;
 use JavaScript;
 
 class InfoRepository implements InfoRepositoryInterface {
-
+	public $user;
+	public function __construct() {
+		$this->user = Auth::user();
+	}
 	public function view($qdn, $view) {
+		Event::fire(new EventLogs($this->user, 'view' . $qdn->control_id));
 		JavaScript::put('link', $this->links($qdn->slug));
 		JavaScript::put('qdn', $qdn);
 		return view($view, compact('qdn'));
@@ -83,15 +93,14 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function AddInvolvePerson($request, $id) {
-		$currentUser = Auth::user();
 		foreach ($request->receiver_name as $name) {
 			$person = Employee::findBy('name', $name)->first();
 
 			InvolvePerson::create([
 				'info_id'         => $id,
 				'department'      => $person->department,
-				'originator_id'   => $currentUser->employee_id,
-				'originator_name' => $currentUser->employee->name,
+				'originator_id'   => $this->user->employee_id,
+				'originator_name' => $this->user->employee->name,
 				'receiver_id'     => $person->user_id,
 				'receiver_name'   => $person->name,
 			]);
@@ -123,16 +132,19 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function UpdateClosureStatus($request, $qdn) {
 		$qdn->closure()->update([
 			'status'         => $request->status,
-			'pe_verified_by' => Auth::user()->employee->name,
+			'pe_verified_by' => $this->user->employee->name,
 		]);
+		Event::fire(new EventLogs($this->user, 'P.E. validate' . $qdn->control_id, $request->status . ": " . $request->ValidationMessage));
+		Event::fire(new PeVerificationNotificationEvent($qdn, $request->ValidationMessage));
+		Flash::success('Successfully Verified !! QDN are now ready for completion!');
 	}
 
 	public function approverUpdate($request, $qdn) {
-		$user   = Auth::user()->employee;
-		$column = str_replace(' ', '_', $user->department);
-		$column = 'process' == $column ? 'process_engineering' : $column;
-		$column = 'other' == $column ? 'other_department' : $column;
-		$qdn->closure()->update([$column => $user->name]);
+		$this->user = $this->user->employee;
+		$column     = str_replace(' ', '_', $this->user->department);
+		$column     = 'process' == $column ? 'process_engineering' : $column;
+		$column     = 'other' == $column ? 'other_department' : $column;
+		$qdn->closure()->update([$column => $this->user->name]);
 
 		if ('reject' == $request->approver_radio) {
 			$qdn->closure()->update(['status' => 'incomplete fill-up']);
@@ -141,10 +153,13 @@ class InfoRepository implements InfoRepositoryInterface {
 			? $qdn->closure()->update(['status' => 'incomplete approval'])
 			: $qdn->closure()->update(['status' => 'q.a. verification']);
 		}
+		Event::fire(new EventLogs($this->user, 'view' . $qdn->control_id, $request->approver_radio . ": " . $request->ApproverMessage)); //fire email notif event
+		Event::fire(new ApprovalNotificationEvent($qdn, $request->ApproverMessage)); //flash success alert message
+		Flash::success('Successfully updated! Issued QDN still waiting for other approvers!'); //return home page
 	}
 
 	public function updateStatus($qdn) {
-		$qdn     = Info::whereSlug("test-only-msg")->with('closure')->first();
+		$qdn     = Info::whereSlug($qdn->slug)->with('closure')->first();
 		$closure = $qdn->closure;
 		return $closure->other_department && $closure->production && $closure->quality_assurance && $closure->process_engineering ? 0 : 1;
 	}
@@ -154,9 +169,13 @@ class InfoRepository implements InfoRepositoryInterface {
 			->update([
 				'containment_action_taken' => $request->containment_action_taken,
 				'corrective_action_taken'  => $request->corrective_action_taken,
-				'close_by'                 => Auth::user()->employee->name,
+				'close_by'                 => $this->user->employee->name,
 				'date_sign'                => Carbon::now('Asia/Manila'),
 				'status'                   => 'closed',
 			]);
+
+		Event::fire(new EventLogs($this->user, 'Verify' . $qdn->control_id, $request->ValidationResult . ": " . $request->ApproverMessage)); //event logs
+		Event::fire(new QdnClosedNotificationEvent($qdn)); // send email notification
+		Flash::success('Successfully updated! Issued QDN are now closed!'); // add flash alert notification
 	}
 }

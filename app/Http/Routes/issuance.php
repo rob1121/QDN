@@ -1,5 +1,9 @@
 <?php
-
+// Route::get('/report/email',
+// 	[
+// 		'as'   => 'email',
+// 		'uses' => 'HomeController@email',
+// 	]);
 // CRUD route of QDN
 Route::get('/report',
 	[

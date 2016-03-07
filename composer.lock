@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2ab3ca368c838df43031b60541498060",
-    "content-hash": "87fe0bda26007fc7bdfebe414fb1ca34",
+    "hash": "74e83402942719f4189f9983948bc3fc",
+    "content-hash": "e9917c088735a8b1fdf4469e778f8012",
     "packages": [
         {
             "name": "barryvdh/elfinder-flysystem-driver",
@@ -61,6 +61,56 @@
                 "filesystem"
             ],
             "time": "2016-01-13 15:49:41"
+        },
+        {
+            "name": "barryvdh/laravel-async-queue",
+            "version": "v0.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/laravel-async-queue.git",
+                "reference": "218e8b04834cdef5f15fd9c5229baa9c7e095652"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/laravel-async-queue/zipball/218e8b04834cdef5f15fd9c5229baa9c7e095652",
+                "reference": "218e8b04834cdef5f15fd9c5229baa9c7e095652",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "5.0.x|5.1.x|5.2.x",
+                "illuminate/support": "5.0.x|5.1.x|5.2.x",
+                "php": ">=5.4.0",
+                "symfony/process": "~2.6|~3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\Queue\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "Async Queue Driver for Laravel (Push to background)",
+            "keywords": [
+                "async",
+                "background",
+                "laravel",
+                "queue"
+            ],
+            "time": "2016-02-29 09:06:07"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -3609,7 +3659,7 @@
             ],
             "authors": [
                 {
-                    "name": "François Zaninotto"
+                    "name": "Francois Zaninotto"
                 }
             ],
             "description": "Faker is a PHP library that generates fake data for you.",

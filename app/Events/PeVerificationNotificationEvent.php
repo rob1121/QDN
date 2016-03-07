@@ -4,27 +4,20 @@ namespace App\Events;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
-use Str;
 
 class PeVerificationNotificationEvent extends Event {
 	use SerializesModels;
-
+	public $qdn;
+	public $logger;
 	/**
 	 * Create a new event instance.
 	 *
 	 * @return void
 	 */
-	public function __construct($qdn, $msg) {
-		$qdn->load('involvePerson');
-		$data = ['qdn' => array_add($qdn, 'msg', $msg)];
-		Mail::send('notifications.pe_verification', $data, function ($message) use ($qdn) {
-			$message->from('robinsonlegaspi@astigp.com', 'Rob');
-			$message->replyTo('robinsonlegaspi@astigp.com', 'Rob');
-			$message->sender('robinsonlegaspi@astigp.com', 'Rob');
-			$message->to('robinsonlegaspi@astigp.com', 'Robinson Legaspi')
-				->subject('QDN - ' . Str::title($qdn->problem_description) . ' - Subject for Completion');
-		});
+	public function __construct($qdn, $logger) {
+		$this->qdn    = $qdn;
+		$this->logger = $logger;
+		// $this->qdn = collect($qdn->load('involvePerson'))->put('msg', $msg)->all();
 	}
 
 	/**

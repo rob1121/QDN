@@ -35,3 +35,9 @@ Route::post('/account/new-password/{id}',
 		'as'   => 'password',
 		'uses' => 'Account\AccountPasswordController@postReset',
 	]);
+
+Route::get('/account/profile/{id}',
+	[
+		'as'   => 'profile',
+		'uses' => 'Account\AccountPasswordController@profile',
+	]);

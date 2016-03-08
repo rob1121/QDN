@@ -26,7 +26,7 @@
 						<i class="fa fa-circle fa-stack-2x" ></i>
 						<i class="fa fa-user fa-stack-1x fa-inverse" style="color:#214E76"></i>
 					</span> -->
-					<img src="/img/me.jpg" class="img-circle" alt="Rob Img" width="100" height="100">
+					<img src="/img/photo.png" class="img-circle" alt="Rob Img" width="100" height="100">
 				</div>
 				<div class="col-md-8">
 					<br><br>

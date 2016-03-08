@@ -13,7 +13,6 @@ use App\Models\Info;
 use App\Models\InvolvePerson;
 use App\Models\PreventiveAction;
 use App\Models\QdnCycle;
-use Auth;
 use Carbon;
 use Event;
 use Flash;
@@ -21,11 +20,8 @@ use JavaScript;
 
 class InfoRepository implements InfoRepositoryInterface {
 	public $user;
-	public function __construct() {
-		$this->user = Auth::user();
-	}
 	public function view($qdn, $view) {
-		Event::fire(new EventLogs($this->user, 'view' . $qdn->control_id));
+		Event::fire(new EventLogs('view' . $qdn->control_id));
 		JavaScript::put('link', $this->links($qdn->slug));
 		JavaScript::put('qdn', $qdn);
 		return view($view, compact('qdn'));
@@ -134,7 +130,7 @@ class InfoRepository implements InfoRepositoryInterface {
 			'status'         => $request->status,
 			'pe_verified_by' => $this->user->employee->name,
 		]);
-		Event::fire(new EventLogs($this->user, 'P.E. validate' . $qdn->control_id, $request->status . ": " . $request->ValidationMessage));
+		Event::fire(new EventLogs('P.E. validate' . $qdn->control_id, $request->status . ": " . $request->ValidationMessage));
 		Event::fire(new PeVerificationNotificationEvent($qdn, $request->ValidationMessage));
 		Flash::success('Successfully Verified !! QDN are now ready for completion!');
 	}
@@ -153,7 +149,7 @@ class InfoRepository implements InfoRepositoryInterface {
 			? $qdn->closure()->update(['status' => 'incomplete approval'])
 			: $qdn->closure()->update(['status' => 'q.a. verification']);
 		}
-		Event::fire(new EventLogs($this->user, 'view' . $qdn->control_id, $request->approver_radio . ": " . $request->ApproverMessage)); //fire email notif event
+		Event::fire(new EventLogs('view' . $qdn->control_id, $request->approver_radio . ": " . $request->ApproverMessage)); //fire email notif event
 		Event::fire(new ApprovalNotificationEvent($qdn, $request->ApproverMessage)); //flash success alert message
 		Flash::success('Successfully updated! Issued QDN still waiting for other approvers!'); //return home page
 	}
@@ -174,7 +170,7 @@ class InfoRepository implements InfoRepositoryInterface {
 				'status'                   => 'closed',
 			]);
 
-		Event::fire(new EventLogs($this->user, 'Verify' . $qdn->control_id, $request->ValidationResult . ": " . $request->ApproverMessage)); //event logs
+		Event::fire(new EventLogs('Verify' . $qdn->control_id, $request->ValidationResult . ": " . $request->ApproverMessage)); //event logs
 		Event::fire(new QdnClosedNotificationEvent($qdn)); // send email notification
 		Flash::success('Successfully updated! Issued QDN are now closed!'); // add flash alert notification
 	}

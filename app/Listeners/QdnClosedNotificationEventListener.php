@@ -26,8 +26,20 @@ class QdnClosedNotificationEventListener implements ShouldQueue {
 	 * @return void
 	 */
 	public function handle(QdnClosedNotificationEvent $event) {
-		$data = ['qdn' => $event->qdn];
-		Mail::send('notifications.pe_verification', $data, function ($message) use ($event) {
+		$involvePerson = $event->qdn->involvePerson;
+		$closure       = $event->qdn->closure;
+		$user          = $event->user->employee;
+		$qdn           = $event->qdn;
+
+		$data = [
+			'qdn'           => $qdn,
+			'involvePerson' => $involvePerson,
+			'closure'       => $closure,
+			'comment'       => $event->comment,
+			'user'          => $user,
+		];
+
+		Mail::send('notifications.issue_qdn', $data, function ($message) use ($event) {
 			$message->from('robinsonlegaspi@astigp.com', 'Rob');
 			$message->replyTo('robinsonlegaspi@astigp.com', 'Rob');
 			$message->sender('robinsonlegaspi@astigp.com', 'Rob');

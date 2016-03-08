@@ -28,8 +28,8 @@ class EventLogsListener implements ShouldQueue {
 	public function handle(EventLogs $event) {
 		$user = $event->user;
 		Logs::create([
-			'user_id' => $user->employee_id,
-			'name'    => $user->employee->name,
+			'user_id' => $user->user_id,
+			'name'    => $user->name,
 			'action'  => $event->action,
 			'comment' => $event->comment,
 			'ip'      => Request::ip(),

@@ -4,19 +4,22 @@ namespace App\Events;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class ApprovalNotificationEvent extends Event {
 	use SerializesModels;
 	public $qdn;
-	public $msg;
+	public $comment;
+	public $user;
 	/**
 	 * Create a new event instance.
 	 *
 	 * @return void
 	 */
-	public function __construct($qdn, $msg = '') {
-		$this->qdn = $qdn->load('involvePerson');
-		$this->msg = $msg;
+	public function __construct($qdn, $request = '') {
+		$this->qdn     = $qdn;
+		$this->comment = $request;
+		$this->user    = Auth::user();
 	}
 
 	/**

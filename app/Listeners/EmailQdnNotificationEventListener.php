@@ -23,8 +23,16 @@ class EmailQdnNotificationEventListener implements ShouldQueue {
 	 * @return void
 	 */
 	public function handle(EmailQdnNotificationEvent $event) {
-		$data = [
-			'qdn' => $event->qdn,
+		$involvePerson = $event->qdn->involvePerson;
+		$closure       = $event->qdn->closure;
+		$user          = $event->user->employee;
+		$qdn           = $event->qdn;
+		$data          = [
+			'qdn'           => $qdn,
+			'involvePerson' => $involvePerson,
+			'closure'       => $closure,
+			'comment'       => $event->comment,
+			'user'          => $user,
 		];
 		Mail::send('notifications.issue_qdn', $data, function ($message) use ($event) {
 			$message->from('robinsonlegaspi@astigp.com', 'Rob');

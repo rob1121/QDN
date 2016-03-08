@@ -25,8 +25,9 @@ class reportController extends Controller {
 	 */
 	public function __construct(InfoRepository $qdn) {
 		$this->middleware('auth');
-		$this->qdn  = $qdn;
-		$this->user = Auth::user();
+		$this->qdn       = $qdn;
+		$this->user      = Auth::user();
+		$this->qdn->user = Auth::user();
 	}
 
 	/**

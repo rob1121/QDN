@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Listeners;
-
 use App\Events\PeVerificationNotificationEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -18,7 +16,6 @@ class PeVerificationNotificationEventListener implements ShouldQueue {
 	public function __construct() {
 		//
 	}
-
 	/**
 	 * Handle the event.
 	 *
@@ -26,9 +23,18 @@ class PeVerificationNotificationEventListener implements ShouldQueue {
 	 * @return void
 	 */
 	public function handle(PeVerificationNotificationEvent $event) {
-		// $event->qdn->load('closure', 'involvePerson');
-		array_add($event->qdn, 'logger', $event->logger);
-		$data = ['qdn' => $event->qdn];
+		$involvePerson = $event->qdn->involvePerson;
+		$closure       = $event->qdn->closure;
+		$user          = $event->user->employee;
+		$qdn           = $event->qdn;
+
+		$data = [
+			'qdn'           => $qdn,
+			'involvePerson' => $involvePerson,
+			'closure'       => $closure,
+			'comment'       => $event->comment,
+			'user'          => $user,
+		];
 
 		Mail::send('notifications.issue_qdn', $data, function ($message) use ($event) {
 			$message->from('robinsonlegaspi@astigp.com', 'Rob');

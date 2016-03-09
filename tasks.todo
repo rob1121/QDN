@@ -1,7 +1,10 @@
 tasks:
-  ☐ create event / listener that will listen and log every database activity. @critical
-  ☐ create relationship from log table to info table @critical
+  ✔ create event / listener that will listen and log every database activity. @critical @done (16-03-08 22:15)
+    ✔ queueable @done (16-03-08 22:15)
+  ✘ create relationship from log table to info table @critical @cancelled (16-03-08 22:15)
   ✘ create char counter for create.blade.php of maximum 250 @high @cancelled (16-02-28 01:28)
   ☐ QDN can only be edit or update by own deparmtent that are involve in @high
- ☐ create reason message on reject / invalid    @high
+ ✔ create reason message on reject / invalid    @high @done (16-03-08 22:14)
    ✔ as Pe verification report message @done (16-02-29 16:47)
+ ☐ mutators for presentable data
+ ☐ change title of fourth approver to the involve department

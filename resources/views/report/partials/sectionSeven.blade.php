@@ -42,25 +42,25 @@
 @endif
 @if ($show || $qdn->closure->status == 'q.a. verification')
 <div class="col-md-3">
-	<div class="col-md-11 text-center"><strong>{{ Str::title($qdn->closure->production)."&nbsp;" }}</strong></div>
+	<div class="col-md-11 text-center"><strong>{{ $qdn->closure->production."&nbsp;" }}</strong></div>
 	<div class="col-md-11 text-center underline-label">
 		<strong>{{ Str::upper('production') }}</strong>
 	</div>
 </div>
 <div class="col-md-3">
-	<div class="col-md-11 text-center"><strong>{{ Str::title($qdn->closure->process_engineering)."&nbsp;" }}</strong></div>
+	<div class="col-md-11 text-center"><strong>{{ $qdn->closure->process_engineering."&nbsp;" }}</strong></div>
 	<div class="col-md-11 text-center underline-label">
 		<strong>{{ Str::upper('process') }}</strong>
 	</div>
 </div>
 <div class="col-md-3">
-	<div class="col-md-11 text-center"><strong>{{ Str::title($qdn->closure->quality_assurance)."&nbsp;" }}</strong></div>
+	<div class="col-md-11 text-center"><strong>{{ $qdn->closure->quality_assurance."&nbsp;" }}</strong></div>
 	<div class="col-md-11 text-center underline-label">
 		<strong>{{ Str::upper('quality assurance') }}</strong>
 	</div>
 </div>
 <div class="col-md-3">
-	<div class="col-md-11 text-center"><strong>{{ Str::title($qdn->closure->other_department)."&nbsp;" }}</strong></div>
+	<div class="col-md-11 text-center"><strong>{{ $qdn->closure->other_department."&nbsp;" }}</strong></div>
 	<div class="col-md-11 text-center underline-label">
 		<strong>{{ Str::upper('others') }}</strong>
 	</div>

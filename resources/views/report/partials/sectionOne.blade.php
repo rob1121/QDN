@@ -178,7 +178,7 @@
                 as $employee
             )
             <option value="{{ $employee }}">
-                {{ Str::title($employee) }}
+                {{ $employee }}
             </option>
             @endforeach
         </select>
@@ -240,7 +240,7 @@
                 @if (isset($qdn) && $qdn->failure_mode == $option)
                 selected
                 @endif
-            >{{ Str::title($option) }}</option>
+            >{{ $option }}</option>
             @endforeach
         </select>
     </div>

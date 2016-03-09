@@ -7,6 +7,7 @@ use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use DB;
 use Illuminate\Database\Eloquent\Model;
+use Str;
 
 class Info extends Model implements SluggableInterface {
 	public $dateTime;
@@ -68,16 +69,6 @@ class Info extends Model implements SluggableInterface {
 
 	public function eventLog() {
 		return $this->hasMany('App\Models\EventLogs');
-	}
-
-	//model mutators-----------------------------------------------------------
-	/**
-	 * set control number fomart before save
-	 */
-	public function setControlIdAttribute($value) {
-		$today                          = Carbon::now('Asia/Manila');
-		$year                           = $today->format('y');
-		$this->attributes['control_id'] = $year . "-" . sprintf("%'.04d", $value);
 	}
 
 	public function getRouteKeyName() {
@@ -207,5 +198,86 @@ class Info extends Model implements SluggableInterface {
 			->whereDiscrepancy_category($request->discrepancy_category)
 			->whereQuantity($request->quantity);
 	}
+// =========== MUTATORS ===================================
 
+	/**
+	 * set control number fomart before save
+	 */
+	public function setProblemDescriptionAttribute($value) {
+		$this->attributes['problem_description'] = strtolower($value);
+	}
+
+	public function getProblemDescriptionAttribute($value) {
+		return $this->attributes['problem_description'] = Str::title($value);
+	}
+
+	public function setDiscrepancyCategoryAttribute($value) {
+		return $this->attributes['discrepancy_category'] = strtolower($value);
+	}
+
+	public function getDiscrepancyCategoryAttribute($value) {
+		return $this->attributes['discrepancy_category'] = Str::title($value);
+	}
+
+	public function setFailureModeAttribute($value) {
+		return $this->attributes['failure_mode'] = strtolower($value);
+	}
+
+	public function getFailureModeAttribute($value) {
+		return $this->attributes['failure_mode'] = Str::title($value);
+	}
+
+	public function setMachineAttribute($value) {
+		return $this->attributes['machine'] = strtolower($value);
+	}
+
+	public function getMachineAttribute($value) {
+		return $this->attributes['machine'] = Str::upper($value);
+	}
+
+	public function setCustomerAttribute($value) {
+		return $this->attributes['customer'] = strtolower($value);
+	}
+
+	public function getCustomerAttribute($value) {
+		return $this->attributes['customer'] = Str::upper($value);
+	}
+
+	public function setPackageTypeAttribute($value) {
+		return $this->attributes['package_type'] = strtolower($value);
+	}
+
+	public function getPackageTypeAttribute($value) {
+		return $this->attributes['package_type'] = Str::upper($value);
+	}
+
+	public function setDeviceNameAttribute($value) {
+		return $this->attributes['device_name'] = strtolower($value);
+	}
+
+	public function getDeviceNameAttribute($value) {
+		return $this->attributes['device_name'] = Str::upper($value);
+	}
+
+	public function setLotIdNumberAttribute($value) {
+		return $this->attributes['lot_id_number'] = strtolower($value);
+	}
+
+	public function getLotIdNumberAttribute($value) {
+		return $this->attributes['lot_id_number'] = Str::upper($value);
+	}
+
+	public function setStationAttribute($value) {
+		return $this->attributes['station'] = strtolower($value);
+	}
+
+	public function getStationAttribute($value) {
+		return $this->attributes['station'] = Str::upper($value);
+	}
+
+	public function setControlIdAttribute($value) {
+		$today                                 = Carbon::now('Asia/Manila');
+		$year                                  = $today->format('y');
+		return $this->attributes['control_id'] = $year . "-" . sprintf("%'.04d", $value);
+	}
 }

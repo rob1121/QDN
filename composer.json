@@ -17,8 +17,7 @@
         "filp/whoops": "^2.0",
         "barryvdh/laravel-dompdf": "^0.6.1",
         "spatie/laravel-backup": "^2.9",
-        "barryvdh/laravel-async-queue": "^0.4.1",
-        "armxy/laravel-internal-queue": "^0.1.7"
+        "barryvdh/laravel-async-queue": "^0.4.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

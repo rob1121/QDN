@@ -24,6 +24,7 @@ class employeeSeeder extends Seeder {
 			'department' => 'quality assurance',
 			'station'    => 'DCC',
 			'position'   => 'Management System Officer',
+			'email'      => 'robinsonlegaspi@astigp.com',
 		]);
 
 		User::create([
@@ -48,6 +49,7 @@ class employeeSeeder extends Seeder {
 			'department' => 'process',
 			'station'    => 'Process Engineer',
 			'position'   => 'HR Programmer',
+			'email'      => 'robinsonlegaspi@astigp.com',
 		]);
 
 		User::create([
@@ -80,6 +82,7 @@ class employeeSeeder extends Seeder {
 				'department' => $department,
 				'station'    => $faker->randomElement($station[$department]),
 				'position'   => $faker->randomElement(['Supervisor', 'Operator', 'Manager']),
+				'email'      => $faker->email,
 			]);
 
 			User::create([

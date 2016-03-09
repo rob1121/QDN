@@ -36,7 +36,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5 bold">Customer:</div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p class="customer">{{ Str::upper($qdn->customer) }}</p>
+                    <p class="customer">{{ $qdn->customer }}</p>
                 </div>
             </div>
             <!-- PACKAGE TYPE -->
@@ -45,7 +45,7 @@
                     Package Type:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p class="package_type">{{ Str::upper($qdn->package_type) }}</p>
+                    <p class="package_type">{{ $qdn->package_type }}</p>
                 </div>
             </div>
             <!-- DEVICE NAME -->
@@ -54,7 +54,7 @@
                     Device Name:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p class="device_name">{{ Str::upper($qdn->device_name) }}</p>
+                    <p class="device_name">{{ $qdn->device_name }}</p>
                 </div>
             </div>
             <!-- LOT ID NUMBER -->
@@ -63,7 +63,7 @@
                     Lot ID No.:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p class="lot_id_number">{{ Str::upper($qdn->lot_id_number) }}</p>
+                    <p class="lot_id_number">{{ $qdn->lot_id_number }}</p>
                 </div>
             </div>
             <!-- LOT QUANTITY -->
@@ -93,7 +93,7 @@
                     Machine:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p class="machine">{{ Str::upper($qdn->machine) }}</p>
+                    <p class="machine">{{ $qdn->machine }}</p>
                 </div>
             </div>
             <!-- STATION -->
@@ -102,7 +102,7 @@
                     Station:
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p class="station">{{ Str::upper($qdn->station) }}</p>
+                    <p class="station">{{ $qdn->station }}</p>
                 </div>
             </div>
             <!-- MAJOR -->
@@ -139,7 +139,7 @@
                 <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="team_responsible">
                     @foreach ($qdn->involvePerson->unique('department') as $employee)
-                        {{ Str::upper($employee->department) }} <br>
+                        {{ $employee->department }} <br>
                     @endforeach
                     </p>
                 </div>

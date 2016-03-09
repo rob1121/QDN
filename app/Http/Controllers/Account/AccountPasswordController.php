@@ -7,12 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\NewPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\ResetQuestionRequest;
+use App\repo\AccountRepository;
 use App\User;
 use Flash;
 use Hash;
 use Illuminate\Http\Request;
 
 class AccountPasswordController extends Controller {
+	public $user;
+
+	public function __construct(AccountRepository $user) {
+		$this->middleware('auth');
+		$this->user = $user;
+	}
 	/**
 	 * index of reset form
 	 * @return [type] [description]
@@ -27,8 +34,7 @@ class AccountPasswordController extends Controller {
 	 * @return [type]                        [description]
 	 */
 	public function postIndex(ResetPasswordRequest $request) {
-		$id = $request->employee_id;
-		return redirect('/account/question/' . $id);
+		return redirect('/account/question/' . $request->employee_id);
 		//...
 	}
 
@@ -38,7 +44,7 @@ class AccountPasswordController extends Controller {
 	 * @return [type]     [description]
 	 */
 	public function question($id) {
-		$user = Employee::findBy('user_id', $id)->first();
+		$user = $this->user->findEmployee($id);
 		return view('reset.question', compact(['user']));
 		//...
 	}
@@ -49,18 +55,10 @@ class AccountPasswordController extends Controller {
 	 * @return [type]                        [description]
 	 */
 	public function postQuestion(ResetQuestionRequest $request) {
-		$id       = $request->id;
-		$employee = Employee::findBy('user_id', $id)->first();
-
-		$verifyAnswer = $employee->question()
-			->where('answer', $request->answer)
-			->count();
-
-		if (0 == $verifyAnswer) {
+		if ($this->user->isAnswerCorrect($request)) {
 			Flash::error('Wrong answer, please try again');
 			return redirect('/account/question/' . $id);
 		}
-
 		return redirect('/account/new-password/' . $id);
 	}
 
@@ -70,7 +68,7 @@ class AccountPasswordController extends Controller {
 	 * @return [type]     [description]
 	 */
 	public function reset($id) {
-		$user = Employee::findBy('user_id', $id)->first();
+		$user = $this->user->findEmployee($id);
 		return view('reset.new', compact(['user']));
 		//...
 	}
@@ -81,15 +79,24 @@ class AccountPasswordController extends Controller {
 	 * @return [type]                      [description]
 	 */
 	public function postReset(NewPasswordRequest $request) {
-		$user = Employee::findBy('user_id', $request->id)->first();
-		$user->user()
-			->update(['password' => Hash::make($request->password)]);
+		$user = $this->user->findEmployee($id);
+		$user->user()->update(['password' => Hash::make($request->password)]);
 		return redirect('login');
 		//...
 	}
 
 	public function profile($id) {
-		$user = User::whereEmployeeId($id)->first();
+		$user = $this->user->findUser($id);
 		return view('account.profile', compact('user'));
+	}
+
+	/**
+	 * update profile
+	 * @param [type]  $id      [description]
+	 * @param Request $request [description]
+	 */
+	public function UpdateProfile($id, Request $request) {
+		$this->user->updateEmployee($id, $request);
+		$this->user->updateUser($id, $request);
 	}
 }

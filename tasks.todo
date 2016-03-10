@@ -6,5 +6,7 @@ tasks:
   ☐ QDN can only be edit or update by own deparmtent that are involve in @high
  ✔ create reason message on reject / invalid    @high @done (16-03-08 22:14)
    ✔ as Pe verification report message @done (16-02-29 16:47)
- ☐ mutators for presentable data
+ ✔ mutators for presentable data @done (16-03-10 11:35)
  ☐ change title of fourth approver to the involve department
+ ☐ average all failure mode
+ ☐ average all discrepancy category

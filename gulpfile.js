@@ -10,13 +10,47 @@ var elixir = require('laravel-elixir');
  | file for our application, as well as copying vendor resources.
  |
  */
- 
+
+// dashboard design
 elixir(function(mix) {
-mix.sass('app.scss').version(['public/css/app.css'])
-    .browserSync({
-        proxy: 'qdn.me'
-    });
+mix.sass('app.scss').copy(
+    "resources/assets/vendor/adminLTE/dist/css/AdminLTE.min.css",
+    "resources/assets/css/AdminLTE.css"
+).copy(
+    "resources/assets/vendor/adminLTE/dist/css/skins/_all-skins.min.css",
+    "resources/assets/css/skin.css"
+).copy(
+    "resources/assets/vendor/adminLTE/dist/js/app.min.js",
+    "resources/assets/js/adminApp.js"
+)
+    .styles([
+        "bootstrap.css",
+        "font-awesome.css",
+        "animate.css",
+        "amaran.css",
+        "pace.css",
+        "AdminLTE.css",
+        "skin.css"
+    ], 'public/css/adminAll.css')
+    .scripts([
+        "jquery.js",
+        "jquery-ui.js",
+        "jquery.validate.js",
+        "additional-methods.js",
+        "bootstrap.js",
+        "amaran.js",
+        "adminApp.js"
+    ], 'public/js/adminAll.js')
+
 });
+
+// user design settings
+// elixir(function(mix) {
+// mix.sass('app.scss').version(['public/css/app.css'])
+//     .browserSync({
+//         proxy: 'qdn.me'
+//     });
+// });
 /*
 elixir(function(mix) {
 mix.copy(
@@ -129,7 +163,7 @@ mix.copy(
         "amaran.js",
         "jquery.waypoints.js",
         "sticky.min.js"
-    ], 'public/js/all.js').
+    ], 'public/js/all.js')
     .copy("resources/assets/vendor/highcharts/highcharts.js",
         "resources/assets/js/highcharts.js")
     .copy(

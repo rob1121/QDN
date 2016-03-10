@@ -1,31 +1,4 @@
 @extends('layouts.app')
-@section('style')
-<style type="text/css">
-.list-group-item i.fa {
-float: right;
-}
-.list-group-item:first-child,
-.list-group-item:last-child {
-border-radius: 0px;
-}
-.list-group-item.active,
-.list-group-item.active:hover,
-.list-group-item.active:active,
-.list-group-item.active:focus {
-background-color:#f5f5f5;
-color: #222;
-border-color:#ddd;
-font-weight:bold;
-}
-.form-control,
-.form-control:hover,
-.form-control:active,
-.form-control.active,
-.form-control:focus {
-box-shadow: none;
-}
-</style>
-@endsection
 @section('content')
 <div class="container">
     <div class="col-md-4">
@@ -50,27 +23,58 @@ box-shadow: none;
                     <!-- NAME -->
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" name="name" id="name" class="form-control input-lg" value="{{ $user->employee->name }}">
+                        <input type  = "text"
+                        name         = "name"
+                        id           = "name"
+                        class        = "form-control input-lg"
+                        value        = "{{ $user->employee->name }}"
+                        autocomplete = "off"
+                        >
                     </div>
                     <!-- EMAIL -->
                     <div class="form-group">
                         <label for="email">Email:</label>
-                        <input type="text" name="email" id="email" class="form-control input-lg" value="{{ $user->employee->email }}">
+                        <input type  = "text"
+                        name         = "email"
+                        id           = "email"
+                        class        = "form-control input-lg"
+                        value        = "{{ $user->employee->email }}"
+                        placeholder = "Optional"
+                        autocomplete = "off"
+                        >
                     </div>
                     <!-- POSITION -->
                     <div class="form-group">
                         <label for="position">Position:</label>
-                        <input type="text" name="position" id="position" class="form-control input-lg" value="{{ $user->employee->position }}">
+                        <input type  = "text"
+                        name         = "position"
+                        id           = "position"
+                        class        = "form-control input-lg"
+                        value        = "{{ $user->employee->position }}"
+                        autocomplete = "off"
+                        >
                     </div>
                     <!-- DEPARTMENT -->
                     <div class="form-group">
                         <label for="department">Department:</label>
-                        <input type="text" name="department" id="department" class="form-control input-lg" value="{{ $user->employee->department }}">
+                        <input  type = "text"
+                        name         = "department"
+                        id           = "department"
+                        class        = "form-control input-lg"
+                        value        = "{{ $user->employee->department }}"
+                        autocomplete = "off"
+                        >
                     </div>
                     <!-- STATION -->
                     <div class="form-group">
                         <label for="station">Station:</label>
-                        <input type="text" name="station" id="station" class="form-control input-lg" value="{{ $user->employee->station }}">
+                        <input type  = "text"
+                        name         = "station"
+                        id           = "station"
+                        class        = "form-control input-lg"
+                        value        = "{{ $user->employee->station }}"
+                        autocomplete = "off"
+                        >
                     </div>
                     <!-- SUBMIT -->
                     <div class="form-group">
@@ -89,36 +93,49 @@ box-shadow: none;
                     <div class="form-group row">
                         <div class="col-md-12"><label for="question">Secret Question ( for account recovery ):</label></div>
                         <div class="col-md-7">
-                            <input
-                            type        = "text"
-                            name        = "question"
-                            id          = "question"
-                            class       = "form-control input-lg"
-                            placeholder = "Question"
-                            value       = "{{ $user->employee->question->question }}"
+                            <input type  = "text"
+                            name         = "question"
+                            id           = "question"
+                            class        = "form-control input-lg"
+                            placeholder  = "Question"
+                            value        = "{{ $user->employee->question->question }}"
+                            autocomplete = "off"
                             >
+                        <span class="help-block">Recovery question</span>
                         </div>
-                        <div class="col-md-1 text-center h4">-</div>
+                        <div class="col-md-1 text-center h4">:</div>
                         <div class="col-md-4">
-                            <input
-                            type        = "text"
-                            name        = "answer"
-                            id          = "answer"
-                            class       = "form-control input-lg"
-                            placeholder = "Answer"
-                            value       = "{{ $user->employee->question->answer }}"
+                            <input type  = "text"
+                            name         = "answer"
+                            id           = "answer"
+                            class        = "form-control input-lg"
+                            placeholder  = "Answer"
+                            value        = "{{ $user->employee->question->answer }}"
+                            autocomplete = "off"
                             >
+                        <span class="help-block">Secret answer</span>
                         </div>
                     </div>
                     <!-- PASSWORD -->
                     <div class="form-group">
-                        <label for="password">Password:</label>
-                        <input type="password" name="password" id="password" class="form-control input-lg">
+                        <label for   = "password">Password:</label>
+                        <input type  = "password"
+                        name         = "password"
+                        id           = "password"
+                        class        = "form-control input-lg"
+                        autocomplete = "off"
+                        >
+                        <span class="help-block">Leave blank if you're not planning to change your password</span>
                     </div>
                     <!-- PASSWORD CONFIRMATION -->
                     <div class="form-group">
-                        <label for="password_confirmation">Password Confirmation:</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control input-lg">
+                        <label for   = "password_confirmation">Password Confirmation:</label>
+                        <input type  = "password"
+                        name         = "password_confirmation"
+                        id           = "password_confirmation"
+                        class        = "form-control input-lg"
+                        autocomplete = "off"
+                        >
                     </div>
                     <!-- SUBMIT -->
                     <div class="form-group">
@@ -144,13 +161,11 @@ event.preventDefault();
 });
 // ================================ FORM VALIDATE =========================================
 $('#profile-form').validate({
-ignore: '',
 rules: {
 name: {
 required: true
 },
 email: {
-required: true,
 email: true
 },
 department: {
@@ -163,49 +178,53 @@ position: {
 required: true
 },
 question: {
-    required: true
+required: true
 },
 answer: {
-    required: true
+required: true
 },
 password: {
-    minlength: 6
+minlength: 6
 },
 password_confirmation: {
-    equalTo: "#password",
-    minlength: 6
+equalTo: "#password",
+minlength: 6
 }
 },
 errorClass: "error",
 errorElement: "span"
 });
 var updateProfile = function(datus) {
-    $.ajax({
-        url: '{{ route('UpdateProfile',['id' => $currentUser->employee_id]) }}',
-        type: 'GET',
-        data: datus,
-        success: function (data) {
-            $.amaran({
-                    'theme': 'awesome ok',
-                    'content': {
-                        title: 'Success!',
-                        message: '',
-                        info: 'Profile are now Updated!',
-                        icon: 'fa fa-save'
-                    },
-                    'position': 'bottom right',
-                    'outEffect': 'fadeOut'
-                });
-        }
-    });
+$.ajax({
+url: '{{ route('UpdateProfile',['id' => $currentUser->employee_id]) }}',
+type: 'GET',
+data: datus,
+success: function (data) {
+$.amaran({
+'theme': 'awesome ok',
+'content': {
+title: 'Success!',
+message: '',
+info: 'Profile are now Updated!',
+icon: 'fa fa-save'
+},
+'position': 'bottom right',
+'outEffect': 'fadeOut'
+});
+}
+});
 };
 $('#save-settings').click(function(e){
+if ($('#profile-form').valid()) {
     updateProfile($('#profile-form').serializeArray());
-    e.preventDefault();
+}
+e.preventDefault();
 });
 $('#save-profile').click(function(e){
+if ($('#profile-form').valid()) {
     updateProfile($('#profile-form').serializeArray());
-    e.preventDefault();
+}
+e.preventDefault();
 });
 });
 </script>

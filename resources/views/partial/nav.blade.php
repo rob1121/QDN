@@ -50,9 +50,13 @@ $url = Request::url();
                         </span> {{ $currentUser->employee->name }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             @if ($currentUser->access_level == 'Admin')
-                            <li><a href="/admin" style="border-bottom:1px solid #f5f5f5"><i class="fa fa-sign-in"></i> Login as admin</a></li>
+                            <li><a href="{{ route('dashboard') }}" style="border-bottom:1px solid #f5f5f5"><i class="fa fa-dashboard"></i> dashboard</a></li>
                             @endif
-                            <li><a data-toggle="modal" href='{{ route('profile',['id' => $currentUser->employee->user_id]) }}'><i class="fa fa-user"></i> Edit Profile</a></li>
+                            <li>
+                                <a data-toggle="modal" href='{{ route('profile',['id' => $currentUser->employee->user_id]) }}'>
+                                    <i class="fa fa-user"></i> Profile
+                                </a>
+                            </li>
                             <li><a data-toggle="modal" href='#sig-out'><i class="fa fa-sign-out"></i> Logout</a></li>
                         </ul>
                     </li>

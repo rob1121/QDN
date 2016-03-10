@@ -19,7 +19,6 @@ class HomeController extends Controller {
 	 * @return void
 	 */
 	public function __construct(HomeRepository $home) {
-		// $this->middleware('admin', ['only' => ['index']]);
 		$this->home = $home;
 		$this->user = Auth::user();
 	}
@@ -77,9 +76,4 @@ class HomeController extends Controller {
 	public function counter() {
 		return $this->home->counter();
 	}
-//for testing email design only
-	// public function email() {
-	// 	$qdn = Info::whereSlug('this-should-submit-quickly')->first();
-	// 	return view('notifications.issue_qdn', compact('qdn'));
-	// }
 }

@@ -65,4 +65,23 @@ interface InfoRepositoryInterface {
 	 * @return [type]          [description]
 	 */
 	public function approverUpdate($request, $qdn);
+
+	/**
+	 * get count of defined category
+	 * @param  [type] $type [description]
+	 * @return [type]       [description]
+	 */
+	public function count($type, $qdn);
+
+	/**
+	 * collection of count method
+	 * @return [type] [description]
+	 */
+	public function failureModeCount();
+
+	/**
+	 * get qdn via method
+	 * @return [type] [description]
+	 */
+	public function getQdn();
 }

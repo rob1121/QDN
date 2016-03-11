@@ -23,7 +23,7 @@ class ComposerServiceProvider extends ServiceProvider {
 		);
 
 		$view->composer('home', 'App\Http\ViewComposers\HomeComposer');
-		$view->composer('home.pareto', 'App\Http\ViewComposers\HomeComposer');
+		$view->composer(['home.pareto', 'admin.pages.index'], 'App\Http\ViewComposers\HomeComposer');
 	}
 
 	public function register() {

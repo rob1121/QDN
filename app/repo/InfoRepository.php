@@ -14,12 +14,17 @@ use App\Models\InvolvePerson;
 use App\Models\PreventiveAction;
 use App\Models\QdnCycle;
 use Carbon;
+use DB;
 use Event;
 use Flash;
 use JavaScript;
+use Str;
 
 class InfoRepository implements InfoRepositoryInterface {
+	public $month;
+	public $year;
 	public $user;
+
 	public function view($qdn, $view) {
 		Event::fire(new EventLogs('view' . $qdn->control_id));
 		JavaScript::put('link', $this->links($qdn->slug));
@@ -173,5 +178,55 @@ class InfoRepository implements InfoRepositoryInterface {
 		Event::fire(new EventLogs('Verify' . $qdn->control_id, $request->ValidationResult . ": " . $request->ApproverMessage)); //event logs
 		Event::fire(new QdnClosedNotificationEvent($qdn)); // send email notification
 		Flash::success('Successfully updated! Issued QDN are now closed!'); // add flash alert notification
+	}
+	/**
+	 * return counts of defined failure mode
+	 * @param  [type] $type [description]
+	 * @return [type]       [description]
+	 */
+	public function count($type, $qdn) {
+
+		return $qdn->where('failure_mode', $type)->count();
+	}
+
+	public function getQdn() {
+		if ('' != $this->month) {
+			return Info::where(DB::raw('YEAR(created_at)'), $this->year)
+				->where(DB::raw('MONTH(created_at)'), $this->month)
+				->get();
+		} else {
+			return Info::where(DB::raw('YEAR(created_at)'), $this->year)->get();
+		}
+	}
+	/**
+	 * return counts of failure mode
+	 * @return [type] [description]
+	 */
+	public function failureModeCount() {
+		$qdn = $this->getQdn();
+		foreach ($this->failureMode() as $fm) {
+			$counts[$fm] = $this->count($fm, $qdn);
+		}
+		return $counts;
+	}
+
+	/**
+	 * return counts of failure mode
+	 * @return [type] [description]
+	 */
+	public function failureModeAve() {
+		$qdn = $this->getQdn();
+		if (array_sum($this->failureModeCount())) {
+			foreach ($this->failureModeCount() as $key => $value) {
+				$ave[$key] = round($this->count($key, $qdn) / array_sum($this->failureModeCount()) * 100);
+			}
+			return $ave;
+		}
+	}
+
+	public function failureMode() {
+		$failure_mode = ['assembly', 'environment', 'machine', 'man', 'material', 'method / process'];
+		$class        = new Str();
+		return array_map([$class, 'title'], $failure_mode);
 	}
 }

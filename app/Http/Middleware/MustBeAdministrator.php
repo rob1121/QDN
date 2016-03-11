@@ -17,6 +17,6 @@ class MustBeAdministrator {
 		if ($user && 'Admin' == $user->access_level) {
 			return $next($request);
 		}
-		return route('home');
+		return redirect(route('home'));
 	}
 }

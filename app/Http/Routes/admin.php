@@ -37,3 +37,8 @@ Route::get('/customer-options', [
 
 	'as'   => 'CustomerOptions',
 	'uses' => 'Admin\AdminController@CustomerOptions']);
+
+Route::get('/ajax-update-lead', [
+
+	'as'   => 'UpdateLead',
+	'uses' => 'Admin\AdminController@UpdateLead']);

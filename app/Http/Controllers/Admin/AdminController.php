@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Info;
 
 class AdminController extends Controller {
 	public function __construct() {
 		$this->middleware('admin');
 	}
 	public function index() {
-		$qdn = Info::select('failure_mode')->groupBy('failure_mode')->get();
-
-		return view('admin.pages.index', compact('qdn', 'count'));
+		return view('admin.main');
 	}
 	public function QdnMetrics() {
 		return view('admin.main');

@@ -1,3 +1,4 @@
+
 function qdnData(givenDate, rowFile) {
 
     rowFile.empty();
@@ -60,8 +61,8 @@ function status(status, rowFile) {
 }
 //=============================================================================
 $('#modalQdnMetrics').on('show.bs.modal', function() {
-    var year = $('#year option:selected').val(),
-        month = $('#month option:selected').val();
+    var year = $('#year').val(),
+        month = $('#month').val();
     $.ajax({
         url: '/ajax',
         method: 'GET',
@@ -84,8 +85,8 @@ $('#modalQdnMetrics').on('show.bs.modal', function() {
 });
 $('#pod').on('show.bs.modal', function() {
     var tbody = $("#tblQdnMetrics tbody#pareto-data"),
-        year = $('#year option:selected').val(),
-        month = $('#month option:selected').val(),
+        year = $('#year').val(),
+        month = $('#month').val(),
         loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     tbody.empty();
     tbody.append(loader);
@@ -148,8 +149,8 @@ $('#pod').on('show.bs.modal', function() {
 });
 $('#assemblyModal').on('show.bs.modal', function() {
     var tbody = $("#assemblyTable tbody#pareto-data"),
-        year = $('#year option:selected').val(),
-        month = $('#month option:selected').val(),
+        year = $('#year').val(),
+        month = $('#month').val(),
         loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     tbody.empty();
     tbody.append(loader);
@@ -212,8 +213,8 @@ $('#assemblyModal').on('show.bs.modal', function() {
 //=================================================================
 $('#environmentModal').on('show.bs.modal', function() {
     var tbody = $("#environmentTable tbody#pareto-data"),
-        year = $('#year option:selected').val(),
-        month = $('#month option:selected').val(),
+        year = $('#year').val(),
+        month = $('#month').val(),
         loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     tbody.empty();
     tbody.append(loader);
@@ -276,8 +277,8 @@ $('#environmentModal').on('show.bs.modal', function() {
 //====================================================================
 $('#failureModeModal').on('show.bs.modal', function() {
     var tbody = $("#failureModeTable tbody#pareto-data"),
-        year = $('#year option:selected').val(),
-        month = $('#month option:selected').val(),
+        year = $('#year').val(),
+        month = $('#month').val(),
         loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     tbody.empty();
     tbody.append(loader);
@@ -340,8 +341,8 @@ $('#failureModeModal').on('show.bs.modal', function() {
 //====================================================================
 $('#machineModal').on('show.bs.modal', function() {
     var tbody = $("#machineTable tbody#pareto-data"),
-        year = $('#year option:selected').val(),
-        month = $('#month option:selected').val(),
+        year = $('#year').val(),
+        month = $('#month').val(),
         loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     tbody.empty();
     tbody.append(loader);
@@ -404,8 +405,8 @@ $('#machineModal').on('show.bs.modal', function() {
 //====================================================================
 $('#manModal').on('show.bs.modal', function() {
     var tbody = $("#manTable tbody#pareto-data"),
-        year = $('#year option:selected').val(),
-        month = $('#month option:selected').val(),
+        year = $('#year').val(),
+        month = $('#month').val(),
         loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     tbody.empty();
     tbody.append(loader);
@@ -468,8 +469,8 @@ $('#manModal').on('show.bs.modal', function() {
 //====================================================================
 $('#materialModal').on('show.bs.modal', function() {
     var tbody = $("#materialTable tbody#pareto-data"),
-        year = $('#year option:selected').val(),
-        month = $('#month option:selected').val(),
+        year = $('#year').val(),
+        month = $('#month').val(),
         loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     tbody.empty();
     tbody.append(loader);
@@ -532,8 +533,8 @@ $('#materialModal').on('show.bs.modal', function() {
 //====================================================================
 $('#processModal').on('show.bs.modal', function() {
     var tbody = $("#processTable tbody#pareto-data"),
-        year = $('#year option:selected').val(),
-        month = $('#month option:selected').val(),
+        year = $('#year').val(),
+        month = $('#month').val(),
         loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     tbody.empty();
     tbody.append(loader);
@@ -600,7 +601,9 @@ var chartContent = {
         renderTo: 'podGraph',
         defaultSeriesType: 'column',
         borderColor: '#ccc',
-        alignTicks: false
+        alignTicks: false,
+        marginTop: 50,
+        reflow: false
     },
     title: {
         text: 'Pareto of Discrepancy'
@@ -627,7 +630,8 @@ var chartContent = {
         gridLineColor: '#ddd',
         title: {
             text: 'Counts',
-            rotation: 270
+            rotation: 270,
+            margin: 35
         }
     }, {
         title: {
@@ -645,8 +649,16 @@ var chartContent = {
         opposite: true,
         linkedTo: 0
     }],
+    legend: {
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'bottom',
+        margin: 25,
+        itemDistance: 50,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
     series: [{
-        //yAxis:0,
+        // yAxis: 0,
         name: 'Count',
         color: '#800000'
     }, {
@@ -658,10 +670,13 @@ var chartContent = {
 var qdnMetrics = new Highcharts.Chart({ //start of qdnMetrics
     chart: {
         renderTo: 'qdnMetrics',
-        zoomType: 'xy'
+        zoomType: 'xy',
+        marginTop: 50,
+        reflow: false
     },
     title: {
-        text: "QDN January - December " + yearNow
+        text: "QDN January - December " + yearNow,
+        margin: 35
     },
     subtitle: {
         text: 'Source: QDN System'
@@ -677,12 +692,11 @@ var qdnMetrics = new Highcharts.Chart({ //start of qdnMetrics
         shared: true
     },
     legend: {
-        layout: 'vertical',
-        align: 'left',
-        x: 0,
-        verticalAlign: 'top',
-        y: 0,
-        floating: true,
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'bottom',
+        margin: 25,
+        itemDistance: 50,
         backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
     },
     series: [{

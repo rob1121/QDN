@@ -19,7 +19,7 @@
 
                 <thead>
                     @for ($i = 0; $i < 12; $i++)
-                        <?php $month = $i+1 ?>
+                        <?php $month = $i + 1;?>
                         <th class="text-center" style="background-color:#800; color:#fff">
                         {!!
                             Carbon::parse('2000-' . $month . '-01')

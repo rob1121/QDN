@@ -22,9 +22,8 @@
           <i class="fa fa-bar-chart"></i> <span>Charts</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li><a href="{{ route('QdnMetrics') }}"><i class="fa fa-circle-o"></i> QDN Metrics</a></li>
-          <li><a href="{{ route('ParetoOfDiscrepancy') }}"><i class="fa fa-circle-o"></i> Per Discrepancy</a></li>
-          <li class="active"><a href="{{ route('ParetoPerFailureMode') }}"><i class="fa fa-circle-o"></i> Per Failure Mode</a></li>
+          <li><a href="#qdnMetrics"><i class="fa fa-circle-o"></i> QDN Metrics</a></li>
+          <li><a href="#podGraph"><i class="fa fa-circle-o"></i> Pareto of Discrepancy</a></li>
         </ul>
       </li>
       <li class="treeview">

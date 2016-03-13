@@ -31,7 +31,10 @@ class HomeRepository {
 	}
 
 	public function highChartData($request) {
-		$month = Carbon::parse($request->input('month'))->format('m');
+		// $month = $this->dateTime()->format('m') == $request->input('month')
+		// ? $request->input('month')
+		// : Carbon::parse($request->input('month'))->format('m');
+		$month = $request->input('month');
 		$year  = $request->input('year');
 
 		//retrieve data collection

@@ -229,4 +229,8 @@ class InfoRepository implements InfoRepositoryInterface {
 		$class        = new Str();
 		return array_map([$class, 'title'], $failure_mode);
 	}
+
+	public function discrepancy() {
+		return '';
+	}
 }

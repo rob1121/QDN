@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Str;
 
 class Closure extends Model {
 
@@ -61,5 +62,13 @@ class Closure extends Model {
 
 	public function getOtherDepartmentAttribute($value) {
 		return $this->attributes['other_department'] = Str::title($value);
+	}
+
+	public function setStatusAttribute($value) {
+		return $this->attributes['status'] = strtolower($value);
+	}
+
+	public function getStatusAttribute($value) {
+		return $this->attributes['status'] = Str::title($value);
 	}
 }

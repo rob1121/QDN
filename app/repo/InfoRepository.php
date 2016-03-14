@@ -18,6 +18,7 @@ use DB;
 use Event;
 use Flash;
 use JavaScript;
+use Storage;
 use Str;
 
 class InfoRepository implements InfoRepositoryInterface {
@@ -38,28 +39,93 @@ class InfoRepository implements InfoRepositoryInterface {
 			'linkApproval' => route('approval_link', ['slug' => $slug]),
 		];
 	}
+	public function updateCauseOfDefect($info, $request) {
+		$year = Carbon::parse($info->created_at)->year;
+		if ($request->hasFile('upload_cod')) {
+			$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->causeOfDefect->objective_evidence;
+			if (Storage::disk('local')->exists($existing_oe)) {
+				Storage::delete($existing_oe);
+			}
 
-	public function save($info, $request) {
+			$path      = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
+			$file_name = 'upload_cod' . "." . $request->file('upload_cod')->guessClientExtension();
+			$request->file('upload_cod')->move($path, $file_name);
+		}
+
+		$objective_evidence = isset($file_name) ? $file_name : $info->CauseOfDefect->objective_evidence;
 		$info->CauseOfDefect()->update([
 			'cause_of_defect'             => $request->cause_of_defect,
 			'cause_of_defect_description' => $request->cause_of_defect_description,
-			'objective_evidence'          => $request->upload_cod,
+			'objective_evidence'          => $objective_evidence,
 		]);
+	}
+	public function updateContainmentAction($info, $request) {
+		$year = Carbon::parse($info->created_at)->year;
+		if ($request->hasFile('upload_containment_action')) {
+			$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->containmentAction->objective_evidence;
+			if (Storage::disk('local')->exists($existing_oe)) {
+				Storage::delete($existing_oe);
+			}
+
+			$path      = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
+			$file_name = 'upload_containment_action' . "." . $request->file('upload_containment_action')->guessClientExtension();
+			$request->file('upload_containment_action')->move($path, $file_name);
+		}
+
+		$objective_evidence = isset($file_name) ? $file_name : $info->containmentAction->objective_evidence;
 		$info->ContainmentAction()->update([
 			'what'               => $request->containment_action_textarea,
 			'who'                => $request->containment_action_who,
-			'objective_evidence' => $request->upload_containment_action,
+			'objective_evidence' => $objective_evidence,
 		]);
+	}
+	public function updateCorrectiveAction($info, $request) {
+		$year = Carbon::parse($info->created_at)->year;
+		if ($request->hasFile('upload_corrective_action')) {
+			$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->correctiveAction->objective_evidence;
+			if (Storage::disk('local')->exists($existing_oe)) {
+				Storage::delete($existing_oe);
+			}
+
+			$path      = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
+			$file_name = 'upload_corrective_action' . "." . $request->file('upload_corrective_action')->guessClientExtension();
+			$request->file('upload_corrective_action')->move($path, $file_name);
+		}
+
+		$objective_evidence = isset($file_name) ? $file_name : $info->correctiveAction->objective_evidence;
 		$info->CorrectiveAction()->update([
 			'what'               => $request->corrective_action_textarea,
 			'who'                => $request->corrective_action_who,
-			'objective_evidence' => $request->upload_corrective_action,
+			'objective_evidence' => $objective_evidence,
 		]);
+	}
+	public function updatePreventiveAction($info, $request) {
+		$year = Carbon::parse($info->created_at)->year;
+		if ($request->hasFile('upload_preventive_action')) {
+			$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->preventiveAction->objective_evidence;
+			if (Storage::disk('local')->exists($existing_oe)) {
+				Storage::delete($existing_oe);
+			}
+
+			$path      = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
+			$file_name = 'upload_preventive_action' . "." . $request->file('upload_preventive_action')->guessClientExtension();
+			$request->file('upload_preventive_action')->move($path, $file_name);
+		}
+
+		$objective_evidence = isset($file_name) ? $file_name : $info->preventiveAction->objective_evidence;
 		$info->PreventiveAction()->update([
 			'what'               => $request->preventive_action_textarea,
 			'who'                => $request->preventive_action_who,
-			'objective_evidence' => $request->upload_preventive_action,
+			'objective_evidence' => $objective_evidence,
 		]);
+	}
+
+	public function save($info, $request) {
+		$this->updateCauseOfDefect($info, $request);
+		$this->updateContainmentAction($info, $request);
+		$this->updateCorrectiveAction($info, $request);
+		$this->updatePreventiveAction($info, $request);
+
 	}
 
 	public function add($request) {

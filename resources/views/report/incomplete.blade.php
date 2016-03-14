@@ -17,11 +17,11 @@
         >
         {!! csrf_field() !!}
         @include('report.partials.section', [
-            'hidden' => $qdn->closure->status == 'incomplete fill-up'? '':'hidden',
-            'disabled' => $qdn->closure->status == 'incomplete fill-up'? '':'disabled'
+            'hidden' => $qdn->closure->status == 'Incomplete Fill-Up'? '':'hidden',
+            'disabled' => $qdn->closure->status == 'Incomplete Fill-Up'? '':'disabled'
         ])
     </div>
-    @if ($qdn->closure->status == 'incomplete fill-up' && $show)
+    @if ($qdn->closure->status == 'Incomplete Fill-Up')
     <div class="text-right container" id="btn-group">
         <button
         type    = 'submit'

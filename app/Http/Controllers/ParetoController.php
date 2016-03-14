@@ -14,7 +14,7 @@ class ParetoController extends Controller {
 	public $dateTime;
 
 	public function __construct() {
-		$this->middleware('auth');
+		$this->middleware('admin');
 		$this->dateTime = Carbon::now('Asia/Manila');
 	}
 

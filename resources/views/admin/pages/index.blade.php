@@ -18,29 +18,69 @@ transform: scale(1.03);*/
 position: relative;
 /*z-index: 1;*/
 }
-.panel-heading,
-.panel-body {
-border-radius: 1px;
-}
 select.input-lg {
 border:0px;
 }
 .progress {
 height: 3px;
 }
+#link {
+margin-bottom: 32px;
+}
+#link div .row {
+margin-top : 5px;
+margin-left : 5px;
+margin-row : 5px;
+}
+#link div {
+margin: 0px;
+padding: 0px;
+}
+.modal-body  {
+padding-top: 0px;
+padding-bottom: 0px;
+}
+.table {
+background-color: #fff;
+margin-bottom: 0px;
+padding-top: 0px;
+padding-bottom: 0px;
+}
+.panel {
+border: 0px;
+}
+.panel-primary>.panel-heading {
+background-color: #800;
+}
+.panel.panel-primary,
+.panel .panel-body,
+.panel .panel-heading,
+.panel .panel-footer,
+.collapse {
+border-radius: 0px;
+border: 0px;
+}
 </style>
 @endpush
 @section('content')
-@foreach ($status as $panel)
-<div class="col-md-3">
-    <div class="row-fluid">
-        <ul class="list-group"><li class="list-group-item">
-            <div class="container-fluid text-center">
-                {{ $panel[2] }}
-                <hr class="danger">
-                <h1 class="text-center">{{ $panel[0] }}</h1>
+@foreach ($counts as $panel)
+<div class="col-xs-3 h2">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ $panel[2] }}</h3>
+        </div>
+        <div class="panel-body" id="{{ $panel[4] }}">
+            {{ $panel[0] }}
+        </div>
+        <a class="h5" target="_blank" href="/pareto?category={{ $panel[3] }}">
+            <div
+                class         = "panel-footer"
+                >
+                <span class="pull-left">View Details</span>
+                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                <div class="clearfix"></div>
             </div>
-        </li></ul>
+        </a>
     </div>
 </div>
 @endforeach
@@ -89,7 +129,6 @@ height: 3px;
             </div>
         </li>
     </ul>
-
     <ul class="list-group">
         <li class="list-group-item">
             <div class="container-fluid">
@@ -102,10 +141,10 @@ height: 3px;
 </div>
 <div class="col-md-4">
     <ul class="list-group">
-        <li class="list-group-item"><h4>Failure Mode</h4></li>
+        <li class="list-group-item"><a data-toggle = "modal" href="#{{ $charts[$id = 2]['id'] }}"><h4>Failure Mode</h4></a></li>
         @foreach ($ave as $name => $value)
         <li class="list-group-item">
-            <strong>{{ $name }}</strong>
+            <a data-toggle = "modal" href="#{{ $charts[++$id]['id'] }}"><strong>{{ $name }}</strong></a>
             <p id= "{{ str_slug($name,'-')."-count" }}"> {{ $count[$name] }}</p>
             <div class="progress">
                 <div
@@ -129,158 +168,164 @@ height: 3px;
         <li class="list-group-item"><h4>Recent Issued QDN</h4></li>
         @foreach ($qdn as $issue)
         <li class="list-group-item">
-            <h5>{{ $issue->discrepancy_category }} <span class="label label-success pull-right">{{ $issue->closure->status }}</span></h5>
-            <div class="row-fluid justify">
-                {{ $issue->problem_description }}
-            </div>
-        </li>
-        @endforeach
-    </ul>
-</div>
-<div class="clearfix"></div>
-@include('home.modals')
-@stop
-@push('scripts')
-<script src="/vendor/js/highcharts.js"></script>
-<script src="/vendor/js/exporting.js"></script>
-<script src="/js/homeScript.js"></script>
-<script>
-$(function() {
+            <h5>
+            <strong>{{ $issue->discrepancy_category }}</strong>
+            @if($issue->closure->status != 'Closed')
+            <span class="label  label-primary pull-right">
+                @else
+                <span class="label  label-success pull-right">
+                    @endif
+                    {{ Str::upper($issue->closure->status) }}
+                </span>
+                </h5>
+                <div class="row-fluid justify">
+                    {{ $issue->problem_description }}
+                </div>
+            </li>
+            @endforeach
+        </ul>
+    </div>
+    <div class="clearfix"></div>
+    @include('home.modals')
+    @stop
+    @push('scripts')
+    <script src="/vendor/js/highcharts.js"></script>
+    <script src="/vendor/js/exporting.js"></script>
+    <script src="/js/homeScript.js"></script>
+    <script>
+    $(function() {
     //highcharts =======================================================
-var month = $('#month').val(),
-year = $('#year').val(),
-slug = function(str) {
-var $slug = '';
-var trimmed = $.trim(str);
-$slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
-replace(/-+/g, '-').
-replace(/^-|-$/g, '');
-return $slug.toLowerCase();
-},
-updateLead = function(month, year){
-$.ajax({
-url: '{{ route('UpdateLead') }}',
-type: 'GET',
-data: {
-month: month,
-year: year
-},
-success: function (data) {
-if (data['ave'] == '') {
-var pBarInit = $('.progress div.progress-bar');
-pBarInit.parent('div.progress').siblings('p').text('0');
-pBarInit.css({width: 0 + '%'});
-pBarInit.attr('aria-valuenow', 0);
-pBarInit.attr('title', '0%');
-} else {
-$.each(data['ave'], function( index, value ) {
-var pBar = $('.progress div.progress-bar#' + slug(index));
-pBar.parent('div.progress').siblings('p#' + slug(index) + '-count').text(data['count'][index]);
-pBar.css({width: value + '%'});
-pBar.attr('aria-valuenow',value);
-pBar.attr('title', value + '%');
-});
-}
-},
-error: function() {
-alert('error');
-}
-});
-AjaxParetoOfDiscrepancy();
-},
-AjaxQdnMetrics = function() {
-        var year = $('#year').val(),
-            month = $('#month').val();
-        $.ajax({
-            url: '/ajax',
-            method: 'GET',
-            data: {
-                month: month,
-                year: year
-            },
-            success: function(point) {
-                count = 1;
-                for (i = 0; i < point.qdn.length; i++) {
-                    $('#tblQdnMetrics')
-                        .find("td:nth-of-type(" + count + ")")
-                        .text(point.qdn[i]);
-                    count += 1;
-                }
-                qdnMetrics.series[0].setData(point.qdn);
-                // refresh DOM every 5sec
-                setInterval(AjaxQdnMetrics(), 5000);
-            },
-            error: function() {
-                AjaxQdnMetrics();
-            },
-            cache: false
-        });
+    var month = $('#month').val(),
+    year = $('#year').val(),
+    slug = function(str) {
+    var $slug = '';
+    var trimmed = $.trim(str);
+    $slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
+    replace(/-+/g, '-').
+    replace(/^-|-$/g, '');
+    return $slug.toLowerCase();
+    },
+    updateLead = function(month, year){
+    $.ajax({
+    url: '{{ route('UpdateLead') }}',
+    type: 'GET',
+    data: {
+    month: month,
+    year: year
+    },
+    success: function (data) {
+    if (data['ave'] == '') {
+    var pBarInit = $('.progress div.progress-bar');
+    pBarInit.parent('div.progress').siblings('p').text('0');
+    pBarInit.css({width: 0 + '%'});
+    pBarInit.attr('aria-valuenow', 0);
+    pBarInit.attr('title', '0%');
+    } else {
+    $.each(data['ave'], function( index, value ) {
+    var pBar = $('.progress div.progress-bar#' + slug(index));
+    pBar.parent('div.progress').siblings('p#' + slug(index) + '-count').text(data['count'][index]);
+    pBar.css({width: value + '%'});
+    pBar.attr('aria-valuenow',value);
+    pBar.attr('title', value + '%');
+    });
+    }
+    },
+    error: function() {
+    alert('error');
+    }
+    });
+    AjaxParetoOfDiscrepancy();
+    },
+    AjaxQdnMetrics = function() {
+    var year = $('#year').val(),
+    month = $('#month').val();
+    $.ajax({
+    url: '/ajax',
+    method: 'GET',
+    data: {
+    month: month,
+    year: year
+    },
+    success: function(point) {
+    count = 1;
+    for (i = 0; i < point.qdn.length; i++) {
+    $('#tblQdnMetrics')
+    .find("td:nth-of-type(" + count + ")")
+    .text(point.qdn[i]);
+    count += 1;
+    }
+    qdnMetrics.series[0].setData(point.qdn);
+    // refresh DOM every 5sec
+    setTimeout(AjaxQdnMetrics, 60000);
+    },
+    error: function(){AjaxQdnMetrics();},
+    cache: false
+    });
     },
     AjaxParetoOfDiscrepancy = function() {
-        var tbody = $("#tblQdnMetrics tbody#pareto-data"),
-            year = $('#year').val(),
-            month = $('#month').val(),
-            loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
-        tbody.empty();
-        tbody.append(loader);
-
-        $.ajax({
-            url: '/ajax',
-            method: 'GET',
-            data: {
-                month: month,
-                year: year
-            },
-            success: function(point) {
-                bars = point.pod.bars;
-                category = point.pod.category;
-                legend = point.pod.legends;
-                lines = point.pod.lines;
-                total = point.pod.total;
-                podGraph.tooltip.options.formatter = function() {
-                    if (this.series.name == '% Pareto') {
-                        var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
-                        return pcnt + '%';
-                    }
-                    return this.y;
-                };
-                podGraph.yAxis[1].update({
-                    tickInterval: total / 4, //TOTAL
-                    labels: {
-                        formatter: function() {
-                            var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
-                            return pcnt + '%';
-                        }
-                    }
-                });
-                podGraph.xAxis[0].categories = legend;
-                podGraph.series[1].setData(lines);
-                podGraph.series[0].setData(bars);
-                tbody.empty();
-                if (total == 0) {
-                    tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
-                } else {
-                    count = 1;
-                    for (i = 0; i < point.pod.lines.length; i++) {
-                        tbody.append(
-                            $("<tr></tr>")
-                                .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + legend[i] + "</a></td>")
-                                .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + category[i] + "</a></td>")
-                                .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + bars[i] + "</a></td>")
-                        );
-                        count += 1;
-                    }
-                    tbody.append(
-                        $("<tr class='warning'></tr>")
-                            .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'><strong>TOTAL : </strong></a></td>")
-                            .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'>" + total + "</a></td>")
-                    );
-                }
-            },
-            cache: false
-        });
+    var tbody = $("#tblQdnMetrics tbody#pareto-data"),
+    year = $('#year').val(),
+    month = $('#month').val(),
+    loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+    tbody.empty();
+    tbody.append(loader);
+    $.ajax({
+    url: '/ajax',
+    method: 'GET',
+    data: {
+    month: month,
+    year: year
+    },
+    success: function(point) {
+    bars = point.pod.bars;
+    category = point.pod.category;
+    legend = point.pod.legends;
+    lines = point.pod.lines;
+    total = point.pod.total;
+    podGraph.tooltip.options.formatter = function() {
+    if (this.series.name == '% Pareto') {
+    var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+    return pcnt + '%';
+    }
+    return this.y;
     };
-    // VARIABLES ENDING ==============================================================================
+    podGraph.yAxis[1].update({
+    tickInterval: total / 4, //TOTAL
+    labels: {
+    formatter: function() {
+    var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+    return pcnt + '%';
+    }
+    }
+    });
+    podGraph.xAxis[0].categories = legend;
+    podGraph.series[1].setData(lines);
+    podGraph.series[0].setData(bars);
+    tbody.empty();
+    if (total == 0) {
+    tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+    } else {
+    count = 1;
+    for (i = 0; i < point.pod.lines.length; i++) {
+    tbody.append(
+$("<tr></tr>")
+.append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + legend[i] + "</a></td>")
+.append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + category[i] + "</a></td>")
+.append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + bars[i] + "</a></td>")
+);
+count += 1;
+}
+tbody.append(
+$("<tr class='warning'></tr>")
+.append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'><strong>TOTAL : </strong></a></td>")
+.append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'>" + total + "</a></td>")
+);
+}
+},
+cache: false
+});
+};
+// VARIABLES ENDING ==============================================================================
 AjaxParetoOfDiscrepancy();
 AjaxQdnMetrics();
 //GET MONTH
@@ -298,7 +343,6 @@ event.preventDefault();
 var self = $(this);
 year = self.val();
 updateLead(month, year);
-
 });
 });
 </script>

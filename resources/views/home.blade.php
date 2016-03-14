@@ -68,6 +68,7 @@ box-shadow: none;
 @stop
 @section('content')
 <!-- Count content=================================================== -->
+@if ($currentUser == "This is for test only conditions used to comment the inside blocks of code")
 @if ($currentUser->access_level == 'Admin')
 <div class="container">
     @include('errors.validationErrors')
@@ -140,9 +141,10 @@ box-shadow: none;
     @endforeach
 </div>
 @endif
+@endif
 {{-- STATUS =========================================================--}}
 <div class="container">
-    <legend class="h1">Status: </legend>
+    <!-- <legend class="h1">Status: </legend> -->
     @foreach ($status as $panel)
     <div class="col-xs-3 h2">
         <div class="panel panel-primary">

@@ -17,6 +17,11 @@ interface InfoRepositoryInterface {
 	 */
 	public function links($slug);
 
+	/** to update 4 action data table */
+	public function updateCauseOfDefect($info, $request);
+	public function updateContainmentAction($info, $request);
+	public function updateCorrectiveAction($info, $request);
+	public function updatePreventiveAction($info, $request);
 	/**
 	 * update qdn database
 	 * @param  [type] $slug    [description]

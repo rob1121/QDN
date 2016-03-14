@@ -75,10 +75,10 @@ class HomeRepository {
 		$year  = $qdn->count();
 
 		$closure        = Closure::all();
-		$peVerification = $closure->where('status', 'p.e. verification')->count();
-		$incomplete     = $closure->where('status', 'incomplete fill-up')->count();
-		$approval       = $closure->where('status', 'incomplete approval')->count();
-		$qaVerification = $closure->where('status', 'q.a. verification')->count();
+		$peVerification = $closure->where('status', 'P.e. Verification')->count();
+		$incomplete     = $closure->where('status', 'Incomplete Fill-Up')->count();
+		$approval       = $closure->where('status', 'Incomplete Approval')->count();
+		$qaVerification = $closure->where('status', 'Q.a. Verification')->count();
 
 		return $arr = [
 			'today'          => $today,

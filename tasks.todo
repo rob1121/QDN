@@ -8,8 +8,9 @@ tasks:
    ✔ as Pe verification report message @done (16-02-29 16:47)
  ✔ mutators for presentable data @done (16-03-10 11:35)
  ☐ change title of fourth approver to the involve department
- ☐ add function on uploading Objective Evidence
+ ✔ add function on uploading Objective Evidence @done (16-03-14 15:11)
  ✔ average all failure mode @done (16-03-13 08:56)
- ☐ average all discrepancy category
- ☐ change failure mode side graph to categorized Open QDN
+ ✘ average all discrepancy category @cancelled (16-03-14 15:11)
+ ✘ change failure mode side graph to categorized Open QDN @cancelled (16-03-14 15:10)
  ☐ create backup function https://murze.be/2016/03/a-modern-backup-solution-for-laravel-apps/
+ ☐ objective evidence shall be viewable

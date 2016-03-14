@@ -26,10 +26,10 @@ function dispositionCondition($qdn, $disposition) {
                         <label>QDN Validity:</label>
                         <br>
                         <div class="btn-group" data-toggle="buttons" id="validate">
-                            <label class="btn btn-default valid {{ $qdn->closure->status !== 'cancelled' ? 'active':'' }}">
+                            <label class="btn btn-default valid {{ $qdn->closure->status !== 'Cancelled' ? 'active':'' }}">
                                 <input type="radio" name="status" id="status" value="incomplete fill-up"  {{ $qdn->closure->status !== 'cancelled' ? 'checked':'' }}> Valid
                             </label>
-                            <label class="btn btn-default invalid {{ $qdn->closure->status =='cancelled' ? 'active':''}}">
+                            <label class="btn btn-default invalid {{ $qdn->closure->status =='Cancelled' ? 'active':''}}">
                                 <input type="radio" name="status" id="status" value="cancelled" {{ $qdn->closure->status =='cancelled' ? 'checked':''}}> Invalid
                             </label>
                         </div>
@@ -76,7 +76,7 @@ function dispositionCondition($qdn, $disposition) {
                             Save as Draft <i class="fa fa-save"></i><br>
                             <small>and come back soon</small>
                             </button>
-                            @if ($currentUser->employee->department == 'process')
+                            @if ($currentUser->employee->department == 'Process')
                             <button
                             type  = "submit"
                             name  = "submit"

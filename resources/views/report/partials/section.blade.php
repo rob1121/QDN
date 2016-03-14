@@ -50,6 +50,19 @@
                 </div>
                 @endforeach
             </div>
+            @if ($qdn->closure->status != 'Incomplete Fill-Up' && $qdn->causeOfDefect->objective_evidence)
+            <div class='form-group text-left row-fluid'>
+                <br>
+                <label for="">CAUSE OF DEFECTS OE:</label>
+                <div class="clearfix"></div>
+                <a class="btn btn-default"
+                    target="_blank"
+                    href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->causeOfDefect->objective_evidence }}"
+                    >
+                    <i class="fa fa-file"></i> View Attachment
+                </a>
+            </div>
+            @endif
             <div class="row" {{ $hidden }}>
                 <!-- CAUSE OF DEFECT OE -->
                 <div class='form-group text-left col-sm-3'>
@@ -148,6 +161,19 @@
                 {{ $disabled }}
                 >
             </div>
+            @if ($qdn->closure->status != 'Incomplete Fill-Up' && $qdn->containmentAction->objective_evidence)
+            <div class='form-group text-left row-fluid'>
+                <br>
+                <label for="">CONTAINMENT ACTION OE:</label>
+                <div class="clearfix"></div>
+                <a class="btn btn-default"
+                    target="_blank"
+                    href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->containmentAction->objective_evidence }}"
+                    >
+                    <i class="fa fa-file"></i> View Attachment
+                </a>
+            </div>
+            @endif
             <div class="row" {{ $hidden }}>
                 <!-- CONTAINMENT ACTION OE -->
                 <div class='form-group text-left col-sm-12'>
@@ -235,6 +261,19 @@
                     {{ $disabled }}
                     >
                 </div>
+                @if ($qdn->closure->status != 'Incomplete Fill-Up' && $qdn->correctiveAction->objective_evidence)
+                <div class='form-group text-left row-fluid'>
+                    <br>
+                    <label for="">CORRECTIVE ACTION OE:</label>
+                    <div class="clearfix"></div>
+                    <a class="btn btn-default"
+                        target="_blank"
+                        href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->correctiveAction->objective_evidence }}"
+                        >
+                        <i class="fa fa-file"></i> View Attachment
+                    </a>
+                </div>
+                @endif
                 <!-- CORRECTIVE ACTION/S OE -->
                 <div class="row" {{ $hidden }}>
                     <div class='form-group text-left col-sm-12'>
@@ -323,6 +362,19 @@
                     {{ $disabled }}
                     >
                 </div>
+                @if ($qdn->closure->status != 'Incomplete Fill-Up' && $qdn->preventiveAction->objective_evidence)
+                <div class='form-group text-left row-fluid'>
+                    <br>
+                    <label for="">PREVENTIVE ACTION OE:</label>
+                    <div class="clearfix"></div>
+                    <a class="btn btn-default"
+                        target="_blank"
+                        href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->preventiveAction->objective_evidence }}"
+                        >
+                        <i class="fa fa-file"></i> View Attachment
+                    </a>
+                </div>
+                @endif
                 <!-- PREVENTIVE ACTION/S OE -->
                 <div class="row" {{ $hidden }}>
                     <!-- CONTAINMENT ACTION OE -->

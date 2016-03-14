@@ -7,7 +7,6 @@
     <div class="panel-heading">
         <h3 class="panel-title">
         PRODUCT DESCRIPTION/ PROBLEM DETAILS
-        @if ($show)
         <a
             target         = "_blank"
             href           = "{{ route('pdf', ['slug'=> $qdn->slug]) }}"
@@ -22,10 +21,9 @@
             data-toggle = 'modal'
             href        = '#edit'
             >
-            {{ $qdn->closure->status == 'p.e. verification' && $currentUser->employee->department == 'process' ? 'verify' : 'edit' }}
+            {{ $qdn->closure->status == 'P.e. Verification' && $currentUser->employee->department == 'Process' ? 'verify' : 'edit' }}
             <i class="fa fa-edit"></i>
         </a>
-        @endif
         @endif
         </h3>
     </div>
@@ -138,9 +136,9 @@
                 </div>
                 <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="team_responsible">
-                    @foreach ($qdn->involvePerson->unique('department') as $employee)
+                        @foreach ($qdn->involvePerson->unique('department') as $employee)
                         {{ $employee->department }} <br>
-                    @endforeach
+                        @endforeach
                     </p>
                 </div>
             </div>
@@ -159,7 +157,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
                     <p class="receiver_name">
                         @foreach ($qdn->involvePerson as $employee)
-                            {{ $employee->receiver_name }} <br>
+                        {{ $employee->receiver_name }} <br>
                         @endforeach
                     </p>
                 </div>

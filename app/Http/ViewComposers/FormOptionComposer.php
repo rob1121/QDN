@@ -19,12 +19,12 @@ class FormOptionComposer {
 	public function compose(View $view) {
 
 		$view->with('select_failure_mode', [
-			'assembly',
-			'environment',
-			'machine',
-			'man',
-			'material',
-			'method / process',
+			'Assembly',
+			'Environment',
+			'Machine',
+			'Man',
+			'Material',
+			'Method / Process',
 		]);
 
 		$view->with('customers', Option::orderBy('customer')->select('customer')->get());

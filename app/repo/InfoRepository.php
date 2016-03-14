@@ -42,9 +42,11 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function updateCauseOfDefect($info, $request) {
 		$year = Carbon::parse($info->created_at)->year;
 		if ($request->hasFile('upload_cod')) {
-			$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->causeOfDefect->objective_evidence;
-			if (Storage::disk('local')->exists($existing_oe)) {
-				Storage::delete($existing_oe);
+			if ($info->causeOfDefect->objective_evidence != "") {
+				$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->causeOfDefect->objective_evidence;
+				if (Storage::disk('local')->exists($existing_oe)) {
+					Storage::delete($existing_oe);
+				}
 			}
 
 			$path      = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
@@ -62,9 +64,11 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function updateContainmentAction($info, $request) {
 		$year = Carbon::parse($info->created_at)->year;
 		if ($request->hasFile('upload_containment_action')) {
-			$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->containmentAction->objective_evidence;
-			if (Storage::disk('local')->exists($existing_oe)) {
-				Storage::delete($existing_oe);
+			if ($info->containmentAction->objective_evidence != "") {
+				$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->containmentAction->objective_evidence;
+				if (Storage::disk('local')->exists($existing_oe)) {
+					Storage::delete($existing_oe);
+				}
 			}
 
 			$path      = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
@@ -82,9 +86,11 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function updateCorrectiveAction($info, $request) {
 		$year = Carbon::parse($info->created_at)->year;
 		if ($request->hasFile('upload_corrective_action')) {
-			$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->correctiveAction->objective_evidence;
-			if (Storage::disk('local')->exists($existing_oe)) {
-				Storage::delete($existing_oe);
+			if ($info->correctiveAction->objective_evidence != "") {
+				$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->correctiveAction->objective_evidence;
+				if (Storage::disk('local')->exists($existing_oe)) {
+					Storage::delete($existing_oe);
+				}
 			}
 
 			$path      = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
@@ -102,9 +108,11 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function updatePreventiveAction($info, $request) {
 		$year = Carbon::parse($info->created_at)->year;
 		if ($request->hasFile('upload_preventive_action')) {
-			$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->preventiveAction->objective_evidence;
-			if (Storage::disk('local')->exists($existing_oe)) {
-				Storage::delete($existing_oe);
+			if ($info->preventiveAction->objective_evidence != "") {
+				$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->preventiveAction->objective_evidence;
+				if (Storage::disk('local')->exists($existing_oe)) {
+					Storage::delete($existing_oe);
+				}
 			}
 
 			$path      = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
@@ -214,11 +222,14 @@ class InfoRepository implements InfoRepositoryInterface {
 		$qdn->closure()->update([$column => $this->user->name]);
 
 		if ('reject' == $request->approver_radio) {
-			$qdn->closure()->update(['status' => 'incomplete fill-up']);
+			$qdn->closure()->update([
+				'status' => 'Incomplete Fill-Up',
+				$column  => '',
+			]);
 		} else {
 			$this->updateStatus($qdn)
-			? $qdn->closure()->update(['status' => 'incomplete approval'])
-			: $qdn->closure()->update(['status' => 'q.a. verification']);
+			? $qdn->closure()->update(['status' => 'Incomplete Approval'])
+			: $qdn->closure()->update(['status' => 'Q.a. Verification']);
 		}
 		Event::fire(new EventLogs('view' . $qdn->control_id, $request->approver_radio . ": " . $request->ApproverMessage)); //fire email notif event
 		Event::fire(new ApprovalNotificationEvent($qdn, $request->ApproverMessage)); //flash success alert message

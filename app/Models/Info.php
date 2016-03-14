@@ -216,7 +216,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getDiscrepancyCategoryAttribute($value) {
-		return $this->attributes['discrepancy_category'] = Str::title($value);
+		return $this->attributes['discrepancy_category'] = Str::upper($value);
 	}
 
 	public function setFailureModeAttribute($value) {

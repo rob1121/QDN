@@ -1,8 +1,8 @@
 <?php
-$show = ('production' == $currentUser->employee->department && '' == $qdn->closure->production)
-	|| ('process' == $currentUser->employee->department && '' == $qdn->closure->process_engineering)
-	|| ('quality assurance' == $currentUser->employee->department && '' == $qdn->closure->quality_assurance)
-	|| ('other' == $currentUser->employee->department && '' == $qdn->closure->other_department);
+$show = ('Production' == $currentUser->employee->department && '' == $qdn->closure->production)
+	|| ('Process' == $currentUser->employee->department && '' == $qdn->closure->process_engineering)
+	|| ('Quality Assurance' == $currentUser->employee->department && '' == $qdn->closure->quality_assurance)
+	|| ('Other' == $currentUser->employee->department && '' == $qdn->closure->other_department);
 ?>
 @extends('layouts.app')
 @include('report.partials.style')

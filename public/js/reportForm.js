@@ -149,8 +149,8 @@ var select_discrepancy_major = {
         'OTHERS': ['OTHERS'],
     },
     select_discrepancy_minor = [
-        'SOP Violation',
-        'KDTM Violation',
+        'SOP VIOLATION',
+        'KDTM VIOLATION',
         'OTHERS',
     ];
 

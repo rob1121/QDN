@@ -4,64 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "74e83402942719f4189f9983948bc3fc",
-    "content-hash": "e9917c088735a8b1fdf4469e778f8012",
+    "hash": "e5fc5848cede17709713c64a7074e753",
+    "content-hash": "4faed2119b4c5c3607752d76b2910a69",
     "packages": [
-        {
-            "name": "barryvdh/elfinder-flysystem-driver",
-            "version": "v0.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/barryvdh/elfinder-flysystem-driver.git",
-                "reference": "ee522ab9352ee0a473f7b261b28d805d8d3f4301"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/elfinder-flysystem-driver/zipball/ee522ab9352ee0a473f7b261b28d805d8d3f4301",
-                "reference": "ee522ab9352ee0a473f7b261b28d805d8d3f4301",
-                "shasum": ""
-            },
-            "require": {
-                "intervention/image": "~2.0",
-                "league/flysystem": "~1.0",
-                "php": ">=5.4",
-                "studio-42/elfinder": "2.1.x"
-            },
-            "suggest": {
-                "league/glide": "1.x to display images through Glide"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.1-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "elFinderVolumeFlysystem.php"
-                ],
-                "psr-4": {
-                    "Barryvdh\\elFinderFlysystemDriver\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "A Flysystem Driver for elFinder",
-            "keywords": [
-                "Flysystem",
-                "elfinder",
-                "filesystem"
-            ],
-            "time": "2016-02-19 15:35:32"
-        },
         {
             "name": "barryvdh/laravel-async-queue",
             "version": "v0.4.1",
@@ -213,56 +158,6 @@
                 "pdf"
             ],
             "time": "2015-12-21 19:51:22"
-        },
-        {
-            "name": "barryvdh/laravel-elfinder",
-            "version": "v0.3.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/barryvdh/laravel-elfinder.git",
-                "reference": "35f8485f87f3e5330762c25be1e4fbea7c92a476"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-elfinder/zipball/35f8485f87f3e5330762c25be1e4fbea7c92a476",
-                "reference": "35f8485f87f3e5330762c25be1e4fbea7c92a476",
-                "shasum": ""
-            },
-            "require": {
-                "barryvdh/elfinder-flysystem-driver": "0.1.x@dev",
-                "illuminate/support": "5.0.x|5.1.x|5.2.x",
-                "php": ">=5.4.0",
-                "studio-42/elfinder": "2.1.x"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Barryvdh\\Elfinder\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "A Laravel Package to integrate elFinder 2",
-            "keywords": [
-                "elfinder",
-                "filebrowser",
-                "laravel",
-                "tinymce"
-            ],
-            "time": "2015-12-22 11:02:15"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -1035,126 +930,6 @@
             "time": "2016-03-13 10:22:39"
         },
         {
-            "name": "guzzlehttp/psr7",
-            "version": "1.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/psr7.git",
-                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/2e89629ff057ebb49492ba08e6995d3a6a80021b",
-                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "psr/http-message": "~1.0"
-            },
-            "provide": {
-                "psr/http-message-implementation": "1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Psr7\\": "src/"
-                },
-                "files": [
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "PSR-7 message implementation",
-            "keywords": [
-                "http",
-                "message",
-                "stream",
-                "uri"
-            ],
-            "time": "2016-02-18 21:54:00"
-        },
-        {
-            "name": "intervention/image",
-            "version": "2.3.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Intervention/image.git",
-                "reference": "e368d262887dbb2fdfaf710880571ede51e9c0e6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/e368d262887dbb2fdfaf710880571ede51e9c0e6",
-                "reference": "e368d262887dbb2fdfaf710880571ede51e9c0e6",
-                "shasum": ""
-            },
-            "require": {
-                "ext-fileinfo": "*",
-                "guzzlehttp/psr7": "~1.1",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~0.9.2",
-                "phpunit/phpunit": "3.*"
-            },
-            "suggest": {
-                "ext-gd": "to use GD library based image processing.",
-                "ext-imagick": "to use Imagick based image processing.",
-                "intervention/imagecache": "Caching extension for the Intervention Image library"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Intervention\\Image\\": "src/Intervention/Image"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oliver Vogel",
-                    "email": "oliver@olivervogel.net",
-                    "homepage": "http://olivervogel.net/"
-                }
-            ],
-            "description": "Image handling and manipulation library with support for Laravel integration",
-            "homepage": "http://image.intervention.io/",
-            "keywords": [
-                "gd",
-                "image",
-                "imagick",
-                "laravel",
-                "thumbnail",
-                "watermark"
-            ],
-            "time": "2016-02-26 18:18:19"
-        },
-        {
             "name": "jakub-onderka/php-console-color",
             "version": "0.1",
             "source": {
@@ -1388,16 +1163,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.2.22",
+            "version": "v5.2.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "aec1b7cb9ec0bac0107361a3730cac9b6f945ef4"
+                "reference": "87c090845f135ca94eba903f1c8462e60e3a6e36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/aec1b7cb9ec0bac0107361a3730cac9b6f945ef4",
-                "reference": "aec1b7cb9ec0bac0107361a3730cac9b6f945ef4",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/87c090845f135ca94eba903f1c8462e60e3a6e36",
+                "reference": "87c090845f135ca94eba903f1c8462e60e3a6e36",
                 "shasum": ""
             },
             "require": {
@@ -1512,61 +1287,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2016-02-27 22:09:19"
-        },
-        {
-            "name": "laravelcollective/html",
-            "version": "v5.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/LaravelCollective/html.git",
-                "reference": "3a312d39ffe37da0f57b602618b61fd07c1fcec5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/3a312d39ffe37da0f57b602618b61fd07c1fcec5",
-                "reference": "3a312d39ffe37da0f57b602618b61fd07c1fcec5",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/http": "5.2.*",
-                "illuminate/routing": "5.2.*",
-                "illuminate/session": "5.2.*",
-                "illuminate/support": "5.2.*",
-                "illuminate/view": "5.2.*",
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "illuminate/database": "5.2.*",
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Collective\\Html\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                },
-                {
-                    "name": "Adam Engebretson",
-                    "email": "adam@laravelcollective.com"
-                }
-            ],
-            "description": "HTML and Form Builders for the Laravel Framework",
-            "homepage": "http://laravelcollective.com",
-            "time": "2016-01-27 22:29:54"
+            "time": "2016-03-14 14:22:33"
         },
         {
             "name": "league/flysystem",
@@ -2139,55 +1860,6 @@
             "time": "2015-05-01 07:00:55"
         },
         {
-            "name": "psr/http-message",
-            "version": "1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/http-message.git",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-message/zipball/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\Http\\Message\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interface for HTTP messages",
-            "keywords": [
-                "http",
-                "http-message",
-                "psr",
-                "psr-7",
-                "request",
-                "response"
-            ],
-            "time": "2015-05-04 20:22:00"
-        },
-        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -2298,157 +1970,30 @@
             "time": "2016-03-09 05:03:14"
         },
         {
-            "name": "serverfireteam/panel",
-            "version": "1.4.1",
+            "name": "spatie/db-dumper",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/serverfireteam/panel.git",
-                "reference": "eb46e962735cb5688025187ae2d0230c331031ac"
+                "url": "https://github.com/spatie/db-dumper.git",
+                "reference": "cefbcf0e8fe66d199fdb2a54cfc368a5c117e43e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/serverfireteam/panel/zipball/eb46e962735cb5688025187ae2d0230c331031ac",
-                "reference": "eb46e962735cb5688025187ae2d0230c331031ac",
+                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/cefbcf0e8fe66d199fdb2a54cfc368a5c117e43e",
+                "reference": "cefbcf0e8fe66d199fdb2a54cfc368a5c117e43e",
                 "shasum": ""
             },
             "require": {
-                "barryvdh/laravel-elfinder": "0.3.*",
-                "illuminate/support": "~5.1",
-                "maatwebsite/excel": "~2.0.0",
-                "php": ">=5.4.0",
-                "serverfireteam/rapyd-laravel": "1.5.*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/controllers",
-                    "src/views",
-                    "src/models",
-                    "src/database/migrations",
-                    "src/Serverfireteam/Panel/Commands"
-                ],
-                "psr-0": {
-                    "Serverfireteam\\Panel": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "siavash",
-                    "email": "siavash@serverfire.net"
-                },
-                {
-                    "name": "Alireza Aboutalebi",
-                    "email": "ali@serverfire.net"
-                },
-                {
-                    "name": "Hamid Reza Salimian",
-                    "email": "hamid@salimian.me"
-                },
-                {
-                    "name": "Alenoosh Baghoomian",
-                    "email": "hope2end@gmail.com"
-                }
-            ],
-            "description": "Admin panel for Laravel 5.1 applications",
-            "keywords": [
-                "LaravelPanel",
-                "admin",
-                "admin panel",
-                "administrator",
-                "backend",
-                "cms",
-                "crud",
-                "laravel",
-                "panel"
-            ],
-            "time": "2016-02-05 10:15:34"
-        },
-        {
-            "name": "serverfireteam/rapyd-laravel",
-            "version": "1.5.14",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/serverfireteam/rapyd-laravel.git",
-                "reference": "d2ae0cac59f8f5959ca64c9ceb17138ef1a60f26"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/serverfireteam/rapyd-laravel/zipball/d2ae0cac59f8f5959ca64c9ceb17138ef1a60f26",
-                "reference": "d2ae0cac59f8f5959ca64c9ceb17138ef1a60f26",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~5.1",
-                "intervention/image": "2.*",
-                "laravelcollective/html": "~5.0",
-                "php": ">=5.4.0",
-                "zofe/burp": "2.*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "migrations"
-                ],
-                "psr-4": {
-                    "Zofe\\Rapyd\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "zofe",
-                    "email": "felice.ostuni@gmail.com"
-                }
-            ],
-            "description": "crud widgets for laravel 5.1, to make an admin in few lines of code",
-            "homepage": "https://github.com/serverfireteam/rapyd-laravel",
-            "keywords": [
-                "Rapyd",
-                "admin",
-                "administrator",
-                "backend",
-                "crud",
-                "datatable",
-                "form",
-                "laravel"
-            ],
-            "time": "2016-01-24 13:40:18"
-        },
-        {
-            "name": "spatie/laravel-backup",
-            "version": "2.10.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "f62f211dca9e506069e43586cc362da9cba446b6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/f62f211dca9e506069e43586cc362da9cba446b6",
-                "reference": "f62f211dca9e506069e43586cc362da9cba446b6",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/console": "5.*",
-                "illuminate/support": "5.*",
-                "php": "^5.4.0|^7.0",
-                "symfony/finder": "^2.6|^3.0"
+                "php": "^5.5|^7.0",
+                "symfony/process": "^2.7|^3.0"
             },
             "require-dev": {
-                "laravel/framework": "5.*",
-                "mockery/mockery": "0.9.*",
-                "orchestra/testbench": "~3.0",
-                "phpunit/phpunit": "4.*",
-                "scrutinizer/ocular": "~1.1"
+                "phpunit/phpunit": "^4.8"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Spatie\\Backup\\": "src"
+                    "Spatie\\DbDumper\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2459,80 +2004,82 @@
                 {
                     "name": "Freek Van der Herten",
                     "email": "freek@spatie.be",
-                    "homepage": "https://murze.be",
+                    "homepage": "https://spatie.be",
                     "role": "Developer"
                 }
             ],
-            "description": "Backup command for Laravel 5 applications",
-            "homepage": "https://github.com/spatie/laravel-backup",
+            "description": "Dump databases",
+            "homepage": "https://github.com/spatie/db-dumper",
             "keywords": [
-                "backup",
                 "database",
-                "laravel 5",
-                "laravel-backup",
-                "mysql",
+                "db-dumper",
+                "dump",
+                "mysqldump",
                 "spatie"
             ],
-            "time": "2016-02-25 20:33:38"
+            "time": "2016-03-13 07:46:18"
         },
         {
-            "name": "studio-42/elfinder",
-            "version": "2.1.9",
+            "name": "spatie/laravel-backup",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "49742815ca1ec55fbac9463d7ece2d9e4544a194"
+                "url": "https://github.com/spatie/laravel-backup.git",
+                "reference": "f07f6d25414f7030db7c71b8dc271f4e8bca4abc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/49742815ca1ec55fbac9463d7ece2d9e4544a194",
-                "reference": "49742815ca1ec55fbac9463d7ece2d9e4544a194",
+                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/f07f6d25414f7030db7c71b8dc271f4e8bca4abc",
+                "reference": "f07f6d25414f7030db7c71b8dc271f4e8bca4abc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2"
+                "illuminate/console": "^5.1",
+                "illuminate/filesystem": "^5.1.20",
+                "illuminate/support": "^5.1",
+                "league/flysystem": "^1.0.8",
+                "php": "^5.5|^7.0",
+                "spatie/db-dumper": "^1.2.0",
+                "symfony/finder": "^2.7|^3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.4",
+                "orchestra/testbench": "^3.2",
+                "phpunit/phpunit": "^4.8"
             },
             "suggest": {
-                "barryvdh/elfinder-flysystem-driver": "VolumeDriver for elFinder to use Flysystem as a root.",
-                "dropbox-php/dropbox-php": "elFinder Volume driver `Dropbox` require `dropbox-php/dropbox-php`.",
-                "pear/auth": "dropbox-php require `pear/auth` or `PHP OAuth extension`.",
-                "pear/http_request2": "dropbox-php require `pear/http_request2` or `PHP OAuth extension`.",
-                "pear/net_url2": "dropbox-php require `pear/net_url2` or `PHP OAuth extension`."
+                "maknz/slack": "Allows notifications to be sent via Slack"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "php"
+                "psr-4": {
+                    "Spatie\\Backup\\": "src"
+                },
+                "files": [
+                    "src/Helpers/functions.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "MIT"
             ],
             "authors": [
                 {
-                    "name": "Dmitry Levashov",
-                    "email": "dio@std42.ru",
-                    "homepage": "http://std42.ru"
-                },
-                {
-                    "name": "Troex Nevelin",
-                    "email": "troex@fury.scancode.ru",
-                    "homepage": "http://std42.ru"
-                },
-                {
-                    "name": "Naoki Sawada",
-                    "email": "hypweb@gmail.com",
-                    "homepage": "http://xoops.hypweb.net"
-                },
-                {
-                    "name": "Community contributions",
-                    "homepage": "https://github.com/Studio-42/elFinder/contributors"
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
                 }
             ],
-            "description": "File manager for web",
-            "homepage": "http://elfinder.org",
-            "time": "2016-03-11 06:51:01"
+            "description": "A Laravel 5 package to backup your application",
+            "homepage": "https://github.com/spatie/laravel-backup",
+            "keywords": [
+                "backup",
+                "database",
+                "laravel-backup",
+                "spatie"
+            ],
+            "time": "2016-03-13 12:07:01"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3515,54 +3062,6 @@
                 "environment"
             ],
             "time": "2015-12-29 15:10:30"
-        },
-        {
-            "name": "zofe/burp",
-            "version": "2.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zofe/burp.git",
-                "reference": "f69d1cb1ee498c02f83baa99ccefd379bd1a4325"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zofe/burp/zipball/f69d1cb1ee498c02f83baa99ccefd379bd1a4325",
-                "reference": "f69d1cb1ee498c02f83baa99ccefd379bd1a4325",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~5.0",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Zofe\\Burp\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Felice Ostuni",
-                    "email": "felice.ostuni@gmail.com"
-                }
-            ],
-            "description": "Simple PHP router that works with query-string and uri-segments",
-            "homepage": "https://github.com/zofe/burp",
-            "keywords": [
-                "Simple",
-                "filter",
-                "front controller",
-                "php",
-                "router"
-            ],
-            "time": "2015-03-09 22:51:58"
         }
     ],
     "packages-dev": [
@@ -3661,7 +3160,7 @@
             ],
             "authors": [
                 {
-                    "name": "Francois Zaninotto"
+                    "name": "François Zaninotto"
                 }
             ],
             "description": "Faker is a PHP library that generates fake data for you.",
@@ -4179,16 +3678,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.23",
+            "version": "4.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483"
+                "reference": "a1066c562c52900a142a0e2bbf0582994671385e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6e351261f9cd33daf205a131a1ba61c6d33bd483",
-                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a1066c562c52900a142a0e2bbf0582994671385e",
+                "reference": "a1066c562c52900a142a0e2bbf0582994671385e",
                 "shasum": ""
             },
             "require": {
@@ -4247,7 +3746,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-02-11 14:56:33"
+            "time": "2016-03-14 06:16:08"
         },
         {
             "name": "phpunit/phpunit-mock-objects",

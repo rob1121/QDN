@@ -3,8 +3,15 @@
 namespace App\OptionModels;
 
 use Illuminate\Database\Eloquent\Model;
+use Str;
 
-class Station extends Model
-{
-    protected $fillable = ['station'];
+class Station extends Model {
+	protected $fillable = ['station'];
+
+	public function setStationAttribute($value) {
+		return $this->attributes['station'] = strtolower($value);
+	}
+	public function getStationAttribute($value) {
+		return $this->attributes['station'] = Str::upper($value);
+	}
 }

@@ -1,4 +1,3 @@
-<?php $a = 1;?>
 @extends('admin.main')
 @push('styles')
 <style type="text/css">
@@ -66,6 +65,7 @@ new Vue({
             this.customers.splice(index, 1)
         },
         editCustomer: function(index) {
+            this.addCustomer()
             this.newCustomer = this.customers[index].customer
             this.customers.splice(index, 1)
         }

@@ -45,6 +45,13 @@ class AdminController extends Controller {
 		JavaScript::put('machines', $machines);
 		return view('admin.pages.machine', compact('machines'));
 	}
+	public function updateMachineOptions(Request $request, $machine) {
+		$machine = Machine::whereMachine($machine)->first();
+		$machine->count()
+		? $machine->update($request->all())
+		: $machine->create($request->all());
+		return "all";
+	}
 	public function FailureModeOptions() {
 		return view('admin.main');
 	}

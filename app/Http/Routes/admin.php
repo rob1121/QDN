@@ -23,6 +23,10 @@ Route::get('/dashboard/machines', [
 	'as'   => 'MachineOptions',
 	'uses' => 'Admin\AdminController@MachineOptions']);
 
+Route::get('/dashboard/machines-update', [
+	'as'   => 'updateMachineOptions',
+	'uses' => 'Admin\AdminController@updateMachineOptions']);
+
 Route::get('/failure-mode-option', [
 
 	'as'   => 'FailureModeOptions',

@@ -9,6 +9,7 @@ use App\repo\HomeRepository;
 use Auth;
 use Illuminate\Http\Request;
 use JavaScript;
+use Str;
 
 class HomeController extends Controller {
 	private $home;
@@ -65,7 +66,7 @@ class HomeController extends Controller {
 	 * @return [type]           [description]
 	 */
 	public function AjaxStatus(Request $request) {
-		$tbl = Closure::status($request->input('status'))->get();
+		$tbl = Closure::status(Str::title($request->input('status')))->get();
 		return view('home.status', compact('tbl'));
 	}
 

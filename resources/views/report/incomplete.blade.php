@@ -17,8 +17,8 @@
         >
         {!! csrf_field() !!}
         @include('report.partials.section', [
-            'hidden' => $qdn->closure->status == 'Incomplete Fill-Up'? '':'hidden',
-            'disabled' => $qdn->closure->status == 'Incomplete Fill-Up'? '':'disabled'
+            'hidden' => $currentUser->employee->department == $qdn->involvePerson->first()->department && $qdn->closure->status == 'Incomplete Fill-Up'? '':'hidden',
+            'disabled' => $currentUser->employee->department == $qdn->involvePerson->first()->department && $qdn->closure->status == 'Incomplete Fill-Up'? '':'disabled'
         ])
     </div>
     @if ($qdn->closure->status == 'Incomplete Fill-Up')

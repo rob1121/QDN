@@ -109,7 +109,7 @@
                       <table class="twelve columns" style="border-spacing:0;border-collapse:collapse;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;vertical-align:top;text-align:left;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;width:580px;" >
                         <tr style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;vertical-align:top;text-align:left;" >
                           <td style="word-break:break-word;-webkit-hyphens:none;-moz-hyphens:none;hyphens:none;border-collapse:collapse !important;vertical-align:top;color:#222222;font-family:Helvetica, Arial, sans-serif;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;text-align:left;font-size:14px;line-height:19px;padding-top:0px;padding-bottom:10px;padding-right:0px;padding-left:0px;" >
-                            @if($closure->status == 'incomplete approval')
+                            @if($closure->status == 'Incomplete Approval')
                             Status of Approval:
                             <li>PRODUCTION: {{ $closure->production != '' ? $closure->production : 'Pending' }}</li>
                             <li>PROCESS ENGINEERING: {{ $closure->process_engineering != '' ? $closure->process_engineering : 'Pending' }}</li>

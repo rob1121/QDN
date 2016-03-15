@@ -42,7 +42,7 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function updateCauseOfDefect($info, $request) {
 		$year = Carbon::parse($info->created_at)->year;
 		if ($request->hasFile('upload_cod')) {
-			if ($info->causeOfDefect->objective_evidence != "") {
+			if ("" != $info->causeOfDefect->objective_evidence) {
 				$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->causeOfDefect->objective_evidence;
 				if (Storage::disk('local')->exists($existing_oe)) {
 					Storage::delete($existing_oe);
@@ -64,7 +64,7 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function updateContainmentAction($info, $request) {
 		$year = Carbon::parse($info->created_at)->year;
 		if ($request->hasFile('upload_containment_action')) {
-			if ($info->containmentAction->objective_evidence != "") {
+			if ("" != $info->containmentAction->objective_evidence) {
 				$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->containmentAction->objective_evidence;
 				if (Storage::disk('local')->exists($existing_oe)) {
 					Storage::delete($existing_oe);
@@ -86,7 +86,7 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function updateCorrectiveAction($info, $request) {
 		$year = Carbon::parse($info->created_at)->year;
 		if ($request->hasFile('upload_corrective_action')) {
-			if ($info->correctiveAction->objective_evidence != "") {
+			if ("" != $info->correctiveAction->objective_evidence) {
 				$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->correctiveAction->objective_evidence;
 				if (Storage::disk('local')->exists($existing_oe)) {
 					Storage::delete($existing_oe);
@@ -108,7 +108,7 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function updatePreventiveAction($info, $request) {
 		$year = Carbon::parse($info->created_at)->year;
 		if ($request->hasFile('upload_preventive_action')) {
-			if ($info->preventiveAction->objective_evidence != "") {
+			if ("" != $info->preventiveAction->objective_evidence) {
 				$existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->preventiveAction->objective_evidence;
 				if (Storage::disk('local')->exists($existing_oe)) {
 					Storage::delete($existing_oe);
@@ -216,10 +216,7 @@ class InfoRepository implements InfoRepositoryInterface {
 
 	public function approverUpdate($request, $qdn) {
 		$this->user = $this->user->employee;
-		$column     = str_replace(' ', '_', $this->user->department);
-		$column     = 'process' == $column ? 'process_engineering' : $column;
-		$column     = 'other' == $column ? 'other_department' : $column;
-		$qdn->closure()->update([$column => $this->user->name]);
+		$qdn->closure()->update([$this->user->department => $this->user->name]);
 
 		if ('reject' == $request->approver_radio) {
 			$qdn->closure()->update([

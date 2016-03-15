@@ -31,7 +31,7 @@ class Employee extends Model {
 	}
 
 	public function getDepartmentAttribute($value) {
-		return $this->attributes['department'] = Str::title($value);
+		return $this->attributes['department'] = strtolower($value);
 	}
 
 	public function setStationAttribute($value) {

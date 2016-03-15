@@ -21,7 +21,7 @@ class employeeSeeder extends Seeder {
 		$emp = Employee::create([
 			'user_id'    => 801,
 			'name'       => 'Robinson L. Legaspi',
-			'department' => 'quality assurance',
+			'department' => 'quality_assurance',
 			'station'    => 'DCC',
 			'position'   => 'Management System Officer',
 			'email'      => 'robinsonlegaspi@astigp.com',
@@ -29,8 +29,8 @@ class employeeSeeder extends Seeder {
 
 		User::create([
 			'employee_id'  => 801,
-			'access_level' => 'Admin',
-			'status'       => 'Active',
+			'access_level' => 'admin',
+			'status'       => 'active',
 			'password'     => bcrypt('admin'),
 		]);
 
@@ -46,7 +46,7 @@ class employeeSeeder extends Seeder {
 		$emp = Employee::create([
 			'user_id'    => 802,
 			'name'       => 'Nepthal Dave S. Pakingan',
-			'department' => 'process',
+			'department' => 'process_engineering',
 			'station'    => 'Process Engineer',
 			'position'   => 'HR Programmer',
 			'email'      => 'robinsonlegaspi@astigp.com',
@@ -54,8 +54,8 @@ class employeeSeeder extends Seeder {
 
 		User::create([
 			'employee_id'  => 802,
-			'access_level' => 'User',
-			'status'       => 'Active',
+			'access_level' => 'signatory',
+			'status'       => 'active',
 			'password'     => bcrypt('user'),
 		]);
 
@@ -69,12 +69,12 @@ class employeeSeeder extends Seeder {
 		 * this for dummy account
 		 */
 		foreach (range(1, 200) as $index) {
-			$department = $faker->randomElement(['quality assurance', 'process', 'other', 'production']);
+			$department = $faker->randomElement(['production', 'process_engineering', 'quality_assurance', 'other_department']);
 
-			$station['quality assurance'] = ['quality assurance'];
-			$station['process']           = ['process engineering'];
-			$station['production']        = ['pl1', 'pl2', 'pl3', 'pl4', 'pl7', 'pl9'];
-			$station['other']             = ['equipment engineering', 'facilities', 'mis', 'human resource', 'purchasing and logistics', 'finance', 'utilities'];
+			$station['quality_assurance']   = ['quality assurance'];
+			$station['process_engineering'] = ['process engineering'];
+			$station['production']          = ['pl1', 'pl2', 'pl3', 'pl4', 'pl7', 'pl9'];
+			$station['other_department']    = ['equipment engineering', 'facilities', 'mis', 'human resource', 'purchasing and logistics', 'finance', 'utilities'];
 
 			$emp = Employee::create([
 				'user_id'    => $faker->unique()->randomNumber,
@@ -87,8 +87,8 @@ class employeeSeeder extends Seeder {
 
 			User::create([
 				'employee_id'  => $emp->user_id,
-				'access_level' => 'User',
-				'status'       => $faker->randomElement(['Active', 'Deactivated']),
+				'access_level' => $faker->randomElement(['user', 'signatory']),
+				'status'       => $faker->randomElement(['active', 'deactivated']),
 				'password'     => bcrypt('8d'),
 			]);
 

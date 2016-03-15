@@ -275,6 +275,14 @@ class Info extends Model implements SluggableInterface {
 		return $this->attributes['station'] = Str::upper($value);
 	}
 
+	public function setJobOrderNumberAttribute($value) {
+		return $this->attributes['job_order_number'] = strtolower($value);
+	}
+
+	public function getJobOrderNumberAttribute($value) {
+		return $this->attributes['job_order_number'] = Str::upper($value);
+	}
+
 	public function setControlIdAttribute($value) {
 		$today                                 = Carbon::now('Asia/Manila');
 		$year                                  = $today->format('y');

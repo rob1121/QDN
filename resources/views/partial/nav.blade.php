@@ -49,7 +49,7 @@ $url = Request::url();
                             <i class="fa fa-user fa-stack-1x fa-inverse"></i>
                         </span> {{ $currentUser->employee->name }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            @if ($currentUser->access_level == 'Admin')
+                            @if ($currentUser->access_level == 'admin')
                             <li><a href="{{ route('dashboard') }}" style="border-bottom:1px solid #f5f5f5"><i class="fa fa-dashboard"></i> dashboard</a></li>
                             @endif
                             <li>

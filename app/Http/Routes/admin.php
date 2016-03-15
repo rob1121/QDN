@@ -18,7 +18,7 @@ Route::get('/pareto-per-failure-mode', [
 	'as'   => 'ParetoPerFailureMode',
 	'uses' => 'Admin\AdminController@ParetoPerFailureMode']);
 
-Route::get('/machine-option', [
+Route::get('/dashboard/machines', [
 
 	'as'   => 'MachineOptions',
 	'uses' => 'Admin\AdminController@MachineOptions']);

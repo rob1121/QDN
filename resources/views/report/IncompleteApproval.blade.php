@@ -1,9 +1,30 @@
+
 <?php
-$show = ('Production' == $currentUser->employee->department && '' == $qdn->closure->production)
-	|| ('Process' == $currentUser->employee->department && '' == $qdn->closure->process_engineering)
-	|| ('Quality Assurance' == $currentUser->employee->department && '' == $qdn->closure->quality_assurance)
-	|| ('Other' == $currentUser->employee->department && '' == $qdn->closure->other_department);
+$data = ('' == $qdn->closure->production)
+	|| ('' == $qdn->closure->process_engineering)
+	|| ('' == $qdn->closure->quality_assurance)
+	|| ('' == $qdn->closure->other_department);
+
+switch ($currentUser->employee->department) {
+case 'quality_assurance':
+	$user = $qdn->closure->quality_assurance;
+	break;
+
+case 'process_engineering':
+	$user = $qdn->closure->process_engineering;
+	break;
+
+case 'production':
+	$user = $qdn->closure->production;
+	break;
+
+case 'other_department':
+	$user = $qdn->closure->other_department;
+	break;
+}
+$show = in_array($currentUser->access_level, ['admin', 'signatory']) && $data && '' == $user;
 ?>
+
 @extends('layouts.app')
 @include('report.partials.style')
 @push('style')
@@ -35,7 +56,7 @@ $show = ('Production' == $currentUser->employee->department && '' == $qdn->closu
 	@include('report.partials.section', ['hidden' => 'hidden', 'disabled' => 'disabled'])
 	<!-- //======================================= Start of APPROVALS SECTION ========================================= -->
 	<form action="{{ route('UpdateForApprroval', ['slug' => $qdn->slug]) }}" method="post" id="approver-form">
-	{!! csrf_field() !!}
+		{!! csrf_field() !!}
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">APPROVALS:</h3>
@@ -55,7 +76,7 @@ $show = ('Production' == $currentUser->employee->department && '' == $qdn->closu
 					</div>
 				</div>
 				@endif
-					@include('report.partials.sectionSeven',['show' => $show]);
+				@include('report.partials.sectionSeven',['view' => $show, 'valid' => $user])
 			</div>
 		</div>
 	</form>

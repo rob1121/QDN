@@ -14,7 +14,7 @@ class MustBeAdministrator {
 	 */
 	public function handle($request, Closure $next) {
 		$user = $request->user();
-		if ($user && 'Admin' == $user->access_level) {
+		if ($user && 'admin' == $user->access_level) {
 			return $next($request);
 		}
 		return redirect(route('home'));

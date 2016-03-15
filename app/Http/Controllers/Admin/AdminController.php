@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Info;
+use App\OptionModels\Machine;
+use App\OptionModels\Option;
 use App\repo\InfoRepository;
 use Carbon;
 use Illuminate\Http\Request;
@@ -39,7 +41,9 @@ class AdminController extends Controller {
 		return view('admin.main');
 	}
 	public function MachineOptions() {
-		return view('admin.main');
+		$machines = Machine::all();
+		JavaScript::put('machines', $machines);
+		return view('admin.pages.machine', compact('machines'));
 	}
 	public function FailureModeOptions() {
 		return view('admin.main');
@@ -48,7 +52,9 @@ class AdminController extends Controller {
 		return view('admin.main');
 	}
 	public function CustomerOptions() {
-		return view('admin.main');
+		$customers = Option::all();
+		JavaScript::put('customers', $customers);
+		return view('admin.pages.customer', compact('customers'));
 	}
 
 	public function UpdateLead(Request $request) {

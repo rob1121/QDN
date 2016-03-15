@@ -1,4 +1,4 @@
-@if ($show && $qdn->closure->status != 'Q.a. Verification')
+@if (!isset($view) || $view)
 <!-- ========================================== APPROVER MESSAGE MODAL ================================================ -->
 <div class="modal" id="approver-modal">
 	<div class="modal-dialog">
@@ -40,7 +40,7 @@
 	</div>
 </div>
 @endif
-@if (! $show && $qdn->closure->status == 'Q.a. Verification')
+@if ($qdn->closure->status == 'Q.a. Verification' || $valid != '' )
 <div class="col-md-3">
 	<div class="col-md-11 text-center"><strong>{{ $qdn->closure->production."&nbsp;" }}</strong></div>
 	<div class="col-md-11 text-center underline-label">

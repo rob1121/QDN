@@ -50,6 +50,7 @@
                 </div>
                 @endforeach
             </div>
+            <br>
             @if ($qdn->closure->status != 'Incomplete Fill-Up' && $qdn->causeOfDefect->objective_evidence)
             <div class='form-group text-left row-fluid'>
                 <br>

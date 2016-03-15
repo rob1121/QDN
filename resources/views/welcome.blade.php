@@ -101,13 +101,16 @@ height:50px;
 .carousel-fade .carousel-control {
   z-index: 2;
 }
+#login-lnk {
+    color:#535353;
+}
 </style>
 @stop
 @section('content')
 <div class="jumbotron text-center">
     <h1 class="header wow fadeIn"><strong>The Simple Way to Monitor Quality Hits</strong></h1>
     <h2 ><span class="sub-title"></span></h2>
-    <p><a href="#login" class="btn btn-default btn-lg" id="login-lnk">Login <i class="fa fa-sign-in"></i></a></p>
+    <p><a href="#login" id="login-lnk"><i class="fa fa-angle-down fa-4x"></i></a></p>
 </div>
 <div class="container main-top" id="login">
     <form

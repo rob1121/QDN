@@ -17,7 +17,6 @@ use PDF;
 
 class reportController extends Controller {
 	protected $qdn;
-	private $user;
 
 	/**
 	 * QDN Info Dependency Injection
@@ -26,7 +25,6 @@ class reportController extends Controller {
 	public function __construct(InfoRepository $qdn) {
 		$this->middleware('auth');
 		$this->qdn       = $qdn;
-		$this->user      = Auth::user();
 		$this->qdn->user = Auth::user();
 	}
 
@@ -36,7 +34,7 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function pdf(Info $slug) {
-		Event::fire(new EventLogs($this->user, 'download' . $slug->control_id));
+		Event::fire(new EventLogs($this->qdn->user, 'download' . $slug->control_id));
 		$qdn = $slug;
 		return PDF::loadHTML(view('pdf.print', compact('qdn')))->stream();
 	}
@@ -60,7 +58,7 @@ class reportController extends Controller {
 		if (Info::isExist($request)->count() == 0) {
 			$qdn = $this->qdn->add($request);
 
-			Event::fire(new EventLogs($this->user, 'issue QDN: ' . $qdn->control_id));
+			Event::fire(new EventLogs($this->qdn->user, 'issue QDN: ' . $qdn->control_id));
 			Event::fire(new EmailQdnNotificationEvent($qdn));
 			Flash::success('Success! Team responsible will be notified regarding the issue via email!');
 		}
@@ -96,7 +94,7 @@ class reportController extends Controller {
 	 */
 	public function SectionOneSaveAsDraft(Request $request, Info $slug) {
 		$collection = $this->qdn->SectionOneUpdate($request, $slug);
-		Event::fire(new EventLogs($this->user, 'P.E. save as draft and not yet validate' . $slug->control_id));
+		Event::fire(new EventLogs($this->qdn->user, 'P.E. save as draft and not yet validate' . $slug->control_id));
 		return array_add($request->all(), 'department', $collection['emp_dept']);
 	}
 
@@ -117,7 +115,7 @@ class reportController extends Controller {
 	 */
 	public function draft(Info $slug, Request $request) {
 		$this->qdn->save($slug, $request);
-		Event::fire(new EventLogs($this->user, 'Incomplete: save as draft' . $slug->control_id));
+		Event::fire(new EventLogs($this->qdn->user, 'Incomplete: save as draft' . $slug->control_id));
 		Flash::success('Successfully save! Issued QDN are save as draft and still subject for completion!');
 		return redirect('/');
 	}
@@ -132,8 +130,8 @@ class reportController extends Controller {
 		$this->qdn->save($slug, $request);
 		$slug->closure()->update(['status' => 'incomplete approval']);
 
-		Event::fire(new EventLogs($this->user, 'Incomplete: save and proceed' . $slug->control_id));
-		Event::fire(new ApprovalNotificationEvent($slug));
+		Event::fire(new EventLogs($this->qdn->user, 'Incomplete: save and proceed' . $slug->control_id));
+		Event::fire(new ApprovalNotificationEvent($slug, 'Answered by' . $this->qdn->user->employee->name));
 		Flash::success('Successfully save! Issued QDN is now subject for Approval!');
 		return redirect('/');
 	}

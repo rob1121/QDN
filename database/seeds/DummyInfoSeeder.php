@@ -132,9 +132,9 @@ class DummyInfoSeeder extends Seeder {
 				'close_by'                 => $close_by->name,
 				'created_at'               => $info->created_at,
 				'production'               => $employee->where('department', 'production')->random()->name,
-				'process_engineering'      => $employee->where('department', 'process')->random()->name,
-				'quality_assurance'        => $employee->where('department', 'quality assurance')->random()->name,
-				'other_department'         => $employee->where('department', 'other')->random()->name,
+				'process_engineering'      => $employee->where('department', 'process_engineering')->random()->name,
+				'quality_assurance'        => $employee->where('department', 'quality_assurance')->random()->name,
+				'other_department'         => $employee->where('department', 'other_department')->random()->name,
 				'status'                   => 'Closed',
 			]);
 		}

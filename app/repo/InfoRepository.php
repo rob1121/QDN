@@ -13,6 +13,7 @@ use App\Models\Info;
 use App\Models\InvolvePerson;
 use App\Models\PreventiveAction;
 use App\Models\QdnCycle;
+use Cache;
 use Carbon;
 use DB;
 use Event;
@@ -304,7 +305,10 @@ class InfoRepository implements InfoRepositoryInterface {
 		return array_map([$class, 'title'], $failure_mode);
 	}
 
-	public function discrepancy() {
-		return '';
+	public function cacheQdn($qdn) {
+		if (!Cache::get($qdn->slug)) {
+			Cache::add($qdn->slug, $this->user->employee->name, 5);
+		}
+		return Cache::get($qdn->slug);
 	}
 }

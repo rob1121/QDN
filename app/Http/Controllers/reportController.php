@@ -23,6 +23,7 @@ class reportController extends Controller {
 	 * @param InfoRepository $qdn [description]
 	 */
 	public function __construct(InfoRepository $qdn) {
+
 		$this->middleware('auth');
 		$this->qdn       = $qdn;
 		$this->qdn->user = Auth::user();
@@ -73,7 +74,14 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function show(Info $slug) {
-		return $this->qdn->view($slug, 'report.view');
+		$active_user = $this->qdn->cacheQdn($slug);
+		if ($active_user == $this->qdn->user->employee->name) {
+			return $this->qdn->view($slug, 'report.view');
+		} else {
+			Flash::warning('Notice: You are redirected to home page for the reason that the page is currently used by ' . $active_user);
+			return redirect('/');
+		}
+
 	}
 
 	/**
@@ -142,8 +150,7 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function approval(Info $slug) {
-		return $this->qdn->view($slug, 'report.IncompleteApproval');
-	}
+		return $this->qdn->view($slug, 'report.IncompleteApproval');}
 
 	/**
 	 * approval post method that update cycletime and closure table

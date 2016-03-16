@@ -9,7 +9,7 @@
             }
         </style>
     </head>
-    <body class="hold-transition skin-blue sidebar-mini" hidden>
+    <body class="hold-transition skin-blue sidebar-mini" hidden style="padding-bottom:0px">
         <div class="wrapper">
             @include('admin.nav')
             @include('admin.sidebar')

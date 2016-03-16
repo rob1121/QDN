@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Employee;
 use App\Http\Controllers\Controller;
 use App\Models\Info;
 use App\OptionModels\Machine;
@@ -30,40 +31,66 @@ class AdminController extends Controller {
 		$qdn = Info::orderBy('id', 'desc')->take(5)->get()->load('closure');
 		return view('admin.pages.index', compact('ave', 'qdn', 'count'));
 	}
-
-	public function QdnMetrics() {
-		return view('admin.main');
-	}
-	public function ParetoOfDiscrepancy() {
-		return view('admin.main');
-	}
-	public function ParetoPerFailureMode() {
-		return view('admin.main');
-	}
 	public function MachineOptions() {
 		$machines = Machine::all();
 		JavaScript::put('machines', $machines);
 		return view('admin.pages.machine', compact('machines'));
 	}
-	public function updateMachineOptions(Request $request, $machine) {
-		$machine = Machine::whereMachine($machine)->first();
-		$machine->count()
-		? $machine->update($request->all())
-		: $machine->create($request->all());
-		return "all";
+	public function updateMachineOptions(Request $request) {
+		$machine = Machine::whereName($request->name)->count();
+		$res     = 'exist';
+		if (0 == $machine) {
+			$res = 'unique';
+			Machine::create($request->all());
+		}
+
+		return $res;
 	}
-	public function FailureModeOptions() {
-		return view('admin.main');
-	}
-	public function DiscrepancyCategoryOptions() {
-		return view('admin.main');
+	public function removeMachineOptions(Request $request) {
+		$machine = Machine::whereName($request->name)->delete();
+		return 'Done';
 	}
 	public function CustomerOptions() {
 		$customers = Option::all();
 		JavaScript::put('customers', $customers);
 		return view('admin.pages.customer', compact('customers'));
 	}
+	public function updateCustomerOptions(Request $request) {
+		$customer = Option::whereCustomer($request->customer)->count();
+		$res      = 'exist';
+		if (0 == $customer) {
+			$res = 'unique';
+			Option::create($request->all());
+		}
 
+		return $res;
+	}
+	public function removeCustomerOptions(Request $request) {
+		$employee = Option::whereCustomer($request->customer)->delete();
+		return 'Done';
+	}
+
+	public function EmployeesOptions() {
+		$employees = Employee::all()->load('user');
+		JavaScript::put('employees', $employees);
+		return view('admin.pages.employees', compact('employees'));
+	}
+
+	public function updateEmployeesOptions(Request $request) {
+		$employee = Employee::whereEmployee($request->employee)->count();
+		$res      = 'exist';
+		if (0 == $employee) {
+			$res = 'unique';
+			Employee::create($request->all());
+		}
+
+		return $res;
+	}
+
+	public function removeEmployeesOptions(Request $request) {
+		$employee = Employee::whereEmployee($request->employee)->delete();
+		return 'Done';
+	}
 	public function UpdateLead(Request $request) {
 		$this->qdn->month = $request->month;
 		$this->qdn->year  = $request->year;

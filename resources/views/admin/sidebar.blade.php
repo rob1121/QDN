@@ -38,7 +38,7 @@
         </ul>
       </li>
       <li>
-        <a href="pages/widgets.html">
+        <a href="{{ route('EmployeesOptions') }}">
           <i class="fa fa-users"></i> <span>Employees</span>
         </a>
       </li>

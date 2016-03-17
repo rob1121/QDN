@@ -4,24 +4,8 @@
 table {
 background-color: #fff;
 }
-#tbl-container {
-overflow: auto;
-height:300px;
-margin-bottom:32px;
-}
-#tbl-container::-webkit-scrollbar {
-width: 5px;
-}
-#tbl-container::-webkit-scrollbar-track {
--webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-border-radius: 10px;
-}
-#tbl-container::-webkit-scrollbar-thumb {
-border-radius: 10px;
--webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-}
 #data-link {
-    margin-bottom: 8px;
+margin-bottom: 8px;
 }
 </style>
 @endpush
@@ -29,7 +13,6 @@ border-radius: 10px;
 <div class="container-fluid">
     <h1>Employee List</h1>
     <div class="col-md-12 text-right" id="data-link">
-
         <a  data-toggle="modal" href='#profile'>
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x"></i>
@@ -44,71 +27,82 @@ border-radius: 10px;
         </a>
     </div>
     <div class="clearfix"></div>
-    <div id="tbl-container">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th class="col-md-1">#</th>
-                    <th>Name</th>
-                    <th>Station</th>
-                    <th>Position</th>
-                    <th class="col-md-2">Access Level</th>
-                    <th class="col-md-2">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="employee in employees  | orderBy 'name' order">
-                    <td>@{{ $index }}</td>
-                    <td>@{{ employee.name }}</td>
-                    <td>@{{ employee.station | uppercase }}</td>
-                    <td>@{{ employee.email }}</td>
-                    <td><select name="access_level" id="access_level" class="form-control">
-                        <option v-for="option in options" selected="@{{ option.selected }}">
-                            <span>@{{ option.value }}</span>
-                        </option>
-                    </select></td>
-                    <td>
-                        <a  @click="editEmployee(employee)" class="text-primary">
-                            <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                        <a  @click="removeEmployee(employee)" class="text-danger">
-                            <span class="fa-stack fa-lg">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th class="col-md-1">#</th>
+                <th>Name</th>
+                <th>Station</th>
+                <th>Position</th>
+                <th class="col-md-2">Access Level</th>
+                <th class="col-md-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="employee in employees  | orderBy 'name' order">
+                <td>@{{ $index+1 }}</td>
+                <td>@{{ employee.name }}</td>
+                <td>@{{ employee.station | uppercase }}</td>
+                <td>@{{ employee.email }}</td>
+                <td><selection level=@{{ employee.user.access_level }}></selection></td>
+                <td>
+                    <a  @click="editEmployee(employee)" class="text-primary">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-edit fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                    <a  @click="removeEmployee(employee)" class="text-danger">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div class="clearfix"></div>
 @include('admin.pages.employees_modal')
+<template id="level-selection">
+    <select name="access_level" id="access_level" class="form-control" v-model="selected">
+        <option v-for="option in options"> @{{  level }}</option>
+    </select>
+</template>
 @stop
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.17/vue.js"></script>
 <script>
 window.onbeforeunload = function(){
-    $('body').hide();
+$('body').hide();
 }
 window.onunload  = function(){
-    return 'unloaded';
+return 'unloaded';
 }
 var employeeTable = new Vue({
 el: 'body',
 data: {
-    options:[
-        { value : 'admin', selected: false },
-        { value : 'signatory', selected: false },
-        { value : 'user', selected: true },
-            ],
-    order: 1,
-    name: 'Robinson L. Legaspi',
-    employees: employees
+order: 1,
+name: 'Robinson L. Legaspi',
+employees: employees
+},
+components: {
+    selection:  {
+        template: '#level-selection',
+        props:['level'],
+        data: function(){
+            return {
+                selected: 'user',
+                options:['admin' ,'signatory' ,'user']
+            }
+        }
+    }
+},
+methods: {
+updateAccessLevel: function(name, access_level) {
+alert(name + "is now" + access_level);
+}
 }
 })
 $.ajaxSetup({

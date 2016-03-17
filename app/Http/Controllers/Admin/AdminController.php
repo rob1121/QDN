@@ -71,7 +71,7 @@ class AdminController extends Controller {
 	}
 
 	public function EmployeesOptions() {
-		$employees = Employee::all()->load('user');
+		$employees = Employee::take(20)->get()->load('user');
 		JavaScript::put('employees', $employees);
 		return view('admin.pages.employees', compact('employees'));
 	}

@@ -30,8 +30,17 @@ class HomeController extends Controller {
 	 * @return Response
 	 */
 	public function index() {
+		return $this->user ? redirect(route('home')) : view('welcome');
+	}
+
+	/**
+	 * Show the application dashboard.
+	 *
+	 * @return Response
+	 */
+	public function home() {
 		JavaScript::put('yearNow', $this->home->dateTime()->year);
-		return view($this->user ? 'home' : 'welcome');
+		return $this->user ? view('home') : redirect('/');
 	}
 
 	/**

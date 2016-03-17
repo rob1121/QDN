@@ -50,5 +50,6 @@ class Kernel extends HttpKernel {
 		'throttle'            => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 		'validateBackHistory' => \App\Http\Middleware\ValidateBackHistory::class,
 		'admin'               => \App\Http\Middleware\MustBeAdministrator::class,
+
 	];
 }

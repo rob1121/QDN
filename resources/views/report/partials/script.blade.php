@@ -63,5 +63,55 @@ $('#validation-modal').on('show.bs.modal', function() {
 $('#validation-modal').on('hidden.bs.modal', function() {
     $('#edit').modal('show');
 });
+
+    // ======================= AJAX PLACED INSIDE VARIABLE ========================
+    var expireCache = function(href='{{ route('home') }}') {
+        $.ajax({
+                url: '{{ route('forget',['slug'=>$qdn->slug]) }}',
+                type: 'get',
+                success: function (data) {
+                    location.href = href;
+                }
+            });
+    };
+//========================= REFRESH CACHE =====================================
+var refresher = function(){
+    $.ajax({
+            url: '{{ route("refresher",["slug" => $qdn->slug] )}}',
+            type: 'get',
+            success: function (data) {
+                setTimeout(refresher, 1*60000);
+            }
+        });
+}
+setTimeout(refresher, 1*60000);
+
+$('nav').find('a').on('click', function (e) {
+    var self = $(this);
+    e.preventDefault();
+    expireCache(self.attr('href'));
+});
+//============================== TRACK IDLE MOMENT ==============================
+var IDLE_TIMEOUT = 3*60; //seconds
+var _idleSecondsCounter = 0;
+document.onclick = function() {
+    _idleSecondsCounter = 0;
+};
+document.onmousemove = function() {
+    _idleSecondsCounter = 0;
+};
+document.onkeypress = function() {
+    _idleSecondsCounter = 0;
+};
+setInterval(CheckIdleTime, 1000);
+function CheckIdleTime() {
+    _idleSecondsCounter++;
+    var oPanel = document.getElementById("SecondsUntilExpire");
+    if (oPanel)
+        oPanel.innerHTML = (IDLE_TIMEOUT - _idleSecondsCounter) + "";
+    if (_idleSecondsCounter >= IDLE_TIMEOUT) {
+        expireCache();
+    }
+}
 });
 </script>

@@ -90,4 +90,5 @@ class HomeRepository {
 			'QaVerification' => $qaVerification,
 		];
 	}
+
 }

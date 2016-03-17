@@ -17,7 +17,7 @@ class AccountPasswordController extends Controller {
 	public $user;
 
 	public function __construct(AccountRepository $user) {
-		$this->middleware('auth');
+		$this->middleware('auth', ['only' => ['profile', 'UpdateProfile']]);
 		$this->user = $user;
 	}
 	/**
@@ -56,10 +56,10 @@ class AccountPasswordController extends Controller {
 	 */
 	public function postQuestion(ResetQuestionRequest $request) {
 		if ($this->user->isAnswerCorrect($request)) {
-			Flash::error('Wrong answer, please try again');
-			return redirect('/account/question/' . $id);
+			return redirect('/account/new-password/' . $request->id);
 		}
-		return redirect('/account/new-password/' . $id);
+		Flash::error('Wrong answer, please try again');
+		return redirect('/account/question/' . $request->id);
 	}
 
 	/**
@@ -79,9 +79,10 @@ class AccountPasswordController extends Controller {
 	 * @return [type]                      [description]
 	 */
 	public function postReset(NewPasswordRequest $request) {
-		$user = $this->user->findEmployee($id);
+		$user = $this->user->findEmployee($request->id);
 		$user->user()->update(['password' => Hash::make($request->password)]);
-		return redirect('login');
+		Flash::success('Account password successfully reset! ');
+		return redirect(route('welcome'));
 		//...
 	}
 

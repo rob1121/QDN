@@ -9,7 +9,7 @@ $url = Request::url();
             <span class="sr-only">Toggle navigation</span>
             <span class="fa fa-bars"></span>
             </button>
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <span class="logo">
                     Q D N
                     <p class="subtitle">Quality Deviation Notice</p>

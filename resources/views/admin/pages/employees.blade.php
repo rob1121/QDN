@@ -62,7 +62,11 @@ border-radius: 10px;
                     <td>@{{ employee.name }}</td>
                     <td>@{{ employee.station | uppercase }}</td>
                     <td>@{{ employee.email }}</td>
-                    <td>@{{ employee.user.access_level | uppercase }}</td>
+                    <td><select name="access_level" id="access_level" class="form-control">
+                        <option v-for="option in options" selected="@{{ option.selected }}">
+                            <span>@{{ option.value }}</span>
+                        </option>
+                    </select></td>
                     <td>
                         <a  @click="editEmployee(employee)" class="text-primary">
                             <span class="fa-stack fa-lg">
@@ -97,6 +101,11 @@ window.onunload  = function(){
 var employeeTable = new Vue({
 el: 'body',
 data: {
+    options:[
+        { value : 'admin', selected: false },
+        { value : 'signatory', selected: false },
+        { value : 'user', selected: true },
+            ],
     order: 1,
     name: 'Robinson L. Legaspi',
     employees: employees

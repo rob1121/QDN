@@ -18,6 +18,7 @@ use Carbon;
 use DB;
 use Event;
 use Flash;
+use Gate;
 use JavaScript;
 use Storage;
 use Str;
@@ -305,10 +306,13 @@ class InfoRepository implements InfoRepositoryInterface {
 		return array_map([$class, 'title'], $failure_mode);
 	}
 
-	public function cacheQdn($qdn) {
-		if (!Cache::get($qdn->slug)) {
-			Cache::add($qdn->slug, $this->user->employee->name, 5);
+	public function addCacheQdn($qdn) {
+		Cache::add($qdn->slug, $this->user->employee->name, 5);
+	}
+
+	public function forgetCache($slug = '') {
+		if (Gate::allows('mod-qdn', $slug)) {
+			Cache::forget($slug);
 		}
-		return Cache::get($qdn->slug);
 	}
 }

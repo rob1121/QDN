@@ -22,9 +22,13 @@ default:
 
     <tr>
         <td>
-            <a href={{ route($link, ['slug' => $row->info->slug]) }}>
+        @if (Gate::allows('mod-qdn', $row->info->slug))
+            <a href="{{ route($link, ['slug' => $row->info->slug]) }}">
                 {{ Str::title($row->info->control_id) }}
             </a>
+            @else
+                {{ Str::title($row->info->control_id) }} <em>(is active at the moment)</em>
+        @endif
         </td>
         <td>{{ Str::title($row->info->problem_description) }}</td>
         <td>{{ Str::upper($row->info->station) }}</td>

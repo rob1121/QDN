@@ -1,10 +1,5 @@
 <?php
-// Route::get('/report/email',
-// 	[
-// 		'as'   => 'email',
-// 		'uses' => 'HomeController@email',
-// 	]);
-// CRUD route of QDN
+
 Route::get('/report',
 	[
 		'as'   => 'issue_qdn',
@@ -48,3 +43,11 @@ Route::get('/report/approval/{slug}',
 Route::post('report/approval/{slug}',
 	['as'  => 'UpdateForApprroval',
 		'uses' => 'reportController@UpdateForApprroval']);
+
+Route::get('/report/refresh/{slug}',
+	['as'  => 'refresher',
+		'uses' => 'reportController@CacheRefresher']);
+
+Route::get('/report/forget/{slug}',
+	['as'  => 'forget',
+		'uses' => 'reportController@ForgetCache']);

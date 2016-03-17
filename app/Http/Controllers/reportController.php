@@ -10,8 +10,10 @@ use App\Models\closure;
 use App\Models\Info;
 use App\repo\InfoRepository;
 use Auth;
+use Cache;
 use Event;
 use Flash;
+use Gate;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -74,14 +76,13 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function show(Info $slug) {
-		$active_user = $this->qdn->cacheQdn($slug);
-		if ($active_user == $this->qdn->user->employee->name) {
+		$this->qdn->addCacheQdn($slug);
+		if (Gate::allows('mod-qdn', $slug->slug)) {
 			return $this->qdn->view($slug, 'report.view');
-		} else {
-			Flash::warning('Notice: You are redirected to home page for the reason that the page is currently used by ' . $active_user);
-			return redirect('/');
 		}
-
+		$active_user = Cache::get($slug->slug);
+		Flash::warning('Notice: You are redirected to home page for the reason that the page you are trying to access is currently used by ' . $active_user);
+		return redirect(route('home'));
 	}
 
 	/**
@@ -173,5 +174,15 @@ class reportController extends Controller {
 	public function QaVerificationUpdate(Info $slug, Request $request) {
 		$this->qdn->sectionEigthClosure($slug, $request); // update qdn closures
 		return redirect('/'); // view home page
+	}
+
+//================================ EXTRA FUNCTIONS ======================================================
+	public function CacheRefresher($slug) {
+		Cache::add($slug, $this->qdn->user->employee->name, 5);
+		return $this->qdn->user->employee->name;
+	}
+
+	public function ForgetCache($slug) {
+		$this->qdn->forgetCache($slug);
 	}
 }

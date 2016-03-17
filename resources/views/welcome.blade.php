@@ -113,6 +113,7 @@ height:50px;
     <p><a href="#login" id="login-lnk"><i class="fa fa-angle-down fa-4x"></i></a></p>
 </div>
 <div class="container main-top" id="login">
+
     <form
         class  = "form-horizontal"
         role   = "form"
@@ -157,6 +158,9 @@ height:50px;
                 </span>
                 @endif
             </div>
+        </div>
+        <div class="form-group text-center">
+            <a class="btn btn-link" href="{{ route('reset') }}">Forgot Your Password?</a>
         </div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-3 text-center">

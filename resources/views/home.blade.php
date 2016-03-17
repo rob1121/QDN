@@ -202,27 +202,27 @@ box-shadow: none;
 <script src="/vendor/js/exporting.js"></script>
 <script src="/js/homeScript.js"></script>
 <script>
-$(function () {
-var interval = 5000;  // 1000 = 1 second, 3000 = 3 seconds
+$(function() {
+var interval = 5000; // 1000 = 1 second, 3000 = 3 seconds
 function doAjax() {
-$.ajax({
-type: 'get',
-url: '/count',
-success: function (count) {
-$('#text-today').text(count.today);
-$('#text-week').text(count.week);
-$('#text-month').text(count.month);
-$('#text-year').text(count.year);
-$('#text-peVerification').text(count.PeVerification);
-$('#text-incomplete').text(count.Incomplete);
-$('#text-approval').text(count.Approval);
-$('#text-qaVerification').text(count.QaVerification);
-},
-complete: function (count) {
-// Schedule the next
-setTimeout(doAjax, interval);
-}
-});
+    $.ajax({
+        type: 'get',
+        url: '/count',
+        success: function(count) {
+            $('#text-today').text(count.today);
+            $('#text-week').text(count.week);
+            $('#text-month').text(count.month);
+            $('#text-year').text(count.year);
+            $('#text-peVerification').text(count.PeVerification);
+            $('#text-incomplete').text(count.Incomplete);
+            $('#text-approval').text(count.Approval);
+            $('#text-qaVerification').text(count.QaVerification);
+        },
+        complete: function(count) {
+            // Schedule the next
+            setTimeout(doAjax, interval);
+        }
+    });
 }
 setTimeout(doAjax, interval);
 });

@@ -72,6 +72,7 @@ class AdminController extends Controller {
 
 	public function EmployeesOptions() {
 		$employees = Employee::orderBy('user_id')->get()->load('user');
+		// dd($employees->chunk(5)->chunk(5));
 		JavaScript::put('employees', $employees->chunk(5)->chunk(5));
 		return view('admin.pages.employees', compact('employees'));
 	}

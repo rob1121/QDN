@@ -1,4 +1,3 @@
-
 @extends('admin.main')
 @push('styles')
 <style type="text/css">
@@ -48,15 +47,15 @@ margin-bottom: 8px;
                 <thead>
                     <tr>
                         <th class="col-md-1">#</th>
-                        <th>Name</th>
-                        <th>Station</th>
-                        <th>Email</th>
-                        <th class="col-md-2">Access Level</th>
+                        <th ><a href="#" @click.prevent="sortArr('name',true)">Name</a></th>
+                        <th ><a href="#" @click.prevent="sortArr('station',true)">Station</a></th>
+                        <th ><a href="#" @click.prevent="sortArr('email',true)">Email</a></th>
+                        <th  class="col-md-2"><a href="#" @click.prevent="sortArr('user.access_level',true)">Access Level</a></th>
                         <th class="col-md-2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="employee in employees[presentArrayCount2][presentArrayCount]">
+                    <tr v-for="employee in employees[pageCount2][pageCount]">
                         <td>@{{ employee.user_id }}</td>
                         <td>@{{ employee.name }}</td>
                         <td>@{{ employee.station | uppercase }}</td>
@@ -80,23 +79,23 @@ margin-bottom: 8px;
                 </tbody>
             </table>
         </div>
-
     </div>
-<div class="container-fluid text-center">
+    <div class="container-fluid text-center">
         <ul class="pagination">
-            <li><a href="#" @click.prevent="presentArrayCount = 0">&laquo;</a></li>
-            <li><a href="#" @click.prevent="presentArrayCount2 -= 1">&laquo;</a></li>
-            <li v-for="(index, item) in paginationArrays[presentArrayCount2]"><a href="#" @click.prevent="presentArrayCount = index">@{{ index }}</a></li>
-            <li><a href="#" @click.prevent="presentArrayCount2 += 1">&raquo;</a></li>
-            <li><a href="#" @click.prevent="presentArrayCount = count-1">&raquo;</a></li>
+            <li><a href="#" @click.prevent="firstPage"><i class="fa fa-angle-double-left"></i></a></li>
+            <li><a href="#" @click.prevent="prevPage"><i class="fa fa-angle-left"></i></a></li>
+            <li v-for="(index, item) in employees[pageCount2]"  v-bind:class="[ pageCount == index? 'active' : '']">
+                <a href="#" @click.prevent="pageCount = index">@{{ parseInt(index)+1 }}</a>
+            </li>
+            <li><a href="#" @click.prevent="nextPage"><i class="fa fa-angle-right"></i></a></li>
+            <li><a href="#" @click.prevent="lastPage"><i class="fa fa-angle-double-right"></i></a></li>
         </ul>
-
-    <ul class="list-inline">
-        <li>Total: @{{ count }}</li>
-        <li>/</li>
-        <li>@{{presentArrayCount+1 + " of " + count }}</li>
-    </ul>
-</div>
+        <ul class="list-inline">
+            <li>Total: @{{ count }}</li>
+            <li>/</li>
+            <li>@{{(parseInt(pageCount)+1) + " of " + (parseInt(lastSubArr())+1) }}</li>
+        </ul>
+    </div>
 </div>
 {{-- @include('admin.pages.employees_modal') --}}
 <template id = "level-selection">
@@ -115,67 +114,5 @@ margin-bottom: 8px;
 @stop
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.17/vue.js"></script>
-<script>
-var vm = new Vue({
-el: 'body',
-data: {
-employees: employees,
-count: this.employees.length,
-paginationArrays: employees,
-presentArrayCount: 0,
-presentArrayCount2: 0,
-},
-components: {
-selection: {
-template: '#level-selection',
-props: ['employee'],
-data: function() {
-return {
-selectedVal: '',
-options: ['admin', 'signatory', 'user']
-}
-},
-methods: {
-updateAccessLevel: function(name, access_level) {
-alert(name + " is now " + access_level)
-}
-}
-}
-},
-methods: {
-getTotal: function() {
-this.count = this.name.length
-},
-alertMsg: function(title, info, icon, themes) {
-//display alert
-$.amaran({
-'theme': 'awesome ' + themes,
-'content': {
-title: title,
-message: '',
-info: info,
-icon: 'fa ' + icon
-},
-'position': 'bottom right',
-'outEffect': 'fadeOut'
-});
-},
-removeEmployee: function(employee) {
-if (confirm('Are you sure you want to remove ' + employee.name + ' from the list?')) {
-vm.employees.$remove(employee)
-this.alertMsg('Successfully Removed', employee.name + 'is no longer in the list of active employee', 'fa-check', 'ok')
-}
-},
-nextPage: function(){},
-prevPage: function(){},
-firstPage: function(){},
-lastPage: function(){},
-}
-})
-$.ajaxSetup({
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-}
-});
-</script>
+<script src="/js/vue-employees.js"></script>
 @endpush

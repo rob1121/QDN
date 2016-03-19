@@ -1,16 +1,65 @@
-var vm = new Vue({
+//======================= JQUERY VALIDATION ==============================
+$('#profile-form').validate({
+    rules: {
+        user_id: {
+            required: true
+        },
+        name: {
+            required: true
+        },
+        access_level: {
+            required: true
+        },
+        station: {
+            required: true
+        },
+        department: {
+            required: true
+        },
+        position: {
+            required: true
+        },
+        email: {
+            email: true
+        },
+        password: {
+            minlength: 6
+        },
+        password_confirmation: {
+            equalTo: "#password",
+            minlength: 6
+        }
+    },
+    errorClass: "error",
+    errorElement: "span"
+});
+
+//=========================== VUE ========================================
+new Vue({
     el: 'body',
+
     data: {
-        active: 'active',
-        employees: employees,
-        count: this.employees.length,
-        pageCount: 0,
-        pageCount2: 0
+        users: employees,
+        searchKey: '',
+        selectedVal: '',
+        reverse: 1,
+        sortKey: '',
+        currentPage: 0,
+        itemsPerPage: 5,
+        user_id: '',
+        name: '',
+        access_level: '',
+        station: '',
+        department: '',
+        position: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
     },
     components: {
         selection: {
             template: '#level-selection',
-            props: ['employee'],
+            props: ['user'],
             data: function() {
                 return {
                     selectedVal: '',
@@ -24,15 +73,14 @@ var vm = new Vue({
             }
         }
     },
+    computed: {
+        totalPages: function() {
+            return Math.ceil(this.users.length / parseInt(this.itemsPerPage))
+        }
+    },
     methods: {
-        countProperties: function(obj) {
-            var prop;
-            var propCount = 0;
-
-            for (prop in obj) {
-                propCount++;
-            }
-            return propCount;
+        setPage: function(pageNumber) {
+            this.currentPage = pageNumber
         },
         alertMsg: function(title, info, icon, themes) {
             //display alert
@@ -48,47 +96,52 @@ var vm = new Vue({
                 'outEffect': 'fadeOut'
             });
         },
-        lastPageArr: function() {
-            return this.count - 1;
+        newEmployeeModal: function() {
+            $("#password").rules("add", "required");
+            $("#password_confirmation").rules("add", "required");
+            this.user_id = '';
+            this.name = '';
+            this.access_level = '';
+            this.station = '';
+            this.department = '';
+            this.position = '';
+            this.email = '';
+            this.password = '';
+            this.password_confirmation = '';
+            $('#profile').modal('show');
         },
-        lastSubArr: function() {
-            var lastPage = this.lastPageArr() * 5,
-                subLastPage = this.countProperties(this.employees[this.lastPageArr()]) - 1;
-            return lastPage + subLastPage;
+        updateEmployeeModal: function(user) {
+            $("#password").rules("remove", "required");
+            $("#password_confirmation").rules("remove", "required");
+            this.user_id = user.user_id;
+            this.name = user.name;
+            this.access_level = user.user.access_level;
+            this.station = user.station;
+            this.department = user.department;
+            this.position = user.position;
+            this.email = user.email;
+            $('#profile').modal('show');
         },
-        nextPage: function() {
-            if (this.pageCount != this.lastSubArr()) {
-                this.pageCount++;
-                if (this.pageCount % 5 == 0) {
-                    this.pageCount2++;
-                }
+        removeEmployee: function(user) {
+            if (confirm('Are you sure you want to remove ' + user.name + ' from the list?')) {
+                this.users.$remove(user)
+                this.alertMsg('Successfully Removed', user.name + 'is no longer in the list of active employee', 'fa-check', 'ok')
             }
         },
-        prevPage: function() {
-            if (this.pageCount != 0) {
-                this.pageCount--;
-                if (this.pageCount % 5 == 4 && this.pageCount2 != 0) {
-                    this.pageCount2--;
-                }
-            }
-        },
-        firstPage: function() {
-            this.pageCount = 0
-            this.pageCount2 = 0
-        },
-        lastPage: function() {
-            this.pageCount2 = this.lastPageArr();
-            this.pageCount = this.lastSubArr();
-
-        },
-        removeEmployee: function(employee) {
-            if (confirm('Are you sure you want to remove ' + employee.name + ' from the list?')) {
-                vm.employees.$remove(employee)
-                this.alertMsg('Successfully Removed', employee.name + 'is no longer in the list of active employee', 'fa-check', 'ok')
-            }
-        },
+        sortBy: function(column) {
+            this.sortKey = column;
+            this.reverse = this.sortKey == column ? this.reverse * -1 : this.reverse = 1;
+        }
+    },
+    filters: {
+        paginate: function(list) {
+            var index = this.currentPage * parseInt(this.itemsPerPage)
+            return list.slice(index, index + parseInt(this.itemsPerPage))
+        }
     }
-})
+});
+
+//============================== AJAX =====================================
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

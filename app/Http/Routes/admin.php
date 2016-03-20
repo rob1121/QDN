@@ -45,13 +45,17 @@ Route::get('/dashboard/employees', [
 	'as'   => 'EmployeesOptions',
 	'uses' => 'Admin\AdminController@EmployeesOptions']);
 
+Route::get('/dashboard/employees-remove', [
+	'as'   => 'removeEmployeesOptions',
+	'uses' => 'Admin\AdminController@removeEmployeeOptions']);
+
 Route::get('/dashboard/employees-update', [
 	'as'   => 'updateEmployeesOptions',
 	'uses' => 'Admin\AdminController@updateEmployeesOptions']);
 
-Route::get('/dashboard/employees-remove', [
-	'as'   => 'removeEmployeesOptions',
-	'uses' => 'Admin\AdminController@removeEmployeesOptions']);
+Route::get('/dashboard/employees-filter', [
+	'as'   => 'filterEmployeesOptions',
+	'uses' => 'Admin\AdminController@filterEmployeesOptions']);
 
 Route::get('/ajax-update-lead', [
 

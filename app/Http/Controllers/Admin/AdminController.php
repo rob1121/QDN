@@ -66,7 +66,7 @@ class AdminController extends Controller {
 		return $res;
 	}
 	public function removeCustomerOptions(Request $request) {
-		$employee = Option::whereCustomer($request->customer)->delete();
+		$customer = Option::whereCustomer($request->customer)->delete();
 		return 'Done';
 	}
 
@@ -74,6 +74,12 @@ class AdminController extends Controller {
 		$employees = Employee::orderBy('user_id')->get()->load('user');
 		// dd($employees->chunk(5)->chunk(5));
 		JavaScript::put('employees', $employees);
+		JavaScript::put('links', [
+			'updateEmployee' => route('updateEmployeesOptions'),
+			'removeEmployee' => route('removeEmployeesOptions'),
+			'filterEmployee' => route('filterEmployeesOptions'),
+		]);
+
 		return view('admin.pages.employees', compact('employees'));
 	}
 
@@ -87,11 +93,11 @@ class AdminController extends Controller {
 
 		return $res;
 	}
-
-	public function removeEmployeesOptions(Request $request) {
-		$employee = Employee::whereEmployee($request->employee)->delete();
+	public function removeEmployeeOptions(Request $request) {
+		Employee::whereId($request->id)->delete();
 		return 'Done';
 	}
+
 	public function UpdateLead(Request $request) {
 		$this->qdn->month = $request->month;
 		$this->qdn->year  = $request->year;

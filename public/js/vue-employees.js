@@ -1,5 +1,5 @@
 //======================= JQUERY VALIDATION ==============================
-$('#profile-form').validate({
+var validator = $('#profile-form').validate({
     rules: {
         user_id: {
             required: true
@@ -35,13 +35,14 @@ $('#profile-form').validate({
 });
 
 //=========================== VUE ========================================
-new Vue({
+vm = new Vue({
     el: 'body',
 
     data: {
+        count: 0,
+        employeeStatusFilter: 'active',
         users: employees,
         searchKey: '',
-        selectedVal: '',
         reverse: 1,
         sortKey: '',
         currentPage: 0,
@@ -55,23 +56,6 @@ new Vue({
         email: '',
         password: '',
         password_confirmation: '',
-    },
-    components: {
-        selection: {
-            template: '#level-selection',
-            props: ['user'],
-            data: function() {
-                return {
-                    selectedVal: '',
-                    options: ['admin', 'signatory', 'user']
-                }
-            },
-            methods: {
-                updateAccessLevel: function(name, access_level) {
-                    alert(name + " is now " + access_level)
-                }
-            }
-        }
     },
     computed: {
         totalPages: function() {
@@ -97,6 +81,7 @@ new Vue({
             });
         },
         newEmployeeModal: function() {
+            validator.resetForm();
             $("#password").rules("add", "required");
             $("#password_confirmation").rules("add", "required");
             this.user_id = '';
@@ -111,6 +96,7 @@ new Vue({
             $('#profile').modal('show');
         },
         updateEmployeeModal: function(user) {
+            validator.resetForm();
             $("#password").rules("remove", "required");
             $("#password_confirmation").rules("remove", "required");
             this.user_id = user.user_id;
@@ -124,8 +110,17 @@ new Vue({
         },
         removeEmployee: function(user) {
             if (confirm('Are you sure you want to remove ' + user.name + ' from the list?')) {
-                this.users.$remove(user)
-                this.alertMsg('Successfully Removed', user.name + 'is no longer in the list of active employee', 'fa-check', 'ok')
+                $.ajax({
+                    url: links.removeEmployee,
+                    type: 'get',
+                    data: {
+                        id: user.id
+                    },
+                    success: function(data) {
+                        vm.users.$remove(user);
+                        vm.alertMsg('Successfully Removed', user.name + 'is no longer in the list of active employee', 'fa-check', 'ok');
+                    }
+                });
             }
         },
         sortBy: function(column) {
@@ -137,6 +132,13 @@ new Vue({
         paginate: function(list) {
             var index = this.currentPage * parseInt(this.itemsPerPage)
             return list.slice(index, index + parseInt(this.itemsPerPage))
+        },
+        status: function(users) {
+            if (this.employeeStatusFilter == '') return users;
+
+            return users.filter(function(user) {
+                return user.user.status == this.employeeStatusFilter;
+            }.bind(this));
         }
     }
 });

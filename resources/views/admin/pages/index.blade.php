@@ -120,24 +120,10 @@ border: 0px;
     </ul>
 </div>
 <div class="col-md-8 " id="link">
-    <ul class="list-group">
-        <li class="list-group-item">
-            <div class="container-fluid">
-                <div class="col-md-12">
                     <div id="qdnMetrics"></div>
-                </div>
-            </div>
-        </li>
-    </ul>
-    <ul class="list-group">
-        <li class="list-group-item">
-            <div class="container-fluid">
-                <div class="col-md-12">
+                    <br>
+                    <br>
                     <div id="podGraph"></div>
-                </div>
-            </div>
-        </li>
-    </ul>
 </div>
 <div class="col-md-4">
     <ul class="list-group">

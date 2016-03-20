@@ -14,13 +14,12 @@ span.error {
 @endpush
 @section('content')
 <div class="container-fluid">
-    <h2>Employee List</h2>
-    @{{ count }}
+    <h2>Employee List @{{ count }}</h2>
     <hr>
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="col-md-10">
-                <div class="col-md-5  col-md-offset-4 pull-right">
+                <div class="col-md-5 col-md-offset-1 pull-right">
                     <input
                     type        = "text"
                     class       = "form-control"
@@ -28,9 +27,10 @@ span.error {
                     v-model="searchKey"
                     >
                 </div>
+
                 <div class="col-md-3 pull-left">
                     <div class="col-md-4 text-right">
-                        <h5>Show:</h5>
+                        <h5>Display:</h5>
                     </div>
                     <div class="col-md-8 text-left">
                         <select  v-model="itemsPerPage" class="form-control">
@@ -42,6 +42,20 @@ span.error {
                         </select>
                     </div>
                 </div>
+
+                <div class="col-md-3 pull-left">
+                    <div class="col-md-3 text-right">
+                        <h5>Show:</h5>
+                    </div>
+                    <div class="col-md-9 text-left">
+                        <select  v-model="employeeStatusFilter" class="form-control">
+                            <option value='' >All</option>
+                            <option value='active'>Active</option>
+                            <option value='deactivated'>Deactivated</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
             <div class="col-md-2 text-right">
                 <a href="#"  id="new-employee" @click.prevent="newEmployeeModal">
@@ -62,16 +76,18 @@ span.error {
                         <th><a href="#" @click.prevent="sortBy('station')">Station</a></th>
                         <th><a href="#" @click.prevent="sortBy('email')">Email</a></th>
                         <th><a href="#" @click.prevent="sortBy('user.access_level')">Access Level</a></th>
+                        <th><a href="#" @click.prevent="sortBy('user.status')">Status</a></th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="user in users | orderBy sortKey reverse | filterBy searchKey | paginate">
+                    <tr v-for="user in users | orderBy sortKey reverse | filterBy searchKey | paginate | status">
                         <td>@{{ user.user_id | uppercase }}</td>
                         <td>@{{ user.name | uppercase }}</td>
                         <td>@{{ user.station | uppercase }}</td>
                         <td>@{{ user.email }}</td>
-                        <td><selection :user="user"></selection></td>
+                        <td>@{{ user.user.access_level | uppercase }}</td>
+                        <td>@{{ user.user.status | uppercase }}</td>
                         <td>
                             <a href="#" @click.prevent="updateEmployeeModal(user)" class="text-primary">
                                 <span class="fa-stack fa-lg">
@@ -98,18 +114,6 @@ span.error {
     </ul>
 </div>
 @include('admin.pages.employees_modal')
-<template id = "level-selection">
-<select
-class        = "form-control"
-    v-model      = "selectedVal"
-    @change      = "updateAccessLevel(user.name,selectedVal)"
-    >
-    <option
-        v-for = "option in options"
-        selected = "@{{ selectedVal = user.user.access_level }}"
-    > @{{ option }}</option>
-</select>
-</template>
 @stop
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.17/vue.js"></script>

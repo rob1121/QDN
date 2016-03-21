@@ -103,7 +103,7 @@ color: red;
             </table>
         </div>
         <div class="panel-footer text-center">
-            <ul class="pagination">
+            <ul class="pagination" v-show="resultCount">
                 <li>
                     <a href="#" @click.prevent="setPage(0)">
                         <i class="fa fa-angle-double-left"></i>

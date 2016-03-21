@@ -33,33 +33,42 @@ var validator = $('#profile-form').validate({
     errorClass: "error",
     errorElement: "span"
 });
-
 //=========================== VUE ========================================
 vm = new Vue({
     el: 'body',
 
     data: {
-        count: 0,
-        employeeStatusFilter: 'active',
+        employeeStatusFilter: "active",
         users: employees,
         searchKey: '',
         reverse: 1,
         sortKey: '',
         currentPage: 0,
         itemsPerPage: 5,
-        user_id: '',
-        name: '',
-        access_level: '',
-        station: '',
-        department: '',
-        position: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
+        profile: {
+            user_id: '',
+            name: '',
+            access_level: '',
+            station: '',
+            department: '',
+            position: '',
+            email: '',
+            password: '',
+            password_confirmation: ''
+        }
     },
     computed: {
         totalPages: function() {
-            return Math.ceil(this.users.length / parseInt(this.itemsPerPage))
+            return Math.ceil(this.resultCount / parseInt(this.itemsPerPage))
+        },
+        resultCount: function() {
+            this.currentPage = 0; //return to first page
+            var status = this.employeeStatusFilter;
+            var filter = Vue.filter('filterBy');
+            var arr = $.grep(this.users, function(n, i) {
+                return status ? n.user.status == status : n;
+            });
+            return filter(arr, this.searchKey).length;
         }
     },
     methods: {
@@ -84,28 +93,28 @@ vm = new Vue({
             validator.resetForm();
             $("#password").rules("add", "required");
             $("#password_confirmation").rules("add", "required");
-            this.user_id = '';
-            this.name = '';
-            this.access_level = '';
-            this.station = '';
-            this.department = '';
-            this.position = '';
-            this.email = '';
-            this.password = '';
-            this.password_confirmation = '';
+            this.profile.user_id = '';
+            this.profile.name = '';
+            this.profile.access_level = '';
+            this.profile.station = '';
+            this.profile.department = '';
+            this.profile.position = '';
+            this.profile.email = '';
+            this.profile.password = '';
+            this.profile.password_confirmation = '';
             $('#profile').modal('show');
         },
         updateEmployeeModal: function(user) {
             validator.resetForm();
             $("#password").rules("remove", "required");
             $("#password_confirmation").rules("remove", "required");
-            this.user_id = user.user_id;
-            this.name = user.name;
-            this.access_level = user.user.access_level;
-            this.station = user.station;
-            this.department = user.department;
-            this.position = user.position;
-            this.email = user.email;
+            this.profile.user_id = user.user_id;
+            this.profile.name = user.name;
+            this.profile.access_level = user.user.access_level;
+            this.profile.station = user.station;
+            this.profile.department = user.department;
+            this.profile.position = user.position;
+            this.profile.email = user.email;
             $('#profile').modal('show');
         },
         removeEmployee: function(user) {

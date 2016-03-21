@@ -8,14 +8,13 @@ background-color: #fff;
 margin-bottom: 8px;
 }
 span.error {
-    color: red;
+color: red;
 }
 </style>
 @endpush
 @section('content')
 <div class="container-fluid">
-    <h2>Employee List @{{ count }}</h2>
-    <hr>
+    <h2>Employee List</h2>
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="col-md-10">
@@ -24,10 +23,9 @@ span.error {
                     type        = "text"
                     class       = "form-control"
                     placeholder = "Search Input"
-                    v-model="searchKey"
+                    v-model     = "searchKey"
                     >
                 </div>
-
                 <div class="col-md-3 pull-left">
                     <div class="col-md-4 text-right">
                         <h5>Display:</h5>
@@ -42,7 +40,6 @@ span.error {
                         </select>
                     </div>
                 </div>
-
                 <div class="col-md-3 pull-left">
                     <div class="col-md-3 text-right">
                         <h5>Show:</h5>
@@ -55,7 +52,6 @@ span.error {
                         </select>
                     </div>
                 </div>
-
             </div>
             <div class="col-md-2 text-right">
                 <a href="#"  id="new-employee" @click.prevent="newEmployeeModal">
@@ -81,7 +77,7 @@ span.error {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="user in users | orderBy sortKey reverse | filterBy searchKey | paginate | status">
+                    <tr v-for="user in users | orderBy sortKey reverse | filterBy searchKey | status | paginate">
                         <td>@{{ user.user_id | uppercase }}</td>
                         <td>@{{ user.name | uppercase }}</td>
                         <td>@{{ user.station | uppercase }}</td>
@@ -106,12 +102,38 @@ span.error {
                 </tbody>
             </table>
         </div>
+        <div class="panel-footer text-center">
+            <ul class="pagination">
+                <li>
+                    <a href="#" @click.prevent="setPage(0)">
+                        <i class="fa fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" @click.prevent="currentPage = currentPage ? currentPage-1 : 0">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                </li>
+                <li  :class="{'active': currentPage == pageNumber}" v-for="pageNumber in totalPages">
+                    <a href="#" @click.prevent="setPage(pageNumber)">@{{ pageNumber+1 }}</a>
+                </li>
+                <li>
+                    <a href="#" @click.prevent="currentPage = currentPage+1">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" @click.prevent="setPage(totalPages-1)">
+                        <i class="fa fa-angle-double-right"></i>
+                    </a>
+                </li>
+            </ul>
+            <p :class = "[resultCount ? 'text-success':'text-warning']" v-show = "searchKey != ''">
+                "<strong>@{{ searchKey }}</strong>" results <strong>@{{ resultCount }}</strong> found
+            </p>
+            <div class="clearfix"></div>
+        </div>
     </div>
-    <ul class="pagination">
-        <li  :class="{'active': currentPage == pageNumber}" v-for="pageNumber in totalPages">
-            <a href="#" @click.prevent="setPage(pageNumber)">@{{ pageNumber+1 }}</a>
-        </li>
-    </ul>
 </div>
 @include('admin.pages.employees_modal')
 @stop

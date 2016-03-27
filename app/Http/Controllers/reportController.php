@@ -25,10 +25,8 @@ class reportController extends Controller {
 	 * @param InfoRepository $qdn [description]
 	 */
 	public function __construct(InfoRepository $qdn) {
-
 		$this->middleware('auth');
 		$this->qdn       = $qdn;
-		$this->qdn->user = Auth::user();
 	}
 
 	/**

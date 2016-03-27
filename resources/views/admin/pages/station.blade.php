@@ -1,7 +1,7 @@
 @extends('admin.main')
 @section('content')
 <div class="col-md-6 col-md-offset-3">
-    <h1>Customer List</h1>
+    <h1>Station List</h1>
     <div class="panel panel-info">
         <div class="panel-heading">
             <input type = "text"
@@ -15,21 +15,23 @@
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th><a href="#" @click.prevent="sortBy('customer')">Customer</a></th>
+                        <th><a href="#"  @click.prevent="sortBy('station')">Station</a></th>
+                        <th><a href="#"  @click.prevent="sortBy('department')">Department</a></th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for = "customer in customers | orderBy sortKey reverse | filterBy searchKey | paginate">
-                        <td>@{{ customer.customer | uppercase }}</td>
+                    <tr v-for = "station in stations | orderBy sortKey reverse | filterBy searchKey | paginate">
+                        <td>@{{ station.station | uppercase }}</td>
+                        <td>@{{ station.department | uppercase }}</td>
                         <td class = "col-md-3">
-                            <a  @click = "editCustomer(customer)" class="text-primary">
+                            <a  @click = "editStation(station)" class="text-primary">
                                 <span class = "fa-stack fa-lg">
                                     <i class = "fa fa-circle fa-stack-2x"></i>
                                     <i class = "fa fa-edit fa-stack-1x fa-inverse"></i>
                                 </span>
                             </a>
-                            <a  @click = "removeCustomer(customer)" class="text-danger">
+                            <a  @click = "removeStation(station)" class="text-danger">
                                 <span class = "fa-stack fa-lg">
                                     <i class = "fa fa-circle fa-stack-2x"></i>
                                     <i class = "fa fa-trash fa-stack-1x fa-inverse"></i>
@@ -75,26 +77,36 @@
             </div>
         </div>
     </div>
-    <div class = "input-group">
-        <input
-        v-model      = "newCustomer"
+    <div class="form-group">
+        <input type  = "text"
+        v-model      = "newStation"
         @keyup.enter = "updateTable"
         class        = "input-lg form-control"
-        placeholder  = "Input customer Name"
+        placeholder  = "Input Station Name"
         >
-        <span class  = "input-group-btn">
-            <button type = "button"
-            class        = "btn btn-default btn-lg"
-            @click       = "updateTable"
+    </div>
+    <div class="form-group">
+        <select v-model = "department"
+        class           = "form-control input-lg"
             >
-            <i class = "fa fa-paper-plane"></i>
-            </button>
-        </span>
+            <option value="PRODUCTION" selected>Production</option>
+            <option value="PROCESS_ENGINEERING">Process Engineering</option>
+            <option value="QUALITY_ASSURANCE">Quality Assurance</option>
+            <option value="OTHER_DEPARTMENT">Other Department</option>
+        </select>
+    </div>
+    <div class="form-group pull-right">
+        <button type = "button"
+        class        = "btn btn-default btn-lg"
+        @click       = "updateTable"
+        > Submit
+        <i class = "fa fa-paper-plane"></i>
+        </button>
     </div>
 </div>
 <div class = "clearfix"></div>
 @stop
 @push('scripts')
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.17/vue.js"></script>
-<script src = "/js/vue-customer.js"></script>
+<script src = "/js/vue-station.js"></script>
 @endpush

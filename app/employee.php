@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Str;
 
 class Employee extends Model {
-	protected $fillable = ['user_id', 'name', 'station', 'department', 'position'];
+	protected $fillable = ['user_id', 'name', 'station', 'department', 'position', 'status'];
 	/**
 	 * Get the account record associated with the employee.
 	 */

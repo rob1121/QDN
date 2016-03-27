@@ -19,20 +19,34 @@ use DB;
 use Event;
 use Flash;
 use Gate;
+use Auth;
 use JavaScript;
 use Storage;
 use Str;
 
 class InfoRepository implements InfoRepositoryInterface {
-	public $month;
-	public $year;
-	public $user;
 
 	public function view($qdn, $view) {
 		Event::fire(new EventLogs('view' . $qdn->control_id));
 		JavaScript::put('link', $this->links($qdn->slug));
 		JavaScript::put('qdn', $qdn);
 		return view($view, compact('qdn'));
+	}
+
+	public function user() {
+		return Auth::user();
+	}
+
+	public function date() {
+		return Carbon::now('Asia/Manila');
+	}
+
+	public function month() {
+		return $this->date()->format('m');
+	}
+
+	public function year() {
+		return $this->date()->format('Y');
 	}
 
 	public function links($slug) {
@@ -176,8 +190,8 @@ class InfoRepository implements InfoRepositoryInterface {
 			InvolvePerson::create([
 				'info_id'         => $id,
 				'department'      => $person->department,
-				'originator_id'   => $this->user->employee_id,
-				'originator_name' => $this->user->employee->name,
+				'originator_id'   => $this->user()->employee_id,
+				'originator_name' => $this->user()->employee->name,
 				'receiver_id'     => $person->user_id,
 				'receiver_name'   => $person->name,
 			]);
@@ -209,7 +223,7 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function UpdateClosureStatus($request, $qdn) {
 		$qdn->closure()->update([
 			'status'         => $request->status,
-			'pe_verified_by' => $this->user->employee->name,
+			'pe_verified_by' => $this->user()->employee->name,
 		]);
 		Event::fire(new EventLogs('P.E. validate' . $qdn->control_id, $request->status . ": " . $request->ValidationMessage));
 		Event::fire(new PeVerificationNotificationEvent($qdn, $request->ValidationMessage));
@@ -217,8 +231,8 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function approverUpdate($request, $qdn) {
-		$this->user = $this->user->employee;
-		$qdn->closure()->update([$this->user->department => $this->user->name]);
+		$user = $this->user()->employee;
+		$qdn->closure()->update([$user->department => $user->name]);
 
 		if ('reject' == $request->approver_radio) {
 			$qdn->closure()->update([
@@ -266,12 +280,12 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function getQdn() {
-		if ('' != $this->month) {
-			return Info::where(DB::raw('YEAR(created_at)'), $this->year)
-				->where(DB::raw('MONTH(created_at)'), $this->month)
+		if ('' != $this->month()) {
+			return Info::where(DB::raw('YEAR(created_at)'), $this->year())
+				->where(DB::raw('MONTH(created_at)'), $this->month())
 				->get();
 		} else {
-			return Info::where(DB::raw('YEAR(created_at)'), $this->year)->get();
+			return Info::where(DB::raw('YEAR(created_at)'), $this->year())->get();
 		}
 	}
 	/**

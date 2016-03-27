@@ -74,7 +74,7 @@ box-shadow: none;
 <div class="container">
     <legend class="h1">Counts: </legend>
     @foreach ($counts as $panel)
-    <div class="col-xs-3 h2">
+    <div class="col-md-3 h2">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ $panel[2] }}</h3>
@@ -98,9 +98,9 @@ box-shadow: none;
 {{-- MODAL LINKS ==========================================================--}}
 <div class="container" id="link">
     <legend class="h1">Graphs: </legend>
-    <div class="col-xs-12" style="padding-left:5px;padding-bottom:12px">
+    <div class="col-md-12" style="padding-left:5px;padding-bottom:12px">
         <div class="form-group">
-            <div class="col-xs-6">
+            <div class="col-md-6">
                 <select name="month" id="month" class="form-control input-lg">
                     @foreach ($months as $month)
                     <option
@@ -112,7 +112,7 @@ box-shadow: none;
                     @endforeach
                 </select>
             </div>
-            <div class="col-xs-6">
+            <div class="col-md-6">
                 <select name="year" id="year" class="form-control input-lg">
                     @foreach ($years as $year)
                     <option
@@ -131,7 +131,7 @@ box-shadow: none;
         data-toggle = "modal"
         href        = "#{{ $chart['id'] }}"
         >
-        <div class="col-xs-4" style="color: #800">
+        <div class="col-md-4" style="color: #800">
             <div class="row text-center table-bordered brighten ">
                 <i class="fa fa-bar-chart fa-5x"></i>
                 <br><strong class="text-muted">{!! $chart['heading'] !!}</strong>
@@ -147,7 +147,7 @@ box-shadow: none;
     @include('errors.validationErrors')
     <!-- <legend class="h1">Status: </legend> -->
     @foreach ($status as $panel)
-    <div class="col-xs-3 h2">
+    <div class="col-md-3 h2">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ $panel[2] }}</h3>

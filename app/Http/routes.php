@@ -6,7 +6,7 @@ Route::group(['middleware' => 'web'], function () {
 
 	foreach (File::allFiles(__DIR__ . '/Routes') as $key => $partial) {
 
-		require_once $partial->getpathname();
+		require $partial->getpathname();
 
 	}
 

@@ -28,9 +28,9 @@
         @yield('script')
         @stack('scripts')
         <script>
-            $(function() {
-                $('body').fadeIn();
-            });
+        $(function() {
+        $('body').fadeIn();
+        });
         </script>
     </body>
 </html>

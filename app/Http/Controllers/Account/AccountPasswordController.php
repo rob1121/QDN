@@ -10,7 +10,6 @@ use App\Http\Requests\ResetQuestionRequest;
 use App\repo\AccountRepository;
 use App\User;
 use Flash;
-use Hash;
 use Illuminate\Http\Request;
 
 class AccountPasswordController extends Controller {
@@ -80,7 +79,7 @@ class AccountPasswordController extends Controller {
 	 */
 	public function postReset(NewPasswordRequest $request) {
 		$user = $this->user->findEmployee($request->id);
-		$user->user()->update(['password' => Hash::make($request->password)]);
+		$user->user()->update(['password' => $request->password]);
 		Flash::success('Account password successfully reset! ');
 		return redirect(route('welcome'));
 		//...

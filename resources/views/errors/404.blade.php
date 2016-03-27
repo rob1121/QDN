@@ -1,24 +1,56 @@
 @extends('errors.app')
 @section('style')
     <style>
+        * {
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        html {
+            color: #888;
+            display: table;
+            font-family: sans-serif;
+            height: 100%;
+            text-align: center;
+            width: 100%;
+        }
+
         body {
-            background-color: none;
-            background-image: url(/img/404.jpg);
-          -webkit-background-size: cover;
-          -moz-background-size: cover;
-          -o-background-size: cover;
-          background-size: cover;
+            display: table-cell;
+            vertical-align: middle;
+            margin: 2em auto;
         }
-        .h1 {
-            font-family: Coustard;
-            font-size:54px;
+
+        h1 {
+            color: #555;
+            font-size: 2em;
+            font-weight: 400;
         }
+
+        p {
+            margin: 0 auto;
+            width: 280px;
+        }
+
+        @media only screen and (max-width: 280px) {
+
+            body, p {
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin: 0 0 0.3em;
+            }
+
+        }
+
     </style>
 @stop
 @section('content')
     <div class="container text-center">
-        <p class="h1">QDN</p>
-        <p class="h3">Sorry, the page you were looking for doesn’t exist.</p>
+    <h1>Page Not Found</h1>
+    <p>Sorry, but the page you were trying to view does not exist.</p>
         <p class="h5">Go back to <a href="/">Home page</a> or <a href="mailto:robinsonlegaspi@astigp.com">contact us</a> about a problem.</p>
     </div>
 @stop

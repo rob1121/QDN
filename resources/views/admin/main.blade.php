@@ -4,9 +4,13 @@
         @include('admin.header')
         @stack('styles')
         <style type="text/css">
-            .content-wrapper {
-                padding-right:8px;
-            }
+        .content-wrapper {
+            padding-right:8px;
+        }
+
+        table {
+            background-color: #fff;
+        }
         </style>
     </head>
     <body class="hold-transition skin-blue sidebar-mini" hidden style="padding-bottom:0px">
@@ -32,9 +36,9 @@
             <script src="/js/adminAll.js"></script>
             @stack('scripts')
             <script>
-                $(function() {
-                    $('body').show();
-                });
+            $(function() {
+            $('body').show();
+            });
             </script>
         </body>
     </html>

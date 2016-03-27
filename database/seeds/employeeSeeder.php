@@ -25,12 +25,12 @@ class employeeSeeder extends Seeder {
 			'station'    => 'DCC',
 			'position'   => 'Management System Officer',
 			'email'      => 'robinsonlegaspi@astigp.com',
+			'status'     => 'active',
 		]);
 
 		User::create([
 			'employee_id'  => 801,
 			'access_level' => 'admin',
-			'status'       => 'active',
 			'password'     => bcrypt('admin'),
 		]);
 
@@ -50,12 +50,12 @@ class employeeSeeder extends Seeder {
 			'station'    => 'Process Engineer',
 			'position'   => 'HR Programmer',
 			'email'      => 'robinsonlegaspi@astigp.com',
+			'status'     => 'active',
 		]);
 
 		User::create([
 			'employee_id'  => 802,
 			'access_level' => 'signatory',
-			'status'       => 'active',
 			'password'     => bcrypt('user'),
 		]);
 
@@ -82,13 +82,13 @@ class employeeSeeder extends Seeder {
 				'department' => $department,
 				'station'    => $faker->randomElement($station[$department]),
 				'position'   => $faker->randomElement(['Supervisor', 'Operator', 'Manager']),
+				'status'     => $faker->randomElement(['active', 'resigned']),
 				'email'      => $faker->email,
 			]);
 
 			User::create([
 				'employee_id'  => $emp->user_id,
 				'access_level' => $faker->randomElement(['user', 'signatory']),
-				'status'       => $faker->randomElement(['active', 'deactivated']),
 				'password'     => bcrypt('8d'),
 			]);
 

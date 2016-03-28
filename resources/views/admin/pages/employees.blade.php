@@ -4,9 +4,6 @@
 #data-link {
 margin-bottom: 8px;
 }
-span.error {
-color: red;
-}
 </style>
 @endpush
 @section('content')
@@ -69,7 +66,7 @@ color: red;
                         <th><a href = "#" @click.prevent="sortBy('station')">Station</a></th>
                         <th><a href = "#" @click.prevent="sortBy('email')">Email</a></th>
                         <th><a href = "#" @click.prevent="sortBy('user.access_level')">Access Level</a></th>
-                        <th><a href = "#" @click.prevent="sortBy('user.status')">Status</a></th>
+                        <th><a href = "#" @click.prevent="sortBy('status')">Status</a></th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -79,8 +76,8 @@ color: red;
                         <td>@{{ user.name }}</td>
                         <td>@{{ user.station | uppercase }}</td>
                         <td>@{{ user.email }}</td>
-                        <td>@{{ user.user.access_level | uppercase }}</td>
-                        <td>@{{ user.status | uppercase }}</td>
+                        <td>@{{ user.user.access_level }}</td>
+                        <td>@{{ user.status }}</td>
                         <td>
                             <a href="#" @click.prevent="updateEmployeeModal(user)" class="text-primary">
                                 <span class = "fa-stack fa-lg">

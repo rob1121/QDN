@@ -1,12 +1,36 @@
+var validator = $('#discrepancy-form').validate({
+    rules: {
+        name: {
+            required: true,
+            minlength: 3
+        },
 
+        category: {
+            required: true,
+            minlength: 3
+        },
+
+        is_major: {
+            required: true,
+            number: true
+        },
+
+    },
+
+    errorClass: "error",
+
+    errorElement: "span"
+});
+
+//================================= VUE INSTANCE =========================
 var discrepancyTable = new Vue({
     el: 'body',
     data: {
         newDiscrepancy: '',
-        department: '',
+        category: '',
+        is_major: 0,
         discrepancies: discrepancies,
         categories: categories,
-        category: '',
         searchKey: '',
         reverse: 1,
         sortKey: '',
@@ -48,7 +72,7 @@ var discrepancyTable = new Vue({
         paginate: function(list) {
             var index = this.currentPage * parseInt(this.itemsPerPage)
             return list.slice(index, index + parseInt(this.itemsPerPage))
-        },
+        }
     },
     methods: {
         sortBy: function(column) {
@@ -62,8 +86,9 @@ var discrepancyTable = new Vue({
 
         addDiscrepancy: function(data) {
             this.discrepancies.push({
-                discrepancy: data.discrepancy,
-                department: data.department
+                name: data.name,
+                category: data.category,
+                is_major: data.is_major
             });
         },
 
@@ -76,24 +101,34 @@ var discrepancyTable = new Vue({
             if (name) {
                 this.updateDiscrepancyTable(name);
             }
-            this.newDiscrepancy = discrepancy.discrepancy;
-            this.department = discrepancy.department;
+            this.newDiscrepancy = discrepancy.name;
+            this.category = discrepancy.category;
+            this.is_major = discrepancy.is_major;
             this.removeDiscrepancyTable(discrepancy);
+
+            $('#discrepancy_modal').modal('show');
         },
+
         updateTable: function() {
-            var name = this.newDiscrepancy.trim();
-            if (name) {
-                this.updateDiscrepancyTable(name);
-                this.newDiscrepancy = '';
+            if ($('#discrepancy-form').valid()) {
+                var name = this.newDiscrepancy.trim();
+                if (name) {
+                    this.updateDiscrepancyTable(name);
+                    this.newDiscrepancy = '';
+                    $('#discrepancy_modal').modal('hide');
+                }
+
             }
         },
+
         updateDiscrepancyTable: function(name) {
             $.ajax({
-                url: links.updateDiscrepancyOptions,
+                url: links.updateDiscrepancy,
                 type: 'get',
                 data: {
-                    discrepancy: name,
-                    department: discrepancyTable.department
+                    name: name,
+                    category: discrepancyTable.category,
+                    is_major: discrepancyTable.is_major,
                 },
                 success: function(data) {
                     if (data) {
@@ -107,10 +142,10 @@ var discrepancyTable = new Vue({
         },
         removeDiscrepancyTable: function(discrepancy) {
             $.ajax({
-                url: links.removeDiscrepancyOptions,
+                url: links.removeDiscrepancy,
                 type: 'get',
                 data: {
-                    discrepancy: discrepancy.discrepancy
+                    name: discrepancy.name
                 },
                 success: function(data) {
                     discrepancyTable.discrepancies.$remove(discrepancy);

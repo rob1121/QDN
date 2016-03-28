@@ -31,7 +31,7 @@ class employeeSeeder extends Seeder {
 		User::create([
 			'employee_id'  => 801,
 			'access_level' => 'admin',
-			'password'     => bcrypt('admin'),
+			'password'     => 'admin',
 		]);
 
 		Question::create([
@@ -56,7 +56,7 @@ class employeeSeeder extends Seeder {
 		User::create([
 			'employee_id'  => 802,
 			'access_level' => 'signatory',
-			'password'     => bcrypt('user'),
+			'password'     => 'user',
 		]);
 
 		Question::create([
@@ -89,7 +89,7 @@ class employeeSeeder extends Seeder {
 			User::create([
 				'employee_id'  => $emp->user_id,
 				'access_level' => $faker->randomElement(['user', 'signatory']),
-				'password'     => bcrypt('8d'),
+				'password'     => '8d',
 			]);
 
 			Question::create([

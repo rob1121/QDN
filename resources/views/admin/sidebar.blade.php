@@ -32,7 +32,7 @@
         </a>
         <ul class="treeview-menu">
           <li><a href="{{ route('CustomerOptions') }}"><i class="fa fa-circle-o"></i> Customers</a></li>
-          <li><a href="{{ route('discrepancy') }}"><i class="fa fa-circle-o"></i> Discrepancy</a></li>
+          <li><a href="{{ route('discrepancy') }}"><i class="fa fa-circle-o"></i> Discrepancy Categories</a></li>
           <li><a href="{{ route('MachineOptions') }}"><i class="fa fa-circle-o"></i> Machines</a></li>
           <li><a href="{{ route('StationOptions') }}"><i class="fa fa-circle-o"></i> Stations</a></li>
         </ul>

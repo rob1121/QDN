@@ -11,6 +11,10 @@
         table {
             background-color: #fff;
         }
+
+        span.error {
+            color: red;
+        }
         </style>
     </head>
     <body class="hold-transition skin-blue sidebar-mini" hidden style="padding-bottom:0px">

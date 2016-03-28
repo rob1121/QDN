@@ -4,12 +4,23 @@
     <h1>Discrepancy List</h1>
     <div class="panel panel-info">
         <div class="panel-heading">
-            <input type = "text"
-            v-model     = "searchKey"
-            debounce    = "500"
-            class       = "form-control input-lg"
-            placeholder = "Search Input"
-            >
+            <div class="col-md-11">
+                <input type = "text"
+                v-model     = "searchKey"
+                debounce    = "500"
+                class       = "form-control"
+                placeholder = "Search Input"
+                >
+            </div>
+            <div class="col-md-1">
+                <a data-toggle="modal" href='#discrepancy_modal'>
+                    <span class = "fa-stack fa-lg">
+                        <i class = "fa fa-circle fa-stack-2x"></i>
+                        <i class = "fa fa-plus fa-stack-1x fa-inverse"></i>
+                    </span>
+                </a>
+            </div>
+            <div class="clearfix"></div>
         </div>
         <div class="panel-body">
             <table class="table table-hover table-striped">
@@ -17,7 +28,7 @@
                     <tr>
                         <th><a href="#"  @click.prevent="sortBy('name')">Discrepancy</a></th>
                         <th><a href="#"  @click.prevent="sortBy('category')">Category</a></th>
-                        <th><a href="#"  @click.prevent="sortBy('is_major')">Major(Binary)</a></th>
+                        <th><a href="#"  @click.prevent="sortBy('is_major')">Severity Level</a></th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -79,29 +90,70 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <input type  = "text"
-        v-model      = "newDiscrepancy"
-        @keyup.enter = "updateTable"
-        class        = "input-lg form-control"
-        placeholder  = "Input Discrepancy Name"
-        >
-    </div>
-    <div class="form-group">
-        <input v-model="category" list="category" class="form-control input-lg">
-        <datalist id="category">
-        <option v-for="category in categories" value="@{{ category.category | uppercase }}">
-            </datalist>
+</div>
+{{-- =================================== MODAL ============================================ --}}
+<div class="modal fade" id="discrepancy_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <form method = "get"
+                    action       = ""
+                    id           = "discrepancy-form"
+                    novalidate
+                    >
+                    <div class="form-group">
+                        <input id = "name"
+                        name      = "name"
+                        v-model      = "newDiscrepancy"
+                        @keyup.enter = "updateTable"
+                        class        = "input-lg form-control"
+                        placeholder  = "Input Discrepancy Name"
+                        required
+                        >
+                    </div>
+                    <div class = "form-group">
+                        <input id = "category"
+                        name      = "category"
+                        v-model   = "category"
+                        list      = "category"
+                        class     = "form-control input-lg"
+                        >
+                        <datalist id="category">
+                        <option
+                            v-for = "category in categories | orderBy 'category' 1"
+                            value = "@{{ category.category | uppercase }}"
+                            >
+                            </datalist>
+                        </div>
+                        <div class="form-group">
+                            <select id = "is_major"
+                                name       = "is_major"
+                                v-model    = "is_major"
+                                class      = "form-control input-lg"
+                                >
+                                <option value = 1>Major</option>
+                                <option value = 0>Minor</option>
+                            </select>
+                        </div>
+                        <div class="form-group pull-right">
+                            <button type = "button"
+                            class        = "btn btn-default btn-lg"
+                            @click       = "updateTable"
+                            > Submit
+                            <i class = "fa fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
         </div>
-        <div class="form-group pull-right">
-            <button type = "button"
-            class        = "btn btn-default btn-lg"
-            @click       = "updateTable"
-            > Submit
-            <i class = "fa fa-paper-plane"></i>
-            </button>
-        </div>
     </div>
+    {{-- =================================== END MODAL ============================================ --}}
     <div class = "clearfix"></div>
     @stop
     @push('scripts')

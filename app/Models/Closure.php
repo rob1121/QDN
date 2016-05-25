@@ -37,7 +37,7 @@ class Closure extends Model {
 	}
 
 	public function getProductionAttribute($value) {
-		return $this->attributes['production'] = Str::title($value);
+		return Str::title($value);
 	}
 
 	public function setProcessEngineeringAttribute($value) {
@@ -45,7 +45,7 @@ class Closure extends Model {
 	}
 
 	public function getProcessEngineeringAttribute($value) {
-		return $this->attributes['process_engineering'] = Str::title($value);
+		return Str::title($value);
 	}
 
 	public function setQualityAssuranceAttribute($value) {
@@ -53,7 +53,7 @@ class Closure extends Model {
 	}
 
 	public function getQualityAssuranceAttribute($value) {
-		return $this->attributes['quality_assurance'] = Str::title($value);
+		return Str::title($value);
 	}
 
 	public function setOtherDepartmentAttribute($value) {
@@ -61,7 +61,7 @@ class Closure extends Model {
 	}
 
 	public function getOtherDepartmentAttribute($value) {
-		return $this->attributes['other_department'] = Str::title($value);
+		return Str::title($value);
 	}
 
 	public function setStatusAttribute($value) {
@@ -69,6 +69,6 @@ class Closure extends Model {
 	}
 
 	public function getStatusAttribute($value) {
-		return $this->attributes['status'] = Str::title($value);
+		return Str::title($value);
 	}
 }

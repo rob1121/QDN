@@ -14,7 +14,7 @@ class Discrepancy extends Model {
 		return $this->attributes['category'] = strtolower($value);
 	}
 	public function getCategoryAttribute($value) {
-		return $this->attributes['category'] = $value ? Str::upper($value) : '-';
+		return $value ? Str::upper($value) : '-';
 	}
 
 }

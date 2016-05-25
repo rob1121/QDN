@@ -12,6 +12,6 @@ class Machine extends Model {
 		return $this->attributes['name'] = strtolower($value);
 	}
 	public function getNameAttribute($value) {
-		return $this->attributes['name'] = Str::upper($value);
+		return Str::upper($value);
 	}
 }

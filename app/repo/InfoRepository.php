@@ -13,18 +13,20 @@ use App\Models\Info;
 use App\Models\InvolvePerson;
 use App\Models\PreventiveAction;
 use App\Models\QdnCycle;
+use Auth;
 use Cache;
 use Carbon;
 use DB;
 use Event;
 use Flash;
 use Gate;
-use Auth;
 use JavaScript;
 use Storage;
 use Str;
 
 class InfoRepository implements InfoRepositoryInterface {
+	public $setMonth;
+	public $setYear;
 
 	public function view($qdn, $view) {
 		Event::fire(new EventLogs('view' . $qdn->control_id));
@@ -42,11 +44,11 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function month() {
-		return $this->date()->format('m');
+		return null == $this->setMonth ? $this->date()->format('m') : $this->setMonth;
 	}
 
 	public function year() {
-		return $this->date()->format('Y');
+		return null == $this->setYear ? $this->date()->format('Y') : $this->setYear;
 	}
 
 	public function links($slug) {
@@ -280,13 +282,14 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function getQdn() {
-		if ('' != $this->month()) {
-			return Info::where(DB::raw('YEAR(created_at)'), $this->year())
-				->where(DB::raw('MONTH(created_at)'), $this->month())
-				->get();
-		} else {
-			return Info::where(DB::raw('YEAR(created_at)'), $this->year())->get();
-		}
+
+		$infoForMonth = Info::where(DB::raw('YEAR(created_at)'), $this->year())
+			->where(DB::raw('MONTH(created_at)'), $this->month())
+			->get();
+
+		$infoForYear = Info::where(DB::raw('YEAR(created_at)'), $this->year())->get();
+		// dd($this->month());
+		return '' == $this->setMonth ? $infoForYear : $infoForMonth;
 	}
 	/**
 	 * return counts of failure mode
@@ -295,7 +298,7 @@ class InfoRepository implements InfoRepositoryInterface {
 	public function failureModeCount() {
 		$qdn = $this->getQdn();
 		foreach ($this->failureMode() as $fm) {
-			$counts[$fm] = $this->count($fm, $qdn);
+			$counts[$fm] = count($qdn) ? $this->count($fm, $qdn) : 0;
 		}
 		return $counts;
 	}
@@ -306,12 +309,13 @@ class InfoRepository implements InfoRepositoryInterface {
 	 */
 	public function failureModeAve() {
 		$qdn = $this->getQdn();
+		$ave = $this->failureModeCount();
 		if (array_sum($this->failureModeCount())) {
 			foreach ($this->failureModeCount() as $key => $value) {
 				$ave[$key] = round($this->count($key, $qdn) / array_sum($this->failureModeCount()) * 100);
 			}
-			return $ave;
 		}
+		return $ave;
 	}
 
 	public function failureMode() {

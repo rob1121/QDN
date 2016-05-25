@@ -25,7 +25,7 @@ class InvolvePerson extends Model {
 	}
 
 	public function getDepartmentAttribute($value) {
-		return $this->attributes['department'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 }

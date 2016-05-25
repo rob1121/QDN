@@ -15,23 +15,23 @@ class AdminController extends Controller {
 
 	public function __construct(InfoRepository $qdn) {
 		$this->middleware('admin');
-		$this->qdn        = $qdn;
-		$this->dt         = Carbon::now('Asia/Manila');
-		$this->qdn->month = $this->dt->format('m');
-		$this->qdn->year  = $this->dt->format('Y');
+		$this->qdn           = $qdn;
+		$this->dt            = Carbon::now('Asia/Manila');
+		$this->qdn->setMonth = $this->dt->format('m');
+		$this->qdn->setYear  = $this->dt->format('Y');
 	}
 
 	public function index() {
 		$ave   = $this->qdn->failureModeAve();
 		$count = $this->qdn->failureModeCount();
-		JavaScript::put('yearNow', $this->qdn->year);
+		JavaScript::put('yearNow', $this->qdn->year());
 		$qdn = Info::orderBy('id', 'desc')->take(5)->get()->load('closure');
 		return view('admin.pages.index', compact('ave', 'qdn', 'count'));
 	}
 
 	public function UpdateLead(Request $request) {
-		$this->qdn->month = $request->month;
-		$this->qdn->year  = $request->year;
+		$this->qdn->setMonth = $request->month;
+		$this->qdn->setYear  = $request->year;
 
 		$ave   = collect($this->qdn->failureModeAve())->toArray();
 		$count = collect($this->qdn->failureModeCount())->toArray();

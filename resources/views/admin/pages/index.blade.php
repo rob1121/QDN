@@ -200,21 +200,22 @@ border: 0px;
     year: year
     },
     success: function (data) {
-    if (data['ave'] == '') {
-    var pBarInit = $('.progress div.progress-bar');
-    pBarInit.parent('div.progress').siblings('p').text('0');
-    pBarInit.css({width: 0 + '%'});
-    pBarInit.attr('aria-valuenow', 0);
-    pBarInit.attr('title', '0%');
-    } else {
-    $.each(data['ave'], function( index, value ) {
-    var pBar = $('.progress div.progress-bar#' + slug(index));
-    pBar.parent('div.progress').siblings('p#' + slug(index) + '-count').text(data['count'][index]);
-    pBar.css({width: value + '%'});
-    pBar.attr('aria-valuenow',value);
-    pBar.attr('title', value + '%');
-    });
-    }
+        if (data['ave'] == '') {
+            var pBarInit = $('.progress div.progress-bar');
+            pBarInit.parent('div.progress').siblings('p').text('0');
+            pBarInit.css({width: 0 + '%'});
+            pBarInit.attr('aria-valuenow', 0);
+            pBarInit.attr('title', '0%');
+        } else {
+            console.log(data);
+            $.each(data['ave'], function( index, value ) {
+                var pBar = $('.progress div.progress-bar#' + slug(index));
+                pBar.parent('div.progress').siblings('p#' + slug(index) + '-count').text(data['count'][index]);
+                pBar.css({width: value + '%'});
+                pBar.attr('aria-valuenow',value);
+                pBar.attr('title', value + '%');
+            });
+        }
     },
     error: function() {
     alert('error');

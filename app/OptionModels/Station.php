@@ -12,12 +12,12 @@ class Station extends Model {
 		return $this->attributes['station'] = strtolower($value);
 	}
 	public function getStationAttribute($value) {
-		return $this->attributes['station'] = Str::upper($value);
+		return Str::upper($value);
 	}
 	public function setDepartmentAttribute($value) {
 		return $this->attributes['department'] = strtolower($value);
 	}
 	public function getDepartmentAttribute($value) {
-		return $this->attributes['department'] = Str::upper($value);
+		return Str::upper($value);
 	}
 }

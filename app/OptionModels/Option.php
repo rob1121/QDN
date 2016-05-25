@@ -12,6 +12,6 @@ class Option extends Model {
 		return $this->attributes['customer'] = strtolower($value);
 	}
 	public function getCustomerAttribute($value) {
-		return $this->attributes['customer'] = Str::upper($value);
+		return Str::upper($value);
 	}
 }

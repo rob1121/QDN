@@ -10,6 +10,14 @@
         <script  data-pace-options='{ "ajax": false }' src="/vendor/js/pace.js"></script>
         @yield('style')
         @stack('style')
+        <style>
+        @media only screen and (min-width : 768px) {
+            /* Make Navigation Toggle on Desktop Hover */
+            .dropdown:hover .dropdown-menu {
+                display: block;
+            }
+        }
+        </style>
     </head>
     <body hidden>
         <div id="wrap">
@@ -30,6 +38,12 @@
         <script>
         $(function() {
         $('body').fadeIn();
+
+        $('.dropdown-toggle').click(function() {
+            var location = $(this).attr('href');
+            window.location.href = location;
+            return false;
+        });
         });
         </script>
     </body>

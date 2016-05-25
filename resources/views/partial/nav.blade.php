@@ -32,18 +32,12 @@ $url = Request::url();
                     @endif
                     ><a href="{{ route('issue_qdn') }}">Issue QDN</a>
                 </li>
-                <li
-                    @if ($url === route('issue_qdn'))
-                    class="active"
-                    @endif
-                    ><a href="{{ route('issue_qdn') }}">Documentation</a>
-                </li>
             </ul>
             @endif
             <ul class="nav navbar-nav navbar-right">
                 @if ($currentUser)
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" onclick="return false">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         <span class="fa-stack fa-lg" style="float:left;bottom:8px">
                             <i class="fa fa-circle fa-stack-2x"></i>
                             <i class="fa fa-user fa-stack-1x fa-inverse"></i>

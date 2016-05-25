@@ -79,7 +79,7 @@ mix.copy(
         "resources/assets/js/jquery.validate.js"
 )
     .copy(
-        "resources/assets/js/additional-methods.js",
+        "resources/assets/vendor/jquery-validation/dist/additional-methods.js",
         "resources/assets/js/additional-methods.js"
 )
     .copy(

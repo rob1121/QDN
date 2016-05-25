@@ -35,7 +35,7 @@ class reportController extends Controller {
 	 * @return [type]       [description]
 	 */
 	public function pdf(Info $slug) {
-		Event::fire(new EventLogs($this->qdn->user, 'download' . $slug->control_id));
+		Event::fire(new EventLogs($this->qdn->user(), 'download' . $slug->control_id));
 		$qdn = $slug;
 		return PDF::loadHTML(view('pdf.print', compact('qdn')))->stream();
 	}
@@ -59,7 +59,7 @@ class reportController extends Controller {
 		if (Info::isExist($request)->count() == 0) {
 			$qdn = $this->qdn->add($request);
 
-			Event::fire(new EventLogs($this->qdn->user, 'issue QDN: ' . $qdn->control_id));
+			Event::fire(new EventLogs($this->qdn->user(), 'issue QDN: ' . $qdn->control_id));
 			Event::fire(new EmailQdnNotificationEvent($qdn));
 			Flash::success('Success! Team responsible will be notified regarding the issue via email!');
 		}
@@ -101,7 +101,7 @@ class reportController extends Controller {
 	 */
 	public function SectionOneSaveAsDraft(Request $request, Info $slug) {
 		$collection = $this->qdn->SectionOneUpdate($request, $slug);
-		Event::fire(new EventLogs($this->qdn->user, 'P.E. save as draft and not yet validate' . $slug->control_id));
+		Event::fire(new EventLogs($this->qdn->user(), 'P.E. save as draft and not yet validate' . $slug->control_id));
 		return array_add($request->all(), 'department', $collection['emp_dept']);
 	}
 
@@ -122,7 +122,7 @@ class reportController extends Controller {
 	 */
 	public function draft(Info $slug, Request $request) {
 		$this->qdn->save($slug, $request);
-		Event::fire(new EventLogs($this->qdn->user, 'Incomplete: save as draft' . $slug->control_id));
+		Event::fire(new EventLogs($this->qdn->user(), 'Incomplete: save as draft' . $slug->control_id));
 		Flash::success('Successfully save! Issued QDN are save as draft and still subject for completion!');
 		return redirect('/');
 	}
@@ -137,8 +137,8 @@ class reportController extends Controller {
 		$this->qdn->save($slug, $request);
 		$slug->closure()->update(['status' => 'incomplete approval']);
 
-		Event::fire(new EventLogs($this->qdn->user, 'Incomplete: save and proceed' . $slug->control_id));
-		Event::fire(new ApprovalNotificationEvent($slug, 'Answered by' . $this->qdn->user->employee->name));
+		Event::fire(new EventLogs($this->qdn->user(), 'Incomplete: save and proceed' . $slug->control_id));
+		Event::fire(new ApprovalNotificationEvent($slug, 'Answered by' . $this->qdn->user()->employee->name));
 		Flash::success('Successfully save! Issued QDN is now subject for Approval!');
 		return redirect('/');
 	}
@@ -176,8 +176,8 @@ class reportController extends Controller {
 
 //================================ EXTRA FUNCTIONS ======================================================
 	public function CacheRefresher($slug) {
-		Cache::add($slug, $this->qdn->user->employee->name, 5);
-		return $this->qdn->user->employee->name;
+		Cache::add($slug, $this->qdn->user()->employee->name, 5);
+		return $this->qdn->user()->employee->name;
 	}
 
 	public function ForgetCache($slug) {

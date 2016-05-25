@@ -208,7 +208,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getProblemDescriptionAttribute($value) {
-		return $this->attributes['problem_description'] = Str::title($value);
+		return Str::title($value);
 	}
 
 	public function setDiscrepancyCategoryAttribute($value) {
@@ -216,7 +216,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getDiscrepancyCategoryAttribute($value) {
-		return $this->attributes['discrepancy_category'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 	public function setFailureModeAttribute($value) {
@@ -224,7 +224,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getFailureModeAttribute($value) {
-		return $this->attributes['failure_mode'] = Str::title($value);
+		return Str::title($value);
 	}
 
 	public function setMachineAttribute($value) {
@@ -232,7 +232,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getMachineAttribute($value) {
-		return $this->attributes['machine'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 	public function setCustomerAttribute($value) {
@@ -240,7 +240,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getCustomerAttribute($value) {
-		return $this->attributes['customer'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 	public function setPackageTypeAttribute($value) {
@@ -248,7 +248,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getPackageTypeAttribute($value) {
-		return $this->attributes['package_type'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 	public function setDeviceNameAttribute($value) {
@@ -256,7 +256,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getDeviceNameAttribute($value) {
-		return $this->attributes['device_name'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 	public function setLotIdNumberAttribute($value) {
@@ -264,7 +264,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getLotIdNumberAttribute($value) {
-		return $this->attributes['lot_id_number'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 	public function setStationAttribute($value) {
@@ -272,7 +272,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getStationAttribute($value) {
-		return $this->attributes['station'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 	public function setJobOrderNumberAttribute($value) {
@@ -280,7 +280,7 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function getJobOrderNumberAttribute($value) {
-		return $this->attributes['job_order_number'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 	public function setControlIdAttribute($value) {

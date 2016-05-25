@@ -31,7 +31,7 @@ class Employee extends Model {
 	}
 
 	public function getDepartmentAttribute($value) {
-		return $this->attributes['department'] = strtolower($value);
+		return strtolower($value);
 	}
 
 	public function setStationAttribute($value) {
@@ -39,7 +39,7 @@ class Employee extends Model {
 	}
 
 	public function getStationAttribute($value) {
-		return $this->attributes['station'] = Str::upper($value);
+		return Str::upper($value);
 	}
 
 	public function setPositionAttribute($value) {
@@ -47,7 +47,7 @@ class Employee extends Model {
 	}
 
 	public function getPositionAttribute($value) {
-		return $this->attributes['position'] = Str::title($value);
+		return Str::title($value);
 	}
 
 	public function setNameAttribute($value) {
@@ -55,6 +55,6 @@ class Employee extends Model {
 	}
 
 	public function getNameAttribute($value) {
-		return $this->attributes['name'] = Str::title($value);
+		return Str::title($value);
 	}
 }

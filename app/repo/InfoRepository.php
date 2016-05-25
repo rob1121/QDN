@@ -36,7 +36,7 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function user() {
-		return Auth::user();
+		return Auth::user()->with('employee');
 	}
 
 	public function date() {
@@ -262,7 +262,7 @@ class InfoRepository implements InfoRepositoryInterface {
 			->update([
 				'containment_action_taken' => $request->containment_action_taken,
 				'corrective_action_taken'  => $request->corrective_action_taken,
-				'close_by'                 => $this->user->employee->name,
+				'close_by'                 => $this->user()->employee->name,
 				'date_sign'                => Carbon::now('Asia/Manila'),
 				'status'                   => 'closed',
 			]);
@@ -325,7 +325,7 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function addCacheQdn($qdn) {
-		Cache::add($qdn->slug, $this->user->employee->name, 5);
+		Cache::add($qdn->slug, $this->user()->employee->name, 5);
 	}
 
 	public function forgetCache($slug = '') {

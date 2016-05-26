@@ -36,7 +36,7 @@ class InfoRepository implements InfoRepositoryInterface {
 	}
 
 	public function user() {
-		return Auth::user()->with('employee');
+		return Auth::user()->load('employee');
 	}
 
 	public function date() {

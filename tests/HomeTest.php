@@ -6,7 +6,7 @@ class HomeTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testOpenarchitectureIsHandmade2() {
+	public function test_a_visit_to_homepage_of_qdn() {
 		$this->visit('/');
 		$this->type('801', 'employee_id');
 		$this->type('admin', 'password');

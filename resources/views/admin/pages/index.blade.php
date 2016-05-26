@@ -163,138 +163,138 @@ border: 0px;
                     @endif
                     {{ Str::upper($issue->closure->status) }}
                 </span>
-                </h5>
-                <div class="row-fluid justify">
-                    {{ $issue->problem_description }}
-                </div>
-            </li>
-            @endforeach
-        </ul>
-    </div>
-    <div class="clearfix"></div>
-    @include('home.modals')
-    @stop
-    @push('scripts')
-    <script src="/vendor/js/highcharts.js"></script>
-    <script src="/vendor/js/exporting.js"></script>
-    <script src="/js/homeScript.js"></script>
-    <script>
-    $(function() {
-    //highcharts =======================================================
-    var month = $('#month').val(),
-    year = $('#year').val(),
-    slug = function(str) {
-    var $slug = '';
-    var trimmed = $.trim(str);
-    $slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
-    replace(/-+/g, '-').
-    replace(/^-|-$/g, '');
-    return $slug.toLowerCase();
-    },
-    updateLead = function(month, year){
-    $.ajax({
-    url: '{{ route('UpdateLead') }}',
-    type: 'GET',
-    data: {
-    month: month,
-    year: year
-    },
-    success: function (data) {
-        if (data['ave'] == '') {
-            var pBarInit = $('.progress div.progress-bar');
-            pBarInit.parent('div.progress').siblings('p').text('0');
-            pBarInit.css({width: 0 + '%'});
-            pBarInit.attr('aria-valuenow', 0);
-            pBarInit.attr('title', '0%');
-        } else {
-            console.log(data);
-            $.each(data['ave'], function( index, value ) {
-                var pBar = $('.progress div.progress-bar#' + slug(index));
-                pBar.parent('div.progress').siblings('p#' + slug(index) + '-count').text(data['count'][index]);
-                pBar.css({width: value + '%'});
-                pBar.attr('aria-valuenow',value);
-                pBar.attr('title', value + '%');
-            });
-        }
-    },
-    error: function() {
-    alert('error');
-    }
-    });
-    AjaxParetoOfDiscrepancy();
-    },
-    AjaxQdnMetrics = function() {
-    var year = $('#year').val(),
-    month = $('#month').val();
-    $.ajax({
-    url: '/ajax',
-    method: 'GET',
-    data: {
-    month: month,
-    year: year
-    },
-    success: function(point) {
-    count = 1;
-    for (i = 0; i < point.qdn.length; i++) {
-    $('#tblQdnMetrics')
-    .find("td:nth-of-type(" + count + ")")
-    .text(point.qdn[i]);
-    count += 1;
-    }
-    qdnMetrics.series[0].setData(point.qdn);
-    // refresh DOM every 5sec
-    setTimeout(AjaxQdnMetrics, 60000);
-    },
-    error: function(){AjaxQdnMetrics();},
-    cache: false
-    });
-    },
-    AjaxParetoOfDiscrepancy = function() {
-    var tbody = $("#tblQdnMetrics tbody#pareto-data"),
-    year = $('#year').val(),
-    month = $('#month').val(),
-    loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
-    tbody.empty();
-    tbody.append(loader);
-    $.ajax({
-    url: '/ajax',
-    method: 'GET',
-    data: {
-    month: month,
-    year: year
-    },
-    success: function(point) {
-    bars = point.pod.bars;
-    category = point.pod.category;
-    legend = point.pod.legends;
-    lines = point.pod.lines;
-    total = point.pod.total;
-    podGraph.tooltip.options.formatter = function() {
-    if (this.series.name == '% Pareto') {
-    var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
-    return pcnt + '%';
-    }
-    return this.y;
-    };
-    podGraph.yAxis[1].update({
-    tickInterval: total / 4, //TOTAL
-    labels: {
-    formatter: function() {
-    var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
-    return pcnt + '%';
-    }
-    }
-    });
-    podGraph.xAxis[0].categories = legend;
-    podGraph.series[1].setData(lines);
-    podGraph.series[0].setData(bars);
-    tbody.empty();
-    if (total == 0) {
-    tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+            </span>
+            </h5>
+            <div class="row-fluid justify">
+                {{ $issue->problem_description }}
+            </div>
+        </li>
+        @endforeach
+    </ul>
+</div>
+<div class="clearfix"></div>
+@include('home.modals')
+@stop
+@push('scripts')
+<script src="/vendor/js/highcharts.js"></script>
+<script src="/vendor/js/exporting.js"></script>
+<script src="/js/homeScript.js"></script>
+<script>
+$(function() {
+//highcharts =======================================================
+var month = $('#month').val(),
+year = $('#year').val(),
+slug = function(str) {
+var $slug = '';
+var trimmed = $.trim(str);
+$slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
+replace(/-+/g, '-').
+replace(/^-|-$/g, '');
+return $slug.toLowerCase();
+},
+updateLead = function(month, year){
+$.ajax({
+url: '{{ route('UpdateLead') }}',
+type: 'GET',
+data: {
+month: month,
+year: year
+},
+success: function (data) {
+    if (data['ave'] == '') {
+        var pBarInit = $('.progress div.progress-bar');
+        pBarInit.parent('div.progress').siblings('p').text('0');
+        pBarInit.css({width: 0 + '%'});
+        pBarInit.attr('aria-valuenow', 0);
+        pBarInit.attr('title', '0%');
     } else {
-    count = 1;
-    for (i = 0; i < point.pod.lines.length; i++) {
-    tbody.append(
+        $.each(data['ave'], function( index, value ) {
+            var pBar = $('.progress div.progress-bar#' + slug(index));
+            pBar.parent('div.progress').siblings('p#' + slug(index) + '-count').text(data['count'][index]);
+            pBar.css({width: value + '%'});
+            pBar.attr('aria-valuenow',value);
+            pBar.attr('title', value + '%');
+        });
+    }
+},
+error: function() {
+alert('error');
+}
+});
+AjaxParetoOfDiscrepancy();
+},
+AjaxQdnMetrics = function() {
+var year = $('#year').val(),
+month = $('#month').val();
+$.ajax({
+url: '/ajax',
+method: 'GET',
+data: {
+month: month,
+year: year
+},
+success: function(point) {
+count = 1;
+for (i = 0; i < point.qdn.length; i++) {
+$('#tblQdnMetrics')
+.find("td:nth-of-type(" + count + ")")
+.text(point.qdn[i]);
+count += 1;
+}
+qdnMetrics.series[0].setData(point.qdn);
+// refresh DOM every 5sec
+setTimeout(AjaxQdnMetrics, 60000);
+},
+error: function(){AjaxQdnMetrics();},
+cache: false
+});
+},
+AjaxParetoOfDiscrepancy = function() {
+var tbody = $("#tblQdnMetrics tbody#pareto-data"),
+year = $('#year').val(),
+month = $('#month').val(),
+loader = '<tr><td colspan="3"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
+tbody.empty();
+tbody.append(loader);
+$.ajax({
+url: '/ajax',
+method: 'GET',
+data: {
+month: month,
+year: year
+},
+success: function(point) {
+bars = point.pod.bars;
+category = point.pod.category;
+legend = point.pod.legends;
+lines = point.pod.lines;
+total = point.pod.total;
+podGraph.tooltip.options.formatter = function() {
+if (this.series.name == '% Pareto') {
+var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
+return pcnt + '%';
+}
+return this.y;
+};
+podGraph.yAxis[1].update({
+tickInterval: total / 4, //TOTAL
+labels: {
+formatter: function() {
+var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
+return pcnt + '%';
+}
+}
+});
+podGraph.xAxis[0].categories = legend;
+podGraph.series[1].setData(lines);
+podGraph.series[0].setData(bars);
+tbody.empty();
+if (total == 0) {
+tbody.append('<tr><td colspan="3" class="text-center">No data to show</td></tr>');
+} else {
+count = 1;
+for (i = 0; i < point.pod.lines.length; i++) {
+tbody.append(
 $("<tr></tr>")
 .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + legend[i] + "</a></td>")
 .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + category[i] + "</a></td>")

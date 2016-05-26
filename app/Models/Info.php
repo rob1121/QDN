@@ -74,18 +74,23 @@ class Info extends Model implements SluggableInterface {
 	public function getRouteKeyName() {
 		return 'slug';
 	}
+
 	/**
 	 * retrieving data from table for BMP graphs
+	 * @param $query
+	 * @param $month
+	 * @param $year
+	 * @param string $select
+	 * @return
 	 */
 	public function scopePod($query, $month, $year, $select = 'all') {
 		if ('' == $select || 'all' == $select) {
-
 			return $query->select(DB::raw(
 				'COUNT(discrepancy_category) as paretoFirst,
                     discrepancy_category as category'
 			))
 				->groupBy('discrepancy_category')
-				->where(DB::raw('MONTH(created_at)'), $month)
+				->where(DB::raw('MONTH(created_at)'), $month ? '=' : 'LIKE', $month ? $month : '%%')
 				->where(DB::raw('YEAR(created_at)'), $year)
 				->get();
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Closure;
 use App\Models\Info;
 use App\repo\HomeRepository;
@@ -14,75 +13,69 @@ use Str;
 class HomeController extends Controller {
 	private $home;
 	protected $user;
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct(HomeRepository $home) {
+
+    /**
+     * HomeController constructor.
+     * @param HomeRepository $home
+     */
+    public function __construct(HomeRepository $home) {
 		$this->home = $home;
 		$this->user = Auth::user();
 	}
 
-	/**
-	 * Show the application dashboard.
-	 *
-	 * @return Response
-	 */
-	public function index() {
-		return $this->user ? redirect(route('home')) : view('welcome');
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function index() {
+		return $this->user ? view('home') : view('welcome');
 	}
 
-	/**
-	 * Show the application dashboard.
-	 *
-	 * @return Response
-	 */
-	public function home() {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function home() {
 		JavaScript::put('yearNow', $this->home->dateTime()->year);
-		return $this->user ? view('home') : redirect('/');
+		return $this->index();
 	}
 
-	/**
-	 * array function for getting data for graphs
-	 */
+    /**
+     * array function for getting data for graphs
+     * @param $collection
+     * @return array
+     */
 	protected function arrayCollection($collection) {
 		return $this->home->collection($collection);
 	}
 
-	/**
-	 * ajax call for highchart live update
-	 * @return [type] [description]
-	 */
-	public function ajax(Request $request) {
-		$arr = $this->home->highChartData($request);
-		return $arr;
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function ajax(Request $request) {
+		return $this->home->highChartData($request);
+	}
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function qdnData(Request $request) {
+		return view('home.qdnData')
+            ->with('tbl', Info::issued($request->input('setDate'))->get());
 	}
 
 	/**
-	 * ajax call for qdn issuance updates
-	 * @param  Request $request [description]
-	 * @return [type]           [description]
-	 */
-	public function qdnData(Request $request) {
-		$tbl = Info::issued($request->input('setDate'))->get();
-		return view('home.qdnData', compact('tbl'));
-	}
-
-	/**
-	 * ajax call for qdn issuance updates
-	 * @param  Request $request [description]
-	 * @return [type]           [description]
-	 */
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function AjaxStatus(Request $request) {
-		$tbl = Closure::status(Str::title($request->input('status')))->get();
-		return view('home.status', compact('tbl'));
+		return view('home.status')
+            ->with('tbl', Closure::status(Str::title($request->input('status')))->get());
 	}
 
 	/**
-	 * count data per graphs
-	 * @return [type] [description]
-	 */
+	 * @return array
+     */
 	public function counter() {
 		return $this->home->counter();
 	}

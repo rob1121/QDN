@@ -5,37 +5,60 @@ use App\OptionModels\Discrepancy;
 use JavaScript;
 
 class DiscrepancyRepo {
+	/**
+	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
 	public function all() {
 		return Discrepancy::all();
 	}
 
-	public function get($discrepancy) {
+    /**
+     * @param $discrepancy
+     * @return mixed
+     */
+    public function get($discrepancy) {
 		return Discrepancy::whereName($discrepancy)->first();
 	}
 
-	public function setup() {
+    public function setup() {
 		$discrepancy = $this->all();
 		$this->links($discrepancy);
 	}
 
-	public function links($query) {
-		JavaScript::put('discrepancies', $query);
-		JavaScript::put('categories', $query->unique('category'));
-		JavaScript::put('links', [
-			'removeDiscrepancy' => route('removeDiscrepancy'),
-			'updateDiscrepancy' => route('updateDiscrepancy'),
+    /**
+     * @param $query
+     */
+    public function links($query) {
+		JavaScript::put([
+			'discrepancies' => $query,
+			'categories' => $query->unique('category'),
+			'links'=> [
+				'removeDiscrepancy' => route('removeDiscrepancy'),
+				'updateDiscrepancy' => route('updateDiscrepancy'),
+			]
 		]);
 	}
 
-	public function store($request) {
+    /**
+     * @param $request
+     * @return static
+     */
+    public function store($request) {
 		return Discrepancy::create($request->all());
 	}
 
-	public function delete($discrepancy) {
+    /**
+     * @param $discrepancy
+     */
+    public function delete($discrepancy) {
 		Discrepancy::whereName($discrepancy)->delete();
 	}
 
-	public function update($request) {
+    /**
+     * @param $request
+     * @return DiscrepancyRepo
+     */
+    public function update($request) {
 		$discrepancy = $this->get($request->name);
 		if (!$discrepancy) {
 			return $this->store($request);

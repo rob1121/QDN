@@ -8,6 +8,10 @@ use Str;
 class Station extends Model {
 	protected $fillable = ['station', 'department'];
 
+	public static function whereStation($station)
+	{
+	}
+
 	public function setStationAttribute($value) {
 		return $this->attributes['station'] = strtolower($value);
 	}

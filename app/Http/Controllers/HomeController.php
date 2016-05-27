@@ -27,7 +27,7 @@ class HomeController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     public function index() {
-		return $this->user ? view('home') : view('welcome');
+		return $this->user ? redirect('home') : view('welcome');
 	}
 
     /**
@@ -35,7 +35,7 @@ class HomeController extends Controller {
      */
     public function home() {
 		JavaScript::put('yearNow', $this->home->dateTime()->year);
-		return $this->index();
+		return $this->user ? view('home') : redirect('welcome');
 	}
 
     /**

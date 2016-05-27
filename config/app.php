@@ -156,6 +156,7 @@ return [
 		App\Providers\RouteServiceProvider::class,
 		App\Providers\ComposerServiceProvider::class,
 		Barryvdh\Queue\AsyncServiceProvider::class,
+		Mpociot\LaravelTestFactoryHelper\TestFactoryHelperServiceProvider::class,
 
 		/*
 			 * EXTERNAL PHP EXTENSION

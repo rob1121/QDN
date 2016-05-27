@@ -103,7 +103,8 @@ class Info extends Model implements SluggableInterface {
                     failure_mode as category'
 			))
 				->groupBy('failure_mode')
-				->where(DB::raw('MONTH(created_at)'), $month)
+
+				->where(DB::raw('MONTH(created_at)'), $month ? '=' : 'LIKE', $month ? $month : '%%')
 				->where(DB::raw('YEAR(created_at)'), $year)
 				->get();
 
@@ -114,7 +115,8 @@ class Info extends Model implements SluggableInterface {
                 failure_mode as category'
 		))
 			->groupBy('failure_mode')
-			->where(DB::raw('MONTH(created_at)'), $month)
+
+				->where(DB::raw('MONTH(created_at)'), $month ? '=' : 'LIKE', $month ? $month : '%%')
 			->where(DB::raw('YEAR(created_at)'), $year)
 			->where('failure_mode', $select)
 			->get();

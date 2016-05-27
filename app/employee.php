@@ -1,22 +1,18 @@
-<?php
+<?php namespace App;
 
-namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Str;
 
 class Employee extends Model {
+
 	protected $fillable = ['user_id', 'name', 'station', 'department', 'position', 'status'];
+
 	/**
 	 * Get the account record associated with the employee.
 	 */
 	public function user() {
 		return $this->hasOne('App\User', 'employee_id', 'user_id');
-	}
-
-	/**
-	 * questions use to reset password
-	 * @return [type] [description]
-	 */
+	}   
 
 	public function question() {
 		return $this->hasOne('App\Question', 'user_id', 'user_id'); // this matches the Eloquent model

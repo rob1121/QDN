@@ -1,4 +1,3 @@
-
 <?php
 $data = ('' == $qdn->closure->production)
 	|| ('' == $qdn->closure->process_engineering)

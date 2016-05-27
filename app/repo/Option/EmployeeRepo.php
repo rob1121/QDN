@@ -8,21 +8,40 @@ use JavaScript;
 use Validator;
 
 class EmployeeRepo {
-    public function all() {
-        return Employee::orderBy('user_id')->get()->load('user');
+    /**
+     * @return mixed
+     */
+    public function all()
+    {
+        return Employee::with('user')->orderBy('user_id')->get();
     }
 
-    public function get($name) {
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function get($name)
+    {
         return Employee::whereName($name)->first();
     }
 
-    public function setup() {
+    /**
+     * @return mixed
+     */
+    public function setup()
+    {
         $employees = $this->all();
         $this->links($employees);
+
         return $employees;
     }
 
-    public function rules($set) {
+    /**
+     * @param $set
+     * @return array
+     */
+    public function rules($set)
+    {
         $rules =  [
             'name'         => 'required',
             'access_level' => 'required',
@@ -30,18 +49,29 @@ class EmployeeRepo {
             'position'     => 'required',
         ];
 
-        if ($set == 'new') {
+        if ($set == 'new')
+        {
             $rules['user_id'] = 'required | numeric | unique:employees,user_id';
             $rules['password'] = 'required';
         }
         return $rules;
     }
 
-    public function validate($request, $set = 'new') {
+    /**
+     * @param $request
+     * @param string $set
+     * @return mixed
+     */
+    public function validate($request, $set = 'new')
+    {
         return Validator::make($request->all(), $this->rules($set));
     }
 
-    public function links($query) {
+    /**
+     * @param $query
+     */
+    public function links($query)
+    {
         JavaScript::put('employees', $query);
         JavaScript::put('links', [
             'newEmployee' => route('newEmployeesOptions'),
@@ -50,56 +80,73 @@ class EmployeeRepo {
         ]);
     }
 
-    public function stores($request) {
+    /**
+     * @param $request
+     * @return $this
+     */
+    public function stores($request)
+    {
         $validation = $this->validate($request);
-        if ($validation->fails()) {
+        if ($validation->fails())
+        {
             return $validation->errors();
         }
 
-        $this->storeUser($request);
         return $this->storeEmployee($request)->load('user');
     }
 
-    public function updates($request) {
+    /**
+     * @param $request
+     * @return mixed
+     */
+    public function updates($request)
+    {
         $validation = $this->validate($request, 'update');
-        if ($validation->fails()) {
+        if ($validation->fails())
+        {
             return $validation->errors();
         }
 
-        $this->updateUser($request);
         return $this->updateEmployee($request);
     }
 
-    public function storeEmployee($request) {
+    /**
+     * @param $request
+     * @return static
+     */
+    public function storeEmployee($request)
+    {
         $employee = Employee::create($request->all());
         $employee->update([
             'status'     => 'active',
-            'department' => Station::whereStation($request->station)->first()->department,
+            'department' => Station::where('station', $request->station)->first()->department,
         ]);
+
+        $employee->user()->save(new user($request->all() ));
+
         return $employee;
     }
 
-    public function storeUser($request) {
-        User::create($request->all());
-    }
+    /**
+     * @param $request
+     * @return mixed
+     */
+    public function updateEmployee($request)
+    {
+        $user = collect(new User($request->all()))->toArray();
 
-    public function updateEmployee($request) {
         $employee = Employee::whereUserId($request->user_id)->first();
         $employee->update($request->all());
+        $employee->user()->update($user);
+
         return $employee->load('user');
     }
 
-    public function updateUser($request) {
-        User::whereEmployeeId($request->user_id)
-        ->update(['access_level' => $request->access_level]);
-    }
-
     /**
-     * delete employee
-     * @param  [type] $id [description]
-     * @return [type]     [description]
+     * @param $id
      */
-    public function delete($id) {
+    public function delete($id)
+    {
         Employee::whereId($id)->delete();
     }
 

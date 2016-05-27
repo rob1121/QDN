@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e5fc5848cede17709713c64a7074e753",
-    "content-hash": "4faed2119b4c5c3607752d76b2910a69",
+    "hash": "5b8b7f54bc4497851cd3f313698cc540",
+    "content-hash": "c26283db6e207d5332f23505c29f40fd",
     "packages": [
         {
             "name": "barryvdh/laravel-async-queue",
@@ -1579,6 +1579,46 @@
             "time": "2016-03-13 16:08:35"
         },
         {
+            "name": "mpociot/laravel-test-factory-helper",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mpociot/laravel-test-factory-helper.git",
+                "reference": "6818737abf67dfbf2761398f9e3d4fd9a782ab4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mpociot/laravel-test-factory-helper/zipball/6818737abf67dfbf2761398f9e3d4fd9a782ab4e",
+                "reference": "6818737abf67dfbf2761398f9e3d4fd9a782ab4e",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "~2.3",
+                "illuminate/console": "5.0.x|5.1.x|5.2.x",
+                "illuminate/filesystem": "5.0.x|5.1.x|5.2.x",
+                "illuminate/support": "5.0.x|5.1.x|5.2.x",
+                "php": ">=5.4.0",
+                "symfony/class-loader": "~2.3|~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mpociot\\LaravelTestFactoryHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Generate Laravel test factories from your existing models",
+            "keywords": [
+                "factory",
+                "laravel",
+                "tests"
+            ],
+            "time": "2016-05-24 22:06:20"
+        },
+        {
             "name": "mtdowling/cron-expression",
             "version": "v1.1.0",
             "source": {
@@ -1971,16 +2011,16 @@
         },
         {
             "name": "spatie/db-dumper",
-            "version": "1.2.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/db-dumper.git",
-                "reference": "cefbcf0e8fe66d199fdb2a54cfc368a5c117e43e"
+                "reference": "3bfcfc29c8c71b0f2da224c1a0d4720f8a370242"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/cefbcf0e8fe66d199fdb2a54cfc368a5c117e43e",
-                "reference": "cefbcf0e8fe66d199fdb2a54cfc368a5c117e43e",
+                "url": "https://api.github.com/repos/spatie/db-dumper/zipball/3bfcfc29c8c71b0f2da224c1a0d4720f8a370242",
+                "reference": "3bfcfc29c8c71b0f2da224c1a0d4720f8a370242",
                 "shasum": ""
             },
             "require": {
@@ -2017,7 +2057,7 @@
                 "mysqldump",
                 "spatie"
             ],
-            "time": "2016-03-13 07:46:18"
+            "time": "2016-04-27 20:49:36"
         },
         {
             "name": "spatie/laravel-backup",
@@ -2133,6 +2173,62 @@
                 "mailer"
             ],
             "time": "2015-06-06 14:19:39"
+        },
+        {
+            "name": "symfony/class-loader",
+            "version": "v3.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/class-loader.git",
+                "reference": "cbb7e6a9c0213a0cffa5d9065ee8214ca4e83877"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/class-loader/zipball/cbb7e6a9c0213a0cffa5d9065ee8214ca4e83877",
+                "reference": "cbb7e6a9c0213a0cffa5d9065ee8214ca4e83877",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "symfony/finder": "~2.8|~3.0",
+                "symfony/polyfill-apcu": "~1.1"
+            },
+            "suggest": {
+                "symfony/polyfill-apcu": "For using ApcClassLoader on HHVM"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\ClassLoader\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony ClassLoader Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-03-30 10:41:14"
         },
         {
             "name": "symfony/console",
@@ -3160,7 +3256,7 @@
             ],
             "authors": [
                 {
-                    "name": "François Zaninotto"
+                    "name": "Francois Zaninotto"
                 }
             ],
             "description": "Faker is a PHP library that generates fake data for you.",

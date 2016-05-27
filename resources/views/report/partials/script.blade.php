@@ -69,7 +69,7 @@ $('#validation-modal').on('hidden.bs.modal', function() {
         $.ajax({
                 url: '{{ route('forget',['slug'=>$qdn->slug]) }}',
                 type: 'get',
-                success: function (data) {
+                success: function () {
                     location.href = href;
                 }
             });
@@ -79,12 +79,13 @@ var refresher = function(){
     $.ajax({
             url: '{{ route("refresher",["slug" => $qdn->slug] )}}',
             type: 'get',
-            success: function (data) {
-                setTimeout(refresher, 1*60000);
+            success: function () {
+                setTimeout(refresher, 60000);
             }
         });
-}
-setTimeout(refresher, 1*60000);
+};
+    
+setTimeout(refresher, 60000);
 
 $('nav').find('a').on('click', function (e) {
     var self = $(this);
@@ -105,6 +106,7 @@ document.onkeypress = function() {
 };
 setInterval(CheckIdleTime, 1000);
 function CheckIdleTime() {
+    
     _idleSecondsCounter++;
     var oPanel = document.getElementById("SecondsUntilExpire");
     if (oPanel)

@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
 class Account extends Model
 {
     protected $fillable = ['employee_id','password','status','access_level'];
@@ -12,6 +11,6 @@ class Account extends Model
      */
     public function employee()
     {
-        return $this->belongsTo('Employee','employee_id','user_id');
+        return $this->belongsTo('App\Employee', 'employee_id', 'user_id');
     }
 }

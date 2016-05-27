@@ -55,16 +55,16 @@
                         >
                     </div>
                     <!-- DEPARTMENT -->
-                    <!-- <div class="form-group">
-                        <label for="department">Department:</label>
-                        <input  type = "text"
-                        name         = "department"
-                        id           = "department"
-                        class        = "form-control input-lg"
-                        value        = "{{ $user->employee->department }}"
-                        autocomplete = "off"
-                        >
-                    </div> -->
+                    {{--<div class="form-group">--}}
+                        {{--<label for="department">Department:</label>--}}
+                        {{--<input  type = "text"--}}
+                        {{--name         = "department"--}}
+                        {{--id           = "department"--}}
+                        {{--class        = "form-control input-lg"--}}
+                        {{--value        = "{{ $user->employee->department }}"--}}
+                        {{--autocomplete = "off"--}}
+                        {{-->--}}
+                    {{--</div>--}}
                     <!-- STATION -->
                     <div class="form-group">
                         <label for="station">Station:</label>

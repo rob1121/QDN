@@ -282,7 +282,7 @@ class InfoRepository implements InfoRepositoryInterface {
         {
 			$qdn->closure()->update([
 				'status' => 'Incomplete Fill-Up',
-				$column  => '',
+				$user->department  => '',
 			]);
 		} else {
 			$this->updateStatus($qdn)

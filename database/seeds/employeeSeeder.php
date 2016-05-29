@@ -68,7 +68,7 @@ class employeeSeeder extends Seeder {
 		/**
 		 * this for dummy account
 		 */
-		foreach (range(1, 2000) as $index) {
+		foreach (range(1, 200) as $index) {
 			$department = $faker->randomElement(['production', 'process_engineering', 'quality_assurance', 'other_department']);
 
 			$station['quality_assurance']   = ['quality assurance'];

@@ -11,11 +11,11 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\User::class, function () {
     return [
-        'name' => $faker->name,
-        'email' => $faker->email,
+        'employee_id' => factory(App\Employee::class)->create()->user_id,
         'password' => Hash::make('fakepassword'),
+        'access_level' => 'user',
         'remember_token' => str_random(10),
     ];
 });
@@ -152,7 +152,7 @@ $factory->define(App\Account::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Employee::class, function (Faker\Generator $faker) {
     return [
-        'user_id' =>  $faker->randomNumber() ,
+        'user_id' =>  $faker->unique()->randomNumber() ,
         'name' =>  $faker->name ,
         'station' =>  $faker->word ,
         'department' =>  $faker->word ,

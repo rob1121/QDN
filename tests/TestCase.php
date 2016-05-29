@@ -24,4 +24,22 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
 		return $app;
 	}
+
+    /**
+     * @return mixed
+     */
+    protected function loginFakeUser()
+    {
+        $this->actingAs(factory(App\User::class)->create());
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function loginAsAdmin()
+    {
+        $user = factory(App\User::class)->create();
+        $user->update(['access_level' => 'admin']);
+        $this->actingAs($user);
+    }
 }

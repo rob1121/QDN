@@ -182,7 +182,7 @@ class reportController extends Controller {
      */
     public function QaVerificationUpdate(Info $slug, Request $request)
     {
-		$this->qdn->sectionEigthClosure($slug, $request); // update qdn closures
+		$this->qdn->sectionEightClosure($slug, $request); // update qdn closures
 		return redirect('/'); // view home page
 	}
 

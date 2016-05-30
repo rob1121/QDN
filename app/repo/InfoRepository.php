@@ -35,7 +35,7 @@ class InfoRepository implements InfoRepositoryInterface {
      */
 	public function view($qdn, $view)
     {
-		Event::fire(new EventLogs('view' . $qdn->control_id));
+		$this->logEvent('view' . $qdn->control_id);
 
 		JavaScript::put([
 			'link' => $this->links($qdn->slug),
@@ -199,6 +199,7 @@ class InfoRepository implements InfoRepositoryInterface {
 			'control_id'  => $control_id,
 			'customer'    => $customer,
 		]);
+
 		return $info;
 	}
 
@@ -263,11 +264,10 @@ class InfoRepository implements InfoRepositoryInterface {
 			'pe_verified_by' => $this->user()->employee->name,
 		]);
 
-		Event::fire(new EventLogs('P.E. validate' . $qdn->control_id, $request->status . ": " . $request->ValidationMessage));
+        $this->logEvent('P.E. validate' . $qdn->control_id, $request->status . ": " . $request->ValidationMessage);
 		Event::fire(new PeVerificationNotificationEvent($qdn, $request->ValidationMessage));
-
-		Flash::success('Successfully Verified !! QDN are now ready for completion!');
-	}
+        $this->showMsg('Successfully Verified !! QDN are now ready for completion!');
+    }
 
     /**
      * @param $request
@@ -290,10 +290,9 @@ class InfoRepository implements InfoRepositoryInterface {
 			: $qdn->closure()->update(['status' => 'Q.a. Verification']);
 		}
 
-		Event::fire(new EventLogs('view' . $qdn->control_id, $request->approver_radio . ": " . $request->ApproverMessage)); //fire email notif event
-		Event::fire(new ApprovalNotificationEvent($qdn, $request->ApproverMessage)); //flash success alert message
-
-		Flash::success('Successfully updated! Issued QDN still waiting for other approvers!'); //return home page
+		$this->logEvent('view' . $qdn->control_id, $request->approver_radio . ": " . $request->ApproverMessage);
+        Event::fire(new ApprovalNotificationEvent($qdn, $request->ApproverMessage)); //flash success alert message
+        $this->showMsg('Successfully updated! Issued QDN still waiting for other approvers!');
 	}
 
     /**
@@ -313,7 +312,7 @@ class InfoRepository implements InfoRepositoryInterface {
      * @param $qdn
      * @param $request
      */
-    public function sectionEigthClosure($qdn, $request)
+    public function sectionEightClosure($qdn, $request)
     {
 		Closure::where('info_id', $qdn->id)
 			->update([
@@ -324,7 +323,7 @@ class InfoRepository implements InfoRepositoryInterface {
 				'status'                   => 'closed',
 			]);
 
-		Event::fire(new EventLogs('Verify' . $qdn->control_id, $request->ValidationResult . ": " . $request->ApproverMessage)); //event logs
+		$this->logEvent('Verify' . $qdn->control_id, $request->ValidationResult . ": " . $request->ApproverMessage);
 		Event::fire(new QdnClosedNotificationEvent($qdn)); // send email notification
 
 		Flash::success('Successfully updated! Issued QDN are now closed!'); // add flash alert notification
@@ -528,5 +527,23 @@ class InfoRepository implements InfoRepositoryInterface {
         }
 
         return isset($file_name) ? $file_name : $info->preventiveAction->objective_evidence;
+    }
+
+	/**
+	 * @param $event
+	 * @internal param $qdn
+	 * @internal param $request
+	 */
+	private function logEvent($event)
+	{
+		Event::fire(new EventLogs($event)); //event logs
+	}
+
+    /**
+     * @param $msg
+     */
+    private function showMsg($msg)
+    {
+        Flash::success($msg);
     }
 }

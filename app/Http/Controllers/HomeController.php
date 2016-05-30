@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use JavaScript;
 use Str;
 
-class HomeController extends Controller {
+class HomeController extends Controller
+{
 	private $home;
 	protected $user;
 
@@ -18,7 +19,8 @@ class HomeController extends Controller {
      * HomeController constructor.
      * @param HomeRepository $home
      */
-    public function __construct(HomeRepository $home) {
+    public function __construct(HomeRepository $home)
+	{
 		$this->home = $home;
 		$this->user = Auth::user();
 	}
@@ -26,14 +28,16 @@ class HomeController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
-    public function index() {
+    public function index()
+	{
 		return $this->user ? redirect('/home') : view('welcome');
 	}
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
-    public function home() {
+    public function home()
+	{
 		JavaScript::put('yearNow', $this->home->dateTime()->year);
 		return $this->user ? view('home') : redirect('/');
 	}
@@ -43,7 +47,8 @@ class HomeController extends Controller {
      * @param $collection
      * @return array
      */
-	protected function arrayCollection($collection) {
+	protected function arrayCollection($collection)
+	{
 		return $this->home->collection($collection);
 	}
 
@@ -51,7 +56,8 @@ class HomeController extends Controller {
      * @param Request $request
      * @return array
      */
-    public function ajax(Request $request) {
+    public function ajax(Request $request)
+	{
 		return $this->home->highChartData($request);
 	}
 
@@ -59,24 +65,27 @@ class HomeController extends Controller {
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function qdnData(Request $request) {
+    public function qdnData(Request $request)
+	{
 		return view('home.qdnData')
-            ->with('tbl', Info::issued($request->input('setDate'))->get());
+            ->with('tbl', Info::issued($request->setDate)->get());
 	}
 
 	/**
 	 * @param Request $request
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-	public function AjaxStatus(Request $request) {
+	public function AjaxStatus(Request $request)
+	{
 		return view('home.status')
-            ->with('tbl', Closure::status(Str::title($request->input('status')))->get());
+            ->with('tbl', Closure::status(Str::title($request->status))->get());
 	}
 
 	/**
 	 * @return array
      */
-	public function counter() {
+	public function counter()
+	{
 		return $this->home->counter();
 	}
 }

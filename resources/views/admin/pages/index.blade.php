@@ -153,17 +153,15 @@ border: 0px;
     <ul class="list-group">
         <li class="list-group-item"><h4>Recent Issued QDN</h4></li>
         @foreach ($qdn as $issue)
-        <li class="list-group-item">
+            <li class="list-group-item">
             <h5>
             <strong>{{ $issue->discrepancy_category }}</strong>
+
             @if($issue->closure->status != 'Closed')
-            <span class="label  label-primary pull-right">
-                @else
-                <span class="label  label-success pull-right">
-                    @endif
-                    {{ Str::upper($issue->closure->status) }}
-                </span>
-            </span>
+                    <span class="label  label-primary pull-right"></span>
+            @else
+                <span class="label  label-success pull-right"></span>
+            @endif
             </h5>
             <div class="row-fluid justify">
                 {{ $issue->problem_description }}

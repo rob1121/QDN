@@ -43,11 +43,12 @@
         </a>
       </li>
       <li>
-        <a href="pages/widgets.html">
+        <a href="#">
           <i class="fa fa-clock-o"></i> <span>Logs</span>
         </a>
       </li>
-      <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+      <li><a href="#"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+      <li><a href="/"><i class="fa fa-home"></i> <span>Got back to home</span></a></li>
     </section>
     <!-- /.sidebar -->
   </aside>

@@ -22,11 +22,14 @@ class AdminController extends Controller {
 	}
 
 	public function index() {
-		$ave   = $this->qdn->failureModeAve();
-		$count = $this->qdn->failureModeCount();
 		JavaScript::put('yearNow', $this->qdn->year());
-		$qdn = Info::orderBy('id', 'desc')->take(5)->get()->load('closure');
-		return view('admin.pages.index', compact('ave', 'qdn', 'count'));
+
+		return view('admin.pages.index')
+            ->with([
+                'ave' => $this->qdn->failureModeAve(),
+                'qdn' => Info::orderBy('id', 'desc')->take(5)->get()->load('closure'),
+                'count' => $this->qdn->failureModeCount()
+            ]);
 	}
 
 	public function UpdateLead(Request $request) {

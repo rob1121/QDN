@@ -97,7 +97,12 @@ class reportController extends Controller {
 		return redirect('/');
 	}
 
-	public function SectionOneSaveAsDraft(Request $request, Info $slug)
+    /**
+     * @param Request $request
+     * @param Info $slug
+     * @return array
+     */
+    public function SectionOneSaveAsDraft(Request $request, Info $slug)
     {
 		$collection = $this->qdn->SectionOneUpdate($request, $slug);
 		Event::fire(new EventLogs($this->qdn->user(), 'P.E. save as draft and not yet validate' . $slug->control_id));

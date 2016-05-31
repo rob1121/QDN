@@ -1,8 +1,6 @@
 <?php
 
 
-use App\Http\Requests\QdnCreateRequest;
-use App\repo\InfoRepository;
 
 class ReportControllerTest extends TestCase
 {
@@ -20,12 +18,5 @@ class ReportControllerTest extends TestCase
         $this->loginFakeUser();
         $this->visit('/report');
         $this->see('QDN Issuance');
-    }
-    
-    public function test_a_method_store()
-    {
-        $this->loginFakeUser();
-        $this->json('GET', '/report');
-        $this->assertResponseOk();
     }
 }

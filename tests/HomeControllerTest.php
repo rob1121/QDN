@@ -6,7 +6,6 @@ use Carbon\Carbon;
 
 class HomeControllerTest extends TestCase
 {
-
     public function test_index_and_for_home_method()
     {
         $this->loginFakeUser();

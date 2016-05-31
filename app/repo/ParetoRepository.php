@@ -6,7 +6,7 @@
  * Time: 11:09 AM
  */
 
-namespace app\repo;
+namespace App\repo;
 
 
 use App\Models\Info;
@@ -15,12 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class ParetoRepository
 {
-    private $dateTime;
-
-    public function __construct()
-    {
-        $this->dateTime = Carbon::now('Asia/Manila');;
-    }
     /**
      * @param $request
      * @return mixed
@@ -107,7 +101,7 @@ class ParetoRepository
         $table = Info::with(['involvePerson'])->where(
             DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'),
             "=",
-            $this->dateTime->format('m-d-Y')
+            $this->dateTime()->format('m-d-Y')
         )
             ->show(0, 10)
             ->get();
@@ -122,7 +116,7 @@ class ParetoRepository
         $table = Info::with(['involvePerson'])->where(
             DB::raw('WEEK(created_at)'),
             "=",
-            $this->dateTime->weekOfYear
+            $this->dateTime()->weekOfYear
         )
             ->show(0, 10)
             ->get();
@@ -137,12 +131,12 @@ class ParetoRepository
         $table = Info::with(['involvePerson'])->where(
             DB::raw('MONTH(created_at)'),
             "=",
-            $this->dateTime->month
+            $this->dateTime()->month
         )
             ->where(
                 DB::raw('YEAR(created_at)'),
                 "=",
-                $this->dateTime->year
+                $this->dateTime()->year
             )
             ->show(0, 10)
             ->get();
@@ -157,10 +151,18 @@ class ParetoRepository
         $table = Info::with(['involvePerson'])->where(
             DB::raw('YEAR(created_at)'),
             "=",
-            $this->dateTime->year
+            $this->dateTime()->year
         )
             ->show(0, 10)
             ->get();
         return $table;
+    }
+
+    /**
+     * @return static
+     */
+    private function dateTime()
+    {
+        return Carbon::now('Asia/Manila');
     }
 }

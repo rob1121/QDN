@@ -22,24 +22,27 @@ class EmailQdnNotificationEventListener implements ShouldQueue {
 	 * @param  EmailQdnNotificationEvent  $event
 	 * @return void
 	 */
-	public function handle(EmailQdnNotificationEvent $event) {
-		$involvePerson = $event->qdn->involvePerson;
-		$closure       = $event->qdn->closure;
-		$user          = $event->user->employee;
-		$qdn           = $event->qdn;
-		$data          = [
-			'qdn'           => $qdn,
-			'involvePerson' => $involvePerson,
-			'closure'       => $closure,
-			'comment'       => $event->comment,
-			'user'          => $user,
-		];
-		Mail::send('notifications.issue_qdn', $data, function ($message) use ($event) {
-			$message->from('robinsonlegaspi@astigp.com', 'Rob');
-			$message->replyTo('robinsonlegaspi@astigp.com', 'Rob');
-			$message->sender('robinsonlegaspi@astigp.com', 'Rob');
-			$message->to('robinsonlegaspi@astigp.com', 'Robinson Legaspi')
-				->subject('QDN: ' . Str::title($event->qdn->problem_description) . ' - ' . $event->qdn->closure->status);
-		});
-	}
+	public function handle(EmailQdnNotificationEvent $event)
+    {
+        $involvePerson = $event->qdn->involvePerson;
+        $closure = $event->qdn->closure;
+        $user = $event->user->employee;
+        $qdn = $event->qdn;
+        $data = [
+            'qdn' => $qdn,
+            'involvePerson' => $involvePerson,
+            'closure' => $closure,
+            'comment' => $event->comment,
+            'user' => $user,
+        ];
+        Mail::send('notifications.issue_qdn', $data, function ($message) use ($event) {
+            $message->from('robinsonlegaspi@astigp.com', 'Rob');
+            $message->replyTo('robinsonlegaspi@astigp.com', 'Rob');
+            $message->sender('robinsonlegaspi@astigp.com', 'Rob');
+            $message->to('robinsonlegaspi@astigp.com', 'Robinson Legaspi');
+//            $message->to('alexanderalmonte@astigp.com', 'Alexander Almonter');
+//            $message->to('jakeparambita@astigp.com', 'Jake Parambita');
+            $message->subject('QDN: ' . Str::title($event->qdn->problem_description) . ' - ' . $event->qdn->closure->status);
+        });
+    }
 }

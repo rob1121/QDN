@@ -40,7 +40,6 @@ class reportController extends Controller {
 		return PDF::loadHTML(view('pdf.print', ['qdn' => $slug]))->stream();
 	}
 
-
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -55,19 +54,18 @@ class reportController extends Controller {
      */
 	public function store(QdnCreateRequest $request)
     {
-		Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!');
-
-		if (Info::isExist($request)->count() == 0)
+		if (! $this->hasDuplicate($request))
         {
 			$qdn = $this->qdn->add($request);
-
 			Event::fire(new EventLogs($this->qdn->user(), 'issue QDN: ' . $qdn->control_id));
 			Event::fire(new EmailQdnNotificationEvent($qdn));
-
-			Flash::success('Success! Team responsible will be notified regarding the issue via email!');
 		}
 
-		return redirect('/');
+        $this->hasDuplicate($request)
+            ? Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!')
+            : Flash::success('Success! Team responsible will be notified regarding the issue via email!');
+        
+        return redirect('/');
 	}
 
 
@@ -205,5 +203,14 @@ class reportController extends Controller {
     {
 		$this->qdn->forgetCache($slug);
 	}
+
+    /**
+     * @param $request
+     * @return bool
+     */
+    private function hasDuplicate($request)
+    {
+        return Info::isExist($request)->count() > 0;
+    }
 
 }

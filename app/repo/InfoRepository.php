@@ -177,6 +177,7 @@ class InfoRepository implements InfoRepositoryInterface {
 		PreventiveAction::create($id);
 		QdnCycle::create($id);
 		Closure::create(['info_id' => $info->id, 'status' => 'p.e. verification']);
+		
 		return $info;
 	}
 

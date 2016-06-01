@@ -8,7 +8,7 @@ use Str;
 class InvolvePerson extends Model {
 	protected $fillable = [
 		'info_id',
-		'department',
+		'station',
 		'originator_id',
 		'originator_name',
 		'receiver_id',

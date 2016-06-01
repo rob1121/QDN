@@ -180,7 +180,7 @@ box-shadow: none;
             <table class="table table-hover"  id="table-content">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>QDN No. </th>
                         <th class="col-md-5">Desciption</th>
                         <th>Station</th>
                         <th>Customer</th>

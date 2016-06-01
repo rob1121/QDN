@@ -118,7 +118,7 @@ class DummyInfoSeeder extends Seeder {
 
 			InvolvePerson::create([
 				'info_id'         => $info->id,
-				'department'      => $originator->station,
+				'station'      => $originator->station,
 				'originator_id'   => $originator->user_id,
 				'originator_name' => $originator->name,
 				'receiver_id'     => $issuedTo->user_id,

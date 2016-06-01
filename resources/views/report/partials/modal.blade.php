@@ -76,7 +76,7 @@ function dispositionCondition($qdn, $disposition) {
                             Save as Draft <i class="fa fa-save"></i><br>
                             <small>and come back soon</small>
                             </button>
-                            @if ($currentUser->employee->department == 'Process')
+                            @if ($currentUser->employee->department == 'process_engineering')
                             <button
                             type  = "submit"
                             name  = "submit"

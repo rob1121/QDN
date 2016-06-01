@@ -80,7 +80,7 @@ class CreateQdnTables extends Migration {
 
 		Schema::create('involve_people', function (Blueprint $table) {
 			$table->integer('info_id')->unsigned();
-			$table->string('department');
+			$table->string('station');
 			$table->string('originator_id');
 			$table->string('originator_name');
 			$table->string('receiver_id');

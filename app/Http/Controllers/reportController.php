@@ -54,16 +54,17 @@ class reportController extends Controller {
      */
 	public function store(QdnCreateRequest $request)
     {
-		if (! $this->hasDuplicate($request))
-        {
-			$qdn = $this->qdn->add($request);
-			Event::fire(new EventLogs($this->qdn->user(), 'issue QDN: ' . $qdn->control_id));
-			Event::fire(new EmailQdnNotificationEvent($qdn));
+        //check if has duplicate
+		if($this->hasDuplicate($request))
+		{
+            //flash message nad redirect to home page
+			Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!');
+			return redirect('/');
 		}
-
-        $this->hasDuplicate($request)
-            ? Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!')
-            : Flash::success('Success! Team responsible will be notified regarding the issue via email!');
+        //insert request to database method and return table info
+		$qdn = $this->qdn->add($request);
+        //fire event method
+		$this->storeQdnEvent($qdn);
         
         return redirect('/');
 	}
@@ -76,10 +77,9 @@ class reportController extends Controller {
     public function show(Info $slug)
     {
 		$this->qdn->addCacheQdn($slug);
-		if (Gate::allows('mod-qdn', $slug->slug))
-        {
-			return $this->qdn->view($slug, 'report.view');
-		}
+
+		if (Gate::allows('mod-qdn', $slug->slug)) return $this->qdn->view($slug, 'report.view');
+
 		$active_user = Cache::get($slug->slug);
 		Flash::warning('Notice: You are redirected to home page for the reason that the page you are trying to access is currently used by ' . $active_user);
 		return redirect(route('home'));
@@ -127,8 +127,8 @@ class reportController extends Controller {
     public function draft(Info $slug, Request $request)
     {
 		$this->qdn->save($slug, $request);
-		Event::fire(new EventLogs($this->qdn->user(), 'Incomplete: save as draft' . $slug->control_id));
-		Flash::success('Successfully save! Issued QDN are save as draft and still subject for completion!');
+        $this->draftEvent($slug);
+
 		return redirect('/');
 	}
 
@@ -141,10 +141,8 @@ class reportController extends Controller {
     {
         $this->qdn->save($slug, $request);
         $slug->closure()->update(['status' => 'incomplete approval']);
+        $this->forApprovalEvent($slug);
 
-        Event::fire(new EventLogs($this->qdn->user(), 'Incomplete: save and proceed' . $slug->control_id));
-        Event::fire(new ApprovalNotificationEvent($slug, 'Answered by' . $this->qdn->user()->employee->name));
-        Flash::success('Successfully save! Issued QDN is now subject for Approval!');
         return redirect('/');
 	}
 
@@ -216,6 +214,35 @@ class reportController extends Controller {
     private function hasDuplicate($request)
     {
         return Info::isExist($request)->count() > 0;
+    }
+
+	/**
+	 * @param $qdn
+	 */
+	private function storeQdnEvent($qdn)
+	{
+		Event::fire(new EventLogs($this->qdn->user(), 'issue QDN: ' . $qdn->control_id));
+		Event::fire(new EmailQdnNotificationEvent($qdn));
+        Flash::success('Success! Team responsible will be notified regarding the issue via email!');
+	}
+
+    /**
+     * @param Info $slug
+     */
+    private function draftEvent(Info $slug)
+    {
+        Event::fire(new EventLogs($this->qdn->user(), 'Incomplete: save as draft' . $slug->control_id));
+        Flash::success('Successfully save! Issued QDN are save as draft and still subject for completion!');
+    }
+
+    /**
+     * @param Info $slug
+     */
+    private function forApprovalEvent(Info $slug)
+    {
+        Event::fire(new EventLogs($this->qdn->user(), 'Incomplete: save and proceed' . $slug->control_id));
+        Event::fire(new ApprovalNotificationEvent($slug, 'Answered by' . $this->qdn->user()->employee->name));
+        Flash::success('Successfully save! Issued QDN is now subject for Approval!');
     }
 
 }

@@ -216,7 +216,7 @@ class InfoRepository implements InfoRepositoryInterface {
 
 			InvolvePerson::create([
 				'info_id'         => $id,
-				'department'      => $person->department,
+				'station'      => $person->station,
 				'originator_id'   => $this->user()->employee_id,
 				'originator_name' => $this->user()->employee->name,
 				'receiver_id'     => $person->user_id,
@@ -241,7 +241,7 @@ class InfoRepository implements InfoRepositoryInterface {
 			$emp         = Employee::whereName($name)->first();
 			$emp_dept[]  = $emp->station;
 			$arr_names[] = new InvolvePerson([
-				'department'      => $emp->station,
+				'station'      => $emp->station,
 				'originator_id'   => $involvePerson->originator_id,
 				'originator_name' => $involvePerson->originator_name,
 				'receiver_id'     => $emp->user_id,
@@ -273,40 +273,44 @@ class InfoRepository implements InfoRepositoryInterface {
     /**
      * @param $request
      * @param $qdn
+     * @return bool
      */
     public function approverUpdate($request, $qdn)
     {
+
 		$user = $this->user()->employee;
-		$qdn->closure()->update([$user->department => $user->name]);
 
-		if ('reject' == $request->approver_radio)
+        if ('reject' == $request->approver_radio)
         {
-			$qdn->closure()->update([
-				'status' => 'Incomplete Fill-Up',
-				$user->department  => '',
-			]);
-		} else {
-			$this->updateStatus($qdn)
-			? $qdn->closure()->update(['status' => 'Incomplete Approval'])
-			: $qdn->closure()->update(['status' => 'Q.a. Verification']);
-		}
+            $qdn->closure()->update(['status' => 'Incomplete Fill-Up', $user->department  => '']);
+            return 'false';
+        }
 
-		$this->logEvent('view' . $qdn->control_id, $request->approver_radio . ": " . $request->ApproverMessage);
-        Event::fire(new ApprovalNotificationEvent($qdn, $request->ApproverMessage)); //flash success alert message
-        $this->showMsg('Successfully updated! Issued QDN still waiting for other approvers!');
+        $closure = [$user->department => $user->name];
+
+        if(hasNoOtherDepartmentInvolve($user, $qdn)) $closure['other_Department'] = $user->name;
+        $qdn->closure()->update($closure);
+
+        $status['status'] = $this->statusOf($qdn) ? 'Q.a. Verification' : 'Incomplete Approval';
+        $qdn->closure()->update($status);
+        
+        return 'true';
 	}
 
     /**
      * @param $qdn
      * @return int
      */
-    public function updateStatus($qdn)
+    public function statusOf($qdn)
     {
-		$qdn     = Info::whereSlug($qdn->slug)->with('closure')->first();
-		$closure = $qdn->closure;
+		$closure     = Info::whereSlug($qdn->slug)->with('closure')->first();
+		$closure = $closure->closure;
         $booleanClosure = $closure->other_department && $closure->production && $closure->quality_assurance && $closure->process_engineering;
 
-        return $booleanClosure ? 0 : 1;
+        if ($booleanClosure && $qdn->status == 'Q.a. Verification')
+            dd("InAppropriateClosureStatusException: QDN signatories is not yet complete and the status is already Q.a. Verification" . __LINE__);
+
+        return $booleanClosure;
 	}
 
     /**
@@ -546,5 +550,16 @@ class InfoRepository implements InfoRepositoryInterface {
     private function showMsg($msg)
     {
         Flash::success($msg);
+    }
+
+    /**
+     * @param $request
+     * @param $qdn
+     */
+    public function updateStatusEvent($request, $qdn)
+    {
+        $this->logEvent('view' . $qdn->control_id, $request->approver_radio . ": " . $request->ApproverMessage);
+        Event::fire(new ApprovalNotificationEvent($qdn, $request->ApproverMessage)); //flash success alert message
+        $this->showMsg('Successfully updated! Issued QDN still waiting for other approvers!');
     }
 }

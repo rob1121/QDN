@@ -54,18 +54,14 @@ class reportController extends Controller {
      */
 	public function store(QdnCreateRequest $request)
     {
-		if (! $this->hasDuplicate($request))
+        Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!');
+
+        if (! $this->hasDuplicate($request))
         {
 			$qdn = $this->qdn->add($request);
-			Event::fire(new EventLogs($this->qdn->user(), 'issue QDN: ' . $qdn->control_id));
-			Event::fire(new EmailQdnNotificationEvent($qdn));
+            $this->issueQdnEvent($qdn);
 		}
-
-        $this->hasDuplicate($request)
-            ? Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!')
-            : Flash::success('Success! Team responsible will be notified regarding the issue via email!');
-        
-        return redirect('/');
+        return redirect(route('home'));
 	}
 
 
@@ -116,7 +112,10 @@ class reportController extends Controller {
      */
     public function ForIncompleteFillUp(Info $slug)
     {
-		return $this->qdn->view($slug, 'report.incomplete');
+        if (! $slug->involvePerson()->count())
+            return dd("TableRelationError: No found data related to parent table 'Info' in table 'involve_people', error at line ".__LINE__." of ".__FILE__);
+
+        return $this->qdn->view($slug, 'report.incomplete');
 	}
 
     /**
@@ -164,7 +163,9 @@ class reportController extends Controller {
      */
     public function UpdateForApprroval(Info $slug, Request $request)
     {
-		$this->qdn->approverUpdate($request, $slug); //update closure and qdncycle table
+		if ($this->qdn->approverUpdate($request, $slug))
+            $this->qdn->updateStatusEvent($request, $slug);
+        
 		return redirect('/');
 	}
 
@@ -216,6 +217,16 @@ class reportController extends Controller {
     private function hasDuplicate($request)
     {
         return Info::isExist($request)->count() > 0;
+    }
+
+    /**
+     * @param $qdn
+     */
+    private function issueQdnEvent($qdn)
+    {
+        Event::fire(new EventLogs($this->qdn->user(), 'issue QDN: ' . $qdn->control_id));
+        Event::fire(new EmailQdnNotificationEvent($qdn));
+        Flash::success('Success! Team responsible will be notified regarding the issue via email!');
     }
 
 }

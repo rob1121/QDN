@@ -8,6 +8,7 @@ use App\repo\HomeRepository;
 use Auth;
 use Illuminate\Http\Request;
 use JavaScript;
+use Laracasts\Flash\Flash;
 use Str;
 
 class HomeController extends Controller
@@ -77,8 +78,12 @@ class HomeController extends Controller
      */
 	public function AjaxStatus(Request $request)
 	{
-		return view('home.status')
-            ->with('tbl', Closure::status(Str::title($request->status))->get());
+        $tbl = Closure::status(Str::title($request->status))->get();
+
+		if($tbl->load('info')->count() != $tbl->count())
+            dd("TableRelationException: No related data found in parent table Info at line " . __LINE__);
+
+		return view('home.status', compact('tbl'));
 	}
 
 	/**

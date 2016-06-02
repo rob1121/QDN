@@ -58,6 +58,13 @@ class AccountsForeignKey extends Migration {
 				->on('infos')
 				->onDelete('cascade');
 		});
+
+		Schema::table('closures', function (Blueprint $table) {
+			$table->foreign('info_id')
+				->references('id')
+				->on('infos')
+				->onDelete('cascade');
+		});
 	}
 
 	/**

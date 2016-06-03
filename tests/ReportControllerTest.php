@@ -17,7 +17,7 @@ class ReportControllerTest extends TestCase
     {
         $this->loginFakeUser();
         $this->visit('/report');
-        
+
         $this->see('QDN Issuance');
     }
 }

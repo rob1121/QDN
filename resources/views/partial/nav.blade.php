@@ -47,11 +47,11 @@ $url = Request::url();
                             <li><a href="{{ route('dashboard') }}" style="border-bottom:1px solid #f5f5f5"><i class="fa fa-dashboard"></i> dashboard</a></li>
                             @endif
                             <li>
-                                <a data-toggle="modal" href='{{ route('profile',['id' => $currentUser->employee->user_id]) }}'>
+                                <a  href='{{ route('profile',['id' => $currentUser->employee->user_id]) }}'>
                                     <i class="fa fa-user"></i> Profile
                                 </a>
                             </li>
-                            <li><a data-toggle="modal" href='#sig-out'><i class="fa fa-sign-out"></i> Logout</a></li>
+                            <li><a href='/logout'><i class="fa fa-sign-out"></i> Logout</a></li>
                         </ul>
                     </li>
                     @else
@@ -63,12 +63,3 @@ $url = Request::url();
             </div>
             </div><!-- /.navbar-collapse -->
         </nav>
-        <div class="modal" id="sig-out">
-            <div class="modal-dialog">
-                <div class="modal-content text-center" style="padding:32px 0px 32px 0px;">
-                    <div class="col-md-12" style="margin-bottom:24px"><em class="lead">Are you sure you want to sign out?</em></div>
-                    <a type="button" class="btn btn-default" data-dismiss="modal">No</a>
-                    <a class="btn btn-primary" href="/logout">Yes</a>
-                </div>
-            </div>
-        </div>

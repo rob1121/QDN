@@ -10,15 +10,17 @@ use DB;
 use Illuminate\Http\Request;
 use JavaScript;
 
-class ParetoController extends Controller {
+class ParetoController extends Controller
+{
     private $pareto;
 
     /**
      * ParetoController constructor.
      * @param ParetoRepository $pareto
      */
-    public function __construct(ParetoRepository $pareto) {
-		$this->middleware('admin');
+    public function __construct(ParetoRepository $pareto)
+    {
+        $this->middleware('admin');
         $this->pareto = $pareto;
     }
 
@@ -44,7 +46,8 @@ class ParetoController extends Controller {
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function paretoAjax(Request $request) {
+    public function paretoAjax(Request $request)
+    {
 
         $collections = [
             'column' => $request->column,
@@ -54,7 +57,7 @@ class ParetoController extends Controller {
 
         return view('home.pareto-ajax', $collections);
 
-	}
+    }
 
     /**
      * @param Request $request

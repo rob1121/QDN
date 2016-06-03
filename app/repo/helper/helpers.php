@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Auth;
+
 /**
  * Created by PhpStorm.
  * User: tspi.qa
@@ -7,18 +9,67 @@
  * @param $qdn
  * @return string
  */
+function check($qdn, $value)
+{
+    return $value == $qdn->major 
+        ? '[&nbsp;x&nbsp;]' 
+        : '[&nbsp;&nbsp;&nbsp;&nbsp;]';
+}
 
+function isHidden($qdn)
+{
+    return user()->employee->station == $qdn->involvePerson->first()->station
+        && $qdn->closure->status == 'Incomplete Fill-Up'? '':'hidden';
+}
+
+/**
+ * @param $qdn
+ * @return string
+ */
+function isDisabled($qdn)
+{
+    return user()->employee->station == $qdn->involvePerson->first()->station
+        && $qdn->closure->status == 'Incomplete Fill-Up'? '':'disabled';
+}
+
+function user()
+{
+    return Auth::user()->load('employee');
+}
+
+/**
+ * @param $qdn
+ * @return bool
+ */
+function isIncompleteFillUpRespondent($qdn)
+{
+    $unique = $qdn->involvePerson->unique('station');
+
+    if ($unique->count() == 0) return false;
+
+    $array_search = $unique->count() > 1
+        ? array_search(user()->employee->station, $unique)
+        : user()->employee->station == $unique[0]->station;
+
+    return $qdn->closure->status == 'Incomplete Fill-Up'
+        && $array_search;
+}
+/**
+ * @param $qdn
+ * @return string
+ */
 function uniqueStation($qdn)
-{ 
+{
     $station = '';
-    foreach ($qdn->involvePerson->unique('station') as $employee) $station .= "{$employee->station} <br/>";
+    foreach ($qdn->involvePerson->unique('station') as $employee)
+        $station .= "{$employee->station} <br/>";
     
     return $station;
 }
 
 /**
  * @param $user
- * @param $closure
+ * @param $qdn
  * @return bool
  */
 function isApprover($user, $qdn)

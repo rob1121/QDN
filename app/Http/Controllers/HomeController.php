@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Closure;
 use App\Models\Info;
+use App\repo\Exception\DataRelationNotFound;
+use App\repo\Exception\ExceptionInterface;
 use App\repo\HomeRepository;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use JavaScript;
-use Laracasts\Flash\Flash;
 use Str;
 
 class HomeController extends Controller
@@ -81,7 +83,7 @@ class HomeController extends Controller
         $tbl = Closure::status(Str::title($request->status))->get();
 
 		if($tbl->load('info')->count() != $tbl->count())
-            dd("TableRelationException: No related data found in parent table Info at line " . __LINE__);
+            $this->error(new DataRelationNotFound);
 
 		return view('home.status', compact('tbl'));
 	}
@@ -92,5 +94,13 @@ class HomeController extends Controller
 	public function counter()
 	{
 		return $this->home->counter();
+	}
+
+	/**
+	 * @param ExceptionInterface $throw
+     */
+	private function error(ExceptionInterface $throw)
+	{
+	    $throw->exception();
 	}
 }

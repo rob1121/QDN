@@ -166,7 +166,6 @@ class reportController extends Controller {
 		return redirect('/');
 	}
 
-
     /**
      * @param Info $slug
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

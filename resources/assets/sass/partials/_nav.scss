@@ -7,12 +7,12 @@
   font-size: 50px;
   font-weight: bold;
   transition: .3s;
-}
 
-.navbar-brand p.subtitle {
-  font-family: $subtitle-font;
-  margin-top: 10px;
-  font-size: 14px;
+  p.subtitle {
+    font-family: $subtitle-font;
+    margin-top: 10px;
+    font-size: 14px;
+  }
 }
 
 @media screen and (max-width: 350px) {
@@ -36,21 +36,32 @@
   position: fixed;
   width: 100%;
   color: $light-blue;
-}
 
-.stuck .navbar-brand {
-  font-size: 24px;
-  color: $dim-blue;
-}
+  .navbar-brand {
+    font-size: 24px;
+    color: $dim-blue;
+  }
 
-.stuck .navbar-brand p.subtitle {
-  margin-top: -5px;
-  font-size: 7px;
-  color: $dim-blue;
-}
+  .navbar-brand p.subtitle {
+    margin-top: -5px;
+    font-size: 7px;
+    color: $dim-blue;
+  }
 
-.stuck .navbar-nav li a {
-  color: $dim-blue;
+  .navbar-nav li a {
+    color: $dim-blue;
+  }
+
+  .navbar-brand:hover,
+  .navbar-nav li a:hover,
+  .navbar-brand:focus,
+  .navbar-nav li a:focus {
+    background-color: lighten($dim-grey, 60%);
+  }
+
+  .dropdown-menu li a {
+    color: $dim-grey;
+  }
 }
 
 .navbar-brand:hover,
@@ -62,28 +73,17 @@
   border: 0px;
 }
 
-.stuck .navbar-brand:hover,
-.stuck .navbar-nav li a:hover,
-.stuck .navbar-brand:focus,
-.stuck .navbar-nav li a:focus,
 .active,
-li.dropdown.open>.dropdown-toggle {
-  background-color: rgba(33, 78, 118, 0.1);
+li.dropdown.open > .dropdown-toggle {
+  background-color: lighten($dim-grey, 60%);
 }
 
-.dropdown-menu li a,
-.stuck .dropdown-menu li a {
+.dropdown-menu li a {
   color: $dim-grey;
 }
 
 .dropdown {
   cursor: pointer;
-}
-
-.dropdown.open .dropdown-menu {
-  border-radius: 0px;
-  -webkit-box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-  box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
 }
 
 

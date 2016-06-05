@@ -1,23 +1,3 @@
-<?php
-switch (Request::input('status')) {
-case 'p.e. verification':
-	$link = 'qdn_link';
-	break;
-case 'incomplete fill-up':
-	$link = 'ForIncompleteFillUp';
-	break;
-case 'incomplete approval':
-	$link = 'approval';
-	break;
-case 'q.a. verification':
-	$link = 'qa_verification';
-	break;
-
-default:
-	# code...
-	break;
-}
-?>
 @foreach ($tbl as $row)
 
     <tr>

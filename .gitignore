@@ -6,3 +6,4 @@
 Homestead.json
 Homestead.yaml
 /.idea
+/laravel_ide_helper.php

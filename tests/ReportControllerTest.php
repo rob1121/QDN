@@ -20,17 +20,4 @@ class ReportControllerTest extends TestCase
 
         $this->see('QDN Issuance');
     }
-
-    public function test_a_method_should_store_data_to_database()
-    {
-        $data = factory(App\Models\Info::class)->make();
-
-        $this->loginFakeUser(); //login dummy account
-        $this->json('POST','/report', $data->toArray());
-        $this->seeInDatabase([
-            'customer' =>  $data->customer,
-            'package_type' =>  $data->package_type,
-            'device_name' =>  $data->device_name
-        ]);
-    }
 }

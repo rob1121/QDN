@@ -21,7 +21,7 @@
             data-toggle = 'modal'
             href        = '#edit'
             >
-            {{ $qdn->closure->status == 'P.e. Verification' && $currentUser->employee->department == 'Process' ? 'verify' : 'edit' }}
+            {{ $qdn->closure->status == 'P.e. Verification' && $currentUser->employee->department == 'process_engineering' ? 'verify' : 'edit' }}
             <i class="fa fa-edit"></i>
         </a>
         @endif
@@ -135,11 +135,7 @@
                     Team Responsible:
                 </div>
                 <div class ="col-lg-6 col-md-6 col-sm-6 col-xs-5">
-                    <p class="team_responsible">
-                        @foreach ($qdn->involvePerson->unique('department') as $employee)
-                        {{ $employee->department }} <br>
-                        @endforeach
-                    </p>
+                    <p class="team_responsible">{!! uniqueStation($qdn) !!}</p>
                 </div>
             </div>
             <!-- ISSUED BY -->

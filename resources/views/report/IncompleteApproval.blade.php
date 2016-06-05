@@ -1,29 +1,3 @@
-<?php
-$data = ('' == $qdn->closure->production)
-	|| ('' == $qdn->closure->process_engineering)
-	|| ('' == $qdn->closure->quality_assurance)
-	|| ('' == $qdn->closure->other_department);
-
-switch ($currentUser->employee->department) {
-case 'quality_assurance':
-	$user = $qdn->closure->quality_assurance;
-	break;
-
-case 'process_engineering':
-	$user = $qdn->closure->process_engineering;
-	break;
-
-case 'production':
-	$user = $qdn->closure->production;
-	break;
-
-case 'other_department':
-	$user = $qdn->closure->other_department;
-	break;
-}
-$show = in_array($currentUser->access_level, ['admin', 'signatory']) && $data && '' == $user;
-?>
-
 @extends('layouts.app')
 @include('report.partials.style')
 @push('style')
@@ -61,7 +35,7 @@ $show = in_array($currentUser->access_level, ['admin', 'signatory']) && $data &&
 				<h3 class="panel-title">APPROVALS:</h3>
 			</div>
 			<div class="panel-body" id="approval-body">
-				@if ($show)
+				@if (isApprover($currentUser, $qdn))
 				<div class="col-md-12 text-center">
 					<div class="btn-group" data-toggle="buttons" id="approval-btn-group">
 						<label class="btn btn-default btn-lg" id="section7-approve">
@@ -74,8 +48,9 @@ $show = in_array($currentUser->access_level, ['admin', 'signatory']) && $data &&
 						</label>
 					</div>
 				</div>
+                    <div class="clearfix"></div>
 				@endif
-				@include('report.partials.sectionSeven',['view' => $show, 'valid' => $user])
+				@include('report.partials.sectionSeven',['view' => isApprover($currentUser, $qdn), 'valid' => userClosure($currentUser, $qdn->closure)])
 			</div>
 		</div>
 	</form>

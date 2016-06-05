@@ -14,9 +14,9 @@
         enctype = "multipart/form-data"
         id      = "completion"
         novalidate
-        >
+    >
         {!! csrf_field() !!}
-        @include('report.partials.section', ['hidden' => 'hidden', 'disabled' => 'disabled'])
+        @include('report.partials.section', ['hidden' => isHidden($qdn), 'disabled' => isDisabled($qdn)])
     </div>
     @if ($qdn->closure->status == 'incomplete fill-up' && $show)
     <div class="text-right container" id="btn-group">

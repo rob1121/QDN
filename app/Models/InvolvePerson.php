@@ -20,11 +20,11 @@ class InvolvePerson extends Model {
 		return $this->belongsTo('App\Models\Info');
 	}
 
-	public function setDepartmentAttribute($value) {
-		return $this->attributes['department'] = strtolower($value);
+	public function setStationAttribute($value) {
+		return $this->attributes['station'] = strtolower($value);
 	}
 
-	public function getDepartmentAttribute($value) {
+	public function getStationAttribute($value) {
 		return Str::upper($value);
 	}
 

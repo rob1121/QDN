@@ -1,10 +1,6 @@
 <?php
 namespace App\repo;
 use App\Employee;
-use App\Events\ApprovalNotificationEvent;
-use App\Events\EventLogs;
-use App\Events\PeVerificationNotificationEvent;
-use App\Events\QdnClosedNotificationEvent;
 use App\Models\CauseOfDefect;
 use App\Models\Closure;
 use App\Models\ContainmentAction;
@@ -13,21 +9,29 @@ use App\Models\Info;
 use App\Models\InvolvePerson;
 use App\Models\PreventiveAction;
 use App\Models\QdnCycle;
-use Auth;
+use App\repo\Event\ClosureStatusEvent;
+use App\repo\Event\EventInterface;
+use App\repo\Event\ViewEvent;
+use App\repo\Exception\ExceptionInterface;
+use App\repo\Exception\InAppropriateClosureStatusException;
+use App\repo\File\cod;
+use App\repo\File\cna;
+use App\repo\File\ca;
+use App\repo\File\pa;
+use App\repo\File\ObjectiveEvidenceInterface;
+use App\repo\Traits\DateTime;
 use Cache;
 use Carbon;
 use DB;
-use Event;
-use Flash;
-use Gate;
+use Illuminate\Support\Facades\Gate;
 use JavaScript;
-use Storage;
+use Laracasts\Flash\Flash;
 use Str;
 
-class InfoRepository implements InfoRepositoryInterface {
-	public $setMonth;
-	public $setYear;
-
+class InfoRepository {
+    
+    use DateTime;
+    
 	/**
 	 * @param $qdn
 	 * @param $view
@@ -35,118 +39,19 @@ class InfoRepository implements InfoRepositoryInterface {
      */
 	public function view($qdn, $view)
     {
-		$this->logEvent('view' . $qdn->control_id);
+		$this->event(new ViewEvent, $qdn);
 
-		JavaScript::put([
-			'link' => $this->links($qdn->slug),
+        $links = [
+            'linkDraft' => route('draft_link', ['slug' => $qdn->slug]),
+            'linkApproval' => route('approval_link', ['slug' => $qdn->slug])
+        ];
+        
+        JavaScript::put([
+			'link' => $links,
 			'qdn' => $qdn
 		]);
 
 		return view($view, compact('qdn'));
-	}
-
-    /**
-     * @return mixed
-     */
-    public function user()
-    {
-		return Auth::user()->load('employee');
-	}
-
-    /**
-     * @return mixed
-     */
-    public function date()
-    {
-		return Carbon::now('Asia/Manila');
-	}
-
-    /**
-     * @return mixed
-     */
-    public function month()
-    {
-		return null == $this->setMonth ? $this->date()->format('m') : $this->setMonth;
-	}
-
-    /**
-     * @return mixed
-     */
-    public function year()
-    {
-		return null == $this->setYear ? $this->date()->format('Y') : $this->setYear;
-	}
-
-    /**
-     * @param $slug
-     * @return array
-     */
-    public function links($slug)
-    {
-		return [
-			'linkDraft'    => route('draft_link', ['slug' => $slug]),
-			'linkApproval' => route('approval_link', ['slug' => $slug]),
-		];
-	}
-
-    /**
-     * @param $info
-     * @param $request
-     */
-    public function updateCauseOfDefect($info, $request)
-    {
-        $objective_evidence = $this->updateCauseOfDefectOe($info, $request);
-
-		$info->CauseOfDefect()->update([
-			'cause_of_defect'             => $request->cause_of_defect,
-			'cause_of_defect_description' => $request->cause_of_defect_description,
-			'objective_evidence'          => $objective_evidence,
-		]);
-	}
-
-    /**
-     * @param $info
-     * @param $request
-     */
-    public function updateContainmentAction($info, $request)
-    {
-        $objective_evidence = $this->uploadContainmentActionOe($info, $request);
-
-		$info->ContainmentAction()->update([
-			'what'               => $request->containment_action_textarea,
-			'who'                => $request->containment_action_who,
-			'objective_evidence' => $objective_evidence,
-		]);
-	}
-
-    /**
-     * @param $info
-     * @param $request
-     */
-    public function updateCorrectiveAction($info, $request)
-    {
-        $objective_evidence = $this->uploadCorrectiveActionOe($info, $request);
-
-		$info->CorrectiveAction()->update([
-			'what'               => $request->corrective_action_textarea,
-			'who'                => $request->corrective_action_who,
-			'objective_evidence' => $objective_evidence,
-		]);
-	}
-
-    /**
-     * @param $info
-     * @param $request
-     */
-    public function updatePreventiveAction($info, $request)
-    {
-        $objective_evidence = $this->uploadPreventiveActionOe($info, $request);
-
-		$info->PreventiveAction()->update([
-			'what'               => $request->preventive_action_textarea,
-			'who'                => $request->preventive_action_who,
-			'objective_evidence' => $objective_evidence,
-		]);
 	}
 
     /**
@@ -155,27 +60,27 @@ class InfoRepository implements InfoRepositoryInterface {
      */
     public function save($info, $request)
     {
-		$this->updateCauseOfDefect($info, $request);
-		$this->updateContainmentAction($info, $request);
-		$this->updateCorrectiveAction($info, $request);
-		$this->updatePreventiveAction($info, $request);
-
+        foreach([new cod, new cna, new ca, new pa] as $class)
+            $this->update($class, $info, $request);
 	}
 
     /**
      * @param $request
-     * @return static
+     * @return InfoRepository
+     * @throws \Exception
      */
     public function add($request)
     {
 		$info = $this->AddInfo($request);
 		$id = ['info_id' => $info->id];
 		$this->AddInvolvePerson($request, $info->id);
-		CauseOfDefect::create($id);
-		CorrectiveAction::create($id);
-		ContainmentAction::create($id);
-		PreventiveAction::create($id);
-		QdnCycle::create($id);
+
+		$models = [new CauseOfDefect, new CorrectiveAction, new ContainmentAction, new PreventiveAction, new QdnCycle];
+		foreach($models as $model) $model->create($id);
+        
+        if( ! CauseOfDefect::whereInfoId($info->id)->count())
+            throw new \Exception('parent data are not loaded to child table');
+
 		Closure::create(['info_id' => $info->id, 'status' => 'p.e. verification']);
 		
 		return $info;
@@ -187,7 +92,7 @@ class InfoRepository implements InfoRepositoryInterface {
      */
     public function AddInfo($request)
     {
-		$currentYear = Carbon::now('Asia/Manila')->format('y');
+		$currentYear = $this->yearNow();
 
 		$lastIn     = Info::orderBy('id', 'desc')->first();
 		$lastInYear = substr($lastIn->control_id, 0, 2);
@@ -216,9 +121,9 @@ class InfoRepository implements InfoRepositoryInterface {
 
 			InvolvePerson::create([
 				'info_id'         => $id,
-				'department'      => $person->department,
-				'originator_id'   => $this->user()->employee_id,
-				'originator_name' => $this->user()->employee->name,
+				'station'      => $person->station,
+				'originator_id'   => user()->employee_id,
+				'originator_name' => user()->employee->name,
 				'receiver_id'     => $person->user_id,
 				'receiver_name'   => $person->name,
 			]);
@@ -230,28 +135,15 @@ class InfoRepository implements InfoRepositoryInterface {
      * @param $slug
      * @return array
      */
-    public function SectionOneUpdate($request, $slug)
+    public function SectionOneUpdate($request, Info $slug)
     {
 		$slug->update($request->all());
-		$arr_names     = [];
-		$involvePerson = $slug->involvePerson()->first();
-		$emp_dept      = [];
-		foreach (array_unique($request->receiver_name) as $name)
-        {
-			$emp         = Employee::whereName($name)->first();
-			$emp_dept[]  = $emp->station;
-			$arr_names[] = new InvolvePerson([
-				'department'      => $emp->station,
-				'originator_id'   => $involvePerson->originator_id,
-				'originator_name' => $involvePerson->originator_name,
-				'receiver_id'     => $emp->user_id,
-				'receiver_name'   => $name]);
-		}
+        $involvePerson = $slug->involvePerson()->first();
 
-		$slug->involvePerson()->delete();
-		$slug->involvePerson()->saveMany($arr_names);
-		$collection = ['emp_dept' => $emp_dept, 'slug' => $slug];
-		return $collection;
+        $slug->involvePerson()->delete();
+        $slug->involvePerson()->saveMany($this->getInvolvePerson($request, $involvePerson));
+
+		return ['emp_dept' => $this->getInvolvePersonStation($request), 'slug' => $slug];
 	}
 
     /**
@@ -260,53 +152,46 @@ class InfoRepository implements InfoRepositoryInterface {
      */
     public function UpdateClosureStatus($request, $qdn)
     {
-		$qdn->closure()->update([
-			'status'         => $request->status,
-			'pe_verified_by' => $this->user()->employee->name,
-		]);
-
-        $this->logEvent('P.E. validate' . $qdn->control_id, $request->status . ": " . $request->ValidationMessage);
-		Event::fire(new PeVerificationNotificationEvent($qdn, $request->ValidationMessage));
-        $this->showMsg('Successfully Verified !! QDN are now ready for completion!');
+		$qdn->closure()->update([ 'status' => $request->status, 'pe_verified_by' => user()->employee->name]);
+        $this->event(new ClosureStatusEvent, ['info' => $qdn, 'request' => $request]);
     }
 
     /**
      * @param $request
      * @param $qdn
+     * @return bool
      */
     public function approverUpdate($request, $qdn)
     {
-		$user = $this->user()->employee;
-		$qdn->closure()->update([$user->department => $user->name]);
 
-		if ('reject' == $request->approver_radio)
+		$user = user()->employee;
+
+        if ('reject' == $request->approver_radio)
         {
-			$qdn->closure()->update([
-				'status' => 'Incomplete Fill-Up',
-				$user->department  => '',
-			]);
-		} else {
-			$this->updateStatus($qdn)
-			? $qdn->closure()->update(['status' => 'Incomplete Approval'])
-			: $qdn->closure()->update(['status' => 'Q.a. Verification']);
-		}
+            $qdn->closure()->update(['status' => 'Incomplete Fill-Up', $user->department  => '']);
+            return 'false';
+        }
 
-		$this->logEvent('view' . $qdn->control_id, $request->approver_radio . ": " . $request->ApproverMessage);
-        Event::fire(new ApprovalNotificationEvent($qdn, $request->ApproverMessage)); //flash success alert message
-        $this->showMsg('Successfully updated! Issued QDN still waiting for other approvers!');
+        $this->updateClosureTable($qdn, $user);
+        $this->updateApproveStatus($qdn);
+        
+        return 'true';
 	}
 
     /**
      * @param $qdn
      * @return int
      */
-    public function updateStatus($qdn)
+    public function statusOf($qdn)
     {
-		$qdn     = Info::whereSlug($qdn->slug)->with('closure')->first();
-		$closure = $qdn->closure;
+		$closure     = Info::whereSlug($qdn->slug)->with('closure')->first();
+		$closure = $closure->closure;
         $booleanClosure = $closure->other_department && $closure->production && $closure->quality_assurance && $closure->process_engineering;
 
-        return $booleanClosure ? 0 : 1;
+        if ($booleanClosure && $qdn->status == 'Q.a. Verification')
+            $this->error(new InAppropriateClosureStatusException);
+
+        return $booleanClosure;
 	}
 
     /**
@@ -319,15 +204,10 @@ class InfoRepository implements InfoRepositoryInterface {
 			->update([
 				'containment_action_taken' => $request->containment_action_taken,
 				'corrective_action_taken'  => $request->corrective_action_taken,
-				'close_by'                 => $this->user()->employee->name,
-				'date_sign'                => Carbon::now('Asia/Manila'),
+				'close_by'                 => user()->employee->name,
+				'date_sign'                => $this->date(),
 				'status'                   => 'closed',
 			]);
-
-		$this->logEvent('Verify' . $qdn->control_id, $request->ValidationResult . ": " . $request->ApproverMessage);
-		Event::fire(new QdnClosedNotificationEvent($qdn)); // send email notification
-
-		Flash::success('Successfully updated! Issued QDN are now closed!'); // add flash alert notification
 	}
 
     /**
@@ -363,9 +243,8 @@ class InfoRepository implements InfoRepositoryInterface {
         $counts = [];
 
 		foreach ($this->failureMode() as $fm)
-        {
 			$counts[$fm] = count($qdn) ? $this->count($fm, $qdn) : 0;
-		}
+
 		return $counts;
 	}
 
@@ -378,12 +257,8 @@ class InfoRepository implements InfoRepositoryInterface {
 		$ave = $this->failureModeCount();
 
 		if (array_sum($this->failureModeCount()))
-        {
 			foreach ($this->failureModeCount() as $key => $value)
-            {
 				$ave[$key] = round($this->count($key, $qdn) / array_sum($this->failureModeCount()) * 100);
-			}
-		}
 
 		return $ave;
 	}
@@ -404,7 +279,7 @@ class InfoRepository implements InfoRepositoryInterface {
      */
     public function addCacheQdn($qdn)
     {
-		Cache::add($qdn->slug, $this->user()->employee->name, 5);
+		Cache::add($qdn->slug, user()->employee->name, 5);
 	}
 
     /**
@@ -413,138 +288,107 @@ class InfoRepository implements InfoRepositoryInterface {
     public function forgetCache($slug = '')
     {
 		if (Gate::allows('mod-qdn', $slug))
-        {
 			Cache::forget($slug);
-		}
 	}
 
     /**
+     * @param ObjectiveEvidenceInterface $table
      * @param $info
      * @param $request
-     * @return string
      */
-    private function updateCauseOfDefectOe($info, $request)
+    private function update(ObjectiveEvidenceInterface $table, $info, $request)
     {
-        $year = Carbon::parse($info->created_at)->year;
-
-        if ($request->hasFile('upload_cod'))
-        {
-            if ("" != $info->causeOfDefect->objective_evidence)
-            {
-                $existing_oe = "objective_evidence/{$year}/{$info->control_id}/{$info->causeOfDefect->objective_evidence}";
-                if (Storage::disk('local')->exists($existing_oe))
-                {
-                    Storage::delete($existing_oe);
-                }
-            }
-
-            $path = public_path() . "/objective_evidence/{$year}/{$info->control_id}/";
-            $file_name = "upload_cod." . $request->file('upload_cod')->guessClientExtension();
-            $request->file('upload_cod')->move($path, $file_name);
-        }
-
-        return isset($file_name) ? $file_name : $info->CauseOfDefect->objective_evidence;
+        $table->update($info, $request);
     }
 
     /**
-     * @param $info
-     * @param $request
-     * @return string
+     * @param EventInterface $event
+     * @param $qdn
      */
-    private function uploadContainmentActionOe($info, $request)
+    public function event(EventInterface $event, $qdn)
     {
-        $year = Carbon::parse($info->created_at)->year;
-
-        if ($request->hasFile('upload_containment_action'))
-        {
-            if ("" != $info->containmentAction->objective_evidence)
-            {
-                $existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->containmentAction->objective_evidence;
-                if (Storage::disk('local')->exists($existing_oe))
-                {
-                    Storage::delete($existing_oe);
-                }
-            }
-
-            $path = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
-            $file_name = 'upload_containment_action' . "." . $request->file('upload_containment_action')->guessClientExtension();
-            $request->file('upload_containment_action')->move($path, $file_name);
-        }
-
-        return isset($file_name) ? $file_name : $info->containmentAction->objective_evidence;
+        $event->fire($qdn);
     }
 
     /**
-     * @param $info
-     * @param $request
-     * @return string
+     * @param ExceptionInterface $throw
      */
-    private function uploadCorrectiveActionOe($info, $request)
+    public function error(ExceptionInterface $throw)
     {
-        $year = Carbon::parse($info->created_at)->year;
-
-        if ($request->hasFile('upload_corrective_action'))
-        {
-            if ("" != $info->correctiveAction->objective_evidence)
-            {
-                $existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->correctiveAction->objective_evidence;
-                if (Storage::disk('local')->exists($existing_oe))
-                {
-                    Storage::delete($existing_oe);
-                }
-            }
-
-            $path = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
-            $file_name = 'upload_corrective_action' . "." . $request->file('upload_corrective_action')->guessClientExtension();
-            $request->file('upload_corrective_action')->move($path, $file_name);
-        }
-
-        return isset($file_name) ? $file_name : $info->correctiveAction->objective_evidence;
+        $throw->exception();
     }
 
     /**
-     * @param $info
      * @param $request
-     * @return string
+     * @param $involvePerson
+     * @return array
      */
-    private function uploadPreventiveActionOe($info, $request)
+    private function getInvolvePerson($request, $involvePerson)
     {
-        $year = Carbon::parse($info->created_at)->year;
+        $arr_names = [];
 
-        if ($request->hasFile('upload_preventive_action'))
-        {
-            if ("" != $info->preventiveAction->objective_evidence)
-            {
-                $existing_oe = 'objective_evidence/' . $year . '/' . $info->control_id . '/' . $info->preventiveAction->objective_evidence;
-                if (Storage::disk('local')->exists($existing_oe))
-                {
-                    Storage::delete($existing_oe);
-                }
-            }
+		foreach (array_unique($request->receiver_name) as $name) {
+            $emp = Employee::whereName($name)->first();
 
-            $path = public_path() . "/objective_evidence/" . $year . "/" . $info->control_id . "/";
-            $file_name = 'upload_preventive_action' . "." . $request->file('upload_preventive_action')->guessClientExtension();
-            $request->file('upload_preventive_action')->move($path, $file_name);
+            $arr_names[] = new InvolvePerson([
+                'station' => $emp->station,
+                'originator_id' => $involvePerson->originator_id,
+                'originator_name' => $involvePerson->originator_name,
+                'receiver_id' => $emp->user_id,
+                'receiver_name' => $name]);
         }
-
-        return isset($file_name) ? $file_name : $info->preventiveAction->objective_evidence;
+        return $arr_names;
     }
 
-	/**
-	 * @param $event
-	 * @internal param $qdn
-	 * @internal param $request
-	 */
-	private function logEvent($event)
-	{
-		Event::fire(new EventLogs($event)); //event logs
-	}
+    public function getInvolvePersonStation($request)
+    {
+        $emp_dept = [];
+        foreach (array_unique($request->receiver_name) as $name)
+            $emp_dept[] = Employee::whereName($name)->first()->station;
+
+        return $emp_dept;
+
+    }
 
     /**
-     * @param $msg
+     * @param $qdn
      */
-    private function showMsg($msg)
+    private function updateApproveStatus($qdn)
     {
-        Flash::success($msg);
+        $status['status'] = $this->statusOf($qdn)
+            ? 'Q.a. Verification'
+            : 'Incomplete Approval';
+
+        $qdn->closure()->update($status);
+    }
+
+    /**
+     * @param $qdn
+     * @param $user
+     */
+    private function updateClosureTable($qdn, $user)
+    {
+        $closure = [$user->department => $user->name];
+
+        if (hasNoOtherDepartmentInvolve($user, $qdn))
+            $closure['other_Department'] = $user->name;
+
+        $qdn->closure()->update($closure);
+    }
+
+    /**
+     * @param Info $slug
+     * @param $view
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function guardView(Info $slug, $view)
+    {
+        $this->addCacheQdn($slug);
+        if (Gate::allows('mod-qdn', $slug->slug)) return $this->view($slug, $view);
+
+        $active_user = Cache::get($slug->slug);
+
+        Flash::warning('Notice: Sorry, The page you are trying to access is currently used by ' . $active_user . ' please try again later');
+        return redirect(route('home'));
     }
 }

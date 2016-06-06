@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5b8b7f54bc4497851cd3f313698cc540",
-    "content-hash": "c26283db6e207d5332f23505c29f40fd",
+    "hash": "f62b5f7870dadacb0f2f0ce2384c3613",
+    "content-hash": "3e118aba039df5e930df8c53569e8dd8",
     "packages": [
         {
             "name": "barryvdh/laravel-async-queue",
@@ -2010,6 +2010,57 @@
             "time": "2016-03-09 05:03:14"
         },
         {
+            "name": "spatie/activitylog",
+            "version": "2.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/activitylog.git",
+                "reference": "b734982a3a238f0b5371a5f9230ffce25a1ef4ab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/activitylog/zipball/b734982a3a238f0b5371a5f9230ffce25a1ef4ab",
+                "reference": "b734982a3a238f0b5371a5f9230ffce25a1ef4ab",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations"
+                ],
+                "psr-0": {
+                    "Spatie\\Activitylog\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be"
+                }
+            ],
+            "description": "A very simple activity logger to monitor the users of your website or application",
+            "homepage": "https://github.com/spatie/activitylog",
+            "keywords": [
+                "activity",
+                "laravel",
+                "log",
+                "user"
+            ],
+            "time": "2016-03-23 19:16:40"
+        },
+        {
             "name": "spatie/db-dumper",
             "version": "1.4.0",
             "source": {
@@ -3256,7 +3307,7 @@
             ],
             "authors": [
                 {
-                    "name": "Francois Zaninotto"
+                    "name": "François Zaninotto"
                 }
             ],
             "description": "Faker is a PHP library that generates fake data for you.",

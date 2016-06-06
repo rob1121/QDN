@@ -1,16 +1,12 @@
 <?php namespace App\repo\Event;
 
-use App\Events\EventLogs;
-use Illuminate\Support\Facades\Event;
 use Laracasts\Flash\Flash;
+use Activity;
 
 class DraftEvent implements EventInterface {
-    /**
-     * @param $qdn
-     */
     public function fire($qdn)
     {
-        Event::fire(new EventLogs(user(), 'Incomplete: save as draft' . $qdn->control_id));
+        Activity::log('Incomplete: save as draft {$qdn->control_id} : {$qdn->discrepancy_category}');
         Flash::success('Successfully save! Issued QDN are save as draft and still subject for completion!');
     }
 }

@@ -20,24 +20,15 @@ use Gate;
 use Illuminate\Http\Request;
 use PDF;
 
-class reportController extends Controller
-{
+class reportController extends Controller {
     public $qdn;
 
-    /**
-     * reportController constructor.
-     * @param InfoRepository $qdn
-     */
     public function __construct(InfoRepository $qdn)
     {
         $this->middleware('auth');
         $this->qdn = $qdn;
     }
 
-    /**
-     * @param Info $slug
-     * @return mixed
-     */
     public function pdf(Info $slug)
     {
         $this->qdn->event(new DownloadEvent, $slug);
@@ -45,18 +36,11 @@ class reportController extends Controller
         return PDF::loadHTML(view('pdf.print', ['qdn' => $slug]))->stream();
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function report()
     {
         return view('report.create');
     }
 
-    /**
-     * @param QdnCreateRequest $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function store(QdnCreateRequest $request)
     {
         $this->qdn->error(new DuplicateDataException);
@@ -187,7 +171,7 @@ class reportController extends Controller
     public function QaVerificationUpdate(Info $slug, Request $request)
     {
         $this->qdn->sectionEightClosure($slug, $request); // update qdn closures
-        $this->event(new QdnClosureEvent, ['info' => slug, 'request' => $request]);
+        $this->event(new QdnClosureEvent, ['info' => $slug, 'request' => $request]);
         return redirect(route('home')); // view home page
     }
 

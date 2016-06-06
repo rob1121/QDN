@@ -240,12 +240,11 @@ class InfoRepository {
     public function failureModeCount()
     {
 		$qdn = $this->getQdn();
-        $counts = [];
-
-		foreach ($this->failureMode() as $fm)
-			$counts[$fm] = count($qdn) ? $this->count($fm, $qdn) : 0;
-
-		return $counts;
+        return collect(['assembly', 'environment', 'machine', 'man', 'material', 'method / process'])
+            ->flatMap(function($fm) use($qdn) {
+                $fm = Str::title($fm);
+                return [$fm => count($qdn) ? $this->count($fm, $qdn) : 0];
+            })->toArray();
 	}
 
     /**
@@ -261,17 +260,6 @@ class InfoRepository {
 				$ave[$key] = round($this->count($key, $qdn) / array_sum($this->failureModeCount()) * 100);
 
 		return $ave;
-	}
-
-    /**
-     * @return array
-     */
-    public function failureMode()
-    {
-		$failure_mode = ['assembly', 'environment', 'machine', 'man', 'material', 'method / process'];
-		$class        = new Str();
-
-		return array_map([$class, 'title'], $failure_mode);
 	}
 
     /**
@@ -325,29 +313,26 @@ class InfoRepository {
      */
     private function getInvolvePerson($request, $involvePerson)
     {
-        $arr_names = [];
-
-		foreach (array_unique($request->receiver_name) as $name) {
+        $arr_names = collect(array_unique($request->receiver_name))->map(function($name) use($involvePerson) {
             $emp = Employee::whereName($name)->first();
 
-            $arr_names[] = new InvolvePerson([
+            return new InvolvePerson([
                 'station' => $emp->station,
                 'originator_id' => $involvePerson->originator_id,
                 'originator_name' => $involvePerson->originator_name,
                 'receiver_id' => $emp->user_id,
                 'receiver_name' => $name]);
-        }
+
+        });
+
         return $arr_names;
     }
 
     public function getInvolvePersonStation($request)
     {
-        $emp_dept = [];
-        foreach (array_unique($request->receiver_name) as $name)
-            $emp_dept[] = Employee::whereName($name)->first()->station;
-
-        return $emp_dept;
-
+        return collect(array_unique($request->receiver_name))->map(function($name){
+            return Employee::whereName($name)->first()->station;
+        });
     }
 
     /**

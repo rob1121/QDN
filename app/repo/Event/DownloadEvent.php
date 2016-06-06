@@ -1,12 +1,12 @@
 <?php namespace App\repo\Event;
 
 
-use App\Events\EventLogs;
-use Illuminate\Support\Facades\Event;
+
+use Activity;
 
 class DownloadEvent implements EventInterface {
     public function fire($qdn)
     {
-        Event::fire(new EventLogs(user(), 'download' . $qdn->control_id));
+        Activity::log('Download QDN {$slug->control_id} : {$slug->discrepancy_category}');
     }
 }

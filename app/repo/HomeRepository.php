@@ -42,7 +42,6 @@ class HomeRepository {
         $arr['man'] = $this->collection($man);
         $arr['material'] = $this->collection($material);
         $arr['process'] = $this->collection($process);
-
         return $arr;
 	}
 

@@ -132,14 +132,14 @@ function hasEmptyClosure($closure)
  */
 function userClosure($user, $closure)
 {
-    $preference = [
+    $preference = collect([
         'quality_assurance' => $closure->quality_assurance,
         'process_engineering' => $closure->process_engineering,
         'production' => $closure->production,
         'other_department' => $closure->other_department,
-    ];
+    ])->get($user->employee->department);
 
-    return $preference[$user->employee->department];
+    return $preference;
 }
 
 function oe_link($qdn, $oe)

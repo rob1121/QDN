@@ -65,6 +65,32 @@ class employeeSeeder extends Seeder {
 			'answer'   => 'user',
 		]);
 
+
+		/**
+		 * this for process account
+		 */
+		$emp = Employee::create([
+			'user_id'    => 4550,
+			'name'       => 'Pauleen Moya',
+			'department' => 'production',
+			'station'    => 'PL1',
+			'position'   => 'Supervisor',
+			'email'      => 'moya@astigp.com',
+			'status'     => 'active',
+		]);
+
+		User::create([
+			'employee_id'  => 4550,
+			'access_level' => 'signatory',
+			'password'     => 'user',
+		]);
+
+		Question::create([
+			'user_id'  => $emp->user_id,
+			'question' => 'What are you?',
+			'answer'   => 'user',
+		]);
+
 		/**
 		 * this for dummy account
 		 */

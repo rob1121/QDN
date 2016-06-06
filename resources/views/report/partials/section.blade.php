@@ -58,7 +58,7 @@
                     <div class="clearfix"></div>
                     <a class="btn btn-default"
                        target="_blank"
-                       href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->causeOfDefect->objective_evidence }}"
+                       href="{{ oe_link($qdn, $qdn->causeOfDefect->objective_evidence) }}"
                     >
                         <i class="fa fa-file"></i> View Attachment
                     </a>
@@ -75,7 +75,7 @@
                     @if ($qdn->causeOfDefect->objective_evidence)
                         <a class="btn btn-default"
                            target="_blank"
-                           href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->causeOfDefect->objective_evidence }}"
+                           href="{{ oe_link($qdn, $qdn->causeOfDefect->objective_evidence) }}"
                         >
                             <i class="fa fa-file"></i> View Attachment
                         </a>
@@ -169,7 +169,7 @@
                     <div class="clearfix"></div>
                     <a class="btn btn-default"
                        target="_blank"
-                       href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->containmentAction->objective_evidence }}"
+                       href="{{ oe_link($qdn, $qdn->containmentAction->objective_evidence) }}"
                     >
                         <i class="fa fa-file"></i> View Attachment
                     </a>
@@ -184,7 +184,7 @@
                     @if ($qdn->containmentAction->objective_evidence)
                         <a class="btn btn-default"
                            target="_blank"
-                           href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->containmentAction->objective_evidence }}"
+                           href="{{ oe_link($qdn, $qdn->containmentAction->objective_evidence) }}"
                         >
                             <i class="fa fa-file"></i> View Attachment
                         </a>
@@ -269,7 +269,7 @@
                         <div class="clearfix"></div>
                         <a class="btn btn-default"
                            target="_blank"
-                           href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->correctiveAction->objective_evidence }}"
+                           href="{{ oe_link($qdn, $qdn->correctiveAction->objective_evidence) }}"
                         >
                             <i class="fa fa-file"></i> View Attachment
                         </a>
@@ -284,7 +284,7 @@
                         @if ($qdn->correctiveAction->objective_evidence)
                             <a class="btn btn-default"
                                target="_blank"
-                               href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->correctiveAction->objective_evidence }}"
+                               href="{{ oe_link($qdn, $qdn->correctiveAction->objective_evidence) }}"
                             >
                                 <i class="fa fa-file"></i> View Attachment
                             </a>
@@ -370,7 +370,7 @@
                         <div class="clearfix"></div>
                         <a class="btn btn-default"
                            target="_blank"
-                           href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->preventiveAction->objective_evidence }}"
+                           href="{{ oe_link($qdn, $qdn->preventiveAction->objective_evidence) }}"
                         >
                             <i class="fa fa-file"></i> View Attachment
                         </a>
@@ -386,7 +386,7 @@
                         @if ($qdn->preventiveAction->objective_evidence)
                             <a class="btn btn-default"
                                target="_blank"
-                               href="/objective_evidence/{{ Carbon::parse($qdn->created_at)->year."/".$qdn->control_id."/".$qdn->preventiveAction->objective_evidence }}"
+                               href="{{ oe_link($qdn, $qdn->preventiveAction->objective_evidence) }}"
                             >
                                 <i class="fa fa-file"></i> View Attachment
                             </a>

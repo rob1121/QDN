@@ -39,7 +39,7 @@ class HomeControllerTest extends TestCase
 
     public function test_a_method_ajax_status()
     {
-        $this->json('GET', route('status'), ['status' => 'Closed']);
+        $this->json('GET', route('status'), ['status' => 'closed']);
         $this->assertViewHas('tbl');
     }
 

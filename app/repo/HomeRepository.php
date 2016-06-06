@@ -4,18 +4,13 @@ namespace App\repo;
 
 use App\Models\Closure;
 use App\Models\Info;
+use App\repo\Traits\DateTime;
 use Carbon;
 use DB;
 
 class HomeRepository {
 
-    /**
-     * @return mixed
-     */
-    public function dateTime()
-	{
-		return Carbon::now('Asia/Manila');
-	}
+    use DateTime;
 
     /**
      * @param $request
@@ -56,7 +51,7 @@ class HomeRepository {
      */
     public function counter()
     {
-        $date = $this->dateTime();
+        $date = $this->date();
         $closure = Closure::all();
         $collection = [
             'today' => Info::whereDate('created_at', '=', $date->format('Y-m-d'))->count(),

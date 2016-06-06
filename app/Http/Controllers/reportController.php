@@ -126,9 +126,9 @@ class reportController extends Controller
     public function draft(Info $slug, Request $request)
     {
         $this->qdn->save($slug, $request);
-        Cache::forget($slug->slug);
-
         $this->qdn->event(new DraftEvent, $slug);
+
+        Cache::forget($slug->slug);
 
         return redirect(route('home'));
     }
@@ -142,9 +142,9 @@ class reportController extends Controller
     {
         $this->qdn->save($slug, $request);
         $slug->closure()->update(['status' => 'incomplete approval']);
-        Cache::forget($slug->slug);
-
         $this->qdn->event(new ApprovalEvent, $slug);
+
+        Cache::forget($slug->slug);
 
         return redirect(route('home'));
     }

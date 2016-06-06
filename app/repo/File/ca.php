@@ -39,9 +39,7 @@ class ca extends ActionExtension implements ObjectiveEvidenceInterface
 
         if ($request->hasFile($this->name))
         {
-            if ($this->isNotEmpty($info->correctiveAction)
-                && $this->isExist($this->directory($oe)))
-
+            if ($this->isNotEmpty($info->correctiveAction) && $this->isExist($this->directory($oe)))
                 Storage::delete($this->directory($oe));
 
             $this->moveFile($request);
@@ -51,6 +49,4 @@ class ca extends ActionExtension implements ObjectiveEvidenceInterface
 
         return $info->correctiveAction->objective_evidence;
     }
-    
-
 }

@@ -5,24 +5,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Info;
 use App\repo\InfoRepository;
+use App\repo\Traits\DateTime;
 use Carbon;
 use Illuminate\Http\Request;
 use JavaScript;
 
 class AdminController extends Controller {
+	use DateTime;
 	private $qdn;
-	private $dt;
 
 	public function __construct(InfoRepository $qdn) {
 		$this->middleware('admin');
-		$this->qdn           = $qdn;
-		$this->dt            = Carbon::now('Asia/Manila');
-		$this->qdn->setMonth = $this->dt->format('m');
-		$this->qdn->setYear  = $this->dt->format('Y');
+		$this->qdn = $qdn;
 	}
 
 	public function index() {
-		JavaScript::put('yearNow', $this->qdn->year());
+		JavaScript::put('yearNow', $this->year());
 
 		return view('admin.pages.index')
             ->with([

@@ -1,14 +1,7 @@
 <?php
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Created by PhpStorm.
- * User: tspi.qa
- * Date: 6/2/2016
- * Time: 9:06 AM
- * @param $qdn
- * @return string
- */
 function check($qdn, $value)
 {
     return $value == $qdn->major 
@@ -23,6 +16,7 @@ function check($qdn, $value)
 function validate($qdn)
 {
     $stations = array_pluck($qdn->involvePerson, 'station');
+
     return in_array(user()->employee->station, $stations) && $qdn->closure->status == 'Incomplete Fill-Up';
 }
 
@@ -106,6 +100,7 @@ function hasApproved($user, $qdn)
 }
 
 /**
+ * @param $user
  * @param $qdn
  * @return bool
  */
@@ -125,9 +120,9 @@ function hasNoOtherDepartmentInvolve($user, $qdn)
 function hasEmptyClosure($closure)
 {
     return ('' == $closure->production)
-    || ('' == $closure->process_engineering)
-    || ('' == $closure->quality_assurance)
-    || ('' == $closure->other_department);
+            || ('' == $closure->process_engineering)
+            || ('' == $closure->quality_assurance)
+            || ('' == $closure->other_department);
 }
 
 /**
@@ -137,22 +132,20 @@ function hasEmptyClosure($closure)
  */
 function userClosure($user, $closure)
 {
-    switch ($user->employee->department) {
-        case 'quality_assurance':
-            $userClosure = $closure->quality_assurance;
-            break;
+    $preference = [
+        'quality_assurance' => $closure->quality_assurance,
+        'process_engineering' => $closure->process_engineering,
+        'production' => $closure->production,
+        'other_department' => $closure->other_department,
+    ];
 
-        case 'process_engineering':
-            $userClosure = $closure->process_engineering;
-            break;
+    return $preference[$user->employee->department];
+}
 
-        case 'production':
-            $userClosure = $closure->production;
-            break;
+function oe_link($qdn, $oe)
+{
+    $year = Carbon::parse($qdn->created_at)->year;
+    $timestamp = strtotime($qdn->created_at);
 
-        case 'other_department':
-            $userClosure = $closure->other_department;
-            break;
-    }
-    return $userClosure;
+    return "/objective_evidence/{$year}/{$qdn->control_id}/{$oe}?date={$timestamp}";
 }

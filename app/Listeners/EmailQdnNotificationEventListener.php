@@ -8,12 +8,11 @@ use Str;
 
 class EmailQdnNotificationEventListener implements ShouldQueue {
 	use InteractsWithQueue;
-	/**
-	 * Create the event listener.
-	 *
-	 * @return void
-	 */
-	public function __construct() {
+
+    /**
+     * EmailQdnNotificationEventListener constructor.
+     */
+    public function __construct() {
 		//
 	}
 	/**
@@ -24,23 +23,21 @@ class EmailQdnNotificationEventListener implements ShouldQueue {
 	 */
 	public function handle(EmailQdnNotificationEvent $event)
     {
-        $involvePerson = $event->qdn->involvePerson;
-        $closure = $event->qdn->closure;
-        $user = $event->user->employee;
-        $qdn = $event->qdn;
         $data = [
-            'qdn' => $qdn,
-            'involvePerson' => $involvePerson,
-            'closure' => $closure,
+            'qdn' => $event->qdn,
+            'involvePerson' => $event->qdn->involvePerson,
+            'closure' => $event->qdn->closure,
             'comment' => $event->comment,
-            'user' => $user,
+            'user' => $event->user->employee,
         ];
         Mail::send('notifications.issue_qdn', $data, function ($message) use ($event) {
             $message->from('robinsonlegaspi@astigp.com', 'Rob');
             $message->replyTo('robinsonlegaspi@astigp.com', 'Rob');
             $message->sender('robinsonlegaspi@astigp.com', 'Rob');
             $message->to('robinsonlegaspi@astigp.com', 'Robinson Legaspi');
-//            $message->to('alexanderalmonte@astigp.com', 'Alexander Almonter');
+//            $message->to('janicerodolfo@astigp.com', 'Janice Rodolfo');
+//            $message->to('rosalysanchez@astigp.com', 'Rosaly Sanchez');
+//            $message->to('alexanderalmonte@astigp.com', 'Alexander Almonte');
 //            $message->to('jakeparambita@astigp.com', 'Jake Parambita');
             $message->subject('QDN: ' . Str::title($event->qdn->problem_description) . ' - ' . $event->qdn->closure->status);
         });

@@ -1,5 +1,5 @@
-<?php
-namespace App\repo;
+<?php namespace App\repo;
+
 use App\Employee;
 use App\Models\CauseOfDefect;
 use App\Models\Closure;

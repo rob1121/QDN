@@ -7,6 +7,7 @@ use App\Models\Info;
 use App\repo\Exception\DataRelationNotFound;
 use App\repo\Exception\ExceptionInterface;
 use App\repo\HomeRepository;
+use App\repo\Traits\DateTime;
 use Auth;
 use Illuminate\Http\Request;
 use JavaScript;
@@ -14,6 +15,8 @@ use Str;
 
 class HomeController extends Controller
 {
+    use DateTime;
+
     private $home;
     protected $user;
 
@@ -40,7 +43,7 @@ class HomeController extends Controller
      */
     public function home()
     {
-        JavaScript::put('yearNow', $this->home->dateTime()->year);
+        JavaScript::put('yearNow', $this->year());
         return $this->user ? view('home') : redirect('/');
     }
 
@@ -94,26 +97,15 @@ class HomeController extends Controller
      */
     public function link($status)
     {
-        switch ($status) {
-            case 'p.e. verification':
-                return 'qdn_link';
-                break;
+        $routes = [
+            'p.e. verification' => 'qdn_link',
+            'incomplete fill-up' => 'ForIncompleteFillUp',
+            'incomplete approval' => 'approval',
+            'q.a. verification' => 'qa_verification',
+            'closed' => 'pdf'
+        ];
 
-            case 'incomplete fill-up':
-                return 'ForIncompleteFillUp';
-                break;
-
-            case 'incomplete approval':
-                return 'approval';
-                break;
-
-            case 'q.a. verification':
-                return 'qa_verification';
-                break;
-            default:
-                throw new \Exception("no found valid type of status at " . __LINE__ . " of " . __FILE__);
-                break;
-        }
+        return $routes[$status];
     }
 
     /**

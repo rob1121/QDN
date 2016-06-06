@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Info;
 use App\repo\ParetoRepository;
-use Auth;
+use App\repo\Traits\DateTime;
 use Carbon;
 use DB;
 use Illuminate\Http\Request;
@@ -12,6 +12,7 @@ use JavaScript;
 
 class ParetoController extends Controller
 {
+    use DateTime;
     private $pareto;
 
     /**
@@ -34,7 +35,7 @@ class ParetoController extends Controller
 
         $collections = [
             'table' => $this->pareto->selectCategory($request),
-            'SelectedYear' => $request->year ? $request->year : $this->dateTime()->format('Y'),
+            'SelectedYear' => $request->year ? $request->year : $this->year(),
             'FailureModes' => Info::select('failure_mode')->groupBy('failure_mode')->get(),
             'DiscrepancyCategories' => Info::select('discrepancy_category')->groupBy('discrepancy_category')->get()
         ];
@@ -81,14 +82,6 @@ class ParetoController extends Controller
         return '' != $request->text
             ? $this->filterWithText($request)
             : $this->filterWithoutText($request);
-    }
-
-    /**
-     * @return mixed
-     */
-    private function dateTime()
-    {
-        return Carbon::now('Asia/Manila');
     }
 
     /**

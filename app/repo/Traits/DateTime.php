@@ -7,10 +7,11 @@ trait DateTime
 {
     public $setMonth;
     public $setYear;
-public function __construct()
-{
- $this->setMonth = $this->month();
-}
+    
+    public function __construct()
+    {
+     $this->setMonth = $this->month();
+    }
 
     /**
      * @return mixed

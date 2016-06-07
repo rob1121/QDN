@@ -41,26 +41,26 @@ class Info extends Model implements SluggableInterface {
 
 	// DEFINE RELATIONSHIPS --------------------------------------------------
 	public function causeOfDefect() {
-		return $this->hasOne('App\Models\CauseOfDefect'); // this matches the Eloquent model
+		return $this->hasOne('App\Models\CauseOfDefect');
 	}
 	public function containmentAction() {
-		return $this->hasOne('App\Models\ContainmentAction'); // this matches the Eloquent model
+		return $this->hasOne('App\Models\ContainmentAction');
 	}
 
 	public function correctiveAction() {
-		return $this->hasOne('App\Models\CorrectiveAction'); // this matches the Eloquent model
+		return $this->hasOne('App\Models\CorrectiveAction');
 	}
 
 	public function preventiveAction() {
-		return $this->hasOne('App\Models\PreventiveAction'); // this matches the Eloquent model
+		return $this->hasOne('App\Models\PreventiveAction');
 	}
 
 	public function qdnCycle() {
-		return $this->hasOne('App\Models\Qdncycle'); // this matches the Eloquent model
+		return $this->hasOne('App\Models\Qdncycle');
 	}
 
 	public function closure() {
-		return $this->hasOne('App\Models\Closure'); // this matches the Eloquent model
+		return $this->hasOne('App\Models\Closure');
 	}
 
 	public function involvePerson() {
@@ -136,46 +136,14 @@ class Info extends Model implements SluggableInterface {
 			->where(DB::raw('YEAR(created_at)'), $year)
 			->groupBy('month');
 	}
-
-	/**
-	 * get qdndata for year round
-	 */
-	public function scopeIssued($query, $date) {
-		switch ($date) {
-		case 'today':
-			$query->where(
-				DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'),
-				"=",
-				Carbon::now('Asia/Manila')->format('m-d-Y')
-			)->get();
-			break;
-		case 'week':
-			$query->where(
-				DB::raw('WEEK(created_at)'),
-				"=",
-				Carbon::now('Asia/Manila')->weekOfYear
-			)->get();
-			break;
-		case 'month':
-			$query->where(
-				DB::raw('MONTH(created_at)'),
-				"=",
-				Carbon::now('Asia/Manila')->month
-			)
-				->where(
-					DB::raw('YEAR(created_at)'),
-					"=",
-					Carbon::now('Asia/Manila')->year
-				)->get();
-			break;
-		case 'year':
-			$query->where(
-				DB::raw('YEAR(created_at)'),
-				"=",
-				Carbon::now('Asia/Manila')->year
-			)->get();
-			break;
-		}
+	
+	function scopeIssued($query, $date) {
+		collect([
+			'today' => $query->where( DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'), "=", Carbon::now('Asia/Manila')->format('m-d-Y'))->get(),
+			'week' => $query->where( DB::raw('WEEK(created_at)'), "=", Carbon::now('Asia/Manila')->weekOfYear )->get(),
+			'month' => $query->where( DB::raw('MONTH(created_at)'), "=", Carbon::now('Asia/Manila')->month )->where(DB::raw('YEAR(created_at)'),"=",Carbon::now('Asia/Manila')->year)->get(),
+			'year' => $query->where(DB::raw('YEAR(created_at)'), "=", Carbon::now('Asia/Manila')->year)->get()
+		])->get($date);
 	}
 
 	public function scopeSearch($query, $text) {
@@ -186,23 +154,24 @@ class Info extends Model implements SluggableInterface {
 			->orWhere('station', 'LIKE', "%" . $text . "%")
 			->orWhere('failure_mode', 'LIKE', "%" . $text . "%");
 	}
+    
 	public function scopeShow($query, $start, $take) {
-		$query->skip($start)
-			->take($take);
+		$query->skip($start)->take($take);
 	}
+    
 	public function scopeIsExist($query, $request) {
 		$query->whereCustomer($request->customer)
-			->wherePackage_type($request->package_type)
-			->whereDevice_name($request->device_name)
-			->whereLot_id_number($request->lot_id_number)
-			->whereLot_quantity($request->lot_quantity)
-			->whereJob_order_number($request->job_order_number)
+			->wherePackageType($request->package_type)
+			->whereDeviceName($request->device_name)
+			->whereLotIdNumber($request->lot_id_number)
+			->whereLotQuantity($request->lot_quantity)
+			->whereJobOrderNumber($request->job_order_number)
 			->whereMachine($request->machine)
 			->whereStation($request->station)
 			->whereMajor($request->major)
-			->whereProblem_description($request->problem_description)
-			->whereFailure_mode($request->failure_mode)
-			->whereDiscrepancy_category($request->discrepancy_category)
+			->whereProblemDescription($request->problem_description)
+			->whereFailureMode($request->failure_mode)
+			->whereDiscrepancyCategory($request->discrepancy_category)
 			->whereQuantity($request->quantity);
 	}
 // =========== MUTATORS ===================================
@@ -291,8 +260,9 @@ class Info extends Model implements SluggableInterface {
 	}
 
 	public function setControlIdAttribute($value) {
-		$today                                 = Carbon::now('Asia/Manila');
-		$year                                  = $today->format('y');
+		$today = Carbon::now('Asia/Manila');
+		$year = $today->format('y');
+        
 		return $this->attributes['control_id'] = $year . "-" . sprintf("%'.04d", $value);
 	}
 }

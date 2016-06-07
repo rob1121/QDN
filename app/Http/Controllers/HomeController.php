@@ -56,7 +56,7 @@ class HomeController extends Controller
 
     public function AjaxStatus(Request $request)
     {
-        $tbl = Closure::status(Str::title($request->status))->get();
+        $tbl = Closure::status($request->status)->get();
 
         if ($tbl->load('info')->count() != $tbl->count())
             $this->error(new DataRelationNotFound);
@@ -64,11 +64,6 @@ class HomeController extends Controller
         return view('home.status', ['tbl' => $tbl, 'link' => $this->link($request->status)]);
     }
 
-    /**
-     * @param $status
-     * @return string
-     * @throws \Exception
-     */
     public function link($status)
     {
         $routes = collect([
@@ -82,17 +77,11 @@ class HomeController extends Controller
         return $routes;
     }
 
-    /**
-     * @return array
-     */
     public function counter()
     {
         return $this->home->counter();
     }
 
-    /**
-     * @param ExceptionInterface $throw
-     */
     private function error(ExceptionInterface $throw)
     {
         $throw->exception();

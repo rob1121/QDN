@@ -10,18 +10,20 @@ namespace App\repo;
 
 
 use App\Models\Info;
+use App\repo\Traits\DateTime;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ParetoRepository
 {
+    use DateTime;
     /**
      * @param $request
      * @return mixed
      */
     public function selectCategory($request)
     {
-        $month = Carbon::parse($request->month)->format('m');
+        $month = $request->month;
         if ('total' == $request->category)
             $table = $this->totalCategory($month);
 
@@ -58,7 +60,7 @@ class ParetoRepository
      */
     private function totalCategory($month)
     {
-        $table = Info::with(['involvePerson'])->where(DB::raw('YEAR(created_at)'), $this->year)
+        $table = Info::with(['involvePerson'])->where(DB::raw('YEAR(created_at)'), $this->year())
             ->where(DB::raw('MONTH(created_at)'), $month)
             ->show(0, 10)
             ->get();
@@ -72,7 +74,7 @@ class ParetoRepository
      */
     private function failureModeCategory($request, $month)
     {
-        $table = Info::with(['involvePerson'])->where(DB::raw('YEAR(created_at)'), $this->year)
+        $table = Info::with('involvePerson')->where(DB::raw('YEAR(created_at)'), $this->year())
             ->where(DB::raw('MONTH(created_at)'), $month)
             ->where('failure_mode', $request->discrepancy)
             ->show(0, 10)
@@ -86,7 +88,7 @@ class ParetoRepository
      */
     private function paretoOfDiscrepancyCategory($request)
     {
-        $table = Info::with(['involvePerson'])->where(DB::raw('YEAR(created_at)'), $this->year)
+        $table = Info::with(['involvePerson'])->where(DB::raw('YEAR(created_at)'), $this->year())
             ->where('discrepancy_category', $request->discrepancy)
             ->show(0, 10)
             ->get();

@@ -10,14 +10,13 @@ class ReportControllerTest extends TestCase
 
         $this->loginAsAdmin();
         $this->visit('/report/' . $info->slug . '/pdf');
-        $this->assertResponseOk();
+        $this->assertResponseStatus(200);
     }
 
     public function test_a_method_report()
     {
         $this->loginFakeUser();
         $this->visit('/report');
-
         $this->see('QDN Issuance');
     }
 }

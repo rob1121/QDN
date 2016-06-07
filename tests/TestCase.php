@@ -1,4 +1,6 @@
+
 <?php
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase
@@ -30,7 +32,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     protected function loginFakeUser()
     {
-        $this->actingAs(factory(App\User::class)->create());
+        $this->actingAs(User::whereEmployeeId(802)->first());
+
+        return $this;
     }
 
     /**
@@ -38,8 +42,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     protected function loginAsAdmin()
     {
-        $user = factory(App\User::class)->create();
-        $user->update(['access_level' => 'admin']);
-        $this->actingAs($user);
+        $this->actingAs(User::whereEmployeeId(801)->first());
+        return $this;
     }
 }

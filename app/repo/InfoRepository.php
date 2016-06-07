@@ -31,7 +31,6 @@ use Str;
 class InfoRepository {
     
     use DateTime;
-    
 	/**
 	 * @param $qdn
 	 * @param $view
@@ -71,19 +70,18 @@ class InfoRepository {
      */
     public function add($request)
     {
-		$info = $this->AddInfo($request);
-		$id = ['info_id' => $info->id];
-		$this->AddInvolvePerson($request, $info->id);
+		$qdn = $this->AddInfo($request);
+        $this->AddInvolvePerson($request, $qdn->id);
 
-		$models = [new CauseOfDefect, new CorrectiveAction, new ContainmentAction, new PreventiveAction, new QdnCycle];
-		foreach($models as $model) $model->create($id);
+		collect([new CauseOfDefect, new CorrectiveAction, new ContainmentAction, new PreventiveAction, new QdnCycle, new Closure])
+            ->map(function($model) use ($qdn) { $model->create(['info_id' => $qdn->id]); });
         
-        if( ! CauseOfDefect::whereInfoId($info->id)->count())
+        if( ! CauseOfDefect::whereInfoId($qdn->id)->count())
             throw new \Exception('parent data are not loaded to child table');
 
-		Closure::create(['info_id' => $info->id, 'status' => 'p.e. verification']);
-		
-		return $info;
+		Closure::whereInfoId($qdn->id)->update(['status' => 'p.e. verification']);
+       
+        return $qdn;
 	}
 
     /**
@@ -92,12 +90,10 @@ class InfoRepository {
      */
     public function AddInfo($request)
     {
-		$currentYear = $this->yearNow();
-
 		$lastIn     = Info::orderBy('id', 'desc')->first();
 		$lastInYear = substr($lastIn->control_id, 0, 2);
 		$lastInId   = substr($lastIn->control_id, 3);
-		$control_id = $currentYear == $lastInYear ? $lastInId + 1 : 1;
+		$control_id = $this->yearNow() == $lastInYear ? $lastInId + 1 : 1;
 		$customer   = "not yet specified" == $request->customer ? $request->customerField : $request->customer;
 		$info       = Info::create($request->all());
 		$info->update([

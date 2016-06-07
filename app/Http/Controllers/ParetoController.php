@@ -15,20 +15,12 @@ class ParetoController extends Controller
     use DateTime;
     private $pareto;
 
-    /**
-     * ParetoController constructor.
-     * @param ParetoRepository $pareto
-     */
     public function __construct(ParetoRepository $pareto)
     {
         $this->middleware('admin');
         $this->pareto = $pareto;
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function pareto(Request $request)
     {
         $this->jsVariables($request);
@@ -43,10 +35,6 @@ class ParetoController extends Controller
         return view('home.pareto', $collections);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function paretoAjax(Request $request)
     {
 
@@ -60,9 +48,6 @@ class ParetoController extends Controller
 
     }
 
-    /**
-     * @param Request $request
-     */
     private function jsVariables($request)
     {
         $collections = [
@@ -73,10 +58,6 @@ class ParetoController extends Controller
         JavaScript::put($collections);
     }
 
-    /**
-     * @param $request
-     * @return mixed
-     */
     private function filterInfo($request)
     {
         return '' != $request->text
@@ -84,10 +65,6 @@ class ParetoController extends Controller
             : $this->filterWithoutText($request);
     }
 
-    /**
-     * @param $request
-     * @return mixed
-     */
     private function filterWithText($request)
     {
         return Info::orderBy($request->column, $request->sort)
@@ -97,10 +74,6 @@ class ParetoController extends Controller
             ->get();
     }
 
-    /**
-     * @param $request
-     * @return mixed
-     */
     private function filterWithoutText($request)
     {
         $condition = '' == $request->month ? 'LIKE' : '=';

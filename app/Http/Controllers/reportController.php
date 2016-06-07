@@ -45,15 +45,14 @@ class reportController extends Controller {
     {
         $this->qdn->error(new DuplicateDataException);
 
-        if (!$this->hasDuplicate($request)) {
+        if ( ! $this->hasDuplicate($request)) {
             $qdn = $this->qdn->add($request);
             $this->qdn->event(new StoreEvent, $qdn);
         }
 
         return redirect(route('home'));
     }
-
-
+    
     /**
      * @param Info $slug
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View

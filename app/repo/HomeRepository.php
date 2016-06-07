@@ -12,10 +12,6 @@ class HomeRepository {
 
     use DateTime;
 
-    /**
-     * @param $request
-     * @return array
-     */
     public function highChartData($request)
     {
         $pod = $this->paretoOfDiscrepancy($request->month, $request->year);
@@ -26,51 +22,52 @@ class HomeRepository {
         $man = $this->paretoOfDiscrepancy($request->month, $request->year, 'man');
         $material = $this->paretoOfDiscrepancy($request->month, $request->year, 'material');
         $process = $this->paretoOfDiscrepancy($request->month, $request->year, 'method / process');
-        $arr = ['qdn' => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
-        $info = Info::qdn($request->year)->get();
+        $arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-        foreach ($info as $elem) {
-            $arr['qdn'][$elem->month - 1] = round($elem->count / 4);
-        }
+        foreach (Info::qdn($request->year)->get() as $elem)
+            $arr[$elem->month - 1] = round($elem->count / 4);
 
-        $arr['pod'] = $this->collection($pod);
-        $arr['failureMode'] = $this->collection($failureMode);
-        $arr['assembly'] = $this->collection($assembly);
-        $arr['environment'] = $this->collection($environment);
-        $arr['machine'] = $this->collection($machine);
-        $arr['man'] = $this->collection($man);
-        $arr['material'] = $this->collection($material);
-        $arr['process'] = $this->collection($process);
-        return $arr;
+        return [
+            'qdn' => $arr,
+            'pod' => $this->collection($pod),
+            'failureMode' => $this->collection($failureMode),
+            'assembly' => $this->collection($assembly),
+            'environment' => $this->collection($environment),
+            'machine' => $this->collection($machine),
+            'man' => $this->collection($man),
+            'material' => $this->collection($material),
+            'process' => $this->collection($process)
+        ];
 	}
 
-    /**
-     * @return array
-     */
     public function counter()
     {
-        $date = $this->date();
         $closure = Closure::all();
-        $collection = [
-            'today' => Info::whereDate('created_at', '=', $date->format('Y-m-d'))->count(),
-            'week' => Info::where(DB::raw('WEEK(created_at)'), $date->weekOfYear)->count(),
-            'month' => Info::whereMonth('created_at', '=', $date->month)->count(),
-            'year' => Info::whereYear('created_at', '=', $date->year)->count(),
 
-            'PeVerification' => $this->statusCount($closure, 'P.e. Verification'),
-            'Incomplete' => $this->statusCount($closure, 'Incomplete Fill-Up'),
-            'Approval' => $this->statusCount($closure, 'Incomplete Approval'),
-            'QaVerification' => $this->statusCount($closure, 'Q.a. Verification'),
-        ];
+        $collections = collect([
+            
+            'PeVerification' => 'P.e. Verification',
+            'Incomplete' => 'Incomplete Fill-Up',
+            'Approval' => 'Incomplete Approval',
+            'QaVerification' => 'Q.a. Verification'
+            
+        ])->map(function($item, $key) use ($closure) {
+            
+            return [$key => $this->statusCount($closure, $item)];
+            
+        })->merge([
+            
+            'today' => Info::whereDate('created_at', '=', $this->date()->format('Y-m-d'))->count(),
+            'week' => Info::where(DB::raw('WEEK(created_at)'), $this->date()->weekOfYear)->count(),
+            'month' => Info::whereMonth('created_at', '=', $this->date()->month)->count(),
+            'year' => Info::whereYear('created_at', '=', $this->date()->year)->count()
+            
+        ])->flatten();
 
-		return $collection;
+        return $collections;
 	}
 
-    /**
-     * @param $collection
-     * @return array
-     */
     public function collection($collection) {
         $arr        = [];
         $legend     = 'A';
@@ -89,22 +86,11 @@ class HomeRepository {
         return $arr;
     }
 
-    /**
-     * @param $closure
-     * @param $status
-     * @return mixed
-     */
     private function statusCount($closure, $status)
     {
         return $closure->where('status', $status)->count();
     }
 
-    /**
-     * @param $month
-     * @param $year
-     * @param $pod
-     * @return mixed
-     */
     private function paretoOfDiscrepancy($month, $year, $pod = '')
     {
         return Info::pod($month, $year, $pod);

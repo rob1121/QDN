@@ -19,15 +19,6 @@ class HomeControllerTest extends TestCase
         $this->see('The Simple Way to Monitor Quality Hits');
     }
 
-    public function test_a_test_home_repo_date_time_method()
-    {
-        $repo = new HomeRepository();
-
-        $expected = Carbon::now('Asia/Manila');
-        $result = $repo->dateTime();
-
-        $this->assertEquals($expected, $result);
-    }
     public function test_a_method_ajax_from_home_controller()
     {
         $year = Carbon::now('Asia/Manila')->year;

@@ -21,7 +21,6 @@ class AdminController extends Controller {
 
 	public function index() {
 		JavaScript::put('yearNow', $this->year());
-
 		return view('admin.pages.index')
             ->with([
                 'ave' => $this->qdn->failureModeAve(),

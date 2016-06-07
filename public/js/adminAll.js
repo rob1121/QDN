@@ -3904,7 +3904,7 @@ function Datepicker() {
 }
 
 $.extend(Datepicker.prototype, {
-	/* Class name added to elements to indicate already configured with a date picker. */
+	/* Db name added to elements to indicate already configured with a date picker. */
 	markerClassName: "hasDatepicker",
 
 	//Keep track of the maximum number of rows displayed (see #7043)
@@ -4578,9 +4578,9 @@ $.extend(Datepicker.prototype, {
 			inst.dpDiv.addClass("ui-datepicker-multi-" + cols).css("width", (width * cols) + "em");
 		}
 		inst.dpDiv[(numMonths[0] !== 1 || numMonths[1] !== 1 ? "add" : "remove") +
-			"Class"]("ui-datepicker-multi");
+			"Db"]("ui-datepicker-multi");
 		inst.dpDiv[(this._get(inst, "isRTL") ? "add" : "remove") +
-			"Class"]("ui-datepicker-rtl");
+			"Db"]("ui-datepicker-rtl");
 
 		if (inst === $.datepicker._curInst && $.datepicker._datepickerShowing && $.datepicker._shouldFocusInput( inst ) ) {
 			inst.input.focus();
@@ -10137,7 +10137,7 @@ $.effects.animateClass = function( value, duration, easing, callback ) {
 		applyClassChange = function() {
 			$.each( classAnimationActions, function(i, action) {
 				if ( value[ action ] ) {
-					animated[ action + "Class" ]( value[ action ] );
+					animated[ action + "Db" ]( value[ action ] );
 				}
 			});
 		};
@@ -17017,7 +17017,7 @@ $.extend( $.validator, {
 				$( this.currentForm ).on( "invalid-form.validate", this.settings.invalidHandler );
 			}
 
-			// Add aria-required to any Static/Data/Class required fields before first validation
+			// Add aria-required to any Static/Data/Db required fields before first validation
 			// Screen readers require this attribute to be present before the initial submission http://www.w3.org/TR/WCAG-TECHS/ARIA2.html
 			$( this.currentForm ).find( "[required], [data-rule-required], .required" ).attr( "aria-required", "true" );
 		},

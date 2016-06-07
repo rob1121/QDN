@@ -154,9 +154,13 @@ class Info extends Model implements SluggableInterface {
 			->orWhere('station', 'LIKE', "%" . $text . "%")
 			->orWhere('failure_mode', 'LIKE', "%" . $text . "%");
 	}
-    
+
 	public function scopeShow($query, $start, $take) {
 		$query->skip($start)->take($take);
+	}
+
+	public static function last() {
+		return Info::orderBy('id', 'desc')->first();
 	}
     
 	public function scopeIsExist($query, $request) {

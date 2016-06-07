@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QdnCreateRequest;
 use App\Models\Info;
+use App\repo\Db\DbInfo;
 use App\repo\Event\ApprovalEvent;
 use App\repo\Event\DownloadEvent;
 use App\repo\Event\DraftEvent;
@@ -41,32 +42,30 @@ class reportController extends Controller {
         return view('report.create');
     }
 
-    public function store(QdnCreateRequest $request)
+    public function store(DbInfo $qdn)
     {
-        $this->qdn->error(new DuplicateDataException);
-
-        if ( ! $this->hasDuplicate($request)) {
-            $qdn = $this->qdn->add($request);
-            $this->qdn->event(new StoreEvent, $qdn);
-        }
+        $qdn->store();
 
         return redirect(route('home'));
     }
-    
-    /**
-     * @param Info $slug
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
-     */
+
+//    public function store(QdnCreateRequest $request)
+//    {
+//        $this->qdn->error(new DuplicateDataException);
+//
+//        if ( ! $this->hasDuplicate($request)) {
+//            $qdn = $this->qdn->add($request);
+//            $this->qdn->event(new StoreEvent, $qdn);
+//        }
+//
+//        return redirect(route('home'));
+//    }
+
     public function show(Info $slug)
     {
         return $this->qdn->guardView($slug, 'report.view');
     }
 
-    /**
-     * @param Request $request
-     * @param Info $slug
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function SectionOneSaveAndProceed(Request $request, Info $slug)
     {
         $this->qdn->SectionOneUpdate($request, $slug);

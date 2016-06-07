@@ -22,6 +22,10 @@ class Employee extends Model {
 		return $query->where($column, $keyword);
 	}
 
+	public static function byName($name) {
+		return Employee::whereName($name)->first();
+	}
+
 	public function setDepartmentAttribute($value) {
 		return $this->attributes['department'] = strtolower($value);
 	}

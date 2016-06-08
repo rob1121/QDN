@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\QdnCreateRequest;
 use App\Models\Info;
 use App\repo\Db\DbInfo;
+use App\repo\Db\DbPeVerificationTransaction;
 use App\repo\Event\ApprovalEvent;
 use App\repo\Event\DownloadEvent;
 use App\repo\Event\DraftEvent;
-use App\repo\Event\PeVerificationDraftEvent;
 use App\repo\Event\QdnClosureEvent;
 use App\repo\Event\StatusUpdateEvent;
-use App\repo\Event\StoreEvent;
 use App\repo\Exception\DataRelationNotFound;
-use App\repo\Exception\DuplicateDataException;
 use App\repo\InfoRepository;
 use Cache;
 use Flash;
@@ -49,49 +46,30 @@ class reportController extends Controller {
         return redirect(route('home'));
     }
 
-//    public function store(QdnCreateRequest $request)
-//    {
-//        $this->qdn->error(new DuplicateDataException);
-//
-//        if ( ! $this->hasDuplicate($request)) {
-//            $qdn = $this->qdn->add($request);
-//            $this->qdn->event(new StoreEvent, $qdn);
-//        }
-//
-//        return redirect(route('home'));
-//    }
-
     public function show(Info $slug)
     {
         return $this->qdn->guardView($slug, 'report.view');
     }
 
-    public function SectionOneSaveAndProceed(Request $request, Info $slug)
+    public function SectionOneSaveAndProceed(DbPeVerificationTransaction $db, Info $slug)
     {
-        $this->qdn->SectionOneUpdate($request, $slug);
-        $this->qdn->UpdateClosureStatus($request, $slug);
+        $db->qdn = $slug;
 
-        Cache::forget($slug->slug);
+        $db->save()
+            ->PeVerificationEvent();
+        
         return redirect('/');
     }
 
-    /**
-     * @param Request $request
-     * @param Info $slug
-     * @return array
-     */
-    public function SectionOneSaveAsDraft(Request $request, Info $slug)
+    public function SectionOneSaveAsDraft(DbPeVerificationTransaction $db, Info $slug)
     {
-        $collection = $this->qdn->SectionOneUpdate($request, $slug);
-        $this->qdn->event(new PeVerificationDraftEvent, $slug);
+        $db->qdn = $slug;
 
-        return array_add($request->all(), 'department', $collection['emp_dept']);
+        return $db->save()
+            ->PeVerificationDraftEvent()
+            ->collection();
     }
 
-    /**
-     * @param Info $slug
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function ForIncompleteFillUp(Info $slug)
     {
         if (!$slug->involvePerson()->count())
@@ -190,15 +168,7 @@ class reportController extends Controller {
      */
     public function ForgetCache($slug)
     {
-        $this->qdn->forgetCache($slug);
-    }
-
-    /**
-     * @param $request
-     * @return bool
-     */
-    private function hasDuplicate($request)
-    {
-        return Info::isExist($request)->count() > 0;
+        if (Gate::allows('mod-qdn', $slug))
+            Cache::forget($slug);
     }
 }

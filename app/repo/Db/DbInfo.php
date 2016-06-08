@@ -17,13 +17,27 @@ use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 
 class DbInfo implements DbInterface {
-
     use ValidatesRequests;
     use DateTime;
 
     protected $request;
     protected $qdn;
     protected $hasDuplicate;
+
+    protected static $rules = [
+        'package_type' => 'required',
+        'device_name' => 'required',
+        'lot_id_number' => 'required',
+        'lot_quantity' => 'required | numeric',
+        'job_order_number' => 'required',
+        'machine' => 'required',
+        'station' => 'required',
+        'receiver_name' => 'required',
+        'major' => 'required',
+        'failure_mode' => 'required',
+        'discrepancy_category' => 'required',
+        'problem_description' => 'required',
+    ];
 
     public function __construct(Request $request)
     {
@@ -38,22 +52,9 @@ class DbInfo implements DbInterface {
                 ->event();
     }
 
-    public function validateRequest()
+    protected function validateRequest()
     {
-        $this->validate($this->request, [
-            'package_type'         => 'required',
-            'device_name'          => 'required',
-            'lot_id_number'        => 'required',
-            'lot_quantity'         => 'required | numeric',
-            'job_order_number'     => 'required',
-            'machine'              => 'required',
-            'station'              => 'required',
-            'receiver_name'        => 'required',
-            'major'                => 'required',
-            'failure_mode'         => 'required',
-            'discrepancy_category' => 'required',
-            'problem_description'  => 'required',
-        ]);
+        $this->validate($this->request, self::$rules);
 
         $this->hasDuplicate = Info::isExist($this->request)->count() > 0;
 
@@ -81,7 +82,7 @@ class DbInfo implements DbInterface {
         return $this;
     }
     
-    public function syncRelationship()
+    protected function syncRelationship()
     {
         if( ! $this->hasDuplicate)
         {
@@ -92,14 +93,14 @@ class DbInfo implements DbInterface {
         return $this;
     }
     
-    public function event()
+    protected function event()
     {
         $this->hasDuplicate
             ? Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!')
             : $this->fire(new StoreEvent);
     }
 
-    private function syncInvolvePerson()
+    protected function syncInvolvePerson()
     {
         collect($this->request->receiver_name)->map(function($name) {
             $person = Employee::byName($name);
@@ -117,15 +118,17 @@ class DbInfo implements DbInterface {
         return $this;
     }
 
-    private function syncActions()
+    protected function syncActions()
     {
         collect([new CauseOfDefect, new CorrectiveAction, new ContainmentAction, new PreventiveAction, new QdnCycle, new Closure])
             ->map(function($model) { $model->create(['info_id' => $this->qdn->id]); });
 
+        Closure::whereInfoId($this->qdn->id)->update(['status' => 'p.e. verification']);
+
         return $this;
     }
 
-    private function fire(EventInterface $event)
+    protected function fire(EventInterface $event)
     {
         $event->fire($this->qdn);
     }

@@ -1,14 +1,9 @@
 <?php namespace App\repo;
 
 use App\Employee;
-use App\Models\CauseOfDefect;
 use App\Models\Closure;
-use App\Models\ContainmentAction;
-use App\Models\CorrectiveAction;
 use App\Models\Info;
 use App\Models\InvolvePerson;
-use App\Models\PreventiveAction;
-use App\Models\QdnCycle;
 use App\repo\Event\ClosureStatusEvent;
 use App\repo\Event\EventInterface;
 use App\repo\Event\ViewEvent;
@@ -52,105 +47,6 @@ class InfoRepository {
 
 		return view($view, compact('qdn'));
 	}
-
-    /**
-     * @param $info
-     * @param $request
-     */
-    public function save($info, $request)
-    {
-        foreach([new cod, new cna, new ca, new pa] as $class)
-            $this->update($class, $info, $request);
-	}
-
-    /**
-     * @param $request
-     * @return InfoRepository
-     * @throws \Exception
-     */
-    public function add($request)
-    {
-		$qdn = $this->AddInfo($request);
-        $this->AddInvolvePerson($request, $qdn->id);
-
-		collect([new CauseOfDefect, new CorrectiveAction, new ContainmentAction, new PreventiveAction, new QdnCycle, new Closure])
-            ->map(function($model) use ($qdn) { $model->create(['info_id' => $qdn->id]); });
-        
-        if( ! CauseOfDefect::whereInfoId($qdn->id)->count())
-            throw new \Exception('parent data are not loaded to child table');
-
-		Closure::whereInfoId($qdn->id)->update(['status' => 'p.e. verification']);
-       
-        return $qdn;
-	}
-
-    /**
-     * @param $request
-     * @return static
-     */
-    public function AddInfo($request)
-    {
-		$lastIn     = Info::orderBy('id', 'desc')->first();
-		$lastInYear = substr($lastIn->control_id, 0, 2);
-		$lastInId   = substr($lastIn->control_id, 3);
-		$control_id = $this->yearNow() == $lastInYear ? $lastInId + 1 : 1;
-		$customer   = "not yet specified" == $request->customer ? $request->customerField : $request->customer;
-		$info       = Info::create($request->all());
-		$info->update([
-			'disposition' => 'use as is',
-			'control_id'  => $control_id,
-			'customer'    => $customer,
-		]);
-
-		return $info;
-	}
-
-    /**
-     * @param $request
-     * @param $id
-     */
-    public function AddInvolvePerson($request, $id)
-    {
-		foreach ($request->receiver_name as $name)
-        {
-			$person = Employee::findBy('name', $name)->first();
-
-			InvolvePerson::create([
-				'info_id'         => $id,
-				'station'      => $person->station,
-				'originator_id'   => user()->employee_id,
-				'originator_name' => user()->employee->name,
-				'receiver_id'     => $person->user_id,
-				'receiver_name'   => $person->name,
-			]);
-		}
-	}
-
-    /**
-     * @param $request
-     * @param $slug
-     * @return array
-     */
-    public function SectionOneUpdate($request, Info $slug)
-    {
-		$slug->update($request->all());
-        $involvePerson = $slug->involvePerson()->first();
-
-        $slug->involvePerson()->delete();
-        $slug->involvePerson()->saveMany($this->getInvolvePerson($request, $involvePerson));
-
-		return ['emp_dept' => $this->getInvolvePersonStation($request), 'slug' => $slug];
-	}
-
-    /**
-     * @param $request
-     * @param $qdn
-     */
-    public function UpdateClosureStatus($request, $qdn)
-    {
-		$qdn->closure()->update([ 'status' => $request->status, 'pe_verified_by' => user()->employee->name]);
-        $this->event(new ClosureStatusEvent, ['info' => $qdn, 'request' => $request]);
-    }
 
     /**
      * @param $request
@@ -267,25 +163,6 @@ class InfoRepository {
 	}
 
     /**
-     * @param string $slug
-     */
-    public function forgetCache($slug = '')
-    {
-		if (Gate::allows('mod-qdn', $slug))
-			Cache::forget($slug);
-	}
-
-    /**
-     * @param ObjectiveEvidenceInterface $table
-     * @param $info
-     * @param $request
-     */
-    private function update(ObjectiveEvidenceInterface $table, $info, $request)
-    {
-        $table->update($info, $request);
-    }
-
-    /**
      * @param EventInterface $event
      * @param $qdn
      */
@@ -300,28 +177,6 @@ class InfoRepository {
     public function error(ExceptionInterface $throw)
     {
         $throw->exception();
-    }
-
-    /**
-     * @param $request
-     * @param $involvePerson
-     * @return array
-     */
-    private function getInvolvePerson($request, $involvePerson)
-    {
-        $arr_names = collect(array_unique($request->receiver_name))->map(function($name) use($involvePerson) {
-            $emp = Employee::whereName($name)->first();
-
-            return new InvolvePerson([
-                'station' => $emp->station,
-                'originator_id' => $involvePerson->originator_id,
-                'originator_name' => $involvePerson->originator_name,
-                'receiver_id' => $emp->user_id,
-                'receiver_name' => $name]);
-
-        });
-
-        return $arr_names;
     }
 
     public function getInvolvePersonStation($request)

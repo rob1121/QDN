@@ -12,7 +12,7 @@ class ClosureStatusEvent implements EventInterface
 {
     public function fire($qdn)
     {
-        Activity:log("P.E. validate {$qdn['info']->control_id} {$qdn['request']->status} : {$qdn['request']->ValidationMessage}");
+        Activity::log(sprintf("P.E. validate {$qdn['info']->control_id} {$qdn['request']->status} : {$qdn['request']->ValidationMessage}"));
         Event::fire(new PeVerificationNotificationEvent($qdn['info'], $qdn['request']->ValidationMessage));
         Flash::success('Successfully Verified !! QDN are now ready for completion!');
     }

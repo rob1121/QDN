@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use JavaScript;
 use Activity;
 use Str;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class HomeController extends Controller
 {

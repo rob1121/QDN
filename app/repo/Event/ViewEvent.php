@@ -3,14 +3,12 @@
 
 namespace App\repo\Event;
 
-
-use App\Events\EventLogs;
-use Illuminate\Support\Facades\Event;
+use Activity;
 
 class ViewEvent implements EventInterface
 {
     public function fire($qdn)
     {
-        Event::fire(new EventLogs('view' . $qdn->control_id));
+        Activity::log("View {$qdn->control_id}");
     }
 }

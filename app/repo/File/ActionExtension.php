@@ -8,6 +8,9 @@ class ActionExtension
     protected $year;
     protected $controlId;
     protected $name;
+    protected $info;
+    protected $request;
+    protected $fileName;
 
     /**
      * @param $directory
@@ -17,14 +20,10 @@ class ActionExtension
     {
         return Storage::disk('local')->exists($directory);
     }
-
-    /**
-     * @param $request
-     * @return string
-     */
-    protected function fileName($request)
+    
+    protected function fileName()
     {
-        return "{$this->name}." . $request->file($this->name)->guessClientExtension();
+        return "{$this->name}." . $this->request->file($this->name)->guessClientExtension();
     }
 
     /**
@@ -44,13 +43,12 @@ class ActionExtension
     {
         return "" != $info->objective_evidence;
     }
-
-    /**
-     * @param $request
-     */
-    protected function moveFile($request)
+    
+    protected function moveFile()
     {
-        $request->file($this->name)->move($this->directory(), $this->fileName($request, $this->name));
+        $request->file($this->name)->move($this->directory(), $this->fileName($this->request, $this->name));
+        
+        return $this;
     }
 
 }

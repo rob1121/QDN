@@ -3,17 +3,10 @@
 use App\Employee;
 use App\Models\Closure;
 use App\Models\Info;
-use App\Models\InvolvePerson;
-use App\repo\Event\ClosureStatusEvent;
 use App\repo\Event\EventInterface;
 use App\repo\Event\ViewEvent;
 use App\repo\Exception\ExceptionInterface;
 use App\repo\Exception\InAppropriateClosureStatusException;
-use App\repo\File\cod;
-use App\repo\File\cna;
-use App\repo\File\ca;
-use App\repo\File\pa;
-use App\repo\File\ObjectiveEvidenceInterface;
 use App\repo\Traits\DateTime;
 use Cache;
 use Carbon;

@@ -1,50 +1,51 @@
 <?php namespace App\repo\File;
 
 
+use App\Models\Info;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class pa extends ActionExtension implements ObjectiveEvidenceInterface
-{
+class pa extends ActionExtension implements ObjectiveEvidenceInterface {
 
-    /**
-     * @param $info
-     * @param $request
-     */
-    public function update($info, $request)
+    public function set(Info $info, Request $request)
     {
-        $arr = [
-            'what' => $request->preventive_action_textarea,
-            'who' => $request->preventive_action_who,
-            'objective_evidence' => $this->upload($info, $request),
-        ];
+        $this->info = $info;
+        $this->request = $request;
 
-        $info->PreventiveAction()->update($arr);
+        $this->year = Carbon::parse($this->info->created_at)->year;
+        $this->controlId = $this->info->control_id;
+        $this->name = "upload_preventive_action";
+
+        return $this;
     }
 
-    /**
-     * @param $info
-     * @param $request
-     * @return string
-     */
-    private function upload($info, $request)
+    public function upload()
     {
-        $this->year = Carbon::parse($info->created_at)->year;
-        $this->controlId = $info->control_id;
-        $this->name = "upload_preventive_action";
-        
-        $oe = $info->preventiveAction->objective_evidence;
+        $this->fileName = $this->request->hasFile($this->name)
+            ? $this->isFileExist()->moveFile()->fileName()
+            : $this->info->preventiveAction->objective_evidence;
 
-        if ($request->hasFile($this->name))
-        {
-            if ($this->isNotEmpty($info->preventiveAction) && $this->isExist($this->directory($oe)))
-                Storage::delete($this->directory($oe));
+        return $this;
+    }
 
-            $this->moveFile($request);
+    public function save()
+    {
+        $this->info->PreventiveAction()
+            ->update([
+                'what' => $this->request->preventive_action_textarea,
+                'who' => $this->request->preventive_action_who,
+                'objective_evidence' => $this->fileName
+            ]);
+    }
 
-            return $this->fileName($request);
-        }
+    protected function isFileExist()
+    {
+        $oe = $this->info->preventiveAction->objective_evidence;
 
-        return $info->preventiveAction->objective_evidence;
+        if ($this->isNotEmpty($this->info->preventiveAction) && $this->isExist($this->directory($oe)))
+            Storage::delete($this->directory($oe));
+
+        return $this;
     }
 }

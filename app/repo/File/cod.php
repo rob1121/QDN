@@ -1,52 +1,51 @@
 <?php namespace App\repo\File;
 
 
+use App\Models\Info;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class cod extends ActionExtension implements ObjectiveEvidenceInterface
-{
-    protected $year;
-    protected $controlId;
+class cod extends ActionExtension implements ObjectiveEvidenceInterface {
 
-    /**
-     * @param $info
-     * @param $request
-     */
-    public function update($info, $request)
+    public function set(Info $info, Request $request)
     {
-        $arr = [
-            'cause_of_defect' => $request->cause_of_defect,
-            'cause_of_defect_description' => $request->cause_of_defect_description,
-            'objective_evidence' => $this->upload($info, $request),
-        ];
+        $this->info = $info;
+        $this->request = $request;
 
-        $info->CauseOfDefect()->update($arr);
-    }
-    
-    /**
-     * @param $info
-     * @param $request
-     * @return string
-     */
-    private function upload($info, $request)
-    {
-        $this->year = Carbon::parse($info->created_at)->year;
-        $this->controlId = $info->control_id;
+        $this->year = Carbon::parse($this->info->created_at)->year;
+        $this->controlId = $this->info->control_id;
         $this->name = "upload_cod";
 
-        $oe = $info->causeOfDefect->objective_evidence;
+        return $this;
+    }
 
-        if ($request->hasFile($this->name))
-        {
-            if ($this->isNotEmpty($info->causeOfDefect) && $this->isExist($this->directory($oe)))
-                Storage::delete($this->directory($oe));
+    public function upload()
+    {
+        $this->fileName = $this->request->hasFile($this->name)
+            ? $this->isFileExist()->moveFile()->fileName()
+            : $this->info->causeOfDefect->objective_evidence;
 
-            $this->moveFile($request);
+        return $this;
+    }
 
-            return $this->fileName($request);
-        }
+    public function save()
+    {
+        $this->info->CauseOfDefect()
+            ->update([
+                'cause_of_defect' => $this->request->cause_of_defect,
+                'cause_of_defect_description' => $this->request->cause_of_defect_description,
+                'objective_evidence' => $this->fileName,
+            ]);
+    }
 
-        return  $info->causeOfDefect->objective_evidence;
+    protected function isFileExist()
+    {
+        $oe = $this->info->causeOfDefect->objective_evidence;
+
+        if ($this->isNotEmpty($this->info->causeOfDefect) && $this->isExist($this->directory($oe)))
+            Storage::delete($this->directory($oe));
+
+        return $this;
     }
 }

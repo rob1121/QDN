@@ -1,52 +1,51 @@
 <?php namespace App\repo\File;
 
 
+use App\Models\Info;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ca extends ActionExtension implements ObjectiveEvidenceInterface
-{
-    protected $year;
-    protected $controlId;
+class ca extends ActionExtension implements ObjectiveEvidenceInterface {
 
-    /**
-     * @param $info
-     * @param $request
-     */
-    public function update($info, $request)
+    public function set(Info $info, Request $request)
     {
-        $arr = [
-            'what' => $request->corrective_action_textarea,
-            'who' => $request->corrective_action_who,
-            'objective_evidence' => $this->upload($info, $request)
-        ];
+        $this->info = $info;
+        $this->request = $request;
 
-        $info->CorrectiveAction()->update($arr);
+        $this->year = Carbon::parse($this->info->created_at)->year;
+        $this->controlId = $this->info->control_id;
+        $this->name = "upload_corrective_action";
+
+        return $this;
     }
 
-    /**
-     * @param $info
-     * @param $request
-     * @return string
-     */
-    private function upload($info, $request)
+    public function upload()
     {
-        $this->year = Carbon::parse($info->created_at)->year;
-        $this->controlId = $info->control_id;
-        $this->name = "upload_corrective_action";
-        
-        $oe = $info->correctiveAction->objective_evidence;
+        $this->fileName = $this->request->hasFile($this->name)
+            ? $this->isFileExist()->moveFile()->fileName()
+            : $this->info->correctiveAction->objective_evidence;
 
-        if ($request->hasFile($this->name))
-        {
-            if ($this->isNotEmpty($info->correctiveAction) && $this->isExist($this->directory($oe)))
-                Storage::delete($this->directory($oe));
+        return $this;
+    }
 
-            $this->moveFile($request);
-            
-            return $this->fileName($request);
-        }
+    public function save()
+    {
+        $this->info->CorrectiveAction()
+            ->update([
+                'what' => $this->request->corrective_action_textarea,
+                'who' => $this->request->corrective_action_who,
+                'objective_evidence' => $this->fileName
+            ]);
+    }
 
-        return $info->correctiveAction->objective_evidence;
+    protected function isFileExist()
+    {
+        $oe = $this->info->correctiveAction->objective_evidence;
+
+        if ($this->isNotEmpty($this->info->correctiveAction) && $this->isExist($this->directory($oe)))
+            Storage::delete($this->directory($oe));
+
+        return $this;
     }
 }

@@ -18,6 +18,13 @@ class DbPeVerificationTransaction {
     {
         $this->request = $request;
     }
+
+    public function setQdn($slug)
+    {
+        $this->qdn = $slug;
+        
+        return $this;
+    }
     
     public function save()
     {

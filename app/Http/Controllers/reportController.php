@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Info;
+use App\repo\Db\DbQdnFillUpTransaction;
+use App\repo\Event\DraftEvent;
+use App\repo\View\ViewPage;
 use App\repo\Db\DbInfo;
 use App\repo\Db\DbPeVerificationTransaction;
 use App\repo\Event\ApprovalEvent;
 use App\repo\Event\DownloadEvent;
-use App\repo\Event\DraftEvent;
 use App\repo\Event\QdnClosureEvent;
 use App\repo\Event\StatusUpdateEvent;
 use App\repo\Exception\DataRelationNotFound;
@@ -46,16 +48,17 @@ class reportController extends Controller {
         return redirect(route('home'));
     }
 
-    public function show(Info $slug)
+    public function show(ViewPage $view, Info $slug)
     {
-        return $this->qdn->guardView($slug, 'report.view');
+        return $view->set($slug, 'report.view')
+            ->createCache()
+            ->display();
     }
 
     public function SectionOneSaveAndProceed(DbPeVerificationTransaction $db, Info $slug)
     {
-        $db->qdn = $slug;
-
-        $db->save()
+        $db->setQdn($slug)
+            ->save()
             ->PeVerificationEvent();
         
         return redirect('/');
@@ -63,66 +66,46 @@ class reportController extends Controller {
 
     public function SectionOneSaveAsDraft(DbPeVerificationTransaction $db, Info $slug)
     {
-        $db->qdn = $slug;
-
-        return $db->save()
+        return $db->setQdn($slug)
+            ->save()
             ->PeVerificationDraftEvent()
             ->collection();
     }
 
-    public function ForIncompleteFillUp(Info $slug)
+    public function ForIncompleteFillUp(ViewPage $view, Info $slug)
     {
-        if (!$slug->involvePerson()->count())
-            $this->qdn->error(new DataRelationNotFound);
-
-        return $this->qdn->guardView($slug, 'report.incomplete');
+        return $view->set($slug, 'report.incomplete')
+            ->createCache()
+            ->display();
     }
-
-    /**
-     * @param Info $slug
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function draft(Info $slug, Request $request)
+    
+    public function draft(DbQdnFillUpTransaction $db, Info $slug)
     {
-        $this->qdn->save($slug, $request);
-        $this->qdn->event(new DraftEvent, $slug);
-
-        Cache::forget($slug->slug);
+        $db->setQdn($slug)
+            ->save()
+            ->deleteCache()
+            ->event(new DraftEvent);
 
         return redirect(route('home'));
     }
 
-    /**
-     * @param Info $slug
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function forApproval(Info $slug, Request $request)
+    public function forApproval(DbQdnFillUpTransaction $db, Info $slug)
     {
-        $this->qdn->save($slug, $request);
-        $slug->closure()->update(['status' => 'incomplete approval']);
-        $this->qdn->event(new ApprovalEvent, $slug);
-
-        Cache::forget($slug->slug);
+        $db->setQdn($slug)
+            ->save()
+            ->updateStatus()
+            ->deleteCache()
+            ->event(new ApprovalEvent);
 
         return redirect(route('home'));
     }
 
-    /**
-     * @param Info $slug
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function approval(Info $slug)
+    public function approval(ViewPage $view, Info $slug)
     {
-        return $this->qdn->view($slug, 'report.IncompleteApproval');
+        return $view->set($slug, 'report.IncompleteApproval')
+            ->display();
     }
-
-    /**
-     * @param Info $slug
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
+    
     public function UpdateForApprroval(Info $slug, Request $request)
     {
         if ($this->qdn->approverUpdate($request, $slug))

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Carbon;
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use DB;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Str;
 
 class Info extends Model implements SluggableInterface {
-	public $dateTime;
+    public $dateTime;
 	use SluggableTrait;
 
 	protected $sluggable = [
@@ -39,42 +39,150 @@ class Info extends Model implements SluggableInterface {
 		'quantity',
 	];
 
-	// DEFINE RELATIONSHIPS --------------------------------------------------
-	public function causeOfDefect() {
-		return $this->hasOne('App\Models\CauseOfDefect');
-	}
-	public function containmentAction() {
-		return $this->hasOne('App\Models\ContainmentAction');
-	}
+    const rules = [
+        'package_type' => 'required',
+        'device_name' => 'required',
+        'lot_id_number' => 'required',
+        'lot_quantity' => 'required | numeric',
+        'job_order_number' => 'required',
+        'machine' => 'required',
+        'station' => 'required',
+        'receiver_name' => 'required',
+        'major' => 'required',
+        'failure_mode' => 'required',
+        'discrepancy_category' => 'required',
+        'problem_description' => 'required',
+    ];
 
-	public function correctiveAction() {
-		return $this->hasOne('App\Models\CorrectiveAction');
-	}
+    // DEFINE RELATIONSHIPS --------------------------------------------------
+    public function causeOfDefect() {
+        return $this->hasOne('App\Models\CauseOfDefect');
+    }
+    public function containmentAction() {
+        return $this->hasOne('App\Models\ContainmentAction');
+    }
 
-	public function preventiveAction() {
-		return $this->hasOne('App\Models\PreventiveAction');
-	}
+    public function correctiveAction() {
+        return $this->hasOne('App\Models\CorrectiveAction');
+    }
 
-	public function qdnCycle() {
-		return $this->hasOne('App\Models\Qdncycle');
-	}
+    public function preventiveAction() {
+        return $this->hasOne('App\Models\PreventiveAction');
+    }
 
-	public function closure() {
-		return $this->hasOne('App\Models\Closure');
-	}
+    public function qdnCycle() {
+        return $this->hasOne('App\Models\QdnCycle');
+    }
 
-	public function involvePerson() {
-		return $this->hasMany('App\Models\InvolvePerson');
-	}
+    public function closure() {
+        return $this->hasOne('App\Models\Closure');
+    }
 
-	public function eventLog() {
-		return $this->hasMany('App\Models\EventLogs');
-	}
+    public function involvePerson() {
+        return $this->hasMany('App\Models\InvolvePerson');
+    }
 
-	public function getRouteKeyName() {
-		return 'slug';
-	}
+    public function eventLog() {
+        return $this->hasMany('App\Models\EventLogs');
+    }
 
+    public function getRouteKeyName() {
+        return 'slug';
+    }
+
+    public static function total($year, $month)
+    {
+        return Info::with('involvePerson')->where(DB::raw('YEAR(created_at)'), $year)
+            ->where(DB::raw('MONTH(created_at)'), $month)
+            ->show(0, 10)
+            ->get();
+    }
+
+    public static function failureMode($request, $month, $year)
+    {
+        return Info::with('involvePerson')->where(DB::raw('YEAR(created_at)'), $year)
+            ->where(DB::raw('MONTH(created_at)'), $month)
+            ->where('failure_mode', $request->discrepancy)
+            ->show(0, 10)
+            ->get();
+    }
+
+    public static function paretoOfDiscrepancy($request, $year)
+    {
+        return Info::with('involvePerson')->where(DB::raw('YEAR(created_at)'), $year)
+            ->where('discrepancy_category', $request->discrepancy)
+            ->show(0, 10)
+            ->get();
+    }
+
+    public static function today()
+    {
+        $today = Carbon::now('Asia/Manila')->format('m-d-Y');
+        
+        return Info::with('involvePerson')->where(DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'), "=", $today)
+            ->show(0, 10)
+            ->get();
+    }
+
+    public static function week()
+    {
+        $today = Carbon::now('Asia/Manila');
+
+        return Info::with('involvePerson')->where(DB::raw('WEEK(created_at)'), "=", $today->weekOfYear)
+            ->show(0, 10)
+            ->get();
+    }
+
+    public static function month()
+    {
+        $today = Carbon::now('Asia/Manila');
+        
+        return Info::with('involvePerson')->where(DB::raw('MONTH(created_at)'), "=", $today->month)
+            ->where(DB::raw('YEAR(created_at)'), "=", $today->year)
+            ->show(0, 10)
+            ->get();
+    }
+
+    public static function year()
+    {
+        $today = Carbon::now('Asia/Manila');
+        
+        return Info::with('involvePerson')->where(DB::raw('YEAR(created_at)'), "=", $today->year)
+            ->show(0, 10)
+            ->get();
+    }
+
+    public static function defaultCategory($request)
+    {
+        $today = Carbon::now('Asia/Manila');
+        return Info::with('involvePerson')->where(DB::raw('YEAR(created_at)'), $today->year)
+            ->where(DB::raw('MONTH(created_at)'), $request->month)
+            ->where('discrepancy_category', $request->discrepancy)
+            ->show(0, 10)
+            ->get();
+    }
+
+    public static function withClosure($slug)
+    {
+        return Info::whereSlug($slug)->with('closure')->first();
+    }
+
+    public static function isExist($request) {
+        return Info::whereCustomer($request->customer)
+            ->wherePackageType($request->package_type)
+            ->whereDeviceName($request->device_name)
+            ->whereLotIdNumber($request->lot_id_number)
+            ->whereLotQuantity($request->lot_quantity)
+            ->whereJobOrderNumber($request->job_order_number)
+            ->whereMachine($request->machine)
+            ->whereStation($request->station)
+            ->whereMajor($request->major)
+            ->whereProblemDescription($request->problem_description)
+            ->whereFailureMode($request->failure_mode)
+            ->whereDiscrepancyCategory($request->discrepancy_category)
+            ->whereQuantity($request->quantity)->count() > 0;
+    }
+    
 	/**
 	 * retrieving data from table for BMP graphs
 	 * @param $query
@@ -162,29 +270,13 @@ class Info extends Model implements SluggableInterface {
 	public static function last() {
 		return Info::orderBy('id', 'desc')->first();
 	}
-    
-	public function scopeIsExist($query, $request) {
-		$query->whereCustomer($request->customer)
-			->wherePackageType($request->package_type)
-			->whereDeviceName($request->device_name)
-			->whereLotIdNumber($request->lot_id_number)
-			->whereLotQuantity($request->lot_quantity)
-			->whereJobOrderNumber($request->job_order_number)
-			->whereMachine($request->machine)
-			->whereStation($request->station)
-			->whereMajor($request->major)
-			->whereProblemDescription($request->problem_description)
-			->whereFailureMode($request->failure_mode)
-			->whereDiscrepancyCategory($request->discrepancy_category)
-			->whereQuantity($request->quantity);
-	}
 // =========== MUTATORS ===================================
 
 	/**
 	 * set control number fomart before save
 	 */
 	public function setProblemDescriptionAttribute($value) {
-		$this->attributes['problem_description'] = strtolower($value);
+		$this->attributes['problem_description'] = Str::title($value);
 	}
 
 	public function getProblemDescriptionAttribute($value) {

@@ -17,8 +17,8 @@ class StatusUpdateEvent implements EventInterface
         Activity::log("Approved {$qdn['info']->control_id} : {$qdn['info']->discrepancy_category} and commented - {$qdn['request']->ApproverMessage}");
         Event::fire(new ApprovalNotificationEvent($qdn['info'], $qdn['request']->ApproverMessage)); //flash success alert message
 
-        $info     = Info::whereSlug($qdn['info']->slug)->with('closure')->first();
-        $closure = $info->closure;
+        $closure = Info::withClosure($this->qdn->slug)->closure;
+
 
         $msg = $closure->other_department && $closure->production && $closure->quality_assurance && $closure->process_engineering
             ? 'Successfully updated! Issued QDN is now subject for QA Verification!'

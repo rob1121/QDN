@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Info;
+use App\repo\Db\DbApproverTransaction;
+use App\repo\Db\DbQaVerificationTransaction;
 use App\repo\Db\DbQdnFillUpTransaction;
 use App\repo\View\ViewPage;
 use App\repo\Db\DbInfo;
 use App\repo\Db\DbPeVerificationTransaction;
-use App\repo\Event\QdnClosureEvent;
-use App\repo\Event\StatusUpdateEvent;
 use App\repo\Exception\DataRelationNotFound;
 use App\repo\InfoRepository;
 use Flash;
 use Gate;
-use Illuminate\Http\Request;
 use PDF;
 
 /**
@@ -143,11 +142,15 @@ class reportController extends Controller {
         return $view->display($slug, 'report.IncompleteApproval');
     }
 
-    public function UpdateForApprroval(Info $slug, Request $request)
+    /**
+     * @param DbApproverTransaction $db
+     * @param Info $slug
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function UpdateForApprroval(DbApproverTransaction $db, Info $slug)
     {
-        if ($this->qdn->approverUpdate($request, $slug))
-            $this->qdn->event(new StatusUpdateEvent, ['info' => $slug, 'request' => $request]);
-
+        $db->update($slug);
+        
         return redirect(route('home'));
     }
 
@@ -161,11 +164,16 @@ class reportController extends Controller {
         return $view->display($slug, 'report.IncompleteApproval');
     }
 
-    public function QaVerificationUpdate(Info $slug, Request $request)
+    /**
+     * @param DbQaVerificationTransaction $db
+     * @param Info $slug
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function QaVerificationUpdate(DbQaVerificationTransaction $db, Info $slug)
     {
-        $this->qdn->sectionEightClosure($slug, $request); // update qdn closures
-        $this->event(new QdnClosureEvent, ['info' => $slug, 'request' => $request]);
-        return redirect(route('home')); // view home page
+        $db->update($slug);
+
+        return redirect(route('home'));
     }
 
     /**

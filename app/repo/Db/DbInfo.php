@@ -22,22 +22,6 @@ class DbInfo implements DbInterface {
 
     protected $request;
     protected $qdn;
-    protected $hasDuplicate;
-
-    protected static $rules = [
-        'package_type' => 'required',
-        'device_name' => 'required',
-        'lot_id_number' => 'required',
-        'lot_quantity' => 'required | numeric',
-        'job_order_number' => 'required',
-        'machine' => 'required',
-        'station' => 'required',
-        'receiver_name' => 'required',
-        'major' => 'required',
-        'failure_mode' => 'required',
-        'discrepancy_category' => 'required',
-        'problem_description' => 'required',
-    ];
 
     public function __construct(Request $request)
     {
@@ -54,28 +38,21 @@ class DbInfo implements DbInterface {
 
     protected function validateRequest()
     {
-        $this->validate($this->request, self::$rules);
-
-        $this->hasDuplicate = Info::isExist($this->request)->count() > 0;
+        $this->validate($this->request, Info::rules);
 
         return $this;
     }
 
     protected function save()
     {
-        if( ! $this->hasDuplicate)
+        if( ! Info::isExist($this->request))
         {
-            $lastIn     = Info::last();
-            $lastInYear = substr($lastIn->control_id, 0, 2);
-            $lastInId   = substr($lastIn->control_id, 3);
-            $control_id = $this->yearNow() == $lastInYear ? $lastInId + 1 : 1;
-            $customer   = "not yet specified" == $this->request->customer ? $this->request->customerField : $this->request->customer;
 
             $this->qdn  = Info::create($this->request->all());
             $this->qdn->update([
                 'disposition' => 'use as is',
-                'control_id'  => $control_id,
-                'customer'    => $customer,
+                'control_id'  => $this->controlId(),
+                'customer'    => $this->getCustomer(),
             ]);
         }
 
@@ -84,7 +61,7 @@ class DbInfo implements DbInterface {
     
     protected function syncRelationship()
     {
-        if( ! $this->hasDuplicate)
+        if( ! Info::isExist($this->request))
         {
             $this->syncInvolvePerson()
                 ->syncActions();
@@ -95,7 +72,7 @@ class DbInfo implements DbInterface {
     
     protected function event()
     {
-        $this->hasDuplicate
+        Info::isExist($this->request)
             ? Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!')
             : $this->fire(new StoreEvent);
     }
@@ -103,16 +80,7 @@ class DbInfo implements DbInterface {
     protected function syncInvolvePerson()
     {
         collect($this->request->receiver_name)->map(function($name) {
-            $person = Employee::byName($name);
-
-            InvolvePerson::create([
-                'info_id' => $this->qdn->id,
-                'station' => $person->station,
-                'originator_id' => user()->employee_id,
-                'originator_name' => user()->employee->name,
-                'receiver_id' => $person->user_id,
-                'receiver_name' => $person->name,
-            ]);
+            InvolvePerson::store($this->qdn->id, Employee::byName($name));
         });
         
         return $this;
@@ -131,5 +99,22 @@ class DbInfo implements DbInterface {
     protected function fire(EventInterface $event)
     {
         $event->fire($this->qdn);
+    }
+
+    protected function controlId()
+    {
+        $lastIn = Info::last();
+        $lastInYear = substr($lastIn->control_id, 0, 2);
+        $lastInId = substr($lastIn->control_id, 3);
+        $control_id = $this->yearNow() == $lastInYear ? $lastInId + 1 : 1;
+        return $control_id;
+    }
+    
+    protected function getCustomer()
+    {
+        $customer = "not yet specified" == $this->request->customer
+            ? $this->request->customerField
+            : $this->request->customer;
+        return $customer;
     }
 }

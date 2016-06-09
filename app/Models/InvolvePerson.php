@@ -27,5 +27,17 @@ class InvolvePerson extends Model {
 	public function getStationAttribute($value) {
 		return Str::upper($value);
 	}
+	
+	public static function store($id, $person)
+	{
+	    InvolvePerson::create([
+			'info_id' => $id,
+			'station' => $person->station,
+			'originator_id' => user()->employee_id,
+			'originator_name' => user()->employee->name,
+			'receiver_id' => $person->user_id,
+			'receiver_name' => $person->name,
+		]);
+	}
 
 }

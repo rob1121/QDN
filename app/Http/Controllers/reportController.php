@@ -4,43 +4,59 @@ namespace App\Http\Controllers;
 
 use App\Models\Info;
 use App\repo\Db\DbQdnFillUpTransaction;
-use App\repo\Event\DraftEvent;
 use App\repo\View\ViewPage;
 use App\repo\Db\DbInfo;
 use App\repo\Db\DbPeVerificationTransaction;
-use App\repo\Event\ApprovalEvent;
-use App\repo\Event\DownloadEvent;
 use App\repo\Event\QdnClosureEvent;
 use App\repo\Event\StatusUpdateEvent;
 use App\repo\Exception\DataRelationNotFound;
 use App\repo\InfoRepository;
-use Cache;
 use Flash;
 use Gate;
 use Illuminate\Http\Request;
 use PDF;
 
+/**
+ * Class reportController
+ * @package App\Http\Controllers
+ */
 class reportController extends Controller {
+    /**
+     * @var InfoRepository
+     */
     public $qdn;
 
+    /**
+     * reportController constructor.
+     * @param InfoRepository $qdn
+     */
     public function __construct(InfoRepository $qdn)
     {
         $this->middleware('auth');
         $this->qdn = $qdn;
     }
 
+    /**
+     * @param Info $slug
+     * @return mixed
+     */
     public function pdf(Info $slug)
     {
-        $this->qdn->event(new DownloadEvent, $slug);
-
-        return PDF::loadHTML(view('pdf.print', ['qdn' => $slug]))->stream();
+        return ViewPage::PDF($slug);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function report()
     {
         return view('report.create');
     }
 
+    /**
+     * @param DbInfo $qdn
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store(DbInfo $qdn)
     {
         $qdn->store();
@@ -48,64 +64,85 @@ class reportController extends Controller {
         return redirect(route('home'));
     }
 
+    /**
+     * @param ViewPage $view
+     * @param Info $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
     public function show(ViewPage $view, Info $slug)
     {
-        return $view->set($slug, 'report.view')
-            ->createCache()
-            ->display();
+        return $view->display($slug, 'report.view');
     }
 
+    /**
+     * @param DbPeVerificationTransaction $db
+     * @param Info $slug
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function SectionOneSaveAndProceed(DbPeVerificationTransaction $db, Info $slug)
     {
-        $db->setQdn($slug)
-            ->save()
+        $db->save($slug)
             ->PeVerificationEvent();
         
         return redirect('/');
     }
 
+    /**
+     * @param DbPeVerificationTransaction $db
+     * @param Info $slug
+     * @return mixed
+     */
     public function SectionOneSaveAsDraft(DbPeVerificationTransaction $db, Info $slug)
     {
-        return $db->setQdn($slug)
-            ->save()
+        return $this->save($slug)
             ->PeVerificationDraftEvent()
             ->collection();
     }
 
+    /**
+     * @param ViewPage $view
+     * @param Info $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
     public function ForIncompleteFillUp(ViewPage $view, Info $slug)
     {
-        return $view->set($slug, 'report.incomplete')
-            ->createCache()
-            ->display();
+        return $view->display($slug, 'report.incomplete');
     }
-    
+
+    /**
+     * @param DbQdnFillUpTransaction $db
+     * @param Info $slug
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function draft(DbQdnFillUpTransaction $db, Info $slug)
     {
-        $db->setQdn($slug)
-            ->save()
-            ->deleteCache()
-            ->event(new DraftEvent);
+        $db->saveAsDraft($slug);
 
         return redirect(route('home'));
     }
 
+    /**
+     * @param DbQdnFillUpTransaction $db
+     * @param Info $slug
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function forApproval(DbQdnFillUpTransaction $db, Info $slug)
     {
-        $db->setQdn($slug)
-            ->save()
-            ->updateStatus()
-            ->deleteCache()
-            ->event(new ApprovalEvent);
+        $db->saveAndProceed($slug);
 
         return redirect(route('home'));
     }
 
+    /**
+     * @param ViewPage $view
+     * @param Info $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
     public function approval(ViewPage $view, Info $slug)
     {
-        return $view->set($slug, 'report.IncompleteApproval')
-            ->display();
+        return $view->display($slug, 'report.IncompleteApproval');
     }
-    
+
     public function UpdateForApprroval(Info $slug, Request $request)
     {
         if ($this->qdn->approverUpdate($request, $slug))
@@ -113,20 +150,17 @@ class reportController extends Controller {
 
         return redirect(route('home'));
     }
+
     /**
+     * @param ViewPage $view
      * @param Info $slug
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function QaVerification(Info $slug)
+    public function QaVerification(ViewPage $view, Info $slug)
     {
-        return $this->qdn->view($slug, 'report.QaVerification');
+        return $view->display($slug, 'report.IncompleteApproval');
     }
 
-    /**
-     * @param Info $slug
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
     public function QaVerificationUpdate(Info $slug, Request $request)
     {
         $this->qdn->sectionEightClosure($slug, $request); // update qdn closures
@@ -135,23 +169,24 @@ class reportController extends Controller {
     }
 
     /**
-     * method call to refresh the cache for another 5 mins
-     * @param $slug
-     * @return mixed
+     * @param ViewPage $view
+     * @param Info $slug
      */
-    public function CacheRefresher($slug)
+    public function CacheRefresher(ViewPage $view, Info $slug)
     {
-        Cache::add($slug, $this->qdn->user()->employee->name, 5);
-        return $this->qdn->user()->employee->name;
+        $view->qdn = $slug;
+
+        $view->deleteCache();
     }
 
     /**
-     * method call when user leave the page or detected intactive for 5 mins
-     * @param $slug
+     * @param ViewPage $view
+     * @param Info $slug
      */
-    public function ForgetCache($slug)
+    public function ForgetCache(ViewPage $view, Info $slug)
     {
-        if (Gate::allows('mod-qdn', $slug))
-            Cache::forget($slug);
+        $view->qdn = $slug;
+        
+        $view->deleteCache();
     }
 }

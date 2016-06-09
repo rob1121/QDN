@@ -1,6 +1,7 @@
 <?php namespace App\repo\Db;
 
 use App\Employee;
+use App\Models\Info;
 use App\Models\InvolvePerson;
 use App\repo\Event\ClosureStatusEvent;
 use App\repo\Event\EventInterface;
@@ -18,16 +19,10 @@ class DbPeVerificationTransaction {
     {
         $this->request = $request;
     }
-
-    public function setQdn($slug)
-    {
-        $this->qdn = $slug;
-        
-        return $this;
-    }
     
-    public function save()
+    public function save(Info $qdn)
     {
+        $this->qdn = $qdn;
         $this->update()
             ->syncRelationship()
             ->removeCacheUser();

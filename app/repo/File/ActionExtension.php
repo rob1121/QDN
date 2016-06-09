@@ -46,7 +46,7 @@ class ActionExtension
     
     protected function moveFile()
     {
-        $request->file($this->name)->move($this->directory(), $this->fileName($this->request, $this->name));
+        $this->request->file($this->name)->move($this->directory(), $this->fileName($this->request, $this->name));
         
         return $this;
     }

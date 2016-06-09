@@ -7,18 +7,35 @@ use Illuminate\Support\Facades\Gate;
 use Laracasts\Flash\Flash;
 use JavaScript;
 use Activity;
+use PDF;
 
 class ViewPage {
-    
-    protected $qdn;
+
+    public $qdn;
     protected $view;
 
-    public function set(Info $qdn, $view)
+    public function display(Info $qdn, $view)
     {
         $this->qdn = $qdn;
         $this->view = $view;
 
-        return $this;
+        if (Gate::allows('mod-qdn', $this->qdn->slug))
+        {
+            return $this->view();
+        }
+
+        return $this->redirectHome();
+    }
+
+    public function view()
+    {
+        $this->createJavaScriptVariables()
+            ->createCache()
+            ->event();
+
+        return view($this->view, [
+            'qdn' => $this->qdn
+        ]);
     }
 
     public function createCache()
@@ -28,23 +45,6 @@ class ViewPage {
         Cache::add($this->qdn->slug, user()->employee->name, 5);
 
         return $this;
-    }
-
-    public function display()
-    {
-        if (Gate::allows('mod-qdn', $this->qdn->slug))
-        {
-            return $this->createJavaScriptVariables()
-                ->event()
-                ->view();
-        }
-
-        return $this->redirectHome();
-    }
-    
-    public function deleteCache()
-    {
-        
     }
 
     protected function createJavaScriptVariables()
@@ -69,13 +69,6 @@ class ViewPage {
         return $this;
     }
 
-    public function view()
-    {
-        return view($this->view, [
-            'qdn' => $this->qdn
-        ]);
-    }
-
     protected function redirectHome()
     {
         $active_user = Cache::get($this->qdn->slug);
@@ -88,5 +81,20 @@ class ViewPage {
     {
         if ( ! $this->qdn->involvePerson()->count())
             throw new Exception('Missing InvolvePerson table');
+    }
+
+    public function deleteCache()
+    {
+        if (Gate::allows('mod-qdn', $this->qdn->slug))
+        {
+            Cache::forget($this->qdn->slug);
+        }
+    }
+
+    public static function PDF(Info $qdn)
+    {
+        Activity::log("Download QDN {$qdn->control_id } : {$qdn->discrepancy_category}");
+
+        return PDF::loadHTML(view('pdf.print', ['qdn' => $qdn]))->stream();
     }
 }

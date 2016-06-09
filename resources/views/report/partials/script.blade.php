@@ -65,7 +65,9 @@ $('#validation-modal').on('hidden.bs.modal', function() {
 });
 
     // ======================= AJAX PLACED INSIDE VARIABLE ========================
-    var expireCache = function(href='{{ route('home') }}') {
+    var expireCache = function(href) {
+        href = "{{ route('home') }}";
+
         $.ajax({
                 url: '{{ route('forget',['slug'=>$qdn->slug]) }}',
                 type: 'get',

@@ -47,7 +47,7 @@ class DbInfo implements DbInterface {
     public function store()
     {
             $this->validateRequest()
-                ->saveToDatabase()
+                ->save()
                 ->syncRelationship()
                 ->event();
     }
@@ -61,7 +61,7 @@ class DbInfo implements DbInterface {
         return $this;
     }
 
-    protected function saveToDatabase()
+    protected function save()
     {
         if( ! $this->hasDuplicate)
         {

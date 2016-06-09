@@ -1,5 +1,8 @@
 <?php namespace App\repo\Db;
 
+use App\Models\Info;
+use App\repo\Event\ApprovalEvent;
+use App\repo\Event\DraftEvent;
 use App\repo\Event\EventInterface;
 use App\repo\File\ca;
 use App\repo\File\cna;
@@ -8,7 +11,6 @@ use App\repo\File\ObjectiveEvidenceInterface;
 use App\repo\File\pa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Laracasts\Flash\Flash;
 use Activity;
 
 class DbQdnFillUpTransaction {
@@ -21,15 +23,30 @@ class DbQdnFillUpTransaction {
         $this->request = $request;
     }
 
-    public function setQdn($qdn)
+
+    public function saveAsDraft(Info $qdn)
     {
         $this->qdn = $qdn;
         
-        return $this;
+        $this->save()
+            ->deleteCache()
+            ->event(new DraftEvent);
+    }
+    
+    public function saveAndProceed(Info $qdn)
+    {
+        $this->qdn = $qdn;
+
+        $this->save()
+            ->updateStatus()
+            ->deleteCache()
+            ->event(new ApprovalEvent);
+        
     }
     
     public function save()
     {
+        
         collect([new ca, new cod, new cna, new pa])->map(function($class){
             $this->update($class);
         });

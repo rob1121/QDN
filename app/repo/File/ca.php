@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ca extends ActionExtension implements ObjectiveEvidenceInterface {
-
+    
     public function set(Info $info, Request $request)
     {
-        $this->info = $info;
         $this->request = $request;
+        $this->info = $info;
 
         $this->year = Carbon::parse($this->info->created_at)->year;
         $this->controlId = $this->info->control_id;

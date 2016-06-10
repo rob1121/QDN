@@ -14,31 +14,16 @@ class HomeRepository {
 
     public function highChartData($request)
     {
-        $pod = $this->paretoOfDiscrepancy($request->month, $request->year);
-        $failureMode = $this->paretoOfDiscrepancy($request->month, $request->year, 'failureMode');
-        $assembly = $this->paretoOfDiscrepancy($request->month, $request->year, 'assembly');
-        $environment = $this->paretoOfDiscrepancy($request->month, $request->year, 'environment');
-        $machine = $this->paretoOfDiscrepancy($request->month, $request->year, 'machine');
-        $man = $this->paretoOfDiscrepancy($request->month, $request->year, 'man');
-        $material = $this->paretoOfDiscrepancy($request->month, $request->year, 'material');
-        $process = $this->paretoOfDiscrepancy($request->month, $request->year, 'method / process');
+        collect(['all', 'failureMode', 'assembly', 'environment', 'machine', 'man', 'material', 'process'])
+            ->flatMap(function($type) use ($request){
+            return [$type => $this->collection(Info::pod($request->month, $request->year, $type))];
+        })->merge(['qdn' => $arr]);
 
-        $arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-        foreach (Info::qdn($request->year)->get() as $elem)
-            $arr[$elem->month - 1] = round($elem->count / 4);
-
-        return [
-            'qdn' => $arr,
-            'pod' => $this->collection($pod),
-            'failureMode' => $this->collection($failureMode),
-            'assembly' => $this->collection($assembly),
-            'environment' => $this->collection($environment),
-            'machine' => $this->collection($machine),
-            'man' => $this->collection($man),
-            'material' => $this->collection($material),
-            'process' => $this->collection($process)
-        ];
+        collect(Info::qdn($request->year)->get())->map(function($elem) {
+            return [$elem->month - 1 => round($elem->count / 4)];
+        })
+            ->merge([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            ->take(12);
 	}
 
     public function counter()
@@ -52,18 +37,28 @@ class HomeRepository {
             'Approval' => 'Incomplete Approval',
             'QaVerification' => 'Q.a. Verification'
             
-        ])->map(function($item, $key) use ($closure) {
-            
-            return [$key => $this->statusCount($closure, $item)];
-            
+        ])->map(function($item) use ($closure) {
+            return $item;
         })->merge([
-            
             'today' => Info::whereDate('created_at', '=', $this->date()->format('Y-m-d'))->count(),
             'week' => Info::where(DB::raw('WEEK(created_at)'), $this->date()->weekOfYear)->count(),
             'month' => Info::whereMonth('created_at', '=', $this->date()->month)->count(),
             'year' => Info::whereYear('created_at', '=', $this->date()->year)->count()
-            
-        ])->flatten();
+        ]);
+        $annualQdn = collect(Info::fromYear(2016))->map(function ($index) {
+            return ['key' => $index->month - 1, 'value' => round($index->count / 4)];
+        });
+return collect([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])->map(function($value, $index) {
+    if($index > 5) return $value;
+});
+        return $data;
+
+        return collect(Info::fromYear(2016))
+            ->map(function($index) {
+                return [$index->month - 1 => round($index->count / 4)];
+            })
+            ->merge([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            ->take(12);
 
         return $collections;
 	}

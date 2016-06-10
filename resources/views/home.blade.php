@@ -218,7 +218,7 @@ function doAjax() {
             $('#text-approval').text(count.Approval);
             $('#text-qaVerification').text(count.QaVerification);
         },
-        complete: function(count) {
+        complete: function() {
             // Schedule the next
             setTimeout(doAjax, interval);
         }

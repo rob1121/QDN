@@ -12,11 +12,11 @@
         <td>
         {!!
             implode("<br>",array_flatten(
-                                $row->involvePerson()
-                                    ->select('receiver_name')
-                                    ->get()
-                                    ->toArray())
-                                )
+                $row->involvePerson()
+                    ->select('receiver_name')
+                    ->get()
+                    ->toArray())
+                )
          !!}
          </td>
         <td>{{ Str::title($row->created_at) }}</td>

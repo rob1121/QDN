@@ -55,39 +55,83 @@ class Info extends Model implements SluggableInterface {
     ];
 
     // DEFINE RELATIONSHIPS --------------------------------------------------
-    public function causeOfDefect() {
+    public function causeOfDefect()
+	{
         return $this->hasOne('App\Models\CauseOfDefect');
     }
-    public function containmentAction() {
+    public function containmentAction()
+	{
         return $this->hasOne('App\Models\ContainmentAction');
     }
 
-    public function correctiveAction() {
+    public function correctiveAction()
+	{
         return $this->hasOne('App\Models\CorrectiveAction');
     }
 
-    public function preventiveAction() {
+    public function preventiveAction()
+	{
         return $this->hasOne('App\Models\PreventiveAction');
     }
 
-    public function qdnCycle() {
+    public function qdnCycle()
+	{
         return $this->hasOne('App\Models\QdnCycle');
     }
 
-    public function closure() {
+    public function closure()
+	{
         return $this->hasOne('App\Models\Closure');
     }
 
-    public function involvePerson() {
+    public function involvePerson()
+	{
         return $this->hasMany('App\Models\InvolvePerson');
     }
 
-    public function eventLog() {
+    public function eventLog()
+	{
         return $this->hasMany('App\Models\EventLogs');
     }
 
-    public function getRouteKeyName() {
+    public function getRouteKeyName()
+	{
         return 'slug';
+    }
+
+    public static function discrepancyCategory()
+    {
+        return Info::select('discrepancy_category')->groupBy('discrepancy_category')->get();
+    }
+
+    public static function failureModeCategory()
+    {
+        return Info::select('failure_mode')->groupBy('failure_mode')->get();
+    }
+    
+    public static function filterWithText($request)
+    {
+        return Info::orderBy($request->column, $request->sort)
+            ->where(DB::raw('YEAR(created_at)'), 'LIKE', "%" . $request->year . "%")
+            ->search($request->text)
+            ->show($request->start, $request->end)
+            ->get();
+    }
+
+    public static function filterWithOutText($request)
+    {
+        $condition = '' == $request->month ? 'LIKE' : '=';
+        $month = '' == $request->month ? '%' . $request->month . '%' : $request->month;
+
+        $option = Info::orderBy($request->column, $request->sort)
+            ->where(DB::raw('YEAR(created_at)'), 'LIKE', '%' . $request->year . '%')
+            ->where(DB::raw('MONTH(created_at)'), $condition, $month)
+            ->where('discrepancy_category', 'LIKE', '%' . $request->discrepancy . '%')
+            ->where('failure_mode', 'LIKE', '%' . $request->FailureMode)
+            ->show($request->start, $request->end)
+            ->get();
+
+        return $option;
     }
 
     public static function total($year, $month)
@@ -167,7 +211,27 @@ class Info extends Model implements SluggableInterface {
         return Info::whereSlug($slug)->with('closure')->first();
     }
 
-    public static function isExist($request) {
+    public static function issuedFrom($date)
+    {
+        $today = Carbon::now('Asia/Manila');
+        
+        return collect([
+            'today' => Info::where( DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'), "=", $today->format('m-d-Y'))->get(),
+            'week' => Info::where( DB::raw('WEEK(created_at)'), "=", $today->weekOfYear )->get(),
+            'month' => Info::where( DB::raw('MONTH(created_at)'), "=", $today->month )->where(DB::raw('YEAR(created_at)'),"=",$today->year)->get(),
+            'year' => Info::where(DB::raw('YEAR(created_at)'), "=", $today->year)->get()
+        ])->get($date);
+    }
+
+    public static function fromYear($year)
+    {
+        return Info::select(DB::raw('MONTH(created_at) as month, COUNT(MONTH(created_at)) as count'))
+            ->where(DB::raw('YEAR(created_at)'), $year)
+            ->groupBy('month')->get();
+    }
+
+    public static function isExist($request)
+	{
         return Info::whereCustomer($request->customer)
             ->wherePackageType($request->package_type)
             ->whereDeviceName($request->device_name)
@@ -191,8 +255,13 @@ class Info extends Model implements SluggableInterface {
 	 * @param string $select
 	 * @return
 	 */
-	public function scopePod($query, $month, $year, $select = 'all') {
-		if ('' == $select || 'all' == $select) {
+	public function scopePod($query, $month, $year, $select = 'all')
+	{
+
+		$select = $select == 'process' ? 'method / process' : $select;
+
+		if ('' == $select || 'all' == $select)
+		{
 			return $query->select(DB::raw(
 				'COUNT(discrepancy_category) as paretoFirst,
                     discrepancy_category as category'
@@ -204,7 +273,8 @@ class Info extends Model implements SluggableInterface {
 
 		}
 
-		if ('failureMode' == $select) {
+		if ('failureMode' == $select)
+		{
 
 			return $query->select(DB::raw(
 				'COUNT(failure_mode) as paretoFirst,
@@ -231,30 +301,8 @@ class Info extends Model implements SluggableInterface {
 
 	}
 
-	/**
-	 * get qdndata for year round
-	 */
-	public function scopeQdn($query, $year) {
-		$query->select(
-			DB::raw('
-                    MONTH(created_at) as month,
-                    COUNT(MONTH(created_at)) as count
-                ')
-		)
-			->where(DB::raw('YEAR(created_at)'), $year)
-			->groupBy('month');
-	}
-	
-	function scopeIssued($query, $date) {
-		collect([
-			'today' => $query->where( DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'), "=", Carbon::now('Asia/Manila')->format('m-d-Y'))->get(),
-			'week' => $query->where( DB::raw('WEEK(created_at)'), "=", Carbon::now('Asia/Manila')->weekOfYear )->get(),
-			'month' => $query->where( DB::raw('MONTH(created_at)'), "=", Carbon::now('Asia/Manila')->month )->where(DB::raw('YEAR(created_at)'),"=",Carbon::now('Asia/Manila')->year)->get(),
-			'year' => $query->where(DB::raw('YEAR(created_at)'), "=", Carbon::now('Asia/Manila')->year)->get()
-		])->get($date);
-	}
-
-	public function scopeSearch($query, $text) {
+	public function scopeSearch($query, $text)
+	{
 		$query->where('problem_description', 'LIKE', "%" . $text . "%")
 			->orWhere('discrepancy_category', 'LIKE', "%" . $text . "%")
 			->orWhere('control_id', 'LIKE', "%" . $text . "%")
@@ -263,11 +311,13 @@ class Info extends Model implements SluggableInterface {
 			->orWhere('failure_mode', 'LIKE', "%" . $text . "%");
 	}
 
-	public function scopeShow($query, $start, $take) {
+	public function scopeShow($query, $start, $take)
+	{
 		$query->skip($start)->take($take);
 	}
 
-	public static function last() {
+	public static function last()
+	{
 		return Info::orderBy('id', 'desc')->first();
 	}
 // =========== MUTATORS ===================================
@@ -275,87 +325,108 @@ class Info extends Model implements SluggableInterface {
 	/**
 	 * set control number fomart before save
 	 */
-	public function setProblemDescriptionAttribute($value) {
+	public function setProblemDescriptionAttribute($value)
+	{
 		$this->attributes['problem_description'] = Str::title($value);
 	}
 
-	public function getProblemDescriptionAttribute($value) {
+	public function getProblemDescriptionAttribute($value)
+	{
 		return Str::title($value);
 	}
 
-	public function setDiscrepancyCategoryAttribute($value) {
+	public function setDiscrepancyCategoryAttribute($value)
+	{
 		return $this->attributes['discrepancy_category'] = strtolower($value);
 	}
 
-	public function getDiscrepancyCategoryAttribute($value) {
+	public function getDiscrepancyCategoryAttribute($value)
+	{
 		return Str::upper($value);
 	}
 
-	public function setFailureModeAttribute($value) {
+	public function setFailureModeAttribute($value)
+	{
 		return $this->attributes['failure_mode'] = strtolower($value);
 	}
 
-	public function getFailureModeAttribute($value) {
+	public function getFailureModeAttribute($value)
+	{
 		return Str::title($value);
 	}
 
-	public function setMachineAttribute($value) {
+	public function setMachineAttribute($value)
+	{
 		return $this->attributes['machine'] = strtolower($value);
 	}
 
-	public function getMachineAttribute($value) {
+	public function getMachineAttribute($value)
+	{
 		return Str::upper($value);
 	}
 
-	public function setCustomerAttribute($value) {
+	public function setCustomerAttribute($value)
+	{
 		return $this->attributes['customer'] = strtolower($value);
 	}
 
-	public function getCustomerAttribute($value) {
+	public function getCustomerAttribute($value)
+	{
 		return Str::upper($value);
 	}
 
-	public function setPackageTypeAttribute($value) {
+	public function setPackageTypeAttribute($value)
+	{
 		return $this->attributes['package_type'] = strtolower($value);
 	}
 
-	public function getPackageTypeAttribute($value) {
+	public function getPackageTypeAttribute($value)
+	{
 		return Str::upper($value);
 	}
 
-	public function setDeviceNameAttribute($value) {
+	public function setDeviceNameAttribute($value)
+	{
 		return $this->attributes['device_name'] = strtolower($value);
 	}
 
-	public function getDeviceNameAttribute($value) {
+	public function getDeviceNameAttribute($value)
+	{
 		return Str::upper($value);
 	}
 
-	public function setLotIdNumberAttribute($value) {
+	public function setLotIdNumberAttribute($value)
+	{
 		return $this->attributes['lot_id_number'] = strtolower($value);
 	}
 
-	public function getLotIdNumberAttribute($value) {
+	public function getLotIdNumberAttribute($value)
+	{
 		return Str::upper($value);
 	}
 
-	public function setStationAttribute($value) {
+	public function setStationAttribute($value)
+	{
 		return $this->attributes['station'] = strtolower($value);
 	}
 
-	public function getStationAttribute($value) {
+	public function getStationAttribute($value)
+	{
 		return Str::upper($value);
 	}
 
-	public function setJobOrderNumberAttribute($value) {
+	public function setJobOrderNumberAttribute($value)
+	{
 		return $this->attributes['job_order_number'] = strtolower($value);
 	}
 
-	public function getJobOrderNumberAttribute($value) {
+	public function getJobOrderNumberAttribute($value)
+	{
 		return Str::upper($value);
 	}
 
-	public function setControlIdAttribute($value) {
+	public function setControlIdAttribute($value)
+	{
 		$today = Carbon::now('Asia/Manila');
 		$year = $today->format('y');
         

@@ -1,14 +1,11 @@
-<?php
-
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 use App\Models\Closure;
 use App\Models\Info;
-use App\repo\Exception\DataRelationNotFound;
-use App\repo\Exception\ExceptionInterface;
 use App\repo\HomeRepository;
 use App\repo\Traits\DateTime;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use JavaScript;
 use Activity;
@@ -51,39 +48,29 @@ class HomeController extends Controller
     public function qdnData(Request $request)
     {
         return view('home.qdnData')
-            ->with('tbl', Info::issued($request->setDate)->get());
+            ->with('tbl', Info::issuedFrom($request->setDate));
     }
 
     public function AjaxStatus(Request $request)
     {
         $tbl = Closure::status($request->status)->get();
 
-        if ($tbl->load('info')->count() != $tbl->count())
-            $this->error(new DataRelationNotFound);
-
         return view('home.status', ['tbl' => $tbl, 'link' => $this->link($request->status)]);
     }
 
     public function link($status)
     {
-        $routes = collect([
+        return collect([
             'p.e. verification' => 'qdn_link',
             'incomplete fill-up' => 'ForIncompleteFillUp',
             'incomplete approval' => 'approval',
             'q.a. verification' => 'qa_verification',
             'closed' => 'pdf'
         ])->get($status);
-
-        return $routes;
     }
 
     public function counter()
     {
         return $this->home->counter();
-    }
-
-    private function error(ExceptionInterface $throw)
-    {
-        $throw->exception();
     }
 }

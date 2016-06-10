@@ -1,4 +1,3 @@
-
 function qdnData(givenDate, rowFile) {
 
     rowFile.empty();
@@ -10,7 +9,7 @@ function qdnData(givenDate, rowFile) {
         data: {
             setDate: givenDate
         },
-        success: function(data) {
+        success: function (data) {
             rowFile.empty();
             if (data != '') {
                 rowFile.append(data);
@@ -23,7 +22,7 @@ function qdnData(givenDate, rowFile) {
                 }).appendTo(rowFile.children('tr'));
             }
         },
-        error: function(givenDate, rowFile) {
+        error: function (givenDate, rowFile) {
             qdnData(givenDate, rowFile);
         },
         cache: false
@@ -39,7 +38,7 @@ function status(status, rowFile) {
         data: {
             status: status
         },
-        success: function(data) {
+        success: function (data) {
             rowFile.empty();
 
             if (data != '') {
@@ -53,14 +52,14 @@ function status(status, rowFile) {
                 }).appendTo(rowFile.children('tr'));
             }
         },
-        error: function(status, rowFile) {
+        error: function (status, rowFile) {
             status(status, rowFile);
         },
         cache: false
     });
 }
 //=============================================================================
-$('#modalQdnMetrics').on('show.bs.modal', function() {
+$('#modalQdnMetrics').on('show.bs.modal', function () {
     var year = $('#year').val(),
         month = $('#month').val();
     $.ajax({
@@ -70,7 +69,7 @@ $('#modalQdnMetrics').on('show.bs.modal', function() {
             month: month,
             year: year
         },
-        success: function(point) {
+        success: function (point) {
             count = 1;
             for (i = 0; i < point.qdn.length; i++) {
                 $('#tblQdnMetrics')
@@ -83,7 +82,7 @@ $('#modalQdnMetrics').on('show.bs.modal', function() {
         cache: false
     });
 });
-$('#pod').on('show.bs.modal', function() {
+$('#pod').on('show.bs.modal', function () {
     var tbody = $("#tblQdnMetrics tbody#pareto-data"),
         year = $('#year').val(),
         month = $('#month').val(),
@@ -98,13 +97,13 @@ $('#pod').on('show.bs.modal', function() {
             month: month,
             year: year
         },
-        success: function(point) {
+        success: function (point) {
             bars = point.pod.bars;
             category = point.pod.category;
             legend = point.pod.legends;
             lines = point.pod.lines;
             total = point.pod.total;
-            podGraph.tooltip.options.formatter = function() {
+            podGraph.tooltip.options.formatter = function () {
                 if (this.series.name == '% Pareto') {
                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                     return pcnt + '%';
@@ -114,7 +113,7 @@ $('#pod').on('show.bs.modal', function() {
             podGraph.yAxis[1].update({
                 tickInterval: total / 4, //TOTAL
                 labels: {
-                    formatter: function() {
+                    formatter: function () {
                         var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
                         return pcnt + '%';
                     }
@@ -131,23 +130,23 @@ $('#pod').on('show.bs.modal', function() {
                 for (i = 0; i < point.pod.lines.length; i++) {
                     tbody.append(
                         $("<tr></tr>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + legend[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + category[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + bars[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=pod'>" + bars[i] + "</a></td>")
                     );
                     count += 1;
                 }
                 tbody.append(
                     $("<tr class='warning'></tr>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'><strong>TOTAL : </strong></a></td>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'>" + total + "</a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&category=total'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&category=total'>" + total + "</a></td>")
                 );
             }
         },
         cache: false
     });
 });
-$('#assemblyModal').on('show.bs.modal', function() {
+$('#assemblyModal').on('show.bs.modal', function () {
     var tbody = $("#assemblyTable tbody#pareto-data"),
         year = $('#year').val(),
         month = $('#month').val(),
@@ -161,13 +160,13 @@ $('#assemblyModal').on('show.bs.modal', function() {
             month: month,
             year: year
         },
-        success: function(point) {
+        success: function (point) {
             bars = point.assembly.bars;
             category = point.assembly.category;
             legend = point.assembly.legends;
             lines = point.assembly.lines;
             total = point.assembly.total;
-            assemblyGraph.tooltip.options.formatter = function() {
+            assemblyGraph.tooltip.options.formatter = function () {
                 if (this.series.name == '% Pareto') {
                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                     return pcnt + '%';
@@ -177,7 +176,7 @@ $('#assemblyModal').on('show.bs.modal', function() {
             assemblyGraph.yAxis[1].update({
                 tickInterval: total / 4, //TOTAL
                 labels: {
-                    formatter: function() {
+                    formatter: function () {
                         var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
                         return pcnt + '%';
                     }
@@ -194,16 +193,16 @@ $('#assemblyModal').on('show.bs.modal', function() {
                 for (i = 0; i < point.assembly.lines.length; i++) {
                     tbody.append(
                         $("<tr></tr>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
                     );
                     count += 1;
                 }
                 tbody.append(
                     $("<tr class='warning'></tr>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
                 );
             }
         },
@@ -211,7 +210,7 @@ $('#assemblyModal').on('show.bs.modal', function() {
     });
 });
 //=================================================================
-$('#environmentModal').on('show.bs.modal', function() {
+$('#environmentModal').on('show.bs.modal', function () {
     var tbody = $("#environmentTable tbody#pareto-data"),
         year = $('#year').val(),
         month = $('#month').val(),
@@ -225,13 +224,13 @@ $('#environmentModal').on('show.bs.modal', function() {
             month: month,
             year: year
         },
-        success: function(point) {
+        success: function (point) {
             bars = point.environment.bars;
             category = point.environment.category;
             legend = point.environment.legends;
             lines = point.environment.lines;
             total = point.environment.total;
-            environmentGraph.tooltip.options.formatter = function() {
+            environmentGraph.tooltip.options.formatter = function () {
                 if (this.series.name == '% Pareto') {
                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                     return pcnt + '%';
@@ -241,7 +240,7 @@ $('#environmentModal').on('show.bs.modal', function() {
             environmentGraph.yAxis[1].update({
                 tickInterval: total / 4, //TOTAL
                 labels: {
-                    formatter: function() {
+                    formatter: function () {
                         var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
                         return pcnt + '%';
                     }
@@ -258,16 +257,16 @@ $('#environmentModal').on('show.bs.modal', function() {
                 for (i = 0; i < point.environment.lines.length; i++) {
                     tbody.append(
                         $("<tr></tr>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
                     );
                     count += 1;
                 }
                 tbody.append(
                     $("<tr class='warning'></tr>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
                 );
             }
         },
@@ -275,7 +274,7 @@ $('#environmentModal').on('show.bs.modal', function() {
     });
 });
 //====================================================================
-$('#failureModeModal').on('show.bs.modal', function() {
+$('#failureModeModal').on('show.bs.modal', function () {
     var tbody = $("#failureModeTable tbody#pareto-data"),
         year = $('#year').val(),
         month = $('#month').val(),
@@ -289,13 +288,13 @@ $('#failureModeModal').on('show.bs.modal', function() {
             month: month,
             year: year
         },
-        success: function(point) {
+        success: function (point) {
             bars = point.failureMode.bars;
             category = point.failureMode.category;
             legend = point.failureMode.legends;
             lines = point.failureMode.lines;
             total = point.failureMode.total;
-            failureModeGraph.tooltip.options.formatter = function() {
+            failureModeGraph.tooltip.options.formatter = function () {
                 if (this.series.name == '% Pareto') {
                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                     return pcnt + '%';
@@ -305,7 +304,7 @@ $('#failureModeModal').on('show.bs.modal', function() {
             failureModeGraph.yAxis[1].update({
                 tickInterval: total / 4, //TOTAL
                 labels: {
-                    formatter: function() {
+                    formatter: function () {
                         var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
                         return pcnt + '%';
                     }
@@ -322,16 +321,16 @@ $('#failureModeModal').on('show.bs.modal', function() {
                 for (i = 0; i < point.failureMode.lines.length; i++) {
                     tbody.append(
                         $("<tr></tr>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
                     );
                     count += 1;
                 }
                 tbody.append(
                     $("<tr class='warning'></tr>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'><strong>TOTAL : </strong></a></td>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&category=total'>" + total + "</a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&category=total'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&category=total'>" + total + "</a></td>")
                 );
             }
         },
@@ -339,7 +338,7 @@ $('#failureModeModal').on('show.bs.modal', function() {
     });
 });
 //====================================================================
-$('#machineModal').on('show.bs.modal', function() {
+$('#machineModal').on('show.bs.modal', function () {
     var tbody = $("#machineTable tbody#pareto-data"),
         year = $('#year').val(),
         month = $('#month').val(),
@@ -353,13 +352,13 @@ $('#machineModal').on('show.bs.modal', function() {
             month: month,
             year: year
         },
-        success: function(point) {
+        success: function (point) {
             bars = point.machine.bars;
             category = point.machine.category;
             legend = point.machine.legends;
             lines = point.machine.lines;
             total = point.machine.total;
-            machineGraph.tooltip.options.formatter = function() {
+            machineGraph.tooltip.options.formatter = function () {
                 if (this.series.name == '% Pareto') {
                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                     return pcnt + '%';
@@ -369,7 +368,7 @@ $('#machineModal').on('show.bs.modal', function() {
             machineGraph.yAxis[1].update({
                 tickInterval: total / 4, //TOTAL
                 labels: {
-                    formatter: function() {
+                    formatter: function () {
                         var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
                         return pcnt + '%';
                     }
@@ -386,16 +385,16 @@ $('#machineModal').on('show.bs.modal', function() {
                 for (i = 0; i < point.machine.lines.length; i++) {
                     tbody.append(
                         $("<tr></tr>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
                     );
                     count += 1;
                 }
                 tbody.append(
                     $("<tr class='warning'></tr>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
                 );
             }
         },
@@ -403,7 +402,7 @@ $('#machineModal').on('show.bs.modal', function() {
     });
 });
 //====================================================================
-$('#manModal').on('show.bs.modal', function() {
+$('#manModal').on('show.bs.modal', function () {
     var tbody = $("#manTable tbody#pareto-data"),
         year = $('#year').val(),
         month = $('#month').val(),
@@ -417,13 +416,13 @@ $('#manModal').on('show.bs.modal', function() {
             month: month,
             year: year
         },
-        success: function(point) {
+        success: function (point) {
             bars = point.man.bars;
             category = point.man.category;
             legend = point.man.legends;
             lines = point.man.lines;
             total = point.man.total;
-            manGraph.tooltip.options.formatter = function() {
+            manGraph.tooltip.options.formatter = function () {
                 if (this.series.name == '% Pareto') {
                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                     return pcnt + '%';
@@ -433,7 +432,7 @@ $('#manModal').on('show.bs.modal', function() {
             manGraph.yAxis[1].update({
                 tickInterval: total / 4, //TOTAL
                 labels: {
-                    formatter: function() {
+                    formatter: function () {
                         var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
                         return pcnt + '%';
                     }
@@ -450,16 +449,16 @@ $('#manModal').on('show.bs.modal', function() {
                 for (i = 0; i < point.man.lines.length; i++) {
                     tbody.append(
                         $("<tr></tr>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
                     );
                     count += 1;
                 }
                 tbody.append(
                     $("<tr class='warning'></tr>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
                 );
             }
         },
@@ -467,7 +466,7 @@ $('#manModal').on('show.bs.modal', function() {
     });
 });
 //====================================================================
-$('#materialModal').on('show.bs.modal', function() {
+$('#materialModal').on('show.bs.modal', function () {
     var tbody = $("#materialTable tbody#pareto-data"),
         year = $('#year').val(),
         month = $('#month').val(),
@@ -481,13 +480,13 @@ $('#materialModal').on('show.bs.modal', function() {
             month: month,
             year: year
         },
-        success: function(point) {
+        success: function (point) {
             bars = point.material.bars;
             category = point.material.category;
             legend = point.material.legends;
             lines = point.material.lines;
             total = point.material.total;
-            materialGraph.tooltip.options.formatter = function() {
+            materialGraph.tooltip.options.formatter = function () {
                 if (this.series.name == '% Pareto') {
                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                     return pcnt + '%';
@@ -497,7 +496,7 @@ $('#materialModal').on('show.bs.modal', function() {
             materialGraph.yAxis[1].update({
                 tickInterval: total / 4, //TOTAL
                 labels: {
-                    formatter: function() {
+                    formatter: function () {
                         var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
                         return pcnt + '%';
                     }
@@ -514,16 +513,16 @@ $('#materialModal').on('show.bs.modal', function() {
                 for (i = 0; i < point.material.lines.length; i++) {
                     tbody.append(
                         $("<tr></tr>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
                     );
                     count += 1;
                 }
                 tbody.append(
                     $("<tr class='warning'></tr>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
                 );
             }
         },
@@ -531,7 +530,7 @@ $('#materialModal').on('show.bs.modal', function() {
     });
 });
 //====================================================================
-$('#processModal').on('show.bs.modal', function() {
+$('#processModal').on('show.bs.modal', function () {
     var tbody = $("#processTable tbody#pareto-data"),
         year = $('#year').val(),
         month = $('#month').val(),
@@ -545,13 +544,13 @@ $('#processModal').on('show.bs.modal', function() {
             month: month,
             year: year
         },
-        success: function(point) {
+        success: function (point) {
             bars = point.process.bars;
             category = point.process.category;
             legend = point.process.legends;
             lines = point.process.lines;
             total = point.process.total;
-            processGraph.tooltip.options.formatter = function() {
+            processGraph.tooltip.options.formatter = function () {
                 if (this.series.name == '% Pareto') {
                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL
                     return pcnt + '%';
@@ -561,7 +560,7 @@ $('#processModal').on('show.bs.modal', function() {
             processGraph.yAxis[1].update({
                 tickInterval: total / 4, //TOTAL
                 labels: {
-                    formatter: function() {
+                    formatter: function () {
                         var pcnt = Highcharts.numberFormat((this.value / total * 100), 0, '.'); //TOTAL
                         return pcnt + '%';
                     }
@@ -578,16 +577,16 @@ $('#processModal').on('show.bs.modal', function() {
                 for (i = 0; i < point.process.lines.length; i++) {
                     tbody.append(
                         $("<tr></tr>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
-                            .append("<td><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + legend[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + category[i] + "</a></td>")
+                            .append("<td><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[i] + "&category=failureMode'>" + bars[i] + "</a></td>")
                     );
                     count += 1;
                 }
                 tbody.append(
                     $("<tr class='warning'></tr>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
-                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='" + window.location.href + "pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'><strong>TOTAL : </strong></a></td>")
+                        .append("<td colspan='2' class='h4 text-left'><a target='_blank' href='/pareto?month=" + month + "&year=" + year + "&discrepancy=" + category[0] + "&category=failureMode'>" + total + "</a></td>")
                 );
             }
         },
@@ -710,19 +709,19 @@ var qdnMetrics = new Highcharts.Chart({ //start of qdnMetrics
         data: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
     }]
 }); //end of qdnMetrics
-$('#modalQdnMetrics').on('show.bs.modal', function() {
+$('#modalQdnMetrics').on('show.bs.modal', function () {
     $('#qdnMetrics').css('visibility', 'hidden');
 });
-$('#modalQdnMetrics').on('shown.bs.modal', function() {
+$('#modalQdnMetrics').on('shown.bs.modal', function () {
     $('#qdnMetrics').css('visibility', 'initial');
     qdnMetrics.reflow();
 });
 //======================================================
 var podGraph = new Highcharts.Chart(chartContent); //end of pareto
-$('#pod').on('show.bs.modal', function() {
+$('#pod').on('show.bs.modal', function () {
     $('#podGraph').css('visibility', 'hidden');
 });
-$('#pod').on('shown.bs.modal', function() {
+$('#pod').on('shown.bs.modal', function () {
     $('#podGraph').css('visibility', 'initial');
     podGraph.reflow();
 });
@@ -730,10 +729,10 @@ $('#pod').on('shown.bs.modal', function() {
 chartContent.chart.renderTo = 'assemblyGraph';
 chartContent.title.text = 'Pareto of Discrepancy - Assembly';
 var assemblyGraph = new Highcharts.Chart(chartContent); //end of pareto
-$('#assemblyModal').on('show.bs.modal', function() {
+$('#assemblyModal').on('show.bs.modal', function () {
     $('#assemblyGraph').css('visibility', 'hidden');
 });
-$('#assemblyModal').on('shown.bs.modal', function() {
+$('#assemblyModal').on('shown.bs.modal', function () {
     $('#assemblyGraph').css('visibility', 'initial');
     assemblyGraph.reflow();
 });
@@ -741,10 +740,10 @@ $('#assemblyModal').on('shown.bs.modal', function() {
 chartContent.chart.renderTo = 'environmentGraph';
 chartContent.title.text = 'Pareto of Discrepancy - Environment';
 var environmentGraph = new Highcharts.Chart(chartContent); //end of pareto
-$('#environmentModal').on('show.bs.modal', function() {
+$('#environmentModal').on('show.bs.modal', function () {
     $('#environmentGraph').css('visibility', 'hidden');
 });
-$('#environmentModal').on('shown.bs.modal', function() {
+$('#environmentModal').on('shown.bs.modal', function () {
     $('#environmentGraph').css('visibility', 'initial');
     environmentGraph.reflow();
 });
@@ -752,10 +751,10 @@ $('#environmentModal').on('shown.bs.modal', function() {
 chartContent.chart.renderTo = 'failureModeGraph';
 chartContent.title.text = 'Pareto of Discrepancy - Failure Mode';
 var failureModeGraph = new Highcharts.Chart(chartContent); //end of pareto
-$('#failureModeModal').on('show.bs.modal', function() {
+$('#failureModeModal').on('show.bs.modal', function () {
     $('#failureModeGraph').css('visibility', 'hidden');
 });
-$('#failureModeModal').on('shown.bs.modal', function() {
+$('#failureModeModal').on('shown.bs.modal', function () {
     $('#failureModeGraph').css('visibility', 'initial');
     failureModeGraph.reflow();
 });
@@ -763,10 +762,10 @@ $('#failureModeModal').on('shown.bs.modal', function() {
 chartContent.chart.renderTo = 'machineGraph';
 chartContent.title.text = 'Pareto of Discrepancy - Machine';
 var machineGraph = new Highcharts.Chart(chartContent); //end of pareto
-$('#machineModal').on('show.bs.modal', function() {
+$('#machineModal').on('show.bs.modal', function () {
     $('#machineGraph').css('visibility', 'hidden');
 });
-$('#machineModal').on('shown.bs.modal', function() {
+$('#machineModal').on('shown.bs.modal', function () {
     $('#machineGraph').css('visibility', 'initial');
     machineGraph.reflow();
 });
@@ -774,10 +773,10 @@ $('#machineModal').on('shown.bs.modal', function() {
 chartContent.chart.renderTo = 'manGraph';
 chartContent.title.text = 'Pareto of Discrepancy - Man';
 var manGraph = new Highcharts.Chart(chartContent); //end of pareto
-$('#manModal').on('show.bs.modal', function() {
+$('#manModal').on('show.bs.modal', function () {
     $('#manGraph').css('visibility', 'hidden');
 });
-$('#manModal').on('shown.bs.modal', function() {
+$('#manModal').on('shown.bs.modal', function () {
     $('#manGraph').css('visibility', 'initial');
     manGraph.reflow();
 });
@@ -785,10 +784,10 @@ $('#manModal').on('shown.bs.modal', function() {
 chartContent.chart.renderTo = 'materialGraph';
 chartContent.title.text = 'Pareto of Discrepancy - Material';
 var materialGraph = new Highcharts.Chart(chartContent); //end of pareto
-$('#materialModal').on('show.bs.modal', function() {
+$('#materialModal').on('show.bs.modal', function () {
     $('#materialGraph').css('visibility', 'hidden');
 });
-$('#materialModal').on('shown.bs.modal', function() {
+$('#materialModal').on('shown.bs.modal', function () {
     $('#materialGraph').css('visibility', 'initial');
     materialGraph.reflow();
 });
@@ -796,34 +795,34 @@ $('#materialModal').on('shown.bs.modal', function() {
 chartContent.chart.renderTo = 'processGraph';
 chartContent.title.text = 'Pareto of Discrepancy - Method / Process';
 var processGraph = new Highcharts.Chart(chartContent); //end of pareto
-$('#processModal').on('show.bs.modal', function() {
+$('#processModal').on('show.bs.modal', function () {
     $('#processGraph').css('visibility', 'hidden');
 });
-$('#processModal').on('shown.bs.modal', function() {
+$('#processModal').on('shown.bs.modal', function () {
     $('#processGraph').css('visibility', 'initial');
     processGraph.reflow();
 });
 
 //=============================================================
-$('#peVerification').on('show.bs.collapse', function() {
+$('#peVerification').on('show.bs.collapse', function () {
     var rowFile = $(this).find("tbody");
     status('p.e. verification', rowFile)
     $('.collapse').collapse('hide');
 });
 
-$('#incomplete').on('show.bs.collapse', function() {
+$('#incomplete').on('show.bs.collapse', function () {
     var rowFile = $(this).find("tbody");
     status('incomplete fill-up', rowFile)
     $('.collapse').collapse('hide');
 });
 
-$('#approval').on('show.bs.collapse', function() {
+$('#approval').on('show.bs.collapse', function () {
     var rowFile = $(this).find("tbody");
     status('incomplete approval', rowFile)
     $('.collapse').collapse('hide');
 });
 
-$('#qaVerification').on('show.bs.collapse', function() {
+$('#qaVerification').on('show.bs.collapse', function () {
     var rowFile = $(this).find("tbody");
     status('q.a. verification', rowFile)
     $('.collapse').collapse('hide');

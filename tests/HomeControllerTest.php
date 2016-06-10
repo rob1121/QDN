@@ -36,8 +36,8 @@ class HomeControllerTest extends TestCase
 
     public function test_a_method_qdn_data()
     {
-        $this->json('GET', route('qdn_data'), ['setDate' => Carbon::now('Asia/Manila')->toDateString()]);
-        $this->assertViewHas('tbl');
+        $this->json('GET', route('qdn_data'), ['setDate' => 'today']);
+        $this->assertResponseOk();
     }
 
     public function test_a_method_counter()

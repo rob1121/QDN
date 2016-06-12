@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use DB;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Str;
 
@@ -53,6 +54,45 @@ class Info extends Model implements SluggableInterface {
         'discrepancy_category' => 'required',
         'problem_description' => 'required',
     ];
+
+    public static function date()
+    {
+        return Carbon::now('Asia/Manila');
+    }
+
+	public static function todayCount()
+	{
+		return Info::whereDate('created_at', '=', static::date()->format('Y-m-d'))->count();
+	}
+
+    public static function weekCount()
+    {
+        return Info::where(DB::raw('WEEK(created_at)'), static::date()->weekOfYear)->count();
+    }
+
+    public static function monthCount()
+    {
+        Info::whereMonth('created_at', '=', static::date()->month)->count();
+    }
+
+    public static function yearCount()
+    {
+        return Info::whereYear('created_at', '=', static::date()->year)->count();
+    }
+
+    public static function recentPost()
+    {
+        $info = Info::orderBy('id', 'desc')->take(5)->get()->load('closure');
+		$info->map(function($qdn)
+        {
+			if( ! $qdn->closure()->count())
+			{
+				throw new Exception('closure relation to parent info not found');
+			}
+		});
+
+        return $info;
+    }
 
     // DEFINE RELATIONSHIPS --------------------------------------------------
     public function causeOfDefect()

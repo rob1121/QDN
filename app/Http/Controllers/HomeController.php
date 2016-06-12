@@ -5,7 +5,6 @@ use App\Models\Info;
 use App\repo\HomeRepository;
 use App\repo\Traits\DateTime;
 use Auth;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use JavaScript;
 use Activity;
@@ -53,9 +52,10 @@ class HomeController extends Controller
 
     public function AjaxStatus(Request $request)
     {
-        $tbl = Closure::status($request->status)->get();
-
-        return view('home.status', ['tbl' => $tbl, 'link' => $this->link($request->status)]);
+        return view('home.status', [
+            'tbl' => Closure::status($request->status),
+            'link' => $this->link($request->status)
+        ]);
     }
 
     public function link($status)

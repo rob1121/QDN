@@ -79,7 +79,6 @@ class DummyInfoSeeder extends Seeder {
 					'OTHERS',
 				]),
 				'cause_of_defect_description' => $faker->paragraph(2),
-				'created_at'                  => $info->created_at,
 				'objective_evidence'          => 'N/A',
 			]);
 
@@ -87,7 +86,6 @@ class DummyInfoSeeder extends Seeder {
 				'info_id'            => $info->id,
 				'what'               => $faker->paragraph(2),
 				'who'                => $faker->name('male' | 'female'),
-				'created_at'         => $info->created_at,
 				'objective_evidence' => 'N/A',
 			]);
 
@@ -95,7 +93,6 @@ class DummyInfoSeeder extends Seeder {
 				'info_id'            => $info->id,
 				'what'               => $faker->paragraph(2),
 				'who'                => $faker->name('male' | 'female'),
-				'created_at'         => $info->created_at,
 				'objective_evidence' => 'N/A',
 			]);
 
@@ -103,7 +100,6 @@ class DummyInfoSeeder extends Seeder {
 				'info_id'            => $info->id,
 				'what'               => $faker->paragraph(2),
 				'who'                => $faker->name('male' | 'female'),
-				'created_at'         => $info->created_at,
 				'objective_evidence' => 'N/A',
 			]);
 
@@ -130,7 +126,7 @@ class DummyInfoSeeder extends Seeder {
 				'containment_action_taken' => $faker->randomElement(['yes', 'no']),
 				'corrective_action_taken'  => $faker->randomElement(['yes', 'no']),
 				'close_by'                 => $close_by->name,
-				'created_at'               => $info->created_at,
+				'date_sign'				   => Carbon::parse($info->created_at)->addDay(),
 				'production'               => $employee->where('department', 'production')->random()->name,
 				'process_engineering'      => $employee->where('department', 'process_engineering')->random()->name,
 				'quality_assurance'        => $employee->where('department', 'quality_assurance')->random()->name,

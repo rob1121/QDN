@@ -21,13 +21,18 @@ class Closure extends Model {
 		'status',
 	];
 
+	public static function statusCount($status)
+	{
+		return Closure::status($status)->count();
+	}
+
+    public static function status($status) {
+        return Closure::where('status', $status)->get();
+    }
+
 	// DEFINE RELATIONSHIPS --------------------------------------------------
 	public function info() {
 		return $this->belongsTo('App\Models\Info');
-	}
-
-	public function scopeStatus($query, $status) {
-		$query->where('status', $status);
 	}
 
 	//mutators===============================================================

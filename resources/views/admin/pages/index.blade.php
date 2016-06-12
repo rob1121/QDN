@@ -135,6 +135,9 @@
         <br>
         <br>
         <div id="podGraph"></div>
+        <br>
+        <br>
+        <div id="cycleTimeGraph"></div>
     </div>
     <div class="col-md-4">
         <ul class="list-group">
@@ -168,7 +171,6 @@
                 <li class="list-group-item">
                     <h5>
                         <strong>{{ $issue->discrepancy_category }}</strong>
-
                         @if($issue->closure->status != 'Closed')
                             <span class="label  label-primary pull-right"></span>
                         @else
@@ -321,9 +323,33 @@
                         },
                         cache: false
                     });
+                },
+                AjaxCycleTime = function () {
+                    var year = $('#year').val(),
+                            month = $('#month').val();
+                    $.ajax({
+                        url: '/api/cycle-time-pareto',
+                        success: function (point) {
+                            count = 1;
+                            for (i = 0; i < point.length; i++) {
+                                $('#tblQdnMetrics')
+                                        .find("td:nth-of-type(" + count + ")")
+                                        .text(point[i]);
+                                count += 1;
+                            }
+                            cycleTimeGraph.series[0].setData(point);
+// refresh DOM every 5sec
+                            setTimeout(AjaxCycleTime, 60000);
+                        },
+                        error: function () {
+                            AjaxCycleTime();
+                        },
+                        cache: false
+                    });
                 };
 // VARIABLES ENDING ==============================================================================
         AjaxParetoOfDiscrepancy();
+        AjaxCycleTime();
         AjaxQdnMetrics();
 //GET MONTH
         $('#month').on('change', function (event) {

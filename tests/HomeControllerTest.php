@@ -22,7 +22,7 @@ class HomeControllerTest extends TestCase
     public function test_a_method_ajax_from_home_controller()
     {
         $year = Carbon::now('Asia/Manila')->year;
-        $expected = ['pod', 'failureMode', 'assembly', 'environment', 'machine', 'man', 'material', 'process'];
+        $expected = ['failureMode', 'assembly', 'environment', 'machine', 'man', 'material', 'process'];
 
         $this->json('GET', route('ajax'), ['month' => '', 'year' => $year]);
         $this->seeJsonStructure($expected);

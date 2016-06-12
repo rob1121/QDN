@@ -24,7 +24,7 @@ class AdminController extends Controller {
 		return view('admin.pages.index')
             ->with([
                 'ave' => $this->qdn->failureModeAve(),
-                'qdn' => Info::orderBy('id', 'desc')->take(5)->get()->load('closure'),
+                'qdn' => Info::recentPost(),
                 'count' => $this->qdn->failureModeCount()
             ]);
 	}

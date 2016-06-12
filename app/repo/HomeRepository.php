@@ -14,51 +14,29 @@ class HomeRepository {
 
     public function highChartData($request)
     {
-        collect(['all', 'failureMode', 'assembly', 'environment', 'machine', 'man', 'material', 'process'])
-            ->flatMap(function($type) use ($request){
-            return [$type => $this->collection(Info::pod($request->month, $request->year, $type))];
-        })->merge(['qdn' => $arr]);
-
-        collect(Info::qdn($request->year)->get())->map(function($elem) {
-            return [$elem->month - 1 => round($elem->count / 4)];
-        })
-            ->merge([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            ->take(12);
+        return collect(['all', 'failureMode', 'assembly', 'environment', 'machine', 'man', 'material', 'process'])
+            ->flatMap(function($type) use ($request) {
+                return [$type == 'all' ? 'pod' : $type => $this->collection(Info::pod($request->month, $request->year, $type))];
+            })->merge(['qdn' => $this->byAnnual()]);
 	}
 
     public function counter()
     {
-        $closure = Closure::all();
-
         $collections = collect([
-            
+
             'PeVerification' => 'P.e. Verification',
             'Incomplete' => 'Incomplete Fill-Up',
             'Approval' => 'Incomplete Approval',
             'QaVerification' => 'Q.a. Verification'
-            
-        ])->map(function($item) use ($closure) {
-            return $item;
-        })->merge([
-            'today' => Info::whereDate('created_at', '=', $this->date()->format('Y-m-d'))->count(),
-            'week' => Info::where(DB::raw('WEEK(created_at)'), $this->date()->weekOfYear)->count(),
-            'month' => Info::whereMonth('created_at', '=', $this->date()->month)->count(),
-            'year' => Info::whereYear('created_at', '=', $this->date()->year)->count()
-        ]);
-        $annualQdn = collect(Info::fromYear(2016))->map(function ($index) {
-            return ['key' => $index->month - 1, 'value' => round($index->count / 4)];
-        });
-return collect([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])->map(function($value, $index) {
-    if($index > 5) return $value;
-});
-        return $data;
 
-        return collect(Info::fromYear(2016))
-            ->map(function($index) {
-                return [$index->month - 1 => round($index->count / 4)];
-            })
-            ->merge([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            ->take(12);
+        ])->map(function($status) {
+            return Closure::statusCount($status);
+        })->merge([
+            'today' => Info::todayCount(),
+            'week' => Info::weekCount(),
+            'month' => Info::monthCount(),
+            'year' => Info::yearCount()
+        ]);
 
         return $collections;
 	}
@@ -81,14 +59,18 @@ return collect([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])->map(function($value, $inde
         return $arr;
     }
 
-    private function statusCount($closure, $status)
+    /**
+     * @return static
+     */
+    protected function byAnnual()
     {
-        return $closure->where('status', $status)->count();
-    }
+        $annualQdn = collect(Info::fromYear($this->year()))->reduce(function ($carry, $index) {
+            return $carry + [$index->month - 1 => round($index->count / 4)];
+        }, []);
 
-    private function paretoOfDiscrepancy($month, $year, $pod = '')
-    {
-        return Info::pod($month, $year, $pod);
+        return collect([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])->map(function ($value, $index) use ($annualQdn) {
+            return collect($annualQdn)->get($index, 0);
+        }, []);
     }
 
 }

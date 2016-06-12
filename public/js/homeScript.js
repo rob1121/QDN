@@ -709,6 +709,51 @@ var qdnMetrics = new Highcharts.Chart({ //start of qdnMetrics
         data: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
     }]
 }); //end of qdnMetrics
+
+
+var cycleTimeGraph = new Highcharts.Chart({ //start of cycleTimeGraph
+    chart: {
+        renderTo: 'cycleTimeGraph',
+        zoomType: 'xy',
+        marginTop: 50,
+        reflow: false
+    },
+    title: {
+        text: "QDN January - December " + yearNow,
+        margin: 35
+    },
+    subtitle: {
+        text: 'Source: QDN System'
+    },
+    xAxis: [{
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ],
+        crosshair: true
+    }],
+    yAxis: chartContent.yAxis[0],
+    tooltip: {
+        shared: true
+    },
+    legend: {
+        layout: 'horizontal',
+        align: 'center',
+        verticalAlign: 'bottom',
+        margin: 25,
+        itemDistance: 50,
+        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+    },
+    series: [{
+        name: 'Actual',
+        type: 'column',
+        color: '#800000'
+    }, {
+        name: 'Target',
+        type: 'line',
+        color: '#000000',
+        data: [24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24]
+    }]
+}); //end of cycleTimeGraph
 $('#modalQdnMetrics').on('show.bs.modal', function () {
     $('#qdnMetrics').css('visibility', 'hidden');
 });

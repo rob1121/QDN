@@ -149,3 +149,8 @@ function oe_link($qdn, $oe)
 
     return "/objective_evidence/{$year}/{$qdn->control_id}/{$oe}?date={$timestamp}";
 }
+
+function toObject($array)
+{
+    return json_decode(json_encode($array));
+}

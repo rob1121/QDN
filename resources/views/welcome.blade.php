@@ -104,6 +104,7 @@ height:50px;
 #login-lnk {
     color:#535353;
 }
+    
 </style>
 @stop
 @section('content')

@@ -13,6 +13,8 @@ class GlobalComposer {
 	 * @return void
 	 */
 	public function compose(View $view) {
+
+
 		$currentUser = Auth::user();
 		$view->with('currentUser', $currentUser);
 		if ($currentUser) {

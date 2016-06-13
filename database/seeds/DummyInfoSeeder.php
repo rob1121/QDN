@@ -87,6 +87,7 @@ class DummyInfoSeeder extends Seeder {
 				'what'               => $faker->paragraph(2),
 				'who'                => $faker->name('male' | 'female'),
 				'objective_evidence' => 'N/A',
+				'created_at'		 => $info->created_at
 			]);
 
 			CorrectiveAction::create([
@@ -94,6 +95,7 @@ class DummyInfoSeeder extends Seeder {
 				'what'               => $faker->paragraph(2),
 				'who'                => $faker->name('male' | 'female'),
 				'objective_evidence' => 'N/A',
+				'created_at'		 => $info->created_at
 			]);
 
 			PreventiveAction::create([
@@ -101,6 +103,7 @@ class DummyInfoSeeder extends Seeder {
 				'what'               => $faker->paragraph(2),
 				'who'                => $faker->name('male' | 'female'),
 				'objective_evidence' => 'N/A',
+				'created_at'		 => $info->created_at
 			]);
 
 			QdnCycle::create([
@@ -110,6 +113,7 @@ class DummyInfoSeeder extends Seeder {
 				'process_engineering_cycle_time' => '24',
 				'quality_assurance_cycle_time'   => '24',
 				'other_department_cycle_time'    => '24',
+				'created_at'		 => $info->created_at
 			]);
 
 			InvolvePerson::create([
@@ -119,6 +123,7 @@ class DummyInfoSeeder extends Seeder {
 				'originator_name' => $originator->name,
 				'receiver_id'     => $issuedTo->user_id,
 				'receiver_name'   => $issuedTo->name,
+				'created_at'		 => $info->created_at
 			]);
 
 			Closure::create([
@@ -132,6 +137,7 @@ class DummyInfoSeeder extends Seeder {
 				'quality_assurance'        => $employee->where('department', 'quality_assurance')->random()->name,
 				'other_department'         => $employee->where('department', 'other_department')->random()->name,
 				'status'                   => 'Closed',
+				'created_at'		 => $info->created_at
 			]);
 		}
 	}

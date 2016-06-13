@@ -1,6 +1,6 @@
-<?php
-$url = Request::url();
-?>
+@php
+    $url = Request::url();
+@endphp
 <nav class="navbar" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="padder container">
@@ -24,7 +24,8 @@ $url = Request::url();
                 <li
                     @if ($url == route('home') || $url == route('pareto'))
                     class="active"
-                    @<?php endif ?>><a href="{{ route('home') }}">Home</a>
+                    @endif
+                ><a href="{{ route('home') }}">Home</a>
                 </li>
                 <li
                     @if ($url === route('issue_qdn'))

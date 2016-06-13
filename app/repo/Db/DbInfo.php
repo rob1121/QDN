@@ -22,6 +22,7 @@ class DbInfo implements DbInterface {
 
     protected $request;
     protected $qdn;
+    protected $isExist;
 
     public function __construct(Request $request)
     {
@@ -40,12 +41,13 @@ class DbInfo implements DbInterface {
     {
         $this->validate($this->request, Info::rules);
 
+        $this->isExist =Info::isExist($this->request);
         return $this;
     }
 
     protected function save()
     {
-        if( ! Info::isExist($this->request))
+        if( ! $this->isExist)
         {
 
             $this->qdn  = Info::create($this->request->all());
@@ -61,7 +63,7 @@ class DbInfo implements DbInterface {
     
     protected function syncRelationship()
     {
-        if( ! Info::isExist($this->request))
+        if( ! $this->isExist)
         {
             $this->syncInvolvePerson()
                 ->syncActions();
@@ -72,7 +74,7 @@ class DbInfo implements DbInterface {
     
     protected function event()
     {
-        Info::isExist($this->request)
+        $this->isExist
             ? Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!')
             : $this->fire(new StoreEvent);
     }

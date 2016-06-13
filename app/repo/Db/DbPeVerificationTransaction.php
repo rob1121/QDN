@@ -23,6 +23,7 @@ class DbPeVerificationTransaction {
     public function save(Info $qdn)
     {
         $this->qdn = $qdn;
+
         $this->update()
             ->syncRelationship()
             ->removeCacheUser();

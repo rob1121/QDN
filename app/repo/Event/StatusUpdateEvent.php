@@ -12,28 +12,12 @@ use Laracasts\Flash\Flash;
 
 class StatusUpdateEvent implements EventInterface
 {
-    protected $qdn;
-
     public function fire($qdn)
     {
-        $this->qdn = $qdn;
-        
-        $this->arrayToObject()->shoot();
-    }
+        Activity::log("Approved {$qdn['info']->control_id} : {$qdn['info']->discrepancy_category} and commented - {$qdn['request']->ApproverMessage}");
+        Event::fire(new ApprovalNotificationEvent($qdn['info'], $qdn['request']->ApproverMessage)); //flash success alert message
 
-    private function arrayToObject()
-    {
-        $this->qdn = toObject($this->qdn);
-        
-        return $this;
-    }
-    
-    public function shoot()
-    {
-        Activity::log("Approved {$this->qdn->info->control_id} : {$this->qdn->info->discrepancy_category} and commented - {$this->qdn->request->ApproverMessage}");
-        Event::fire(new ApprovalNotificationEvent($this->qdn->info, $this->qdn->request->ApproverMessage)); //flash success alert message
-
-        $closure = Info::withClosure($this->qdn->slug)->closure;
+        $closure = Info::withClosure($qdn['info']->slug)->closure;
 
 
         $msg = $closure->other_department && $closure->production && $closure->quality_assurance && $closure->process_engineering

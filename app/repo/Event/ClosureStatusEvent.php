@@ -10,26 +10,10 @@ use Activity;
 
 class ClosureStatusEvent implements EventInterface
 {
-    protected $qdn;
-    
     public function fire($qdn)
     {
-        $this->qdn = $qdn;
-        
-        $this->arrayToObject()->shoot();
-    }
-
-    private function arrayToObject()
-    {
-        $this->qdn = toObject($this->qdn);
-        
-        return $this;
-    }
-    
-    private function shoot()
-    {
-        Activity::log(sprintf("P.E. validate {$this->qdn->info->control_id} {$this->qdn->request->status} : {$this->qdn->request->ValidationMessage}"));
-        Event::fire(new PeVerificationNotificationEvent($this->qdn->info, $this->qdn->request->ValidationMessage));
+        Activity::log(sprintf("P.E. validate {$qdn['info']->control_id} {$qdn['request']->status} : {$qdn['request']->ValidationMessage}"));
+        Event::fire(new PeVerificationNotificationEvent($qdn['info'], $qdn['request']->ValidationMessage));
         Flash::success('Successfully Verified !! QDN are now ready for completion!');
     }
     

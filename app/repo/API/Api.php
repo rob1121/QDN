@@ -1,5 +1,6 @@
 <?php namespace App\repo\API;
 
+use App\Models\Closure;
 use App\Models\Info;
 use Illuminate\Support\Facades\DB;
 use App\repo\Traits\DateTime;
@@ -36,6 +37,7 @@ class Api {
         {
             return $this->CycleTimeAveragePerMonth($month);
         });
+
         return collect([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])->map(function ($value, $index) use ($perMonth) {
             return collect($perMonth)->get($index, 0);
         });
@@ -43,16 +45,15 @@ class Api {
 
     public function CycleTimeAveragePerMonth($month)
     {
-        return Info::select(DB::raw("MONTH(created_at) as month"), 'created_at', 'id')
+        return Closure::select(DB::raw("MONTH(created_at) as month"), 'created_at', 'date_sign')
             ->where(DB::raw('MONTH(created_at)'), $month)
-            ->with(['closure' => function ($query) {
-                $query->select('info_id', 'date_sign');
-            }])->get()
+            ->whereStatus('closed')
+            ->get()
             ->map(function ($key) {
                 return toObject([
                     'month' => $key->month,
                     'created' => strtotime($key->created_at),
-                    'closed' => strtotime($key->closure->date_sign)
+                    'closed' => strtotime($key->date_sign)
                 ]);
             })->map(function ($key) {
                 $diff = round(($key->closed - $key->created) / 60 / 60);

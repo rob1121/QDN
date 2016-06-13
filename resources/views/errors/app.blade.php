@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        @include('layouts.header')
+{{--        @include('layouts.header')--}}
+
         {{-- CSS SECTION --}}
         <link rel="stylesheet" href="/css/all.css">
         <style>

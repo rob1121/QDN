@@ -11,6 +11,7 @@ class UpdateUserAndEmployeeTable extends Migration {
 	public function up() {
 		Schema::table('users', function ($table) {
 			$table->dropColumn('status');
+			$table->string('avatar');
 		});
 		Schema::table('employees', function ($table) {
 			$table->string('status');

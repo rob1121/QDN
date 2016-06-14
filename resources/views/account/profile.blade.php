@@ -1,4 +1,43 @@
 @extends('layouts.app')
+
+@push('style')
+<style>
+    .user {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .user__image {
+        border:5px solid #f3f3f3;
+        border-radius:50%;
+        margin-left:30px;
+        margin-top:10px;
+        transition: .3s;
+    }
+
+    .user__image:hover {
+        border:5px solid #9DC8C8;
+    }
+
+    .user__name {
+        padding-top:30px;
+        padding-left:30px;
+    }
+
+    .user__position {
+        color:#535353;
+        font-size:15px;
+    }
+
+    .user__upload {
+        color:#535353;
+        font-size:15px;
+        display: flex;
+    }
+
+</style>
+@endpush
+
 @section('content')
     <div class="container">
         <div class="col-md-4">
@@ -8,16 +47,32 @@
             </ul>
         </div>
         <form
-                action="{{ route('issue_qdn') }}"
+                action="{{ route('UpdateProfile', ['id' => user()->employee_id]) }}"
                 method="POST"
                 role="form"
-                id="profile-form"
+                enctype="multipart/form-data"
+                {{--id="profile-form"--}}
                 novalidate
         >
+            {{ csrf_field() }}
             <div class="col-md-8" id="profile">
                 <ul class="list-group">
-                    <li class="list-group-item">
-                        <h1>Profile</h1>
+                    <li class="list-group-item user">
+                        <img src="/uploads/avatar/{{ user()->avatar }}" 
+                             width="150" 
+                             height="150" 
+                             alt="profile photo"
+                             class="user__image"
+                        >
+                        <h3 class="user__name">
+                            {{ $user->employee->name }}'s Profile<br/>
+                            <span class="user__position">
+                                {{ $user->employee->position }}
+                            </span>
+                            <span class="user__upload">
+                                <input type="file" name="avatar" id="avatar">
+                            </span>
+                        </h3>
                     </li>
                     <li class="list-group-item">
                         <!-- NAME -->
@@ -67,7 +122,8 @@
                         </div>
                         <!-- SUBMIT -->
                         <div class="form-group">
-                            <button type="submit" id="save-profile" class="btn btn-info  btn-lg">Save Changes</button>
+                            <button type="submit" id="save-profile" class="btn btn-primary  btn-lg pull-right">Save Changes</button>
+                            <div class="clearfix"></div>
                         </div>
                     </li>
                 </ul>
@@ -129,7 +185,8 @@
                         </div>
                         <!-- SUBMIT -->
                         <div class="form-group">
-                            <button type="submit" id="save-settings" class="btn btn-info  btn-lg">Save Changes</button>
+                            <button type="submit" id="save-settings" class="btn btn-primary  btn-lg pull-right">Save Changes</button>
+                            <div class="clearfix"></div>
                         </div>
                     </li>
                 </ul>

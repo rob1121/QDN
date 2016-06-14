@@ -5,6 +5,7 @@ use App\Employee;
 use App\Question;
 use App\User;
 use Hash;
+use Image;
 
 /**
  * Account Repository
@@ -15,7 +16,8 @@ class AccountRepository implements AccountRepositoryInterface {
 	 * @param $id
 	 * @return mixed
      */
-	public function findUser($id) {
+	public function findUser($id)
+    {
 		return User::whereEmployeeId($id)->first();
 	}
 
@@ -23,7 +25,8 @@ class AccountRepository implements AccountRepositoryInterface {
      * @param $id
      * @return mixed
      */
-    public function findEmployee($id) {
+    public function findEmployee($id)
+    {
 		return Employee::whereUserId($id)->first();
 	}
 
@@ -31,7 +34,8 @@ class AccountRepository implements AccountRepositoryInterface {
      * @param $request
      * @return mixed
      */
-    public function isAnswerCorrect($request) {
+    public function isAnswerCorrect($request)
+    {
 		$user = $this->findEmployee($request->id);
 		return $user->question()->where('answer', $request->answer)->count();
 	}
@@ -40,7 +44,8 @@ class AccountRepository implements AccountRepositoryInterface {
      * @param $id
      * @param $request
      */
-    public function updateEmployee($id, $request) {
+    public function updateEmployee($id, $request)
+    {
         $employee = collect(new Employee($request->all()))->toArray();
         
 		Employee::whereUserId($id)->update($employee);
@@ -50,13 +55,25 @@ class AccountRepository implements AccountRepositoryInterface {
      * @param $id
      * @param $request
      */
-    public function updateUser($id, $request) {
+    public function updateUser($id, $request)
+    {
 		Question::whereUserId($id)->update(['question' => $request->question, 'answer' => $request->answer]);
+        $user = user();
+        if ($request->hasFile('avatar'))
+        {
+            $avatar = $request->file('avatar');
+            $filename = time() . '.' . $avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300,300)->save(public_path('/uploads/avatar/' . $filename));
 
-		if ($request->password != '') {
-			User::whereEmployeeId($id)->update(['password' => Hash::make($request->password),
-			]);
-		}
-	}
+            $user->avatar = $filename;
+        }
+
+		if ($request->password != '')
+        {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+    }
 
 }

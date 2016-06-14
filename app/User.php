@@ -23,6 +23,12 @@ class User extends Authenticatable {
 	// protected $hidden = [
 	//     'password', 'remember_token',
 	// ];
+
+
+	public function getRouteKeyName()
+	{
+		return 'employee_id';
+	}
 	protected $fillable = ['employee_id', 'password', 'access_level'];
 	/**
 	 * Get the employee that owns the account.

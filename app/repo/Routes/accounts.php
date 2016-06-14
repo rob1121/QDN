@@ -41,7 +41,7 @@ Route::get('/account/profile/{id}',
 		'as'   => 'profile',
 		'uses' => 'Account\AccountPasswordController@profile',
 	]);
-Route::get('/account/save-profile/{id}',
+Route::post('/account/save-profile/{id}',
 	[
 		'as'   => 'UpdateProfile',
 		'uses' => 'Account\AccountPasswordController@UpdateProfile',

@@ -32,6 +32,7 @@ class employeeSeeder extends Seeder {
 			'employee_id'  => 801,
 			'access_level' => 'admin',
 			'password'     => 'admin',
+			'avatar' => 'default.png'
 		]);
 
 		Question::create([
@@ -57,6 +58,7 @@ class employeeSeeder extends Seeder {
 			'employee_id'  => 802,
 			'access_level' => 'signatory',
 			'password'     => 'user',
+            'avatar' => 'default.png'
 		]);
 
 		Question::create([
@@ -83,6 +85,7 @@ class employeeSeeder extends Seeder {
 			'employee_id'  => 4550,
 			'access_level' => 'signatory',
 			'password'     => 'user',
+            'avatar' => 'default.png'
 		]);
 
 		Question::create([
@@ -116,6 +119,7 @@ class employeeSeeder extends Seeder {
 				'employee_id'  => $emp->user_id,
 				'access_level' => $faker->randomElement(['user', 'signatory']),
 				'password'     => '8d',
+                'avatar' => 'default.png'
 			]);
 
 			Question::create([

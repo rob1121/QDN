@@ -10,6 +10,11 @@ class Employee extends Model {
 	/**
 	 * Get the account record associated with the employee.
 	 */
+
+	public function getRouteKeyName()
+	{
+		return 'user_id';
+	}
 	public function user() {
 		return $this->hasOne('App\User', 'employee_id', 'user_id');
 	}   

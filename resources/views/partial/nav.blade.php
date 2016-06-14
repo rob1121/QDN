@@ -39,10 +39,8 @@
                 @if ($currentUser)
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <span class="fa-stack fa-lg" style="float:left;bottom:8px">
-                            <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa fa-user fa-stack-1x fa-inverse"></i>
-                        </span> {{ $currentUser->employee->name }} <b class="caret"></b></a>
+                        <img src="/uploads/avatar/{{ user()->avatar }}" alt="profile" style="width: 30px; height: 30px; border-radius: 50%;border:1px solid #fff;margin-right:10px">
+                        {{ $currentUser->employee->name }} <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             @if ($currentUser->access_level == 'admin')
                             <li><a href="{{ route('dashboard') }}" style="border-bottom:1px solid #f5f5f5"><i class="fa fa-dashboard"></i> dashboard</a></li>

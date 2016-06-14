@@ -1,8 +1,5 @@
-<?php
+<?php namespace App\Http\Controllers\Account;
 
-namespace App\Http\Controllers\Account;
-
-use App\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
@@ -19,40 +16,23 @@ class AccountPasswordController extends Controller {
 		$this->middleware('auth', ['only' => ['profile', 'UpdateProfile']]);
 		$this->user = $user;
 	}
-	/**
-	 * index of reset form
-	 * @return [type] [description]
-	 */
+
+
 	public function index() {
 		return view('reset.reset');
 	}
 
-	/**
-	 * get employee details
-	 * @param  ResetPasswordRequest $request [description]
-	 * @return [type]                        [description]
-	 */
 	public function postIndex(ResetPasswordRequest $request) {
 		return redirect('/account/question/' . $request->employee_id);
 		//...
 	}
 
-	/**
-	 * display sercret question
-	 * @param  [type] $id [description]
-	 * @return [type]     [description]
-	 */
 	public function question($id) {
 		$user = $this->user->findEmployee($id);
 		return view('reset.question', compact(['user']));
 		//...
 	}
 
-	/**
-	 * validate answer
-	 * @param  ResetQuestionRequest $request [description]
-	 * @return [type]                        [description]
-	 */
 	public function postQuestion(ResetQuestionRequest $request) {
 		if ($this->user->isAnswerCorrect($request)) {
 			return redirect('/account/new-password/' . $request->id);
@@ -61,22 +41,12 @@ class AccountPasswordController extends Controller {
 		return redirect('/account/question/' . $request->id);
 	}
 
-	/**
-	 * enter new password
-	 * @param  [type] $id [description]
-	 * @return [type]     [description]
-	 */
 	public function reset($id) {
 		$user = $this->user->findEmployee($id);
 		return view('reset.new', compact(['user']));
 		//...
 	}
 
-	/**
-	 * save and login to the system
-	 * @param  NewPasswordRequest $request [description]
-	 * @return [type]                      [description]
-	 */
 	public function postReset(NewPasswordRequest $request) {
 		$user = $this->user->findEmployee($request->id);
 		$user->user()->update(['password' => $request->password]);
@@ -90,13 +60,10 @@ class AccountPasswordController extends Controller {
 		return view('account.profile', compact('user'));
 	}
 
-	/**
-	 * update profile
-	 * @param [type]  $id      [description]
-	 * @param Request $request [description]
-	 */
 	public function UpdateProfile($id, Request $request) {
 		$this->user->updateEmployee($id, $request);
 		$this->user->updateUser($id, $request);
+
+        return redirect()->back();
 	}
 }

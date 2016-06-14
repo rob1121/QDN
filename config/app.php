@@ -1,3 +1,4 @@
+
 <?php
 
 return [
@@ -158,6 +159,7 @@ return [
 		Barryvdh\Queue\AsyncServiceProvider::class,
 		Mpociot\LaravelTestFactoryHelper\TestFactoryHelperServiceProvider::class,
 
+
 		/*
 			 * EXTERNAL PHP EXTENSION
 		*/
@@ -168,7 +170,8 @@ return [
 		Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 		Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
 		Barryvdh\DomPDF\ServiceProvider::class,
-		Spatie\Activitylog\ActivitylogServiceProvider::class
+		Spatie\Activitylog\ActivitylogServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class
 	],
 
 	/*
@@ -219,7 +222,8 @@ return [
 		'View'      => Illuminate\Support\Facades\View::class,
 		'Str'       => Illuminate\Support\Str::class,
 		'PDF'       => Barryvdh\DomPDF\Facade::class,
-        'Activity'  => Spatie\Activitylog\ActivitylogFacade::class
+        'Activity'  => Spatie\Activitylog\ActivitylogFacade::class,
+        'Image' => Intervention\Image\Facades\Image::class
 	],
 
 ];

@@ -71,6 +71,24 @@
         border-radius: 0px;
         border: 0px;
     }
+
+    .recent__date {
+        font-weight: lighter;
+        transition: .3s;
+    }
+
+    .recent {
+        background-color: #f9f9f9;
+        transition: .3s;
+    }
+
+    .recent:hover {
+        background-color: #fff;
+    }
+
+    .recent:hover .recent__date {
+        font-weight: normal;
+    }
 </style>
 @endpush
 @section('content')
@@ -135,6 +153,12 @@
         <br>
         <br>
         <div id="podGraph"></div>
+        <table class="pod__table">
+            <tr class="pod__row">
+                <td class="pod__legend">None</td>
+                <td class="pod__category">None</td>
+            </tr>
+        </table>
         <br>
         <br>
         <div id="cycleTimeGraph"></div>
@@ -171,9 +195,10 @@
         <ul class="list-group">
             <li class="list-group-item"><h4>Recent Issued QDN</h4></li>
             @foreach ($qdn as $issue)
-                <li class="list-group-item">
+                <li class="list-group-item recent">
                     <h5>
                         <strong>{{ $issue->discrepancy_category }}</strong>
+                        <span class="recent__date">{{ diffForHumans($issue->created_at) }}</span>
                         @if($issue->closure->status != 'Closed')
                             <span class="label  label-primary pull-right"></span>
                         @else
@@ -323,11 +348,15 @@
                             year: year
                         },
                         success: function (point) {
+                            console.log(point.pod.category);
+
                             bars = point.pod.bars;
                             category = point.pod.category;
-                            legend = point.pod.legends;
+                            legend = point.pod.category;
+//                            legend = point.pod.legends;
                             lines = point.pod.lines;
                             total = point.pod.total;
+
                             podGraph.tooltip.options.formatter = function () {
                                 if (this.series.name == '% Pareto') {
                                     var pcnt = Highcharts.numberFormat((this.y / total * 100), 0, '.'); //TOTAL

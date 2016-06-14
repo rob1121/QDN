@@ -82,7 +82,7 @@ class Info extends Model implements SluggableInterface {
 
     public static function recentPost()
     {
-        $info = Info::orderBy('id', 'desc')->take(5)->get()->load('closure');
+        $info = Info::orderBy('created_at', 'desc')->take(5)->get()->load('closure');
 		$info->map(function($qdn)
         {
 			if( ! $qdn->closure()->count())

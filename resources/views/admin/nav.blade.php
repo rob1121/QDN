@@ -16,28 +16,22 @@
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="fa-stack fa-lg" style="margin: -12px 0px -12px 0px">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-user fa-stack-1x fa-inverse"></i>
-            </span>
-            <span class="hidden-xs">{{ $currentUser->employee->name }}</span>
+            <img src="/uploads/avatar/{{ user()->avatar }}" alt="profile" style="border-radius:50%;width:30px;height:30px;float:left;margin-right:10px">
+            <span class="hidden-xs">{{ user()->employee->name }}</span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header">
-              <span class="fa-stack fa-4x">
-                <i class="fa fa-circle fa-stack-2x" ></i>
-                <i class="fa fa-user fa-stack-1x fa-inverse"></i>
-              </span>
+              <img src="/uploads/avatar/{{ user()->avatar }}" alt="profile" style="border-radius:50%;width:100px;height:100px">
               <p>
-                {{ $currentUser->employee->name }}
-                <small>{{ $currentUser->employee->position }}</small>
+                {{ user()->employee->name }}
+                <small>{{ user()->employee->position }}</small>
               </p>
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
               <div class="pull-left">
-                <a href="{{ route('profile',['id'=>$currentUser->employee_id]) }}" class="btn btn-default btn-flat">Profile</a>
+                <a href="{{ route('profile',['id'=>user()->employee_id]) }}" class="btn btn-default btn-flat">Profile</a>
               </div>
               <div class="pull-right">
                 <a href="/logout" class="btn btn-default btn-flat">Sign out</a>

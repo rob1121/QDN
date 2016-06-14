@@ -154,3 +154,8 @@ function toObject($array)
 {
     return json_decode(json_encode($array));
 }
+
+function diffForHumans($date)
+{
+    return Carbon::parse($date)->diffForHumans();
+}

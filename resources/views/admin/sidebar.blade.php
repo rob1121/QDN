@@ -4,9 +4,7 @@
   <section class="sidebar">
     <!-- Sidebar user panel -->
     <div class="user-panel">
-      <div class="pull-left">
-        <i class="fa fa-user fa-2x fa-inverse" style="padding-left:7px"></i>
-      </div>
+      <img src="/uploads/avatar/{{ user()->avatar }}" alt="profile" style="border-radius:50%;width:30px;height:30px;float:left">
       <div class="pull-left info">
         <p>{{ $currentUser->employee->name }}</p>
       </div>

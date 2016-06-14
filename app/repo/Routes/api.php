@@ -12,4 +12,8 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/cycle-time-pareto', [
         'as'   => 'cycleTimePareto',
         'uses' => 'Api\ApiController@cycleTimePareto']);
+
+    Route::get('/station-pie-data', [
+        'as'   => 'stationPie',
+        'uses' => 'Api\ApiController@stationPie']);
 });

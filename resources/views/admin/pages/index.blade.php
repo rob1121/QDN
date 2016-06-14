@@ -138,6 +138,9 @@
         <br>
         <br>
         <div id="cycleTimeGraph"></div>
+        <br>
+        <br>
+        <div id="pie"></div>
     </div>
     <div class="col-md-4">
         <ul class="list-group">
@@ -411,6 +414,43 @@
             year = self.val();
             updateLead(month, year);
         });
+        $.ajax({
+            url: "/api/station-pie-data",
+            success: function(pieDataForStation) {
+
+                // Build the chart
+                $('#pie').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Browser market shares January, 2015 to May, 2015'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false
+                            },
+                            showInLegend: true
+                        }
+                    },
+                    series: [{
+                        name: '%',
+                        colorByPoint: true,
+                        data: pieDataForStation
+                    }]
+                });
+            }
+        });
+
     });
 </script>
 @endpush

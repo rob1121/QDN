@@ -34,4 +34,9 @@ class ApiController extends Controller
     {
         return $this->api->cycleTimePareto();
     }
+
+    public function stationPie()
+    {
+        return $this->api->stationPie();
+    }
 }

@@ -35,6 +35,12 @@
         display: flex;
     }
 
+    .alert__msg {
+        position:fixed;
+        top:10px;
+        right:10px;
+        z-index: 1;
+    }
 </style>
 @endpush
 
@@ -55,6 +61,7 @@
                 novalidate
         >
             {{ csrf_field() }}
+
             <div class="col-md-8" id="profile">
                 <ul class="list-group">
                     <li class="list-group-item user">
@@ -193,10 +200,16 @@
             </div>
         </form>
     </div>
+
+    <div class="alert__msg">
+        @include('errors.validationErrors')
+    </div>
 @endsection
 @push('scripts')
 <script type="text/javascript">
     $(function () {
+        $("div.alert__msg").delay( 10000 ).fadeOut();
+
         $("#sidebar a").on('click', function (event) {
             var id = $(this).attr('href'),
                     reverse = id == '#settings' ? '#profile' : '#settings';

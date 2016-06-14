@@ -1,11 +1,11 @@
 <?php namespace App\Http\Controllers\Account;
 
+use App\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\ResetQuestionRequest;
-use App\repo\AccountRepository;
-use App\User;
+use App\repo\AccountRepository; 
 use Flash;
 use Illuminate\Http\Request;
 
@@ -60,10 +60,10 @@ class AccountPasswordController extends Controller {
 		return view('account.profile', compact('user'));
 	}
 
-	public function UpdateProfile($id, Request $request) {
+	public function UpdateProfile(Employee $id, Request $request) {
 		$this->user->updateEmployee($id, $request);
 		$this->user->updateUser($id, $request);
-
+		Flash::success('Account successfully updated');
         return redirect()->back();
 	}
 }

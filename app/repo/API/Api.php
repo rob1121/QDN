@@ -66,4 +66,24 @@ class Api {
                 return $value['duration'];
             })->avg();
     }
+    
+    public function stationPie()
+    {
+        $qdn = Info::select(DB::raw("COUNT(station) as count"), 'station')
+            ->groupBy('station')
+            ->get();
+
+        $station = $qdn->sortByDesc('count')->first()->station;
+        return $qdn->map(function($key) use ($station)
+            {
+                $bool = $station == $key->station;
+
+                return [
+                    'name' => $key->station,
+                    'y' => $key->count,
+                    'sliced' => $bool,
+                    'selected' => $bool
+                ];
+            });
+    }
 }

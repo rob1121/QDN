@@ -3,9 +3,11 @@
 use App\Models\Info;
 use App\repo\ParetoRepository;
 use App\repo\Traits\DateTime;
+use App\User;
 use Carbon;
 use Illuminate\Http\Request;
 use JavaScript;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ParetoController extends Controller
 {
@@ -54,6 +56,17 @@ class ParetoController extends Controller
         ];
 
         JavaScript::put($collections);
+    }
+
+    public function excel()
+    {
+        $qdn = Info::all();
+
+        Excel::create('users', function($excel) use($qdn) {
+            $excel->sheet('Sheet 1', function($sheet) use($qdn) {
+                $sheet->fromArray($qdn);
+            });
+        })->download('csv');
     }
 
     private function filterInfo($request)

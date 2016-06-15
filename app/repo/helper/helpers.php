@@ -54,7 +54,7 @@ function isIncompleteFillUpRespondent($qdn)
     if ($unique->count() == 0) return false;
 
     $array_search = $unique->count() > 1
-        ? array_search(user()->employee->station, $unique)
+        ? array_search(user()->employee->station, $unique->toArray())
         : user()->employee->station == $unique[0]->station;
 
     return $qdn->closure->status == 'Incomplete Fill-Up'

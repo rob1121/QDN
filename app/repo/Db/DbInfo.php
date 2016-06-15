@@ -23,8 +23,9 @@ class DbInfo implements DbInterface {
     protected $request;
     protected $qdn;
     protected $isExist;
+    protected $control_id;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request = null)
     {
         $this->request = $request;
     }
@@ -32,6 +33,7 @@ class DbInfo implements DbInterface {
     public function store()
     {
             $this->validateRequest()
+                ->controlId()
                 ->save()
                 ->syncRelationship()
                 ->event();
@@ -49,13 +51,12 @@ class DbInfo implements DbInterface {
     {
         if( ! $this->isExist)
         {
-
             $this->qdn  = Info::create($this->request->all());
-            $this->qdn->update([
-                'disposition' => 'use as is',
-                'control_id'  => $this->controlId(),
-                'customer'    => $this->getCustomer(),
-            ]);
+            $this->qdn->disposition = 'use as is';
+            $this->qdn->control_id = $this->control_id;
+            $this->qdn->customer = $this->getCustomer();
+
+            $this->qdn->save();
         }
 
         return $this;
@@ -103,13 +104,14 @@ class DbInfo implements DbInterface {
         $event->fire($this->qdn);
     }
 
-    protected function controlId()
+    public function controlId()
     {
         $lastIn = Info::last();
         $lastInYear = substr($lastIn->control_id, 0, 2);
         $lastInId = substr($lastIn->control_id, 3);
         $control_id = $this->yearNow() == $lastInYear ? $lastInId + 1 : 1;
-        return $control_id;
+        $this->control_id = $this->date()->format('y') . "-" . sprintf("%'.04d", $control_id);
+        return $this;
     }
     
     protected function getCustomer()

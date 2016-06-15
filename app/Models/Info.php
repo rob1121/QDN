@@ -464,12 +464,4 @@ class Info extends Model implements SluggableInterface {
 	{
 		return Str::upper($value);
 	}
-
-	public function setControlIdAttribute($value)
-	{
-		$today = Carbon::now('Asia/Manila');
-		$year = $today->format('y');
-        
-		return $this->attributes['control_id'] = $year . "-" . sprintf("%'.04d", $value);
-	}
 }

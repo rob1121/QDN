@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e67d45596b91e15f06228edf8a04c0bc",
-    "content-hash": "62b0ed0d7b8a8a2aee925e8343e703ee",
+    "hash": "b96648ee517cfd7491cbf61fac35bf3e",
+    "content-hash": "1c9d7caed4bae38cb8a20013c5f110c9",
     "packages": [
         {
             "name": "barryvdh/laravel-async-queue",
@@ -1434,38 +1434,39 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "v2.0.0",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "8691c635d03c96efc8108cc806efce34d8d0591c"
+                "reference": "aae17dbd6f39606cf8f588359a7a79438ab5aa53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/8691c635d03c96efc8108cc806efce34d8d0591c",
-                "reference": "8691c635d03c96efc8108cc806efce34d8d0591c",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/aae17dbd6f39606cf8f588359a7a79438ab5aa53",
+                "reference": "aae17dbd6f39606cf8f588359a7a79438ab5aa53",
                 "shasum": ""
             },
             "require": {
-                "illuminate/cache": "~5.0",
-                "illuminate/config": "~5.0",
-                "illuminate/filesystem": "~5.0",
-                "illuminate/support": "~5.0",
+                "illuminate/cache": "5.0.*|5.1.*|5.2.*",
+                "illuminate/config": "5.0.*|5.1.*|5.2.*",
+                "illuminate/filesystem": "5.0.*|5.1.*|5.2.*",
+                "illuminate/support": "5.0.*|5.1.*|5.2.*",
                 "nesbot/carbon": "~1.0",
-                "php": ">=5.3.0",
-                "phpoffice/phpexcel": "~1.8.0",
+                "php": ">=5.5",
+                "phpoffice/phpexcel": "1.8.*",
                 "tijsverkoyen/css-to-inline-styles": "~1.5"
             },
             "require-dev": {
                 "mockery/mockery": "~0.9",
-                "orchestra/testbench": "~3.0.0",
-                "phpseclib/phpseclib": ">=0.3.7",
+                "orchestra/testbench": "3.1.*",
+                "phpseclib/phpseclib": "~1.0",
                 "phpunit/phpunit": "~4.0"
             },
             "suggest": {
-                "illuminate/http": "~5.0",
-                "illuminate/routing": "~5.0",
-                "illuminate/view": "~5.0"
+                "illuminate/http": "5.0.*|5.1.*|5.2.*",
+                "illuminate/queue": "5.0.*|5.1.*|5.2.*",
+                "illuminate/routing": "5.0.*|5.1.*|5.2.*",
+                "illuminate/view": "5.0.*|5.1.*|5.2.*"
             },
             "type": "library",
             "autoload": {
@@ -1497,7 +1498,7 @@
                 "import",
                 "laravel"
             ],
-            "time": "2015-02-04 18:52:18"
+            "time": "2016-03-01 17:45:44"
         },
         {
             "name": "maximebf/debugbar",

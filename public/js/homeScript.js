@@ -802,7 +802,7 @@ var qdnMetrics = new Highcharts.Chart({ //start of qdnMetrics
         margin: 35
     },
     subtitle: {
-        text: 'Source: QDN System'
+        text: 'Source: QDN System (Actual number in a week)'
     },
     xAxis: [{
         categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',

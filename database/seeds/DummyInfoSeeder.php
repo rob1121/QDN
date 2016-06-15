@@ -29,8 +29,9 @@ class DummyInfoSeeder extends Seeder {
 			$issuedTo   = $employee->random();
 			$major      = 'major';
 
+			$year =Carbon::now('Asia/Manila')->format('y');
 			$info = Info::create([
-				'control_id'           => $index,
+				'control_id'           =>  $year . "-" . sprintf("%'.04d", $index),
 				'customer'             => $faker->randomElement(array_flatten(Option::all('customer')->toArray())),
 				'package_type'         => $faker->firstNameFemale,
 				'device_name'          => $faker->address,

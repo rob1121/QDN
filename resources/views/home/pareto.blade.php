@@ -20,6 +20,11 @@
 @stop
 @section('content')
     <div class="col-md-12">
+        <a href="{{ route('admin.pareto.excel') }}"
+           class="btn btn-lg btn-primary"
+        >
+            Export to excel
+        </a>
         <div class="row" id="filter-group">
             <div class="col-xs-2">
                 {{-- filter by month --}}

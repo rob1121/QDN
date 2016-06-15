@@ -3,7 +3,9 @@
 	<div class="row">
 		<div class="container">
 			<div class="col-md-12">
+				<a target="_blank" href="http://www.astigp.com">
 				<div class="col-md-3 text-center"><h1 class="footer-logo">TELFORD</h1></div>
+				</a>
 			</div>
 			<div class="col-md-6">
 
@@ -16,9 +18,9 @@
 			{{-- reference link --}}
 			<div class="col-md-6"><h5 id="title">Related things:</h5>
 				<ul>
-					<li>DCC</li>
-					<li>IPNR</li>
-					<li>Temp. and RH Monitoring</li>
+					<li><a style="color:#fff;" target="_blank" href="http://192.168.1.3/dcc">DCC</a></li>
+					<li><a style="color:#fff;" target="_blank" href="#">IPNR</a></li>
+					<li><a style="color:#fff;" target="_blank" href="http://192.168.1.3/rh">Temp. and RH Monitoring</a></li>
 				</ul>
 				<div class="col-md-3">
 					<h4>Need Help?</h4>
@@ -35,7 +37,7 @@
 							<strong>Robinson L. Legaspi</strong> <br>
 							<h6>Management System Officer</h6>
 							<i class="fa fa-phone"></i> local 1011<br>
-							<i class="fa fa-envelope"></i> <a href="mailto:robinsonlegaspi@astigp.com" style="color:inherit">robinsonlegaspi@astigp.com</a>
+							<i class="fa fa-envelope"></i>robinsonlegaspi@astigp.com
 							<br>
 						</p>
 					</address>

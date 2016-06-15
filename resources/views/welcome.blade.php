@@ -226,10 +226,6 @@ height:50px;
     <!-- ====================================== brief description of telford ====================================== -->
     <h3 class="help-block text-center wow fadeIn" data-wow-offset="250"><em>Telford Svc. Phils. Inc. was incorporated in 2000 to provide backend semiconductor manufacturing services such as taping, de-taping as well as inspection and other related activities such as IC programming to MNCs in South Philippines.
     It has established successful strong 'partnership programs' with renowned MNCs.</em></h3>
-    <br><br><br>
-    <h3 class="help-block text-right wow fadeIn" data-wow-offset="250">
-    {{ Carbon::now('Asia/Manila')->format('m/d/Y h:i:s A') }}
-    </h3>
 </div>
 @stop
 @section('script')

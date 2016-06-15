@@ -79,10 +79,12 @@
 
     .recent {
         background-color: #f9f9f9;
+        cursor: default;
         transition: .3s;
     }
 
     .recent:hover {
+        transform:scale(1.05,1);
         background-color: #fff;
     }
 
@@ -456,7 +458,7 @@
                         type: 'pie'
                     },
                     title: {
-                        text: 'Browser market shares January, 2015 to May, 2015'
+                        text: 'Pie chart of stations with highest contributor (as of {{ Carbon::now("Asia/Manila")->format("M Y") }} )'
                     },
                     tooltip: {
                         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

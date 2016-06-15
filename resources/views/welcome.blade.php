@@ -49,10 +49,14 @@ height:50px;
 
 .jumbotron {
     background-color: #fff;
-    padding: 64px 0px 128px 0px;
+    display:flex;
 }
 
-.jumbotron>h1 {
+.jumbotron__image {
+    margin-top:-120px;
+}
+
+.jumbotron h1 {
     font-family: 'Abril Fatface';
     color:#800000;
 }
@@ -63,6 +67,26 @@ height:50px;
     -moz-animation: blink 0.7s infinite;
     animation: blink 0.7s infinite;
 }
+
+.reveal {
+    position: relative;
+    animation-name: slideAndFadeIn;
+    animation-duration: 1s;
+}
+
+@keyframes slideAndFadeIn {
+    from {
+        opacity:0;
+        right: 100px;
+    }
+
+    to {
+        opacity:1;
+        right: 0px;
+    }
+
+}
+
 @keyframes blink{
     0% { opacity:1; }
     50% { opacity:0; }
@@ -109,11 +133,17 @@ height:50px;
 @stop
 @section('content')
 <div class="jumbotron text-center">
-    <h1 class="header wow fadeIn"><strong>The Simple Way to Monitor Quality Hits</strong></h1>
-    <h2 ><span class="sub-title"></span></h2>
-    <p><a href="#login" id="login-lnk"><i class="fa fa-angle-down fa-4x"></i></a></p>
+    <div class="jumbotron__image wow-reveal">
+        <img src="/img/cover.jpg" alt="cover" style="width:450px;position:relative">
+    </div>
+
+    <div class="jumbotron__intro">
+        <h1 class="header wow fadeIn"><strong>The Simple Way to Monitor Quality Hits</strong></h1>
+        <h2 ><span class="sub-title"></span></h2>
+        <p><a href="#login" id="login-lnk"><i class="fa fa-angle-down fa-4x"></i></a></p>
+    </div>
 </div>
-<div class="container main-top" id="login">
+<div class="container main-top wow-reveal" id="login">
 
     <form
         class  = "form-horizontal"
@@ -215,16 +245,16 @@ height:50px;
     </div>
 </div>
 <!-- ========================== telford ================================= -->
-<div class="container main-bottom">
-    <h1 class="text-center wow fadeInDown" id="company-name" data-wow-offset="250"><i class="fa fa-fort-awesome fa-2x"></i>
+<div class="container main-bottom wow-reveal">
+    <h1 class="text-center"><i class="fa fa-fort-awesome fa-2x"></i>
     Telford Svc. Phils., Inc.
     </h1>
-    <h3 class="help-block text-center wow fadeIn" data-wow-offset="250">
+    <h3 class="help-block text-center">
     Telford Building, Linares St. Barangay Javalera Gen. Trias, Cavite Philippines, 4117
-    </h3 class="help-block text-center">
+    </h3>
     <br><br><br>
     <!-- ====================================== brief description of telford ====================================== -->
-    <h3 class="help-block text-center wow fadeIn" data-wow-offset="250"><em>Telford Svc. Phils. Inc. was incorporated in 2000 to provide backend semiconductor manufacturing services such as taping, de-taping as well as inspection and other related activities such as IC programming to MNCs in South Philippines.
+    <h3 class="help-block text-center"><em>Telford Svc. Phils. Inc. was incorporated in 2000 to provide backend semiconductor manufacturing services such as taping, de-taping as well as inspection and other related activities such as IC programming to MNCs in South Philippines.
     It has established successful strong 'partnership programs' with renowned MNCs.</em></h3>
 </div>
 @stop
@@ -237,7 +267,27 @@ $(function() {
            strings: ["^800It's awesome. ^300And it's easy."],
            typeSpeed: 0
          });
-new WOW().init();
+    var wow = new WOW(
+            {
+                boxClass:     'wow-reveal',      // default
+                animateClass: 'reveal', // default
+                offset:       200,          // default
+                mobile:       true,       // default
+                live:         true        // default
+            }
+    );
+    wow.init();
+
+    var wowDefault = new WOW(
+            {
+                boxClass:     'wow',      // default
+                animateClass: 'animated', // default
+                offset:       0,          // default
+                mobile:       true,       // default
+                live:         true        // default
+            }
+    );
+    wowDefault.init();
 $('#login-form').validate({
 rules: {
 employee_id: {

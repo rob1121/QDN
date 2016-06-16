@@ -67,87 +67,12 @@ box-shadow: none;
 </style>
 @stop
 @section('content')
-
-<!-- Count content=================================================== -->
-@if ($currentUser == "This is for test only conditions used to comment the inside blocks of code")
-@if ($currentUser->access_level == 'Admin')
-<div class="container">
-    <legend class="h1">Counts: </legend>
-    @foreach ($counts as $panel)
-    <div class="col-md-3 h2">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ $panel[2] }}</h3>
-            </div>
-            <div class="panel-body" id="{{ $panel[4] }}">
-                {{ $panel[0] }}
-            </div>
-            <a class="h5" href="/pareto?category={{ $panel[3] }}">
-                <div
-                    class         = "panel-footer"
-                    >
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    </div>
-    @endforeach
-</div>
-{{-- MODAL LINKS ==========================================================--}}
-<div class="container" id="link">
-    <legend class="h1">Graphs: </legend>
-    <div class="col-md-12" style="padding-left:5px;padding-bottom:12px">
-        <div class="form-group">
-            <div class="col-md-6">
-                <select name="month" id="month" class="form-control input-lg">
-                    @foreach ($months as $month)
-                    <option
-                        value="{{ $month }}"
-                        @if (Str::title($month) == Carbon::now('Asia/Manila')->format('F'))
-                        selected
-                        @endif
-                    >{{ Str::title($month) }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-6">
-                <select name="year" id="year" class="form-control input-lg">
-                    @foreach ($years as $year)
-                    <option
-                        value="{{ $year }}"
-                        @if ($year == Carbon::now('Asia/Manila')->format('Y'))
-                        selected
-                        @endif
-                    >{{ Str::title($year) }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </div>
-    @foreach ($charts as $chart)
-    <a
-        data-toggle = "modal"
-        href        = "#{{ $chart['id'] }}"
-        >
-        <div class="col-md-4" style="color: #800">
-            <div class="row text-center table-bordered brighten ">
-                <i class="fa fa-bar-chart fa-5x"></i>
-                <br><strong class="text-muted">{!! $chart['heading'] !!}</strong>
-            </div>
-        </div>
-    </a>
-    @endforeach
-</div>
-@endif
-@endif
 {{-- STATUS =========================================================--}}
 <div class="container">
     @include('errors.validationErrors')
     <!-- <legend class="h1">Status: </legend> -->
     @foreach ($status as $panel)
-    <div class="col-md-3 h2">
+    <div class="col-md-3 h2 wow-reveal">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">{{ $panel[2] }}</h3>

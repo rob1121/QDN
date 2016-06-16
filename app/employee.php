@@ -5,7 +5,7 @@ use Str;
 
 class Employee extends Model {
 
-	protected $fillable = ['user_id', 'name', 'station', 'department', 'position', 'status'];
+	protected $fillable = ['user_id', 'name', 'station', 'department', 'position', 'status', 'email'];
 
 	/**
 	 * Get the account record associated with the employee.

@@ -14,6 +14,7 @@ class User extends Authenticatable {
 	// protected $fillable = [
 	//     'name', 'email', 'password',
 	// ];
+	const rules = ['avatar' => 'mimes:jpeg,bmp,png'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.

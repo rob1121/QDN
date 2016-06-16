@@ -34,7 +34,7 @@ border-color: #d58512;
 <div class="container">
     @include('errors.validationErrors')
     <!-- ==================================== form start===============================================================-->
-    <div class="panel panel-default">
+    <div class="panel panel-default wow-reveal">
         <div class="panel-body">
             <form
                 action = "{{ route('issue_qdn') }}"

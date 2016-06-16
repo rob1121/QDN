@@ -62,7 +62,7 @@
         >
             {{ csrf_field() }}
 
-            <div class="col-md-8" id="profile">
+            <div class="col-md-8  wow-reveal" id="profile">
                 <ul class="list-group">
                     <li class="list-group-item user">
                         <img src="/uploads/avatar/{{ user()->avatar }}" 
@@ -213,8 +213,8 @@
         $("#sidebar a").on('click', function (event) {
             var id = $(this).attr('href'),
                     reverse = id == '#settings' ? '#profile' : '#settings';
-            $('div' + id).show();
-            $('div' + reverse).hide();
+            $('div' + id).show().addClass('reveal-top');
+            $('div' + reverse).removeClass('reveal-top').hide();
             $("#sidebar a").removeClass('active');
             $('a[href=' + id + ']').addClass('active');
             event.preventDefault();

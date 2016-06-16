@@ -30,7 +30,14 @@ class HomeController extends Controller
 
     public function home()
     {
-        JavaScript::put('yearNow', $this->year());
+        JavaScript::put([
+            'yearNow' => $this->year(),
+            'link' => [
+                'status' => '/status',
+                'ajax' => '/ajax',
+                'qdn_data' => '/qdn_data'
+            ]
+        ]);
         return $this->user ? view('home') : redirect('/');
     }
 

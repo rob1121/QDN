@@ -4,12 +4,13 @@ namespace App\repo;
 use App\Employee;
 use App\User;
 use Hash;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Image;
 
 
 
 class AccountRepository implements AccountRepositoryInterface {
-
+use ValidatesRequests;
 
 	public function findUser($id)
     {
@@ -44,6 +45,8 @@ class AccountRepository implements AccountRepositoryInterface {
             'question' => $request->question,
             'answer' => $request->answer
         ]);
+
+        $this->validate($request, User::rules);
 
         $user = user();
         if ($request->hasFile('avatar'))

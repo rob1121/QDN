@@ -4,7 +4,7 @@ function qdnData(givenDate, rowFile) {
     var loader = '<tr><td colspan="6"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     rowFile.append(loader);
     $.ajax({
-        url: '/qdn-data',
+        url: link.qdn_data,
         type: 'GET',
         data: {
             setDate: givenDate
@@ -33,7 +33,7 @@ function status(status, rowFile) {
     var loader = '<tr><td colspan="6"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     rowFile.append(loader);
     $.ajax({
-        url: '/status',
+        url: link.status,
         type: 'GET',
         data: {
             status: status
@@ -63,7 +63,7 @@ $('#modalQdnMetrics').on('show.bs.modal', function () {
     var year = $('#year').val(),
         month = $('#month').val();
     $.ajax({
-        url: '/ajax',
+        url: link.ajax,
         method: 'GET',
         data: {
             month: month,
@@ -92,7 +92,7 @@ $('#pod').on('show.bs.modal', function () {
     tbody.append(loader);
 
     $.ajax({
-        url: '/ajax',
+        url: link.ajax,
         method: 'GET',
         data: {
             month: month,
@@ -169,7 +169,7 @@ $('#assemblyModal').on('show.bs.modal', function () {
     tbody.empty();
     tbody.append(loader);
     $.ajax({
-        url: '/ajax',
+        url: link.ajax,
         method: 'GET',
         data: {
             month: month,
@@ -249,7 +249,7 @@ $('#environmentModal').on('show.bs.modal', function () {
     tbody.empty();
     tbody.append(loader);
     $.ajax({
-        url: '/ajax',
+        url: link.ajax,
         method: 'GET',
         data: {
             month: month,
@@ -329,7 +329,7 @@ $('#failureModeModal').on('show.bs.modal', function () {
     tbody.empty();
     tbody.append(loader);
     $.ajax({
-        url: '/ajax',
+        url: link.ajax,
         method: 'GET',
         data: {
             month: month,
@@ -407,7 +407,7 @@ $('#machineModal').on('show.bs.modal', function () {
     tbody.empty();
     tbody.append(loader);
     $.ajax({
-        url: '/ajax',
+        url: link.ajax,
         method: 'GET',
         data: {
             month: month,
@@ -487,7 +487,7 @@ $('#manModal').on('show.bs.modal', function () {
     tbody.empty();
     tbody.append(loader);
     $.ajax({
-        url: '/ajax',
+        url: link.ajax,
         method: 'GET',
         data: {
             month: month,
@@ -567,7 +567,7 @@ $('#materialModal').on('show.bs.modal', function () {
     tbody.empty();
     tbody.append(loader);
     $.ajax({
-        url: '/ajax',
+        url: link.ajax,
         method: 'GET',
         data: {
             month: month,
@@ -647,7 +647,7 @@ $('#processModal').on('show.bs.modal', function () {
     tbody.empty();
     tbody.append(loader);
     $.ajax({
-        url: '/ajax',
+        url: link.ajax,
         method: 'GET',
         data: {
             month: month,

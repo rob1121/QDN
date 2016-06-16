@@ -20,7 +20,14 @@ class AdminController extends Controller {
 	}
 
 	public function index() {
-		JavaScript::put('yearNow', $this->year());
+		JavaScript::put([
+			'yearNow' => $this->year(),
+			'link' => [
+				'status' => route('status'),
+				'ajax' => route('ajax'),
+				'qdn_data' => route('qdn_data')
+			]
+		]);
 		return view('admin.pages.index')
             ->with([
                 'ave' => $this->qdn->failureModeAve(),

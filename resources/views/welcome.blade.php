@@ -68,7 +68,7 @@ height:50px;
     animation: blink 0.7s infinite;
 }
 
-.reveal {
+.reveal-left {
     position: relative;
     animation-name: slideAndFadeIn;
     animation-duration: 1s;
@@ -133,8 +133,8 @@ height:50px;
 @stop
 @section('content')
 <div class="jumbotron text-center">
-    <div class="jumbotron__image wow-reveal">
-        <img src="/img/cover.jpg" alt="cover" style="width:450px;position:relative">
+    <div class="jumbotron__image wow-welcome">
+        <img src="/img/cover.png" alt="cover" style="width:450px;position:relative">
     </div>
 
     <div class="jumbotron__intro">
@@ -143,7 +143,7 @@ height:50px;
         <p><a href="#login" id="login-lnk"><i class="fa fa-angle-down fa-4x"></i></a></p>
     </div>
 </div>
-<div class="container main-top wow-reveal" id="login">
+<div class="container main-top wow-welcome" id="login">
 
     <form
         class  = "form-horizontal"
@@ -202,50 +202,7 @@ height:50px;
         </div>
     </form>
 </div>
-<!-- ============= carousel ==================================== -->
-<div id="carousel-id" class="carousel slide carousel-fade wow fadeIn" data-wow-offset="400" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target = "#carousel-id" data-slide-to="0" class="active"></li>
-        <li data-target = "#carousel-id" data-slide-to="1" class=""></li>
-        <li data-target = "#carousel-id" data-slide-to="2" class=""></li>
-        <li data-target = "#carousel-id" data-slide-to="3" class=""></li>
-        <li data-target = "#carousel-id" data-slide-to="4" class=""></li>
-    </ol>
-    <div class="carousel-inner">
-        <div class="item active">
-            <img
-            alt="First slide"
-            src="http://www.telfordgp.com/images/banner/home-banner-1.jpg"
-            >
-        </div>
-        <div class="item">
-            <img
-            alt = "Second slide"
-            src = "http://www.telfordgp.com/images/banner/home-banner-2.jpg"
-            >
-        </div>
-        <div class="item">
-            <img
-            alt = "Third slide"
-            src = "http://www.telfordgp.com/images/banner/home-banner-3.jpg"
-            >
-        </div>
-        <div class="item">
-            <img
-            alt = "Third slide"
-            src = "http://www.telfordgp.com/images/banner/home-banner-6.jpg"
-            >
-        </div>
-        <div class="item">
-            <img
-            alt = "Third slide"
-            src = "http://www.telfordgp.com/images/banner/home-banner-5.jpg"
-            >
-        </div>
-    </div>
-</div>
-<!-- ========================== telford ================================= -->
-<div class="container main-bottom wow-reveal">
+<div class="container main-bottom wow-welcome">
     <h1 class="text-center"><i class="fa fa-fort-awesome fa-2x"></i>
     Telford Svc. Phils., Inc.
     </h1>
@@ -267,16 +224,16 @@ $(function() {
            strings: ["^800It's awesome. ^300And it's easy."],
            typeSpeed: 0
          });
-    var wow = new WOW(
+    var welcome = new WOW(
             {
-                boxClass:     'wow-reveal',      // default
-                animateClass: 'reveal', // default
+                boxClass:     'wow-welcome',      // default
+                animateClass: 'reveal-left', // default
                 offset:       200,          // default
                 mobile:       true,       // default
                 live:         true        // default
             }
     );
-    wow.init();
+    welcome.init();
 
     var wowDefault = new WOW(
             {

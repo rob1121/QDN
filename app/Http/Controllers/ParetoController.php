@@ -3,7 +3,6 @@
 use App\Models\Info;
 use App\repo\ParetoRepository;
 use App\repo\Traits\DateTime;
-use App\User;
 use Carbon;
 use Illuminate\Http\Request;
 use JavaScript;
@@ -62,8 +61,8 @@ class ParetoController extends Controller
     {
         $qdn = Info::all();
 
-        Excel::create('users', function($excel) use($qdn) {
-            $excel->sheet('Sheet 1', function($sheet) use($qdn) {
+        Excel::create('QDN', function($excel) use($qdn) {
+            $excel->sheet($this->yearNow(), function($sheet) use($qdn) {
                 $sheet->fromArray($qdn);
             });
         })->download('csv');

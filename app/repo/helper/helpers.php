@@ -17,7 +17,8 @@ function validate($qdn)
 {
     $stations = array_pluck($qdn->involvePerson, 'station');
 
-    return in_array(user()->employee->station, $stations) && $qdn->closure->status == 'Incomplete Fill-Up';
+    return in_array(user()->employee->station, $stations)
+        && $qdn->closure->status == 'Incomplete Fill-Up';
 }
 
 /**
@@ -49,16 +50,12 @@ function user()
  */
 function isIncompleteFillUpRespondent($qdn)
 {
-    $unique = $qdn->involvePerson->unique('station');
+    $unique = $qdn->involvePerson->unique('station')->pluck('station');
 
     if ($unique->count() == 0) return false;
 
-    $array_search = $unique->count() > 1
-        ? array_search(user()->employee->station, $unique->toArray())
-        : user()->employee->station == $unique[0]->station;
-
     return $qdn->closure->status == 'Incomplete Fill-Up'
-        && $array_search;
+        && in_array(user()->employee->station, $unique->toArray());
 }
 /**
  * @param $qdn
@@ -78,25 +75,28 @@ function uniqueStation($qdn)
  * @param $qdn
  * @return bool
  */
-function isApprover($user, $qdn)
+function isApprover($qdn)
 {
-    return in_array($user->access_level, ['admin', 'signatory'])
+    return in_array(user()->access_level, ['admin', 'signatory'])
         && hasEmptyClosure($qdn->closure)
-        && ('' == userClosure($user, $qdn->closure) || hasNoOtherDepartmentInvolve($user->employee, $qdn))
-        && ! hasApproved($user->employee, $qdn);
+        && ('' == userClosure(user(), $qdn->closure) || hasNoOtherDepartmentInvolve(user()->employee, $qdn))
+        && ! hasApproved($qdn);
 }
 
 /**
+ *
+ * if the qa user is also the qdn approver the qa verification button is hidden
+ * it must be another user from QA other than the QA approvers lister from closure table
  * @param $user
  * @param $qdn
  * @return bool
  */
-function hasApproved($user, $qdn)
+function hasApproved($qdn)
 {
-    return ($user->name == $qdn->closure->production)
-        || ($user->name == $qdn->closure->process_engineering)
-        || ($user->name == $qdn->closure->quality_assurance)
-        || ($user->name == $qdn->closure->other_department);
+    return (user()->employee->name == $qdn->closure->production)
+        || (user()->employee->name == $qdn->closure->process_engineering)
+        || (user()->employee->name == $qdn->closure->quality_assurance)
+        || (user()->employee->name == $qdn->closure->other_department);
 }
 
 /**
@@ -130,14 +130,14 @@ function hasEmptyClosure($closure)
  * @param $closure
  * @return mixed
  */
-function userClosure($user, $closure)
+function userClosure($closure)
 {
     $preference = collect([
         'quality_assurance' => $closure->quality_assurance,
         'process_engineering' => $closure->process_engineering,
         'production' => $closure->production,
         'other_department' => $closure->other_department,
-    ])->get($user->employee->department);
+    ])->get(user()->employee->department);
 
     return $preference;
 }

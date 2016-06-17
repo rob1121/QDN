@@ -18,6 +18,7 @@ class DbQaVerificationTransaction {
 
         $this->request = $request;
     }
+    
     public function update($qdn)
     {
         $this->qdn = $qdn;

@@ -57,6 +57,8 @@ class DbApproverTransaction {
 
     protected function updateApproveStatus()
     {
+        Cache::forget($this->qdn->slug);
+
         $status['status'] = $this->status()
             ? 'Q.a. Verification'
             : 'Incomplete Approval';

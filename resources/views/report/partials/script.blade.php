@@ -15,10 +15,12 @@ $('#draft-button').on('click', function(e) {
             data: $('#qdn-form').serializeArray(),
             success: function(qdn) {
                 //names of receiver
-                var department = $.unique(qdn.department),
-                    names = $.map(qdn.receiver_name, function(n) {
-                        return n;
-                    });
+                var department = $.unique(qdn.department);
+                
+                var names = $.map(qdn.receiver_name, function(n) {
+                    return n;
+                });
+                
 
                 //updating section one text fields
                 $('.customer').text($('#customer').val().toUpperCase());

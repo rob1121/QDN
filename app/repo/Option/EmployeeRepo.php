@@ -123,6 +123,11 @@ class EmployeeRepo {
         ]);
 
         $employee->user()->save(new user($request->all() ));
+        $employee->user()->update(['avatar' => 'default.png']);
+        $employee->question()->create([
+            'user_id' => $employee->id,
+            'question' => 'what are you',
+            'answer' => 'user']);
 
         return $employee;
     }

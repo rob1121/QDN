@@ -35,7 +35,7 @@
 				<h3 class="panel-title">APPROVALS:</h3>
 			</div>
 			<div class="panel-body" id="approval-body">
-				@if (isApprover($currentUser, $qdn))
+				@if (isApprover($qdn))
 				<div class="col-md-12 text-center">
 					<div class="btn-group" data-toggle="buttons" id="approval-btn-group">
 						<label class="btn btn-default btn-lg" id="section7-approve">
@@ -50,7 +50,7 @@
 				</div>
                     <div class="clearfix"></div>
 				@endif
-				@include('report.partials.sectionSeven',['view' => isApprover($currentUser, $qdn), 'valid' => userClosure($currentUser, $qdn->closure)])
+				@include('report.partials.sectionSeven',['view' => isApprover($qdn), 'valid' => userClosure($qdn->closure)])
 			</div>
 		</div>
 	</form>

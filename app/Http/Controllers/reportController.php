@@ -19,6 +19,7 @@ use PDF;
  * Class reportController
  * @package App\Http\Controllers
  */
+
 class reportController extends Controller {
     /**
      * @var InfoRepository
@@ -83,7 +84,7 @@ class reportController extends Controller {
         $db->save($slug)
             ->PeVerificationEvent();
         
-        return redirect('/');
+        return redirect(route('home'));
     }
 
     /**
@@ -93,7 +94,7 @@ class reportController extends Controller {
      */
     public function SectionOneSaveAsDraft(DbPeVerificationTransaction $db, Info $slug)
     {
-        return $this->save($slug)
+        return $db->save($slug)
             ->PeVerificationDraftEvent()
             ->collection();
     }

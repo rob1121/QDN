@@ -16,15 +16,19 @@
         .table > tbody > tr > td {
             vertical-align: middle;
         }
+
+        .export-link {
+            margin-bottom: 25px;
+        }
     </style>
 @stop
 @section('content')
-    <div class="col-md-12">
-        <a href="{{ route('admin.pareto.excel') }}"
-           class="btn btn-lg btn-primary"
-        >
-            Export to excel
-        </a>
+    <div class="col-md-12 wow-reveal">
+            <a href="{{ route('admin.pareto.excel') }}"
+               class="btn btn-lg btn-primary export-link"
+            >
+                Export to excel
+            </a>
         <div class="row" id="filter-group">
             <div class="col-xs-2">
                 {{-- filter by month --}}

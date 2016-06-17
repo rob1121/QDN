@@ -19,13 +19,12 @@ class DbPeVerificationTransaction {
     {
         $this->request = $request;
     }
-    
+
     public function save(Info $qdn)
     {
         $this->qdn = $qdn;
 
         $this->update()
-            ->syncRelationship()
             ->removeCacheUser();
         
         return $this;
@@ -40,8 +39,7 @@ class DbPeVerificationTransaction {
 
     public function syncRelationship()
     {
-        $this->syncInvolvePerson()
-            ->syncClosure();
+        $this->syncInvolvePerson();
 
         return $this;
     }
@@ -55,9 +53,11 @@ class DbPeVerificationTransaction {
 
     public function PeVerificationEvent()
     {
-        $this->listen(new ClosureStatusEvent, ['info' => $this->qdn, 'request' => $this->request]);
-
-        return $this;
+        $this->syncClosure()
+            ->listen(new ClosureStatusEvent, [
+                'info' => $this->qdn,
+                'request' => $this->request
+            ]);
     }
 
     public function PeVerificationDraftEvent()
@@ -69,7 +69,8 @@ class DbPeVerificationTransaction {
 
     protected function getInvolvePerson()
     {
-        return collect(array_unique($this->request->receiver_name))
+        return collect($this->request->receiver_name)
+            ->unique()
             ->map(function($name) {
                 return $this->setInvolvePerson($name);
             });
@@ -89,17 +90,15 @@ class DbPeVerificationTransaction {
 
     public function getInvolvePersonStation()
     {
-        return collect(array_unique($this->request->receiver_name))->map(function($name){
+        return collect($this->request->receiver_name)->unique()->map(function($name){
             return Employee::whereName($name)->first()->station;
         });
     }
 
     public function collection()
     {
-        return array_add($this->request->all(),
-            'department',
-            ['emp_dept' => $this->getInvolvePersonStation(), 'slug' => $this->qdn]
-        );
+        $array = collect($this->request->all())->put('department',$this->getInvolvePersonStation());
+        return $array->put('slug', $this->qdn);
     }
 
     private function listen(EventInterface $event, $variables)
@@ -123,5 +122,7 @@ class DbPeVerificationTransaction {
             'status' => $this->request->status,
             'pe_verified_by' => user()->employee->name
         ]);
+        
+        return $this;
     }
 }

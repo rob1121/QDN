@@ -59,7 +59,7 @@ class Info extends Model implements SluggableInterface {
     {
         return Carbon::now('Asia/Manila');
     }
-
+	
 	public static function todayCount()
 	{
 		return Info::whereDate('created_at', '=', static::date()->format('Y-m-d'))->count();

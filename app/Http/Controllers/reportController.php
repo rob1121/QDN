@@ -11,6 +11,11 @@ use App\repo\Db\DbInfo;
 use App\repo\Db\DbPeVerificationTransaction;
 use App\repo\Exception\DataRelationNotFound;
 use App\repo\InfoRepository;
+use App\OptionModels\Option;
+use App\OptionModels\Machine;
+use App\OptionModels\Discrepancy;
+use App\OptionModels\Station;
+use JavaScript;
 use Flash;
 use Gate;
 use PDF;
@@ -43,6 +48,18 @@ class reportController extends Controller {
     public function pdf(Info $slug)
     {
         return ViewPage::PDF($slug);
+    }
+
+    public function create()
+    {
+        JavaScript::put([
+            'customers' => Option::select('customer')->get(),
+            'machines' => Machine::select('name')->get(),
+            'stations' => Station::select('station')->get(),
+            'discrepancies' => Discrepancy::groupBy('category')->get(),
+            ]);
+
+        return view('report.issue');
     }
 
     /**
@@ -83,7 +100,7 @@ class reportController extends Controller {
     {
         $db->save($slug)
             ->PeVerificationEvent();
-        
+
         return redirect(route('home'));
     }
 
@@ -151,7 +168,7 @@ class reportController extends Controller {
     public function UpdateForApprroval(DbApproverTransaction $db, Info $slug)
     {
         $db->update($slug);
-        
+
         return redirect(route('home'));
     }
 
@@ -195,7 +212,7 @@ class reportController extends Controller {
     public function ForgetCache(ViewPage $view, Info $slug)
     {
         $view->qdn = $slug;
-        
+
         $view->deleteCache();
     }
 }

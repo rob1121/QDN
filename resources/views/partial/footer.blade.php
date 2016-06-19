@@ -1,5 +1,5 @@
 <br><br><br>
-<div id="footer" class="col-xs-12">
+<div id="footer" class="col-xs-12" hidden>
 	<div class="row">
 		<div class="container">
 			<div class="col-md-12">

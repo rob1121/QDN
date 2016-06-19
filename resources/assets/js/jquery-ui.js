@@ -3899,7 +3899,7 @@ function Datepicker() {
 }
 
 $.extend(Datepicker.prototype, {
-	/* Db name added to elements to indicate already configured with a date picker. */
+	/* Class name added to elements to indicate already configured with a date picker. */
 	markerClassName: "hasDatepicker",
 
 	//Keep track of the maximum number of rows displayed (see #7043)
@@ -4573,9 +4573,9 @@ $.extend(Datepicker.prototype, {
 			inst.dpDiv.addClass("ui-datepicker-multi-" + cols).css("width", (width * cols) + "em");
 		}
 		inst.dpDiv[(numMonths[0] !== 1 || numMonths[1] !== 1 ? "add" : "remove") +
-			"Db"]("ui-datepicker-multi");
+			"Class"]("ui-datepicker-multi");
 		inst.dpDiv[(this._get(inst, "isRTL") ? "add" : "remove") +
-			"Db"]("ui-datepicker-rtl");
+			"Class"]("ui-datepicker-rtl");
 
 		if (inst === $.datepicker._curInst && $.datepicker._datepickerShowing && $.datepicker._shouldFocusInput( inst ) ) {
 			inst.input.focus();
@@ -10132,7 +10132,7 @@ $.effects.animateClass = function( value, duration, easing, callback ) {
 		applyClassChange = function() {
 			$.each( classAnimationActions, function(i, action) {
 				if ( value[ action ] ) {
-					animated[ action + "Db" ]( value[ action ] );
+					animated[ action + "Class" ]( value[ action ] );
 				}
 			});
 		};

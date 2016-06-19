@@ -39,10 +39,10 @@
         }
     </style>
 </head>
-<body hidden>
-<div id="wrap">
+<body>
+@include('partial.nav')
+<div id="wrap" hidden>
     {{-- HEADER SECTION --}}
-    @include('partial.nav')
     {{-- WE CAN PASS SECOND PARAMETER AS AN VARIABLE FOR NAV IN ARRAY FORMAT "['uri' => $uri]" --}}
     {{-- CONTENT SECTION --}}
     @yield('content')
@@ -58,7 +58,8 @@
 @stack('scripts')
 <script>
     $(function () {
-        $('body').fadeIn();
+        $('#wrap').fadeIn();
+        $('#footer').fadeIn();
         var wow = new WOW(
                 {
                     boxClass:     'wow-reveal',      // default
@@ -69,6 +70,7 @@
                 }
         );
         wow.init();
+
 
     });
 </script>

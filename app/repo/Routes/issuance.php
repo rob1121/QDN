@@ -1,5 +1,11 @@
 <?php
 
+Route::get('/issue',
+	[
+		'as'   => 'create',
+		'uses' => 'reportController@create',
+	]);
+
 Route::get('/report',
 	[
 		'as'   => 'issue_qdn',

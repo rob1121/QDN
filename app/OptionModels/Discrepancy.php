@@ -10,6 +10,11 @@ class Discrepancy extends Model {
 	protected $fillable = ['name', 'category', 'is_major'];
 	public $timestamps  = false;
 
+	public static function option()
+	{
+		return static::all()->pluck('category');
+	}
+
 	public function setCategoryAttribute($value) {
 		return $this->attributes['category'] = strtolower($value);
 	}

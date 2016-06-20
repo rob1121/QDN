@@ -8,6 +8,11 @@ use Str;
 class Machine extends Model {
 	protected $fillable = ['name'];
 
+	public static function option()
+	{
+		return static::all()->pluck('name');
+	}
+
 	public function setNameAttribute($value) {
 		return $this->attributes['name'] = strtolower($value);
 	}

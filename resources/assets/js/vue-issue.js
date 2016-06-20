@@ -1,19 +1,35 @@
 import Vue from 'vue';
 import { Multiselect } from 'vue-multiselect'
-
 new Vue({
     el: 'body',
 
     components: { Multiselect },
 
-    data:{
+    data: {
+        isCheck: false,
+        selectedStation: null,
+        selectedEmployee: null,
+        selectedFailureMode: null,
+        selectedDiscrepancyCategory: null,
 
-        selected: null,
-        options: ['list', 'of', 'options'],
+        failureMode: [
+            'assembly',
+            'environment',
+            'machine',
+            'man',
+            'material',
+            'method / process'
+        ],
 
-        customer: customers,
+        customers: customers,
         stations: stations,
         discrepancies: discrepancies,
+        employees: employees,
         machines: machines
-    },
+    }
+});
+
+Vue.transition('fade', {
+    enterClass: 'fadeIn',
+    leaveClass: 'fadeOut'
 });

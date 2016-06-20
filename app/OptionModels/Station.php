@@ -12,6 +12,11 @@ class Station extends Model {
 	{
 	}
 
+	public static function option()
+	{
+		return static::all()->pluck('station');
+	}
+
 	public function setStationAttribute($value) {
 		return $this->attributes['station'] = strtolower($value);
 	}

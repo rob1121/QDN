@@ -7,6 +7,12 @@ class Employee extends Model {
 
 	protected $fillable = ['user_id', 'name', 'station', 'department', 'position', 'status', 'email'];
 
+	public static function option()
+	{
+		return static::where('name', '<>', user()->employee->name)
+			->pluck('name');
+	}
+
 	/**
 	 * Get the account record associated with the employee.
 	 */

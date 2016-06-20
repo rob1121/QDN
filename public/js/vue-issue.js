@@ -11027,15 +11027,25 @@ new _vue2.default({
     components: { Multiselect: _vueMultiselect.Multiselect },
 
     data: {
+        isCheck: false,
+        selectedStation: null,
+        selectedEmployee: null,
+        selectedFailureMode: null,
+        selectedDiscrepancyCategory: null,
 
-        selected: null,
-        options: ['list', 'of', 'options'],
+        failureMode: ['assembly', 'environment', 'machine', 'man', 'material', 'method / process'],
 
-        customer: customers,
+        customers: customers,
         stations: stations,
         discrepancies: discrepancies,
+        employees: employees,
         machines: machines
     }
+});
+
+_vue2.default.transition('fade', {
+    enterClass: 'fadeIn',
+    leaveClass: 'fadeOut'
 });
 
 },{"vue":3,"vue-multiselect":2}]},{},[4]);

@@ -211,13 +211,15 @@
         $("div.alert__msg").delay( 10000 ).fadeOut();
 
         $("#sidebar a").on('click', function (event) {
+
+            event.preventDefault();
+
             var id = $(this).attr('href'),
                     reverse = id == '#settings' ? '#profile' : '#settings';
             $('div' + id).show().addClass('reveal-top');
             $('div' + reverse).removeClass('reveal-top').hide();
             $("#sidebar a").removeClass('active');
             $('a[href=' + id + ']').addClass('active');
-            event.preventDefault();
         });
 // ================================ FORM VALIDATE =========================================
         $('#profile-form').validate({

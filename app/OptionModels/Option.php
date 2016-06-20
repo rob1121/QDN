@@ -8,6 +8,11 @@ use Str;
 class Option extends Model {
 	protected $fillable = ['customer'];
 
+	public static function option()
+	{
+		return static::all()->pluck('customer')->push('OTHER');
+	}
+
 	public function setCustomerAttribute($value) {
 		return $this->attributes['customer'] = strtolower($value);
 	}

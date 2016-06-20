@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Employee;
 use App\Models\Info;
 use App\repo\Db\DbApproverTransaction;
 use App\repo\Db\DbQaVerificationTransaction;
@@ -53,11 +54,12 @@ class reportController extends Controller {
     public function create()
     {
         JavaScript::put([
-            'customers' => Option::select('customer')->get(),
-            'machines' => Machine::select('name')->get(),
-            'stations' => Station::select('station')->get(),
-            'discrepancies' => Discrepancy::groupBy('category')->get(),
-            ]);
+            'customers' => Option::option(),
+            'machines' => Machine::option(),
+            'stations' => Station::option(),
+            'employees' => Employee::option(),
+            'discrepancies' => Discrepancy::option()
+        ]);
 
         return view('report.issue');
     }

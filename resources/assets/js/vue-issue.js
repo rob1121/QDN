@@ -1,5 +1,11 @@
 import Vue from 'vue';
-import { Multiselect } from 'vue-multiselect'
+import { Multiselect } from 'vue-multiselect';
+
+var Vue = require('vue')
+var VueValidator = require('vue-validator')
+
+Vue.use(VueValidator)
+
 new Vue({
     el: 'body',
 

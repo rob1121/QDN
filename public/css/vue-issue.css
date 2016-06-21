@@ -1,0 +1,74 @@
+.form {
+  margin: 0px 100px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-pack: center;
+  justify-content: center;
+  background-color: #e8f7f0;
+  border: 2px solid #41B883; }
+
+.form > div,
+.form > h1 {
+  padding: 0px 20px;
+  margin-bottom: 25px; }
+
+.form__textarea {
+  resize: none;
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #41B883;
+  background-color: #ffffff; }
+
+.form__customer > .form__input {
+  margin-left: 20px; }
+
+.form__input {
+  min-height: 40px;
+  padding: 8px;
+  border: 2px solid #41B883;
+  background-color: #ffffff; }
+
+.form__submit--btn {
+  font-weight: bold;
+  min-height: 50px;
+  width: 120px;
+  padding: 8px;
+  background-color: #ffffff;
+  border: 2px solid #41B883;
+  float: right;
+  transition: .3s; }
+  .form__submit--btn:hover {
+    background-color: #c2e9d8; }
+  .form__submit--btn:disabled {
+    background-color: #c2e9d8;
+    cursor: not-allowed; }
+
+.multiselect__failure_mode,
+.multiselect__customer {
+  min-width: 300px; }
+
+.multiselect__discrepancy_category {
+  min-width: 400px; }
+
+.multiselect__employee_list {
+  min-width: 650px; }
+
+.btn--major.active {
+  background-color: #AF4034 !important; }
+
+.btn--minor.active {
+  background-color: #fbd14b !important; }
+
+.form__lot--details > label {
+  margin-right: 10px; }
+
+.form__lot--details > label > .form__input {
+  width: 250px; }
+
+.multiselect {
+  border: 2px solid #41B883 !important;
+  background-color: #ffffff; }
+
+/*# sourceMappingURL=vue-issue.css.map */

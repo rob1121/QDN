@@ -1,0 +1,91 @@
+$white: #ffffff;
+$light-green-border: #41B883;
+$semi-white:lighten($light-green-border, 45%);
+
+.form {
+  margin: 0px 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: $semi-white;
+  border: 2px solid $light-green-border;
+}
+
+.form>div,
+.form>h1 {
+  padding: 0px 20px;
+  margin-bottom: 25px;
+}
+
+.form__textarea {
+  resize: none;
+  width: 100%;
+  padding: 8px;
+  border: 2px solid $light-green-border;
+  background-color: $white;
+}
+.form__customer>.form__input {
+  margin-left:20px;
+}
+
+.form__input {
+  min-height: 40px;
+  padding: 8px;
+  border: 2px solid $light-green-border;
+  background-color: $white;
+}
+
+.form__submit--btn {
+  font-weight: bold;
+  min-height: 50px;
+  width: 120px;
+  padding: 8px;
+  background-color: $white;
+  border: 2px solid $light-green-border;
+  float: right;
+  transition: .3s;
+
+  &:hover {
+    background-color: darken($semi-white, 10%);
+  }
+
+  &:disabled {
+    background-color: darken($semi-white, 10%);
+    cursor: not-allowed;
+  }
+}
+
+.multiselect__failure_mode,
+.multiselect__customer {
+  min-width: 300px;
+
+}
+
+.multiselect__discrepancy_category{
+  min-width: 400px;
+}
+
+.multiselect__employee_list {
+  min-width: 650px;
+}
+
+.btn--major.active {
+  background-color:#AF4034 !important;
+}
+
+.btn--minor.active {
+  background-color:#fbd14b !important;
+}
+
+.form__lot--details>label {
+  margin-right: 10px;
+}
+.form__lot--details>label>.form__input {
+  width: 250px;
+}
+
+.multiselect {
+  border: 2px solid $light-green-border !important;
+  background-color: $white;
+
+}

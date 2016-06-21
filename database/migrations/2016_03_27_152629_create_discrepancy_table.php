@@ -16,6 +16,7 @@ class CreateDiscrepancyTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('category');
+            $table->string('with_lot_involved');
         });
     }
 

@@ -17,6 +17,6 @@ class DatabaseSeeder extends Seeder {
 		 $this->command->info('infos table seeded!');
 //		 $this->call(stationSeeder::class);
 //		 $this->command->info('employee table seeded!');
-
+		$this->call(discrepanciesSeeder::class);
 	}
 }

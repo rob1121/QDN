@@ -159,11 +159,13 @@ mix.copy(
         });
 
 elixir(function(mix) {
-    mix.browserify('vue-issue.js');
+    mix.browserify('vue-issue.js')
+        .sass('vue-issue.scss', 'public/css/vue-issue.css');
 });
 
 elixir(function(mix) {
-    mix.phpUnit()
+    mix
+        // .phpUnit()
         .browserSync({
             proxy: "qdn.me"
         });

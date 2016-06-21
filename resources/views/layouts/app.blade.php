@@ -37,6 +37,10 @@
             }
 
         }
+
+        html, body {
+            background-image: url('/img/background-imager/Elegant_Background-7.jpg');
+        }
     </style>
 </head>
 <body>

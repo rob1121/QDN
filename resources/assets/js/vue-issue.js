@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import { Multiselect } from 'vue-multiselect';
+import { numeric } from './filter/numeric';
 
-var Vue = require('vue')
-var VueValidator = require('vue-validator')
+var VueValidator = require('vue-validator');
+Vue.use(VueValidator);
 
-Vue.use(VueValidator)
+Vue.filter('numeric', numeric);
 
 new Vue({
     el: 'body',
@@ -17,6 +18,7 @@ new Vue({
         selectedEmployee: null,
         selectedFailureMode: null,
         selectedDiscrepancyCategory: null,
+        valid: true,
 
         failureMode: [
             'assembly',
@@ -26,16 +28,11 @@ new Vue({
             'material',
             'method / process'
         ],
-
+        
         customers: customers,
         stations: stations,
         discrepancies: discrepancies,
         employees: employees,
         machines: machines
     }
-});
-
-Vue.transition('fade', {
-    enterClass: 'fadeIn',
-    leaveClass: 'fadeOut'
 });

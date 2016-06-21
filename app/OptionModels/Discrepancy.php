@@ -7,12 +7,12 @@ use Str;
 
 class Discrepancy extends Model {
 	protected $table    = 'discrepancies';
-	protected $fillable = ['name', 'category', 'is_major'];
+	protected $fillable = ['name', 'category', 'is_major','with_lot_involved'];
 	public $timestamps  = false;
 
 	public static function option()
 	{
-		return static::all()->pluck('category');
+		return static::all()->pluck('name');
 	}
 
 	public function setCategoryAttribute($value) {

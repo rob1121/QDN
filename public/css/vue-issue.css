@@ -7,19 +7,25 @@
   -ms-flex-pack: center;
   justify-content: center;
   background-color: #ffffff;
-  border: 2px solid #41B883;
-  box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.4); }
+  border-radius: 7px;
+  border: 1px solid #41B883;
+  box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.4);
+  color: #4d4d4d; }
 
 .form > div,
 .form > h1 {
   padding: 0px 20px;
   margin-bottom: 25px; }
 
+.form__error {
+  color: #b74242; }
+
 .form__textarea {
   resize: none;
   width: 100%;
   padding: 8px;
-  border: 2px solid #41B883;
+  border-radius: 7px;
+  border: 1px solid #41B883;
   background-color: #ffffff; }
 
 .form__customer > .form__input {
@@ -38,7 +44,7 @@
   width: 120px;
   padding: 8px;
   background-color: #ffffff;
-  border: 2px solid #41B883;
+  border: 1px solid #41B883;
   border-radius: 5px;
   float: right;
   transition: .3s;
@@ -48,25 +54,28 @@
     box-shadow: 0px 17px 20px 0px rgba(0, 0, 0, 0.2); }
   .form__submit--btn:disabled {
     background-color: #c2e9d8;
+    box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.4) !important;
+    color: #868686;
     cursor: not-allowed; }
 
 .multiselect__failure_mode,
 .multiselect__customer {
   min-width: 300px; }
 
-.form__failure_mode {
+.form__category {
   display: -ms-flexbox;
   display: flex; }
-  .form__failure_mode div {
+  .form__category .form__category--failure__mode {
     margin-right: 10px; }
-  .form__failure_mode .multiselect__discrepancy_category {
+  .form__category .multiselect__discrepancy_category {
     min-width: 500px; }
 
 .multiselect__employee_list {
   min-width: 650px; }
 
 .multiselect {
-  border: 2px solid #41B883 !important;
+  border-radius: 7px;
+  border: 1px solid #41B883 !important;
   background-color: #ffffff; }
 
 /*# sourceMappingURL=vue-issue.css.map */

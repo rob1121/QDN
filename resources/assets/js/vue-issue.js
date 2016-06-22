@@ -3,8 +3,8 @@ import QdnInput from './components/QdnInput.vue';
 import { Multiselect } from 'vue-multiselect';
 import { numeric, filterDiscrepancyCategory } from './filter/filters';
 
-var VueValidator = require('vue-validator');
-Vue.use(VueValidator);
+var VueResource = require('vue-resource');
+Vue.use(VueResource);
 
 Vue.filter('numeric', numeric);
 Vue.filter('filterDiscrepancyCategory', filterDiscrepancyCategory);
@@ -44,7 +44,8 @@ new Vue({
             stations: stations,
             discrepancies: discrepancies,
             employees: employees,
-            machines: machines
+            machines: machines,
+            discrepanciesOption: []
         },
 
         input:
@@ -60,8 +61,7 @@ new Vue({
 
         major: false,
         isCheck: false,
-        valid: true,
-        discrepanciesOption: []
+        valid: false
     },
     
     watch:
@@ -70,14 +70,14 @@ new Vue({
         {
             var self = this;
 
-            self.discrepanciesOption = self.getDiscrepancyCategoryByLevel();
+            self.category.discrepanciesOption = self.getDiscrepancyCategoryByLevel();
         },
 
         isCheck: function ()
         {
             var self = this;
 
-            self.discrepanciesOption = self.getDiscrepancyCategoryByLevel();
+            self.category.discrepanciesOption = self.getDiscrepancyCategoryByLevel();
         }
     },
 

@@ -8,8 +8,10 @@ $semi-white:lighten($light-green-border, 45%);
   flex-direction: column;
   justify-content: center;
   background-color: $white;
-  border: 2px solid $light-green-border;
+  border-radius: 7px;
+  border: 1px solid $light-green-border;
   box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.4);
+  color: lighten(#000000, 30%);
 }
 
 .form>div,
@@ -18,11 +20,16 @@ $semi-white:lighten($light-green-border, 45%);
   margin-bottom: 25px;
 }
 
+.form__error {
+  color: #b74242;
+}
+
 .form__textarea {
   resize: none;
   width: 100%;
   padding: 8px;
-  border: 2px solid $light-green-border;
+  border-radius: 7px;
+  border: 1px solid $light-green-border;
   background-color: $white;
 }
 .form__customer>.form__input {
@@ -42,7 +49,7 @@ $semi-white:lighten($light-green-border, 45%);
   width: 120px;
   padding: 8px;
   background-color: $white;
-  border: 2px solid $light-green-border;
+  border: 1px solid $light-green-border;
   border-radius: 5px;
   float: right;
   transition: .3s;
@@ -55,6 +62,8 @@ $semi-white:lighten($light-green-border, 45%);
 
   &:disabled {
     background-color: darken($semi-white, 10%);
+    box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.4) !important;
+    color: #868686;
     cursor: not-allowed;
   }
 }
@@ -64,9 +73,10 @@ $semi-white:lighten($light-green-border, 45%);
   min-width: 300px;
 }
 
-.form__failure_mode {
+.form__category {
   display: flex;
-  div {
+
+  .form__category--failure__mode {
     margin-right: 10px;
   }
 
@@ -80,6 +90,7 @@ $semi-white:lighten($light-green-border, 45%);
 }
 
 .multiselect {
-  border: 2px solid $light-green-border !important;
+  border-radius: 7px;
+  border: 1px solid $light-green-border !important;
   background-color: $white;
 }

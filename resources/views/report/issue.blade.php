@@ -25,7 +25,7 @@
                                 class="multiselect__employee_list"
                         />
                     </label><br>
-                    <i v-if="selected.employee.length < 1">Pick involve personnel, hint: we can select multiple personnel</i>
+                    <i class="form__error" v-if="selected.employee.length < 1">* Pick involve personnel, hint: we can select multiple personnel</i>
                 </div>
                 <div class="form__field">
                 <div class="form__customer">
@@ -47,7 +47,7 @@
                     </qdn-input>
 
                 </div>
-                    <i v-if="! selected.customer">Pick customer</i>
+                    <i class="form__error" v-if="! selected.customer">* Pick customer</i>
                 </div>
 
                 <div class="form__lot--checkbox">
@@ -103,8 +103,8 @@
 
                 </div>
 
-                <div class="form__failure_mode">
-                    <div>
+                <div class="form__category">
+                    <div class="form__category--failure__mode">
                         <label>Failure Mode:
                         <multiselect
                                 :selected.sync="selected.failureMode"
@@ -113,19 +113,19 @@
                                 class="multiselect__failure_mode"
                         />
                     </label><br>
-                    <i v-if="! selected.failureMode">Pick failure mode</i>
+                    <i class="form__error" v-if="! selected.failureMode">* Pick failure mode</i>
                     </div>
 
-                    <div>
+                    <div class="form__category--discrepancy__category">
                         <label>Discrepancy Category:
                         <multiselect
                                 :selected.sync="selected.discrepancyCategory"
-                                :options="discrepanciesOption"
+                                :options="category.discrepanciesOption"
                                 :allow-empty="false"
                                 class="multiselect__discrepancy_category"
                         />
                     </label><br>
-                    <i v-if="! selected.discrepancyCategory">Pick discrepancy category</i>
+                    <i class="form__error" v-if="! selected.discrepancyCategory">* Pick discrepancy category</i>
                     </div>
                 </div>
 
@@ -136,7 +136,7 @@
                                   placeholder="Required input"
                                   v-model="input.problem_description"
                         ></textarea>
-                    <i v-if="! input.problem_description">Pick involve personnel, hint: we can select multiple personnel</i>
+                    <i class="form__error" v-if="! input.problem_description">* Pick involve personnel, hint: we can select multiple personnel</i>
                 </div>
 
                 <div class="form__submit">

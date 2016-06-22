@@ -21,7 +21,8 @@
         min-height: 44px;
         padding: 8px;
         margin-right: 10px;
-        border: 2px solid $light-green-border;
+        border-radius: 7px;
+        border: 1px solid $light-green-border;
         background-color: $white;
     }
 </style>

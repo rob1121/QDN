@@ -7,8 +7,9 @@ $semi-white:lighten($light-green-border, 45%);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: $semi-white;
+  background-color: $white;
   border: 2px solid $light-green-border;
+  box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.4);
 }
 
 .form>div,
@@ -28,11 +29,11 @@ $semi-white:lighten($light-green-border, 45%);
   margin-left:20px;
 }
 
-.form__input {
-  min-height: 40px;
-  padding: 8px;
-  border: 2px solid $light-green-border;
-  background-color: $white;
+.form__lot--details, .form__customer {
+  display: flex;
+}
+.form__customer>label {
+  margin-right: 10px;
 }
 
 .form__submit--btn {
@@ -42,11 +43,14 @@ $semi-white:lighten($light-green-border, 45%);
   padding: 8px;
   background-color: $white;
   border: 2px solid $light-green-border;
+  border-radius: 5px;
   float: right;
   transition: .3s;
+  box-shadow: 0px 7px 10px 0px rgba(0, 0, 0, 0.4);
 
   &:hover {
     background-color: darken($semi-white, 10%);
+    box-shadow: 0px 17px 20px 0px rgba(0, 0, 0, 0.2);
   }
 
   &:disabled {
@@ -58,34 +62,24 @@ $semi-white:lighten($light-green-border, 45%);
 .multiselect__failure_mode,
 .multiselect__customer {
   min-width: 300px;
-
 }
 
-.multiselect__discrepancy_category{
-  min-width: 400px;
+.form__failure_mode {
+  display: flex;
+  div {
+    margin-right: 10px;
+  }
+
+  .multiselect__discrepancy_category {
+    min-width: 500px;
+  }
 }
 
 .multiselect__employee_list {
   min-width: 650px;
 }
 
-.btn--major.active {
-  background-color:#AF4034 !important;
-}
-
-.btn--minor.active {
-  background-color:#fbd14b !important;
-}
-
-.form__lot--details>label {
-  margin-right: 10px;
-}
-.form__lot--details>label>.form__input {
-  width: 250px;
-}
-
 .multiselect {
   border: 2px solid $light-green-border !important;
   background-color: $white;
-
 }

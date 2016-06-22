@@ -12,7 +12,7 @@ class Discrepancy extends Model {
 
 	public static function option()
 	{
-		return static::all()->pluck('name');
+		return static::all();
 	}
 
 	public function setCategoryAttribute($value) {

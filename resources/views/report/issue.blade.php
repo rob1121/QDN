@@ -1,33 +1,33 @@
-
 @extends('layouts.app')
 
 @push('style')
-    <link rel="stylesheet" href="/css/vue-issue.css">
+<link rel="stylesheet" href="/css/vue-issue.css" xmlns="http://www.w3.org/1999/html">
 @endpush
 
 @section('content')
-    <validator name="validation">
-        <form novalidate>
+    <form action="{{ route('issue_qdn') }}" method="POST">
+        {!! csrf_field() !!}
+        <div class="form wow-reveal">
+            <h1>QDN ISSUANCE</h1>
 
-            <div class="form wow-reveal">
-                <h1>QDN ISSUANCE</h1>
+            <div class="form__employee">
+                <label>Issued To:
+                    <multiselect
+                            :selected.sync="selected.employee"
+                            :options="category.employees"
+                            :multiple="true"
+                            :searchable="true"
+                            placeholder="Type to search"
+                            :allow-empty="false"
+                            :limit="2"
+                            class="multiselect__employee_list"
+                    />
+                </label><br>
+                <i class="form__error" v-if="selected.employee.length < 1">* Pick involve personnel, hint: we can select
+                    multiple personnel</i>
+            </div>
 
-                <div class="form__employee">
-                    <label>Issued To:
-                        <multiselect
-                                :selected.sync="selected.employee"
-                                :options="category.employees"
-                                :multiple="true"
-                                :searchable="true"
-                                placeholder="Type to search"
-                                :allow-empty="false"
-                                :limit="2"
-                                class="multiselect__employee_list"
-                        />
-                    </label><br>
-                    <i class="form__error" v-if="selected.employee.length < 1">* Pick involve personnel, hint: we can select multiple personnel</i>
-                </div>
-                <div class="form__field">
+            <div class="form__field">
                 <div class="form__customer">
                     <label>Customer:
                         <multiselect
@@ -39,6 +39,7 @@
                         />
 
                     </label>
+
                     <qdn-input name="other_customer"
                                label="Other customer"
                                :input.sync="input.other_customer"
@@ -47,65 +48,79 @@
                     </qdn-input>
 
                 </div>
-                    <i class="form__error" v-if="! selected.customer">* Pick customer</i>
-                </div>
+                <i class="form__error" v-if="! input.customer">* Pick customer</i>
+            </div>
 
-                <div class="form__lot--checkbox">
-                    <label>
-                        <input type="checkbox" v-model="isCheck">
-                        Lot Involve
-                    </label>
-                </div>
+            <div class="form__station">
+                <label>Station:
+                    <multiselect
+                            :selected.sync="selected.station"
+                            :options="category.stations"
+                            placeholder="Select station"
+                            :allow-empty="false"
+                            class="multiselect__station"
+                    />
 
-                <div class="form__lot--details" v-show="isCheck">
+                </label><br>
+                <i class="form__error" v-if="! selected.station">* Pick station</i>
+            </div>
 
-                    <qdn-input name="lot_id_number"
-                               label="Lot ID number"
-                               :input.sync="input.lot_id_number"
-                    >
-                    </qdn-input>
+            <div class="form__lot--checkbox">
+                <label>
+                    <input type="checkbox" v-model="isCheck">
+                    Lot Involve
+                </label>
+            </div>
 
-                    <qdn-input name="device_name"
-                               label="Device name"
-                               :input.sync="input.device_name"
-                    >
-                    </qdn-input>
+            <div class="form__lot--details" v-show="isCheck">
 
-                    <qdn-input name="package_type"
-                               label="Package type"
-                               :input.sync="input.package_type"
-                    >
-                    </qdn-input>
+                <qdn-input name="lot_id_number"
+                           label="Lot ID number"
+                           :input.sync="input.lot_id_number"
+                >
+                </qdn-input>
 
-                    <qdn-input name="lot_quantity"
-                               label="Lot quantity"
-                               :input.sync="input.lot_quantity"
-                    >
-                    </qdn-input>
+                <qdn-input name="device_name"
+                           label="Device name"
+                           :input.sync="input.device_name"
+                >
+                </qdn-input>
 
-                </div>
+                <qdn-input name="package_type"
+                           label="Package type"
+                           :input.sync="input.package_type"
+                >
+                </qdn-input>
 
-                <div class="btn-group" data-toggle="buttons">
-                    <label>
-                        <input type="radio"
-                               value="true"
-                               v-model="major"
-                        > Major
-                    </label>
+                <qdn-input name="lot_quantity"
+                           label="Lot quantity"
+                           :input.sync="input.lot_quantity"
+                >
+                </qdn-input>
 
-                    <label>
-                        <input type="radio"
-                               value="false"
-                               v-model="major"
-                               checked
-                        > Minor
-                    </label>
+            </div>
 
-                </div>
+            <div class="btn-group" data-toggle="buttons">
+                <label>
+                    <input type="radio"
+                           value="true"
+                           v-model="major"
+                    > Major
+                </label>
 
-                <div class="form__category">
-                    <div class="form__category--failure__mode">
-                        <label>Failure Mode:
+                <label>
+                    <input type="radio"
+                           value="false"
+                           v-model="major"
+                           checked
+                    > Minor
+                </label>
+
+            </div>
+
+            <div class="form__category">
+                <div class="form__category--failure__mode">
+                    <label>Failure Mode:
                         <multiselect
                                 :selected.sync="selected.failureMode"
                                 :options="category.failureMode"
@@ -114,10 +129,10 @@
                         />
                     </label><br>
                     <i class="form__error" v-if="! selected.failureMode">* Pick failure mode</i>
-                    </div>
+                </div>
 
-                    <div class="form__category--discrepancy__category">
-                        <label>Discrepancy Category:
+                <div class="form__category--discrepancy__category">
+                    <label>Discrepancy Category:
                         <multiselect
                                 :selected.sync="selected.discrepancyCategory"
                                 :options="category.discrepanciesOption"
@@ -126,34 +141,33 @@
                         />
                     </label><br>
                     <i class="form__error" v-if="! selected.discrepancyCategory">* Pick discrepancy category</i>
-                    </div>
                 </div>
+            </div>
 
-                <div class="form__problem_description">
-                    <label>Problem Description:</label>
+            <div class="form__problem_description">
+                <label>Problem Description:</label>
                         <textarea class="form__textarea"
                                   rows="10"
                                   placeholder="Required input"
                                   v-model="input.problem_description"
                         ></textarea>
-                    <i class="form__error" v-if="! input.problem_description">* Pick involve personnel, hint: we can select multiple personnel</i>
-                </div>
-
-                <div class="form__submit">
-                    <button class="form__submit--btn"
-                            type="submit"
-                            value="send"
-                            :disabled=" ! valid"
-                    >
-                        Submit <i class="fa fa-paper-plane"></i>
-                    </button>
-                </div>
+                <i class="form__error" v-if="! input.problem_description">* Describe the problem</i>
             </div>
-        </form>
-    </validator>
 
+            <div class="form__submit">
+                <button class="form__submit--btn"
+                        type="submit"
+                        value="send"
+                        :disabled=" ! valid"
+                        @click.prevent="saveQdn"
+                >
+                    Submit <i class="fa fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </form>
 @endsection
 
 @push('scripts')
-    <script src="/js/vue-issue.js"></script>
+<script src="/js/vue-issue.js"></script>
 @endpush

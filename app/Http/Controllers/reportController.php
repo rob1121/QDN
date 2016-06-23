@@ -16,6 +16,7 @@ use App\OptionModels\Option;
 use App\OptionModels\Machine;
 use App\OptionModels\Discrepancy;
 use App\OptionModels\Station;
+use Illuminate\Http\Request;
 use JavaScript;
 use Flash;
 use Gate;
@@ -76,11 +77,9 @@ class reportController extends Controller {
      * @param DbInfo $qdn
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(DbInfo $qdn)
+    public function store(Request $request)
     {
-        $qdn->store();
-
-        return redirect(route('home'));
+        return $request->all();
     }
 
     /**

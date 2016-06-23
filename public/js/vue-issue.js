@@ -12701,7 +12701,7 @@ exports.insert = function (css) {
 
 },{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #41B883;\n  background-color: #ffffff; }\n")
+var __vueify_style__ = __vueify_insert__.insert("/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #41B883;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 5px 0px #41B883; }\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12730,7 +12730,7 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #41B883;\n  background-color: #ffffff; }\n"] = false
+    __vueify_insert__.cache["/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #41B883;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 5px 0px #41B883; }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -12769,11 +12769,15 @@ var _filters = require('./filter/filters');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var VueResource = require('vue-resource');
+
 _vue2.default.use(VueResource);
 
+_vue2.default.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#_token').getAttribute('value');
+//================================= VUE FILTERS ===================
 _vue2.default.filter('numeric', _filters.numeric);
 _vue2.default.filter('filterDiscrepancyCategory', _filters.filterDiscrepancyCategory);
 
+//================================= VUE INSTANCE ===================
 new _vue2.default({
     el: 'body',
 
@@ -12783,14 +12787,6 @@ new _vue2.default({
     },
 
     data: {
-        selected: {
-            customer: null,
-            station: null,
-            employee: [],
-            failureMode: null,
-            discrepancyCategory: null
-        },
-
         category: {
             failureMode: ['assembly', 'environment', 'machine', 'man', 'material', 'method / process'],
 
@@ -12802,14 +12798,23 @@ new _vue2.default({
             discrepanciesOption: []
         },
 
+        selected: {
+            customer: null,
+            station: null,
+            employee: [],
+            failureMode: null,
+            discrepancyCategory: null
+        },
+
         input: {
-            customer: '',
-            other_customer: '',
-            device_name: '',
-            lot_id_number: '',
-            package_type: '',
-            lot_quantity: '',
-            problem_description: ''
+            customer: null,
+            other_customer: null,
+            device_name: null,
+            lot_id_number: null,
+            package_type: null,
+            lot_quantity: null,
+            problem_description: null,
+            major: 'minor'
         },
 
         major: false,
@@ -12821,26 +12826,116 @@ new _vue2.default({
         major: function major() {
             var self = this;
 
-            self.category.discrepanciesOption = self.getDiscrepancyCategoryByLevel();
+            self.input.major = self.major == "true" ? "major" : "minor";
+
+            self.setDiscrepancyCategoryByLevel();
         },
 
         isCheck: function isCheck() {
             var self = this;
 
-            self.category.discrepanciesOption = self.getDiscrepancyCategoryByLevel();
+            self.setDiscrepancyCategoryByLevel();
+        },
+
+        'selected.failureMode': function selectedFailureMode() {
+            this.isValid();
+        },
+
+        'selected.customer': function selectedCustomer(value) {
+            this.setCustomerValue(value);
+        },
+
+        'selected.station': function selectedStation() {
+            this.isValid();
+        },
+
+        'selected.employee': function selectedEmployee() {
+            this.isValid();
+        },
+
+        'selected.discrepancyCategory': function selectedDiscrepancyCategory() {
+            this.isValid();
+        },
+
+        'input.customer': function inputCustomer() {
+            this.isValid();
+        },
+
+        'input.other_customer': function inputOther_customer() {
+            this.isValid();
+        },
+
+        'input.device_name': function inputDevice_name() {
+            this.isValid();
+        },
+
+        'input.lot_id_number': function inputLot_id_number() {
+            this.isValid();
+        },
+
+        'input.package_type': function inputPackage_type() {
+            this.isValid();
+        },
+
+        'input.lot_quantity': function inputLot_quantity() {
+            this.isValid();
+        },
+
+        'input.problem_description': function inputProblem_description() {
+            this.isValid();
         }
     },
 
     methods: {
-        getDiscrepancyCategoryByLevel: function getDiscrepancyCategoryByLevel() {
+        setDiscrepancyCategoryByLevel: function setDiscrepancyCategoryByLevel() {
             var self = this;
 
-            return self.category.discrepancies.map(function (arr) {
+            self.category.discrepanciesOption = self.category.discrepancies.map(function (arr) {
                 if (self.major === arr['is_major'] && self.isCheck.toString() == arr['with_lot_involved']) {
                     return arr['name'];
                 }
             }).filter(function (data) {
                 return typeof data !== 'undefined';
+            });
+        },
+
+        setCustomerValue: function setCustomerValue(value) {
+            var self = this;
+
+            self.input.customer = value;
+
+            if (value == "OTHERS") {
+                self.input.customer = self.input.other_customer;
+            }
+
+            self.valid = false;
+            self.valid = self.isRequiredFieldValid();
+        },
+
+        isRequiredFieldValid: function isRequiredFieldValid() {
+            var self = this,
+                required = self.selected.employee.length && self.selected.station && self.selected.failureMode && self.selected.discrepancyCategory && self.selected.customer && self.input.problem_description;
+
+            if (self.isCheck) {
+                return required && self.input.device_name && self.input.lot_id_number && self.input.package_type && self.input.lot_quantity;
+            }
+
+            return required;
+        },
+
+        isValid: function isValid() {
+            var self = this;
+
+            self.valid = false;
+
+            self.valid = self.isRequiredFieldValid();
+        },
+
+        saveQdn: function saveQdn() {
+            var self = this;
+
+            self.$http.post('/report', self.input).then(function (response) {
+                console.log(response.data);
             });
         }
     }

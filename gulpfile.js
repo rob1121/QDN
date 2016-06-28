@@ -164,6 +164,10 @@ elixir(function(mix) {
 });
 
 elixir(function(mix) {
+    mix.browserify('vue-report.js');
+});
+
+elixir(function(mix) {
     mix
         // .phpUnit()
         .browserSync({

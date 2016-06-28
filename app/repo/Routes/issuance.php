@@ -18,6 +18,11 @@ Route::post('/report',
 		'uses' => 'reportController@store',
 	]);
 
+Route::get('/form',
+	[
+		'as'   => 'qdn_form',
+		'uses' => 'reportController@form',
+	]);
 Route::get('/report/{slug}',
 	[
 		'as'   => 'qdn_link',

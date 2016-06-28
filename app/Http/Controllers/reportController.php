@@ -52,6 +52,11 @@ class reportController extends Controller {
         return ViewPage::PDF($slug);
     }
 
+    public function form()
+    {
+        return view('report.form');
+    }
+
     public function create()
     {
         JavaScript::put([

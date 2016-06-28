@@ -1,3 +1,4 @@
+
 {{-- CUSTOMER OPTIONS --}}
 <div class="col-sm-12">
     <div class="form-group col-sm-4">
@@ -64,19 +65,6 @@
                 id='package_type'
                 class='form-control'
                 value="{{ isset($qdn) ? $qdn->package_type : 'N/A' }}"
-        >
-    </div>
-    <!-- INPUT DEVICE NAME -->
-    <div class="form-group col-sm-4">
-        <span>Device Name:</span>
-        <input
-                type='text'
-                autocomplete="off"
-                placeholder="Device Name"
-                name='device_name'
-                id='device_name'
-                class='form-control'
-                value="{{ isset($qdn) ? $qdn->device_name : 'N/A' }}"
         >
     </div>
     <!-- INPUT LOT ID NUMBER -->

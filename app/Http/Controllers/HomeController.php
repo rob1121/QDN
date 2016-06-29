@@ -25,7 +25,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        return $this->user ? redirect('/home') : view('welcome');
+//        return $this->user ? redirect('/home') : view('welcome');
+        return $this->user ? redirect('/home') : view('index');
     }
 
     public function home()

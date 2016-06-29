@@ -160,7 +160,7 @@ mix.copy(
 
 elixir(function(mix) {
     mix.browserify('vue-issue.js')
-        .sass('vue-issue.scss', 'public/css/vue-issue.css');
+        .sass('intro.sass');
 });
 
 elixir(function(mix) {

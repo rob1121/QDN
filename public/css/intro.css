@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none; }
+
+.header {
+  overflow: hidden;
+  display: block; }
+
+.cover {
+  height: 100vh;
+  background-image: url("/img/full-page-cover.jpg");
+  background-size: cover; }
+
+.logo {
+  margin-top: 15px;
+  margin-left: 50px;
+  border: 1px solid #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+  padding: 0 15px;
+  font-size: 35px;
+  background-color: #800000;
+  background-text-transform: uppercase; }
+
+.nav {
+  display: block;
+  min-width: 650px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0; }
+  .nav ul {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    color: #fff;
+    margin-top: 30px; }
+  .nav li {
+    text-transform: uppercase;
+    list-style: none;
+    margin-right: 50px; }
+    .nav li a {
+      font-size: 15px; }
+
+.header__title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-transform: uppercase; }
+  .header__title h1 {
+    font-family: 'Abril Fatface';
+    text-align: center;
+    color: #ffffff;
+    font-size: 60px;
+    font-weight: bold; }
+  .header__title a {
+    margin-top: 30px;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 15px;
+    transition: all .3s ease-in-out; }
+    .header__title a:hover {
+      color: rgba(255, 255, 255, 0.8); }
+    .header__title a i.fa {
+      display: block;
+      text-align: center;
+      transition: all .3s ease-in-out; }
+    .header__title a:hover > i.fa {
+      transform: translate(0, 15px); }
+
+#login {
+  margin: 100px auto;
+  width: 45vw;
+  min-width: 300px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px solid #181F2F;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.3);
+  padding: 40px 20px 30px 20px;
+  text-align: center;
+  color: #343838;
+  font-weight: bold; }
+  #login .error {
+    color: darkred; }
+  #login .login__title {
+    position: absolute;
+    margin-top: -60px;
+    padding: 0 20px;
+    font-size: 30px;
+    background-color: #ffffff; }
+  #login input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #2D324F;
+    transition: all .3s ease-in-out; }
+    #login input:focus {
+      box-shadow: 0px 0px 1px 1px rgba(45, 50, 79, 0.5); }
+    #login input:first-of-type {
+      border-radius: 5px 5px 0 0; }
+    #login input:last-of-type {
+      border-top: 0;
+      border-radius: 0 0 5px 5px; }
+  #login button {
+    float: right;
+    width: 100px;
+    background-color: #FFC952;
+    border: 1px solid #2D324F;
+    margin-top: 25px;
+    padding: 10px 15px;
+    border-radius: 2px;
+    transition: all .3s ease-in-out; }
+    #login button:hover {
+      background-color: #ffd985;
+      box-shadow: 0px 0px 0px 1px #2d324f;
+      color: #2d324f; }
+
+.footer {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 15px;
+  text-align: center;
+  color: #fff;
+  background-color: #34314c; }
+  .footer .qdn {
+    width: 90vw; }
+    .footer .qdn h1 {
+      font-weight: bold;
+      color: #ffc952; }
+    .footer .qdn .subtitle {
+      margin-top: -10px;
+      margin-bottom: 30px; }
+
+/*# sourceMappingURL=intro.css.map */

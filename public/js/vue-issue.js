@@ -12701,7 +12701,7 @@ exports.insert = function (css) {
 
 },{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #41B883;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 5px 0px #41B883; }\n")
+var __vueify_style__ = __vueify_insert__.insert("/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #2D324F;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 5px 0px #2D324F; }\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12730,7 +12730,7 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #41B883;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 5px 0px #41B883; }\n"] = false
+    __vueify_insert__.cache["/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #2D324F;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 5px 0px #2D324F; }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

@@ -1,19 +1,26 @@
 @extends('layouts.app')
-
 @section('content')
     <div id="app">
-        <h1>Corrective action</h1>
-        <div v-for="action in correctiveAction">
-            <input v-model="action.what" placeholder="what">
-            <input v-model="action.who" placeholder="who">
-            <input v-model="action.when"  placeholder="when">
-            <button @click="removeAction(action)">
-            <i class="fa fa-close" style="color:firebrick"></i>
-            </button>
-        </div>
-        <button @click="addAction">
-        New Find
-        </button>
+        <form-section
+                title="Containment Action"
+                :actions.sync="containmentAction"
+                :names="cnNames"
+        >
+        </form-section>
+
+        <form-section
+                title="Corrective Action"
+                :actions.sync="correctiveAction"
+                :names="caNames"
+        >
+        </form-section>
+
+        <form-section
+                title="Preventive Action"
+                :actions.sync="preventiveAction"
+                :names="paNames"
+        >
+        </form-section>
     </div>
 @endsection
 @push('scripts')

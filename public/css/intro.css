@@ -109,9 +109,11 @@
     padding: 10px;
     font-size: 14px;
     border: 1px solid #2D324F;
-    transition: all .3s ease-in-out; }
+    transition: all .3s ease-in-out;
+    background-color: #fff; }
     #login input:focus {
-      box-shadow: 0px 0px 1px 1px rgba(45, 50, 79, 0.5); }
+      box-shadow: 0px 0px 1px 1px rgba(45, 50, 79, 0.5);
+      background-color: #f5f5f5; }
     #login input:first-of-type {
       border-radius: 5px 5px 0 0; }
     #login input:last-of-type {

@@ -43,7 +43,7 @@ class DbInfo implements DbInterface {
     {
         $this->validate($this->request, Info::rules);
 
-        $this->isExist =Info::isExist($this->request);
+        $this->isExist = Info::isExist($this->request);
         return $this;
     }
 
@@ -75,8 +75,12 @@ class DbInfo implements DbInterface {
     
     protected function event()
     {
-        $this->isExist
-            ? Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!')
+//        $this->isExist
+//            ? Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!')
+//            : $this->fire(new StoreEvent);
+
+        return $this->isExist
+            ? "Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!"
             : $this->fire(new StoreEvent);
     }
 

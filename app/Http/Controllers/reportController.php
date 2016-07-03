@@ -82,9 +82,15 @@ class reportController extends Controller {
      * @param DbInfo $qdn
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(DbInfo $qdn)
     {
-        return $request->all();
+        return $qdn->store();
+    }
+
+    public function returnHome()
+    {
+        Flash::success('Success! Team responsible will be notified regarding the issue via email!');
+        return redirect(route('home'));
     }
 
     /**

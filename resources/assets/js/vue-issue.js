@@ -16,10 +16,7 @@ Vue.filter('filterDiscrepancyCategory', filterDiscrepancyCategory);
 new Vue({
     el: 'body',
 
-    components: {
-        Multiselect,
-        'qdn-input': QdnInput
-    },
+    components: { Multiselect, QdnInput },
 
     data: {
         category: {
@@ -40,24 +37,23 @@ new Vue({
             discrepanciesOption: []
         },
 
-        selected: {
+        input: {
+            device_name: 'N/A',
+            lot_id_number: 'N/A',
+            package_type: 'N/A',
+            lot_quantity: 0,
+            receiver_name: [],
+            other_customer: null,
+            problem_description: null,
+            major: 'minor',
             customer: null,
             station: null,
-            employee: [],
-            failureMode: null,
-            discrepancyCategory: null
+            machine: null,
+            failure_mode: null,
+            discrepancy_category: null
         },
 
-        input: {
-            customer: null,
-            other_customer: null,
-            device_name: null,
-            lot_id_number: null,
-            package_type: null,
-            lot_quantity: null,
-            problem_description: null,
-            major: 'minor'
-        },
+        error: null,
 
         major: false,
         isCheck: false,
@@ -65,7 +61,7 @@ new Vue({
     },
 
     watch: {
-        major: function () {
+        major() {
             var self = this;
 
             self.input.major = self.major == "true" ? "major" : "minor";
@@ -73,63 +69,71 @@ new Vue({
             self.setDiscrepancyCategoryByLevel();
         },
 
-        isCheck: function () {
+        isCheck(value) {
             var self = this;
 
+            self.input.package_type = value ? null : 'N/A';
+            self.input.device_name = value ? null : 'N/A';
+            self.input.lot_id_number = value ? null : 'N/A';
+            self.input.lot_quantity = value ? null : 0;
             self.setDiscrepancyCategoryByLevel();
         },
 
-        'selected.failureMode': function () {
+        'input.failure_mode'() {
             this.isValid();
         },
 
-        'selected.customer': function (value) {
+        'input.customer'(value) {
             this.setCustomerValue(value);
         },
 
-        'selected.station': function () {
+        'input.station'() {
             this.isValid();
         },
 
-        'selected.employee': function () {
+        'input.machine'() {
             this.isValid();
         },
 
-        'selected.discrepancyCategory': function () {
+        'input.receiver_name'() {
             this.isValid();
         },
 
-        'input.customer': function () {
+        'input.discrepancy_category'() {
             this.isValid();
         },
 
-        'input.other_customer': function () {
+        'input.customer'() {
             this.isValid();
         },
 
-        'input.device_name': function () {
+        'input.other_customer'() {
             this.isValid();
         },
 
-        'input.lot_id_number': function () {
+        'input.device_name'() {
             this.isValid();
         },
 
-        'input.package_type': function () {
+        'input.lot_id_number'() {
             this.isValid();
         },
 
-        'input.lot_quantity': function () {
+        'input.package_type'() {
             this.isValid();
         },
 
-        'input.problem_description': function () {
+        'input.lot_quantity'() {
+            this.isValid();
+        },
+
+        'input.problem_description'() {
             this.isValid();
         }
     },
 
     methods: {
-        setDiscrepancyCategoryByLevel: function () {
+        setDiscrepancyCategoryByLevel() {
             var self = this;
 
             self.category.discrepanciesOption = self.category.discrepancies.map(function (arr) {
@@ -141,7 +145,7 @@ new Vue({
             });
         },
 
-        setCustomerValue: function (value) {
+        setCustomerValue(value) {
             var self = this;
 
             self.input.customer = value;
@@ -154,13 +158,14 @@ new Vue({
             self.valid = self.isRequiredFieldValid()
         },
 
-        isRequiredFieldValid: function () {
+        isRequiredFieldValid() {
             var self = this,
-                required = self.selected.employee.length
-                    && self.selected.station
-                    && self.selected.failureMode
-                    && self.selected.discrepancyCategory
-                    && self.selected.customer
+                required = self.input.receiver_name.length
+                    && self.input.station
+                    && self.input.machine
+                    && self.input.failure_mode
+                    && self.input.discrepancy_category
+                    && self.input.customer
                     && self.input.problem_description;
 
             if (self.isCheck) {
@@ -175,7 +180,7 @@ new Vue({
 
         },
 
-        isValid: function () {
+        isValid() {
             var self = this;
 
             self.valid = false;
@@ -183,12 +188,16 @@ new Vue({
             self.valid = self.isRequiredFieldValid()
         },
 
-        saveQdn: function () {
+        saveQdn() {
             var self = this;
 
-            self.$http.post('/report', self.input).then((response) => {
-                console.log(response.data);
-            });
+            self.$http.post('/report', self.input)
+                .then(response => {
+                    if (! response.includes('already')) location.href = "/home/success";
+
+                    self.error = response;
+                    setTimeout(() => self.error = null, 15000);
+                });
         }
     }
 });

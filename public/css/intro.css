@@ -10,7 +10,8 @@
 .cover {
   height: 100vh;
   background-image: url("/img/full-page-cover.jpg");
-  background-size: cover; }
+  background-size: cover;
+  background-repeat: no-repeat; }
 
 .logo {
   margin-top: 15px;

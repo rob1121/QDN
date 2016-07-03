@@ -12754,6 +12754,8 @@ function numeric(value) {
 },{}],9:[function(require,module,exports){
 'use strict';
 
+var _watch;
+
 var _vue = require('vue');
 
 var _vue2 = _interopRequireDefault(_vue);
@@ -12768,6 +12770,8 @@ var _filters = require('./filter/filters');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var VueResource = require('vue-resource');
 
 _vue2.default.use(VueResource);
@@ -12781,10 +12785,7 @@ _vue2.default.filter('filterDiscrepancyCategory', _filters.filterDiscrepancyCate
 new _vue2.default({
     el: 'body',
 
-    components: {
-        Multiselect: _vueMultiselect.Multiselect,
-        'qdn-input': _QdnInput2.default
-    },
+    components: { Multiselect: _vueMultiselect.Multiselect, QdnInput: _QdnInput2.default },
 
     data: {
         category: {
@@ -12798,31 +12799,30 @@ new _vue2.default({
             discrepanciesOption: []
         },
 
-        selected: {
+        input: {
+            device_name: 'N/A',
+            lot_id_number: 'N/A',
+            package_type: 'N/A',
+            lot_quantity: 0,
+            receiver_name: [],
+            other_customer: null,
+            problem_description: null,
+            major: 'minor',
             customer: null,
             station: null,
-            employee: [],
-            failureMode: null,
-            discrepancyCategory: null
+            machine: null,
+            failure_mode: null,
+            discrepancy_category: null
         },
 
-        input: {
-            customer: null,
-            other_customer: null,
-            device_name: null,
-            lot_id_number: null,
-            package_type: null,
-            lot_quantity: null,
-            problem_description: null,
-            major: 'minor'
-        },
+        error: null,
 
         major: false,
         isCheck: false,
         valid: false
     },
 
-    watch: {
+    watch: (_watch = {
         major: function major() {
             var self = this;
 
@@ -12830,61 +12830,48 @@ new _vue2.default({
 
             self.setDiscrepancyCategoryByLevel();
         },
-
-        isCheck: function isCheck() {
+        isCheck: function isCheck(value) {
             var self = this;
 
+            self.input.package_type = value ? null : 'N/A';
+            self.input.device_name = value ? null : 'N/A';
+            self.input.lot_id_number = value ? null : 'N/A';
+            self.input.lot_quantity = value ? null : 0;
             self.setDiscrepancyCategoryByLevel();
         },
-
-        'selected.failureMode': function selectedFailureMode() {
+        'input.failure_mode': function inputFailure_mode() {
             this.isValid();
         },
-
-        'selected.customer': function selectedCustomer(value) {
+        'input.customer': function inputCustomer(value) {
             this.setCustomerValue(value);
         },
-
-        'selected.station': function selectedStation() {
+        'input.station': function inputStation() {
             this.isValid();
         },
-
-        'selected.employee': function selectedEmployee() {
+        'input.machine': function inputMachine() {
             this.isValid();
         },
-
-        'selected.discrepancyCategory': function selectedDiscrepancyCategory() {
+        'input.receiver_name': function inputReceiver_name() {
             this.isValid();
         },
-
-        'input.customer': function inputCustomer() {
-            this.isValid();
-        },
-
-        'input.other_customer': function inputOther_customer() {
-            this.isValid();
-        },
-
-        'input.device_name': function inputDevice_name() {
-            this.isValid();
-        },
-
-        'input.lot_id_number': function inputLot_id_number() {
-            this.isValid();
-        },
-
-        'input.package_type': function inputPackage_type() {
-            this.isValid();
-        },
-
-        'input.lot_quantity': function inputLot_quantity() {
-            this.isValid();
-        },
-
-        'input.problem_description': function inputProblem_description() {
+        'input.discrepancy_category': function inputDiscrepancy_category() {
             this.isValid();
         }
-    },
+    }, _defineProperty(_watch, 'input.customer', function inputCustomer() {
+        this.isValid();
+    }), _defineProperty(_watch, 'input.other_customer', function inputOther_customer() {
+        this.isValid();
+    }), _defineProperty(_watch, 'input.device_name', function inputDevice_name() {
+        this.isValid();
+    }), _defineProperty(_watch, 'input.lot_id_number', function inputLot_id_number() {
+        this.isValid();
+    }), _defineProperty(_watch, 'input.package_type', function inputPackage_type() {
+        this.isValid();
+    }), _defineProperty(_watch, 'input.lot_quantity', function inputLot_quantity() {
+        this.isValid();
+    }), _defineProperty(_watch, 'input.problem_description', function inputProblem_description() {
+        this.isValid();
+    }), _watch),
 
     methods: {
         setDiscrepancyCategoryByLevel: function setDiscrepancyCategoryByLevel() {
@@ -12898,7 +12885,6 @@ new _vue2.default({
                 return typeof data !== 'undefined';
             });
         },
-
         setCustomerValue: function setCustomerValue(value) {
             var self = this;
 
@@ -12911,10 +12897,9 @@ new _vue2.default({
             self.valid = false;
             self.valid = self.isRequiredFieldValid();
         },
-
         isRequiredFieldValid: function isRequiredFieldValid() {
             var self = this,
-                required = self.selected.employee.length && self.selected.station && self.selected.failureMode && self.selected.discrepancyCategory && self.selected.customer && self.input.problem_description;
+                required = self.input.receiver_name.length && self.input.station && self.input.machine && self.input.failure_mode && self.input.discrepancy_category && self.input.customer && self.input.problem_description;
 
             if (self.isCheck) {
                 return required && self.input.device_name && self.input.lot_id_number && self.input.package_type && self.input.lot_quantity;
@@ -12922,7 +12907,6 @@ new _vue2.default({
 
             return required;
         },
-
         isValid: function isValid() {
             var self = this;
 
@@ -12930,12 +12914,16 @@ new _vue2.default({
 
             self.valid = self.isRequiredFieldValid();
         },
-
         saveQdn: function saveQdn() {
             var self = this;
 
             self.$http.post('/report', self.input).then(function (response) {
-                console.log(response.data);
+                if (!response.includes('already')) location.href = "/home/success";
+
+                self.error = response;
+                setTimeout(function () {
+                    return self.error = null;
+                }, 15000);
             });
         }
     }

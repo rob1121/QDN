@@ -10,6 +10,6 @@ class StoreEvent implements EventInterface {
     {
         Activity::log("Issue QDN {$qdn->control_id} : {$qdn->discrepancy_category}");
         Event::fire(new EmailQdnNotificationEvent($qdn));
-        Flash::success('Success! Team responsible will be notified regarding the issue via email!');
+//        Flash::success('Success! Team responsible will be notified regarding the issue via email!');
     }
 }

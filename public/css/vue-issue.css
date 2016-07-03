@@ -87,4 +87,18 @@
   border: 1px solid #2D324F !important;
   background-color: #ffffff; }
 
+.select-group {
+  display: -ms-flexbox;
+  display: flex; }
+  .select-group .form__station {
+    margin-right: 10px; }
+
+.error {
+  text-transform: capitalize;
+  color: redbrick;
+  margin: 0px 20px;
+  border: 1px solid redbrick;
+  border-radius: 5px;
+  background-color: #ffbebe; }
+
 /*# sourceMappingURL=vue-issue.css.map */

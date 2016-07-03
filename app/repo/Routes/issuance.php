@@ -18,6 +18,12 @@ Route::post('/report',
 		'uses' => 'reportController@store',
 	]);
 
+Route::get('/home/success',
+	[
+		'as'   => 'issue_success',
+		'uses' => 'reportController@returnHome',
+	]);
+
 Route::get('/form',
 	[
 		'as'   => 'qdn_form',

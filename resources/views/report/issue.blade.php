@@ -10,10 +10,12 @@
         <div class="form wow-reveal">
             <h1>QDN ISSUANCE</h1>
 
+            <div class="error" v-if="error">@{{ error }}</div>
+
             <div class="form__employee">
                 <label>Issued To:
                     <multiselect
-                            :selected.sync="selected.employee"
+                            :selected.sync="input.receiver_name"
                             :options="category.employees"
                             :multiple="true"
                             :searchable="true"
@@ -23,7 +25,7 @@
                             class="multiselect__employee_list"
                     />
                 </label><br>
-                <i class="form__error" v-if="selected.employee.length < 1">* Pick involve personnel, hint: we can select
+                <i class="form__error" v-if="input.receiver_name.length < 1">* Pick involve personnel, hint: we can select
                     multiple personnel</i>
             </div>
 
@@ -31,7 +33,7 @@
                 <div class="form__customer">
                     <label>Customer:
                         <multiselect
-                                :selected.sync="selected.customer"
+                                :selected.sync="input.customer"
                                 :options="category.customers"
                                 placeholder="Select customer"
                                 :allow-empty="false"
@@ -43,7 +45,7 @@
                     <qdn-input name="other_customer"
                                label="Other customer"
                                :input.sync="input.other_customer"
-                               :show="selected.customer == 'OTHER'"
+                               :show="input.customer == 'OTHER'"
                     >
                     </qdn-input>
 
@@ -51,19 +53,35 @@
                 <i class="form__error" v-if="! input.customer">* Pick customer</i>
             </div>
 
-            <div class="form__station">
-                <label>Station:
-                    <multiselect
-                            :selected.sync="selected.station"
-                            :options="category.stations"
-                            placeholder="Select station"
-                            :allow-empty="false"
-                            class="multiselect__station"
-                    />
+           <div class="select-group">
+               <div class="form__station">
+                   <label>Station:
+                       <multiselect
+                               :selected.sync="input.station"
+                               :options="category.stations"
+                               placeholder="Select station"
+                               :allow-empty="false"
+                               class="multiselect__station"
+                       />
 
-                </label><br>
-                <i class="form__error" v-if="! selected.station">* Pick station</i>
-            </div>
+                   </label><br>
+                   <i class="form__error" v-if="! input.station">* Pick station</i>
+               </div>
+
+               <div class="form__machine">
+                   <label>Machine:
+                       <multiselect
+                               :selected.sync="input.machine"
+                               :options="category.machines"
+                               placeholder="Select machine"
+                               :allow-empty="false"
+                               class="multiselect__machine"
+                       />
+
+                   </label><br>
+                   <i class="form__error" v-if="! input.machine">* Pick machine</i>
+               </div>
+           </div>
 
             <div class="form__lot--checkbox">
                 <label>
@@ -122,25 +140,25 @@
                 <div class="form__category--failure__mode">
                     <label>Failure Mode:
                         <multiselect
-                                :selected.sync="selected.failureMode"
+                                :selected.sync="input.failure_mode"
                                 :options="category.failureMode"
                                 :allow-empty="false"
                                 class="multiselect__failure_mode"
                         />
                     </label><br>
-                    <i class="form__error" v-if="! selected.failureMode">* Pick failure mode</i>
+                    <i class="form__error" v-if="! input.failure_mode">* Pick failure mode</i>
                 </div>
 
                 <div class="form__category--discrepancy__category">
                     <label>Discrepancy Category:
                         <multiselect
-                                :selected.sync="selected.discrepancyCategory"
+                                :selected.sync="input.discrepancy_category"
                                 :options="category.discrepanciesOption"
                                 :allow-empty="false"
                                 class="multiselect__discrepancy_category"
                         />
                     </label><br>
-                    <i class="form__error" v-if="! selected.discrepancyCategory">* Pick discrepancy category</i>
+                    <i class="form__error" v-if="! input.discrepancy_category">* Pick discrepancy category</i>
                 </div>
             </div>
 

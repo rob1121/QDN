@@ -45,7 +45,7 @@ class Info extends Model implements SluggableInterface {
         'device_name' => 'required',
         'lot_id_number' => 'required',
         'lot_quantity' => 'required | numeric',
-        'job_order_number' => 'required',
+//        'job_order_number' => 'required',
         'machine' => 'required',
         'station' => 'required',
         'receiver_name' => 'required',

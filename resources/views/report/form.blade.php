@@ -9,6 +9,7 @@
         @include('report.section_cod')
         @include('report.section_actions')
         @include('report.section_approval')
+        @include('report.section_verify')
 
 @endsection
 @push('scripts')

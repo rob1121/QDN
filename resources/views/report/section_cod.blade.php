@@ -1,9 +1,8 @@
 <div class="section-box">
-	<div class="section-header">
-		CAUSE OF DEFECTS / FAILURE:
-	</div>
 
 	<div class="section-cod">
+
+        <div class="title">CAUSE OF DEFECTS / FAILURE:</div>
 		<form-check-box :radio_value.sync="cod_value"
 			:radios="cod_radios"
 		>

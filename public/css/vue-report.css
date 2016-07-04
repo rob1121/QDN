@@ -35,13 +35,20 @@ textarea {
   border: 1px solid #2D324F;
   border-top: 0px; }
 
+.title {
+  color: #40476f;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 15px; }
+
 .section-details {
   background: #fff;
   min-width: 700px;
   width: 80vw;
   border: 1px solid #2D324F;
   border-top: 0px;
-  padding: 30px 25px;
+  padding: 10px 25px;
   overflow: hidden;
   border-top: 1px solid #2D324F; }
 
@@ -103,7 +110,7 @@ textarea {
   width: 80vw;
   border: 1px solid #2D324F;
   border-top: 0px;
-  padding: 30px 25px; }
+  padding: 10px 25px; }
 
 .section-approval {
   background: #fff;
@@ -111,16 +118,57 @@ textarea {
   width: 80vw;
   border: 1px solid #2D324F;
   border-top: 0px;
-  padding: 30px 25px;
+  padding: 10px 25px;
   overflow: hidden;
-  border-top: 0px;
+  border-top: 0px; }
+
+.signature-group {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: distribute;
-  justify-content: space-around; }
-  .section-approval .approval-column {
+  justify-content: space-around;
+  text-transform: capitalize; }
+  .signature-group .approval-column {
     text-align: center; }
-    .section-approval .approval-column .approval-department {
-      border-top: 1px solid #2D324F; }
+  .signature-group .approval-department {
+    font-weight: bold;
+    color: #40476f;
+    border-top: 1px solid #2D324F; }
+
+.section-verify {
+  background: #fff;
+  min-width: 700px;
+  width: 80vw;
+  border: 1px solid #2D324F;
+  border-top: 0px;
+  padding: 10px 25px;
+  overflow: hidden;
+  border-top: 0px; }
+
+.verify-column {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between; }
+  .verify-column .question {
+    min-width: 200px;
+    text-align: right;
+    text-transform: capitalize; }
+  .verify-column label {
+    margin-right: 100px;
+    font-weight: normal; }
+
+.verify-signature {
+  margin-top: 30px;
+  display: -ms-flexbox;
+  display: flex; }
+  .verify-signature .verify-label {
+    min-width: 100px;
+    text-transform: capitalize;
+    text-align: right; }
+  .verify-signature .name {
+    text-align: center;
+    min-width: 300px;
+    border-bottom: 1px solid #2D324F; }
 
 /*# sourceMappingURL=vue-report.css.map */

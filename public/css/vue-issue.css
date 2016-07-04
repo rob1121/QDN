@@ -35,6 +35,13 @@ textarea {
   border: 1px solid #2D324F;
   border-top: 0px; }
 
+.title {
+  color: #40476f;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 15px; }
+
 .form {
   min-width: 750px;
   margin: 0 100px;

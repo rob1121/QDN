@@ -1,8 +1,8 @@
 <template>
     <div class="content">
 
-        <div class="section">{{ title }}</div>
         <div class="group-content">
+            <div class="title">{{ title }}</div>
 
             <div class="label-collection"
                  transition="slide"
@@ -124,21 +124,8 @@
         background: #fff;
         border: 1px solid $border-color;
         border-top: 0px;
-        padding: 30px 20px;
+        padding: 10px 20px;
         overflow: hidden;
-    }
-
-    .section {
-        border: 1px solid $border-color;
-        border-top: 0px;
-        padding: 8px;
-        min-width: 700px;
-        margin: 0px;
-        width: 80vw;
-        text-transform: uppercase;
-        background: #800000;
-        color: #fff;
-        font-size: 14px;
     }
 
     .input-collection {

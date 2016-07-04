@@ -1,15 +1,25 @@
 <template>
     <div class="content">
+
+        <div class="section">{{ title }}</div>
         <div class="group-content">
 
-            <h1>{{ title }}</h1>
+            <div class="label-collection"
+                 transition="slide"
+                 v-if="actions.length"
+             >
+                    <label class="label-set what">What</label>
+
+                    <label class="label-set">who</label>
+
+                    <label class="label-set">when</label>
+            </div>
 
             <div v-for="action in actions"
-                 transition="bounce"
+                 transition="slide"
                  class="input-collection"
             >
                 <div class="input-set what">
-                    <label>What</label>
                     <input  type="text"
                             class="what"
                             name="{{ names.whatname }}[]"
@@ -19,7 +29,6 @@
                 </div>
 
                 <div class="input-set">
-                    <label>Who</label>
                     <input  type="text"
                             class="who"
                             name="{{ names.whoname }}[]"
@@ -29,8 +38,6 @@
                 </div>
 
                 <div class="input-set">
-                    <label>When</label>
-
                     <input  type="text"
                             class="when"
                             name="{{ names.whenname }}[]"
@@ -47,7 +54,7 @@
             <button class="add-btn"
                     @click="addAction"
                     v-show="actions.length < 5"
-                    transition="bounce"
+                    transition="slide"
             > Add new <i class="fa fa-plus"></i>
             </button>
         </div>
@@ -69,6 +76,7 @@
     .add-btn {
         font-weight: bold;
         min-height: 30px;
+        margin: 10px 5px;
         padding: 4px 8px;
         color: #fff;
         background-color: $border-color;
@@ -90,19 +98,16 @@
         position: absolute;
         right: 0;
         top: 0;
-        margin-top: -15px;
-        margin-right: -12px;
-        transition: all .1s ease-in-out;
-        border: 1px solid $border-color;
+        margin-top: -5px;
+        margin-right: -11px;
         border-radius: 50%;
         padding: 1px;
-        font-size: 24px;
-        color: $border-color;
+        color: lighten(firebrick, 10%);
+        transition: all .1s ease-in-out;
 
         &:hover {
+            transform: scale(1.2);
             color: firebrick;
-            @include shadow();
-            transform: scale(1.1);
         }
     }
 
@@ -114,50 +119,53 @@
     }
 
     .group-content {
+        min-width: 700px;
         width: 80vw;
+        background: #fff;
+        border: 1px solid $border-color;
+        border-top: 0px;
+        padding: 30px 20px;
+        overflow: hidden;
+    }
+
+    .section {
+        border: 1px solid $border-color;
+        border-top: 0px;
+        padding: 8px;
+        min-width: 700px;
+        margin: 0px;
+        width: 80vw;
+        text-transform: uppercase;
+        background: #800000;
+        color: #fff;
+        font-size: 14px;
     }
 
     .input-collection {
-        background-color: #fff;
-        @include shadow();
-        border: 1px solid $border-color;
-        margin-bottom: 15px;
         padding: 3px 0;
         display: flex;
         min-width: 300px;
-        justify-content: space-around;
         border-radius: 5px;
 
         .input-set {
             padding: 0px 5px;
+            width: 220px;
+        }
 
-            &.what {
-                flex-grow: 3;
-            }
-
-            label {
-                display:block;
-                text-align: center;
-                font-weight: bold;
-            }
+        .what {
+            flex-grow: 3;
         }
 
         input {
-            transition: all .1s ease-in-out;
+            transition: all .2s ease-in-out;
             border-radius: 5px;
             border: 1px solid $border-color;
-            padding: 5px;
+            padding: 5px 10px;
             width: 100%;
 
-            &:hover, &:focus {
-                @include shadow();
+            &:focus {
+            box-shadow: 0px 0px 0px 1px $border-color;
             }
-        }
-    }
-
-    @media (max-width: 700px) {
-        input {
-            background-color: #333333;
         }
     }
 
@@ -165,16 +173,16 @@
         display: block;
     }
 
-    .bounce-transition {
+    .slide-transition {
         position: relative;
     }
 
-    .bounce-enter {
+    .slide-enter {
         animation: enterTransition;
         animation-duration: .7s;
     }
 
-    .bounce-leave {
+    .slide-leave {
         animation: leaveTransition;
         animation-duration: .7s;
     }
@@ -200,6 +208,23 @@
         to {
             opacity:0;
             left: 10px;
+        }
+    }
+
+
+
+    .label-collection {
+        display: flex;
+
+        .label-set {
+            text-align: center;
+            font-weight: bold;
+            padding: 0px 5px;
+            width: 220px;
+        }
+
+        .what {
+            flex-grow: 3;
         }
     }
 </style>

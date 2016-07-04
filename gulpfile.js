@@ -164,6 +164,7 @@ elixir(function(mix) {
 });
 elixir(function(mix) {
     mix.sass('intro.sass')
+        .sass('vue-report.sass');
 });
 
 elixir(function(mix) {

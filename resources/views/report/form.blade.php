@@ -1,27 +1,15 @@
 @extends('layouts.app')
+@push('style')
+<link rel="stylesheet" type="text/css" href="/css/vue-report.css">
+@endpush
 @section('content')
-    <div id="app">
-        <form-section
-                title="Containment Action"
-                :actions.sync="containmentAction"
-                :names="cnNames"
-        >
-        </form-section>
 
-        <form-section
-                title="Corrective Action"
-                :actions.sync="correctiveAction"
-                :names="caNames"
-        >
-        </form-section>
+        @include('report.section_header')
+        @include('report.section_disposition')
+        @include('report.section_cod')
+        @include('report.section_actions')
+        @include('report.section_approval')
 
-        <form-section
-                title="Preventive Action"
-                :actions.sync="preventiveAction"
-                :names="paNames"
-        >
-        </form-section>
-    </div>
 @endsection
 @push('scripts')
 <script src="/js/vue-report.js"></script>

@@ -86,7 +86,7 @@
                 $(window).scroll(function() {
 
                     var wScroll = $(window).scrollTop();
-                    $(".cover").css("transform", "translate(0px, " + wScroll/3 + "px)");
+                    $(".cover").css("transform", "translate(0px, " + wScroll/10 + "px)");
                 });
 
                 $("#login-btn").on('click', function (event) {

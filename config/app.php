@@ -151,27 +151,23 @@ return [
 		/*
 			 * Application Service Providers...
 		*/
-		App\Providers\AppServiceProvider::class,
 		App\Providers\AuthServiceProvider::class,
 		App\Providers\EventServiceProvider::class,
 		App\Providers\RouteServiceProvider::class,
 		App\Providers\ComposerServiceProvider::class,
 		Barryvdh\Queue\AsyncServiceProvider::class,
-		Mpociot\LaravelTestFactoryHelper\TestFactoryHelperServiceProvider::class,
 
 
 		/*
 			 * EXTERNAL PHP EXTENSION
 		*/
 
-		Barryvdh\Debugbar\ServiceProvider::class,
 		Laracasts\Flash\FlashServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
 		Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 		Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
 		Barryvdh\DomPDF\ServiceProvider::class,
-		Spatie\Activitylog\ActivitylogServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class
+		Spatie\Activitylog\ActivitylogServiceProvider::class
 	],
 
 	/*

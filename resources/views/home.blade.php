@@ -71,60 +71,15 @@ box-shadow: none;
 <div class="container">
     @include('errors.validationErrors')
     <!-- <legend class="h1">Status: </legend> -->
-    @foreach ($status as $panel)
-    <div class="col-md-3 h2 wow-reveal">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">{{ $panel[2] }}</h3>
-            </div>
-            <div class="panel-body" id="{{ $panel[3] }}">
-                {{ $panel[0] }}
-            </div>
-            <a class="h5" href="#">
-                <div class    = "panel-footer"
-                    data-toggle   = "collapse"
-                    href          = "#{{ $panel[1] }}"
-                    aria-expanded = "false"
-                    aria-controls = "{{ $panel[1] }}"
-                    >
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
-    </div>
-    @endforeach
 </div>
 {{-- container for collapse data filtered by status----================================= --}}
-<div class="container" id="">
-    @foreach ($status as $panel)
-    <div class="collapse" id="{{ $panel[1] }}">
-        <div class="well">
-            <legend>{{ $panel[2] }}</legend>
-            <table class="table table-hover"  id="table-content">
-                <thead>
-                    <tr>
-                        <th>QDN No. </th>
-                        <th class="col-md-5">Desciption</th>
-                        <th>Station</th>
-                        <th>Customer</th>
-                        <th>Receiver</th>
-                        <th>Timestamp</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    @endforeach
+<div class="container">
+    <qdn-collapse :list.sync="qdn"></qdn-collapse>
 </div>
 @include('home.modals')
 @endsection
 @section('script')
-<script src="/vendor/js/highcharts.js"></script>
-<script src="/vendor/js/exporting.js"></script>
+<script src="/js/vue-home.js"></script>
 <script src="/js/homeScript.js"></script>
 <script>
 $(function() {

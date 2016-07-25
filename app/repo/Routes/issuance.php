@@ -1,25 +1,22 @@
 <?php
 
-Route::get('/issue',
-	[
-		'as'   => 'create',
+// Route::get('/issue',
+	// [
+		// 'as'   => 'create',
+		// 'uses' => 'reportController@report',
+	// ]);
+
+Route::get('/report', 	[
+		'as'   => 'issue_qdn',
 		'uses' => 'reportController@create',
 	]);
 
-Route::get('/report',
-	[
-		'as'   => 'issue_qdn',
-		'uses' => 'reportController@report',
-	]);
-
-Route::post('/report',
-	[
+Route::post('/report', [
 		'as'   => 'issue_qdn',
 		'uses' => 'reportController@store',
 	]);
 
-Route::get('/home/success',
-	[
+Route::get('/home/success', [
 		'as'   => 'issue_success',
 		'uses' => 'reportController@returnHome',
 	]);
@@ -31,8 +28,8 @@ Route::get('/form',
 	]);
 Route::get('/report/{slug}',
 	[
-		'as'   => 'qdn_link',
-		'uses' => 'reportController@show',
+		'as'   => 'link_for_pe_verification',
+		'uses' => 'reportController@viewForPeVerification',
 	]);
 
 Route::post('/draft/{slug}',

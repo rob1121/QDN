@@ -12747,6 +12747,43 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":5,"vue-hot-reload-api":2,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("/* line 2, stdin */\n.error {\n  text-transform: capitalize;\n  margin: 0px 20px;\n  border-radius: 5px;\n  background-color: #ffbebe;\n  padding: 20px 20px !important; }\n  /* line 9, stdin */\n  .error li {\n    padding: 15px auto;\n    list-style: none; }\n  /* line 14, stdin */\n  .error .close {\n    position: relative;\n    right: -15px;\n    top: -15px; }\n\n/* line 21, stdin */\n.fade-transition {\n  -webkit-transition: .3s ease-in-out;\n  transition: .3s ease-in-out; }\n\n/* line 25, stdin */\n.fade-enter {\n  opacity: 1; }\n\n/* line 29, stdin */\n.fade-leave {\n  opacity: 0; }\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	props: ['list'],
+
+	watch: {
+		list: function list() {
+			var _this = this;
+
+			setTimeout(function () {
+				return _this.list = [];
+			}, 15000);
+		}
+	}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div v-show=\"list.length != 0\" transition=\"fade\" class=\"error\"><button type=\"button\" data-dismiss=\"alert\" class=\"close\">×</button><strong>{{ class | uppercase}}</strong><li v-for=\"(name, value) in list\">{{ name }}: {{ value }}</li></div>"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["/* line 2, stdin */\n.error {\n  text-transform: capitalize;\n  margin: 0px 20px;\n  border-radius: 5px;\n  background-color: #ffbebe;\n  padding: 20px 20px !important; }\n  /* line 9, stdin */\n  .error li {\n    padding: 15px auto;\n    list-style: none; }\n  /* line 14, stdin */\n  .error .close {\n    position: relative;\n    right: -15px;\n    top: -15px; }\n\n/* line 21, stdin */\n.fade-transition {\n  -webkit-transition: .3s ease-in-out;\n  transition: .3s ease-in-out; }\n\n/* line 25, stdin */\n.fade-enter {\n  opacity: 1; }\n\n/* line 29, stdin */\n.fade-leave {\n  opacity: 0; }\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-6b99073f", module.exports)
+  } else {
+    hotAPI.update("_v-6b99073f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":5,"vue-hot-reload-api":2,"vueify/lib/insert-css":6}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12758,10 +12795,8 @@ function numeric(value) {
     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
-
-var _watch;
 
 var _vue = require('vue');
 
@@ -12773,11 +12808,13 @@ var _QdnInput2 = _interopRequireDefault(_QdnInput);
 
 var _vueMultiselect = require('vue-multiselect');
 
+var _qdnAlert = require('./components/qdnAlert.vue');
+
+var _qdnAlert2 = _interopRequireDefault(_qdnAlert);
+
 var _filters = require('./filter/filters');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var VueResource = require('vue-resource');
 
@@ -12792,7 +12829,7 @@ _vue2.default.filter('filterDiscrepancyCategory', _filters.filterDiscrepancyCate
 new _vue2.default({
     el: 'body',
 
-    components: { Multiselect: _vueMultiselect.Multiselect, QdnInput: _QdnInput2.default },
+    components: { Multiselect: _vueMultiselect.Multiselect, QdnInput: _QdnInput2.default, qdnAlert: _qdnAlert2.default },
 
     data: {
         category: {
@@ -12822,63 +12859,29 @@ new _vue2.default({
             discrepancy_category: null
         },
 
-        error: null,
+        error: [],
 
         major: false,
-        isCheck: false,
-        valid: false
+        isCheck: false
     },
 
-    watch: (_watch = {
+    watch: {
         major: function major() {
-            var self = this;
+            this.input.major = this.major == "true" ? "major" : "minor";
 
-            self.input.major = self.major == "true" ? "major" : "minor";
-
-            self.setDiscrepancyCategoryByLevel();
+            this.setDiscrepancyCategoryByLevel();
         },
         isCheck: function isCheck(value) {
-            var self = this;
-
-            self.input.package_type = value ? null : 'N/A';
-            self.input.device_name = value ? null : 'N/A';
-            self.input.lot_id_number = value ? null : 'N/A';
-            self.input.lot_quantity = value ? null : 0;
-            self.setDiscrepancyCategoryByLevel();
-        },
-        'input.failure_mode': function inputFailure_mode() {
-            this.isValid();
+            this.input.package_type = value ? null : 'N/A';
+            this.input.device_name = value ? null : 'N/A';
+            this.input.lot_id_number = value ? null : 'N/A';
+            this.input.lot_quantity = value ? null : 0;
+            this.setDiscrepancyCategoryByLevel();
         },
         'input.customer': function inputCustomer(value) {
             this.setCustomerValue(value);
-        },
-        'input.station': function inputStation() {
-            this.isValid();
-        },
-        'input.machine': function inputMachine() {
-            this.isValid();
-        },
-        'input.receiver_name': function inputReceiver_name() {
-            this.isValid();
-        },
-        'input.discrepancy_category': function inputDiscrepancy_category() {
-            this.isValid();
         }
-    }, _defineProperty(_watch, 'input.customer', function inputCustomer() {
-        this.isValid();
-    }), _defineProperty(_watch, 'input.other_customer', function inputOther_customer() {
-        this.isValid();
-    }), _defineProperty(_watch, 'input.device_name', function inputDevice_name() {
-        this.isValid();
-    }), _defineProperty(_watch, 'input.lot_id_number', function inputLot_id_number() {
-        this.isValid();
-    }), _defineProperty(_watch, 'input.package_type', function inputPackage_type() {
-        this.isValid();
-    }), _defineProperty(_watch, 'input.lot_quantity', function inputLot_quantity() {
-        this.isValid();
-    }), _defineProperty(_watch, 'input.problem_description', function inputProblem_description() {
-        this.isValid();
-    }), _watch),
+    },
 
     methods: {
         setDiscrepancyCategoryByLevel: function setDiscrepancyCategoryByLevel() {
@@ -12893,49 +12896,22 @@ new _vue2.default({
             });
         },
         setCustomerValue: function setCustomerValue(value) {
-            var self = this;
-
-            self.input.customer = value;
-
-            if (value == "OTHERS") {
-                self.input.customer = self.input.other_customer;
-            }
-
-            self.valid = false;
-            self.valid = self.isRequiredFieldValid();
-        },
-        isRequiredFieldValid: function isRequiredFieldValid() {
-            var self = this,
-                required = self.input.receiver_name.length && self.input.station && self.input.machine && self.input.failure_mode && self.input.discrepancy_category && self.input.customer && self.input.problem_description;
-
-            if (self.isCheck) {
-                return required && self.input.device_name && self.input.lot_id_number && self.input.package_type && self.input.lot_quantity;
-            }
-
-            return required;
-        },
-        isValid: function isValid() {
-            var self = this;
-
-            self.valid = false;
-
-            self.valid = self.isRequiredFieldValid();
+            this.input.customer = value;
+            if (value == "OTHERS") this.input.customer = this.input.other_customer;
         },
         saveQdn: function saveQdn() {
-            var self = this;
+            var _this = this;
 
-            self.$http.post('/report', self.input).then(function (response) {
-                if (!response.includes('already')) location.href = "/home/success";
-
-                self.error = response;
-                setTimeout(function () {
-                    return self.error = null;
-                }, 15000);
-            });
+            this.$http.post('/report', this.input).then(function (response) {
+                location.href = "/home/success";
+            }, function (response) {
+                _this.error = response.data;
+                window.scrollTo(0, 0);
+            }).bind(this);
         }
     }
 });
 
-},{"./components/QdnInput.vue":7,"./filter/filters":8,"vue":5,"vue-multiselect":3,"vue-resource":4}]},{},[9]);
+},{"./components/QdnInput.vue":7,"./components/qdnAlert.vue":8,"./filter/filters":9,"vue":5,"vue-multiselect":3,"vue-resource":4}]},{},[10]);
 
 //# sourceMappingURL=vue-issue.js.map

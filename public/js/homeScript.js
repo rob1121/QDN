@@ -33,7 +33,7 @@ function status(status, rowFile) {
     var loader = '<tr><td colspan="6"><div class="col-xs-12 text-center" id="loader"><i class="fa fa-spinner fa-pulse fa-2x"></i></div></td></tr>';
     rowFile.append(loader);
     $.ajax({
-        url: link.status,
+        url: link.getQdnLinkAndData,
         type: 'GET',
         data: {
             status: status

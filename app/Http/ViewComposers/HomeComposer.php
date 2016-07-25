@@ -121,28 +121,11 @@ class HomeComposer {
 			[$year, 'year-col', 'Issued this year :', 'year', 'text-year'],
 		]);
 
-		$peVerification = Closure::where('status', 'p.e. verification')
-			->count();
-
-		$incomplete = Closure::where('status', 'incomplete fill-up')
-			->count();
-
-		$approval = Closure::where('status', 'incomplete approval')
-			->count();
-
-		$qaVerification = Closure::where('status', 'q.a. verification')
-			->count();
-
-		$view->with('status', [
-			[$peVerification, 'peVerification', 'P.E. Verification :', 'text-peVerification'],
-			[$incomplete, 'incomplete', 'Incomplete fill-up:', 'text-incomplete'],
-			[$approval, 'approval', 'Incomplete approval :', 'text-approval'],
-			[$qaVerification, 'qaVerification', 'Q.A. Verification :', 'text-qaVerification'],
-		]);
 		$yearOption = Info::select(DB::raw('YEAR(created_at) as year'))
 			->groupBy('year')
 			->get()
 			->toArray();
+
 		$view->with('months', ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']);
 		$view->with('years', array_flatten($yearOption));
 	}

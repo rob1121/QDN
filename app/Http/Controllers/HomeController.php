@@ -1,13 +1,14 @@
 <?php namespace App\Http\Controllers;
 
+use Activity;
 use App\Models\Closure;
 use App\Models\Info;
+use App\repo\API\QdnCountAndData;
 use App\repo\HomeRepository;
 use App\repo\Traits\DateTime;
 use Auth;
 use Illuminate\Http\Request;
 use JavaScript;
-use Activity;
 use Str;
 
 class HomeController extends Controller
@@ -29,7 +30,7 @@ class HomeController extends Controller
         return $this->user ? redirect('/home') : view('index');
     }
 
-    public function home()
+    public function home(QdnCountAndData $qdn)
     {
         JavaScript::put([
             'yearNow' => $this->year(),
@@ -37,7 +38,8 @@ class HomeController extends Controller
                 'status' => '/status',
                 'ajax' => '/ajax',
                 'qdn_data' => '/qdn_data'
-            ]
+            ],
+            'qdn' => $qdn->getStatus()
         ]);
         return $this->user ? view('home') : redirect('/');
     }
@@ -58,18 +60,18 @@ class HomeController extends Controller
             ->with('tbl', Info::issuedFrom($request->setDate));
     }
 
-    public function AjaxStatus(Request $request)
+    public function getQdnLinkAndData(Request $request)
     {
-        return view('home.status', [
-            'tbl' => Closure::status($request->status),
-            'link' => $this->link($request->status)
-        ]);
+        return Closure::status($request->status)
+        ->map(function($item) {
+            return array_add($item, 'url', static::link(Str::lower($item->status)));
+        });
     }
 
-    public function link($status)
+    public static function link($status)
     {
         return collect([
-            'p.e. verification' => 'qdn_link',
+            'p.e. verification' => 'link_for_pe_verification',
             'incomplete fill-up' => 'ForIncompleteFillUp',
             'incomplete approval' => 'approval',
             'q.a. verification' => 'qa_verification',

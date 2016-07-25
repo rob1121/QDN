@@ -15,7 +15,7 @@ $semi-white: lighten($border-color, 20%)
   +shadow()
   color: lighten(#000000, 30%)
 
-  >div, h1
+  h1, &>div
     padding: 0 20px
     margin-bottom: 25px
 
@@ -96,11 +96,3 @@ $semi-white: lighten($border-color, 20%)
 
   .form__station
     margin-right: 10px
-
-.error
-  text-transform: capitalize
-  color: redbrick
-  margin: 0px 20px
-  border: 1px solid redbrick
-  border-radius: 5px
-  background-color: lighten(darkred, 60%)

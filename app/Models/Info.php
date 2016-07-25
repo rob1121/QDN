@@ -52,14 +52,14 @@ class Info extends Model implements SluggableInterface {
         'major' => 'required',
         'failure_mode' => 'required',
         'discrepancy_category' => 'required',
-        'problem_description' => 'required',
+        'problem_description' => 'required|min:6|max:120',
     ];
 
     public static function date()
     {
         return Carbon::now('Asia/Manila');
     }
-	
+
 	public static function todayCount()
 	{
 		return Info::whereDate('created_at', '=', static::date()->format('Y-m-d'))->count();
@@ -148,7 +148,7 @@ class Info extends Model implements SluggableInterface {
     {
         return Info::select('failure_mode')->groupBy('failure_mode')->get();
     }
-    
+
     public static function filterWithText($request)
     {
         return Info::orderBy($request->column, $request->sort)
@@ -202,7 +202,7 @@ class Info extends Model implements SluggableInterface {
     public static function today()
     {
         $today = Carbon::now('Asia/Manila')->format('m-d-Y');
-        
+
         return Info::with('involvePerson')->where(DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'), "=", $today)
             ->show(0, 10)
             ->get();
@@ -220,7 +220,7 @@ class Info extends Model implements SluggableInterface {
     public static function month()
     {
         $today = Carbon::now('Asia/Manila');
-        
+
         return Info::with('involvePerson')->where(DB::raw('MONTH(created_at)'), "=", $today->month)
             ->where(DB::raw('YEAR(created_at)'), "=", $today->year)
             ->show(0, 10)
@@ -230,7 +230,7 @@ class Info extends Model implements SluggableInterface {
     public static function year()
     {
         $today = Carbon::now('Asia/Manila');
-        
+
         return Info::with('involvePerson')->where(DB::raw('YEAR(created_at)'), "=", $today->year)
             ->show(0, 10)
             ->get();
@@ -254,7 +254,7 @@ class Info extends Model implements SluggableInterface {
     public static function issuedFrom($date)
     {
         $today = Carbon::now('Asia/Manila');
-        
+
         return collect([
             'today' => Info::where( DB::raw('DATE_FORMAT(created_at, "%m-%d-%Y")'), "=", $today->format('m-d-Y'))->get(),
             'week' => Info::where( DB::raw('WEEK(created_at)'), "=", $today->weekOfYear )->get(),
@@ -286,7 +286,7 @@ class Info extends Model implements SluggableInterface {
             ->whereDiscrepancyCategory($request->discrepancy_category)
             ->whereQuantity($request->quantity)->count() > 0;
     }
-    
+
 	/**
 	 * retrieving data from table for BMP graphs
 	 * @param $query

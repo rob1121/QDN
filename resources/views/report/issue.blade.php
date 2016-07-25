@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('style')
-<link rel="stylesheet" href="/css/vue-issue.css" xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="/css/vue-issue.css">
 @endpush
 
 @section('content')
@@ -10,7 +10,7 @@
         <div class="form wow-reveal">
             <h1>QDN ISSUANCE</h1>
 
-            <div class="error" v-if="error">@{{ error }}</div>
+            <qdn-alert :list="error"></qdn-alert>
 
             <div class="form__employee">
                 <label>Issued To:
@@ -24,9 +24,7 @@
                             :limit="2"
                             class="multiselect__employee_list"
                     />
-                </label><br>
-                <i class="form__error" v-if="input.receiver_name.length < 1">* Pick involve personnel, hint: we can select
-                    multiple personnel</i>
+                </label>
             </div>
 
             <div class="form__field">
@@ -50,7 +48,6 @@
                     </qdn-input>
 
                 </div>
-                <i class="form__error" v-if="! input.customer">* Pick customer</i>
             </div>
 
            <div class="select-group">
@@ -64,8 +61,7 @@
                                class="multiselect__station"
                        />
 
-                   </label><br>
-                   <i class="form__error" v-if="! input.station">* Pick station</i>
+                   </label>
                </div>
 
                <div class="form__machine">
@@ -78,8 +74,7 @@
                                class="multiselect__machine"
                        />
 
-                   </label><br>
-                   <i class="form__error" v-if="! input.machine">* Pick machine</i>
+                   </label>
                </div>
            </div>
 
@@ -145,8 +140,7 @@
                                 :allow-empty="false"
                                 class="multiselect__failure_mode"
                         />
-                    </label><br>
-                    <i class="form__error" v-if="! input.failure_mode">* Pick failure mode</i>
+                    </label>
                 </div>
 
                 <div class="form__category--discrepancy__category">
@@ -157,8 +151,7 @@
                                 :allow-empty="false"
                                 class="multiselect__discrepancy_category"
                         />
-                    </label><br>
-                    <i class="form__error" v-if="! input.discrepancy_category">* Pick discrepancy category</i>
+                    </label>
                 </div>
             </div>
 
@@ -169,14 +162,12 @@
                                   placeholder="Required input"
                                   v-model="input.problem_description"
                         ></textarea>
-                <i class="form__error" v-if="! input.problem_description">* Describe the problem</i>
             </div>
 
             <div class="form__submit">
                 <button class="form__submit--btn"
                         type="submit"
                         value="send"
-                        :disabled=" ! valid"
                         @click.prevent="saveQdn"
                 >
                     Submit <i class="fa fa-paper-plane"></i>
@@ -187,5 +178,5 @@
 @endsection
 
 @push('scripts')
-<script src="/js/vue-issue.js"></script>
+  <script src="/js/vue-issue.js"></script>
 @endpush

@@ -29,7 +29,7 @@ class DbInfo implements DbInterface {
     {
         $this->request = $request;
     }
-    
+
     public function store()
     {
             $this->validateRequest()
@@ -43,7 +43,9 @@ class DbInfo implements DbInterface {
     {
         $this->validate($this->request, Info::rules);
 
-        $this->isExist = Info::isExist($this->request);
+        if (Info::isExist($this->request))
+            return Response::json(['0' => 'QDN already exist!!'], 442);
+
         return $this;
     }
 
@@ -61,7 +63,7 @@ class DbInfo implements DbInterface {
 
         return $this;
     }
-    
+
     protected function syncRelationship()
     {
         if( ! $this->isExist)
@@ -72,7 +74,7 @@ class DbInfo implements DbInterface {
 
         return $this;
     }
-    
+
     protected function event()
     {
 //        $this->isExist
@@ -89,7 +91,7 @@ class DbInfo implements DbInterface {
         collect($this->request->receiver_name)->map(function($name) {
             InvolvePerson::store($this->qdn->id, Employee::byName($name));
         });
-        
+
         return $this;
     }
 
@@ -117,7 +119,7 @@ class DbInfo implements DbInterface {
         $this->control_id = $this->date()->format('y') . "-" . sprintf("%'.04d", $control_id);
         return $this;
     }
-    
+
     protected function getCustomer()
     {
         $customer = "not yet specified" == $this->request->customer

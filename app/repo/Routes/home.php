@@ -22,8 +22,8 @@ Route::get('/qdn-data',
 
 Route::get('/status',
 	[
-		'as'   => 'status',
-		'uses' => 'homeController@AjaxStatus',
+		'as'   => 'getQdnLinkAndData',
+		'uses' => 'homeController@getQdnLinkAndData',
 	]);
 
 Route::get('/count',

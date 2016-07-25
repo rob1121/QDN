@@ -73,10 +73,10 @@ class reportController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function report()
-    {
-        return view('report.create');
-    }
+    // public function report()
+    // {
+        // return view('report.create');
+    // }
 
     /**
      * @param DbInfo $qdn
@@ -98,9 +98,9 @@ class reportController extends Controller {
      * @param Info $slug
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
-    public function show(ViewPage $view, Info $slug)
+    public function viewForPeVerification(ViewPage $view, Info $slug)
     {
-        return $view->display($slug, 'report.view');
+        return $view->display($slug, 'report.form_for_pe_verification');
     }
 
     /**

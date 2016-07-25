@@ -168,7 +168,8 @@ elixir(function(mix) {
 });
 
 elixir(function(mix) {
-    mix.browserify('vue-report.js');
+    mix.browserify('vue-report.js')
+        .browserify('vue-home.js');
 });
 
 elixir(function(mix) {

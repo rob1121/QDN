@@ -3,6 +3,7 @@
 use Activity;
 use App\Models\Closure;
 use App\Models\Info;
+use App\Models\InvolvePerson;
 use App\repo\API\QdnCountAndData;
 use App\repo\HomeRepository;
 use App\repo\Traits\DateTime;
@@ -10,6 +11,7 @@ use Auth;
 use Illuminate\Http\Request;
 use JavaScript;
 use Str;
+use Gate;
 
 class HomeController extends Controller
 {
@@ -64,7 +66,9 @@ class HomeController extends Controller
     {
         return Closure::status($request->status)
         ->map(function($item) {
-            return array_add($item, 'url', static::link(Str::lower($item->status)));
+            array_add($item, 'url', static::link(Str::lower($item->status)));
+            array_add($item, 'gate', Gate::allows('mod-qdn', $item->info->slug));
+            return array_add($item, 'receiver_name', InvolvePerson::getInvolvePerson($item->info_id));
         });
     }
 

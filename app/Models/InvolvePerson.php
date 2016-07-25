@@ -27,7 +27,7 @@ class InvolvePerson extends Model {
 	public function getStationAttribute($value) {
 		return Str::upper($value);
 	}
-	
+
 	public static function store($id, $person)
 	{
 	    InvolvePerson::create([
@@ -38,6 +38,10 @@ class InvolvePerson extends Model {
 			'receiver_id' => $person->user_id,
 			'receiver_name' => $person->name,
 		]);
+	}
+
+	public static function getInvolvePerson($id) {
+		return InvolvePerson::whereInfoId($id)->get(['receiver_name','station']);
 	}
 
 }

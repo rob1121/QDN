@@ -27,7 +27,7 @@ class Closure extends Model {
 	}
 
     public static function status($status) {
-        return Closure::where('status', $status)->get();
+        return Closure::with('info')->whereStatus($status)->get();
     }
 
 	// DEFINE RELATIONSHIPS --------------------------------------------------

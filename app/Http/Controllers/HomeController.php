@@ -66,10 +66,18 @@ class HomeController extends Controller
     {
         return Closure::status($request->status)
         ->map(function($item) {
-            array_add($item, 'url', static::link(Str::lower($item->status)));
+            array_add( $item, 'action_link', static::actionLink($item));
             array_add($item, 'gate', Gate::allows('mod-qdn', $item->info->slug));
             return array_add($item, 'receiver_name', InvolvePerson::getInvolvePerson($item->info_id));
         });
+    }
+
+    public static function actionLink($item) {
+        $baseRoute = static::link( Str::lower( $item->status ) );
+        $param = ['slug' => $item->info->slug];
+        $url = route( $baseRoute , $param );
+
+        return Gate::allows('mod-qdn', $item->info->slug) ? "<a href='{$url}'>{$item->info->control_id}</a>" : "(is active at the moment)";
     }
 
     public static function link($status)

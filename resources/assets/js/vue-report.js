@@ -6,27 +6,27 @@ new Vue({
     el: 'body',
     data: {
         section1: [
-            {name: 'customer', value: '[data]'},
-            {name: 'package type', value: '[data]'},
-            {name: 'device name', value: '[data]'},
-            {name: 'lot quantity', value: '[data]'},
-            {name: 'lot ID no.', value: '[data]'},
+            {name: 'customer', value: qdn.customer},
+            {name: 'package type', value: qdn.package_type},
+            {name: 'device name', value: qdn.device_name},
+            {name: 'lot quantity', value: qdn.lot_quantity},
+            {name: 'lot ID no.', value: qdn.lot_id_number},
         ],
 
         section2: [
-            {name: 'Job  Number No', value: '[data]'},
-            {name: 'Machine', value: '[data]'},
-            {name: 'station', value: '[data]'},
-            {name: 'major', value: '[data]'},
-            {name: 'minor', value: '[data]'},
+            {name: 'Job  Number No', value: qdn.job_or_no},
+            {name: 'Machine', value: qdn.machine},
+            {name: 'station', value: qdn.station},
+            {name: 'major', value: qdn.major},
+            {name: 'minor', value: qdn.minor},
         ],
 
         section3: [
-            {name: 'QDN #', value: '[data]'},
-            {name: 'Team/Resp.', value: '[data]'},
-            {name: 'Issued By (Name/Emp #)', value: '[data]'},
-            {name: 'Issued To (Name/Emp #)', value: '[data]'},
-            {name: 'Date/Time', value: '[data]'},
+            {name: 'QDN #', value: qdn.control_id},
+            {name: 'Team/Resp.', value: qdn.InvolvePerson},
+            {name: 'Issued By (Name/Emp #)', value: qdn.InvolvePerson},
+            {name: 'Issued To (Name/Emp #)', value: qdn.InvolvePerson},
+            {name: 'Date/Time', value: qdn.created_at},
         ],
 
         containmentAction: [{ what: '', who: '', when: '' }],
@@ -60,5 +60,11 @@ new Vue({
         departmentList: ['production', 'process', 'quality assurance', 'other department']
     },
 
-    components: { formSection, formCheckBox }
+    components: { formSection, formCheckBox },
+
+    filters: {
+        list() {
+
+        }
+    }
 });

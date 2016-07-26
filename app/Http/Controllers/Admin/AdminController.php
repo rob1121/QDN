@@ -23,7 +23,7 @@ class AdminController extends Controller {
 		JavaScript::put([
 			'yearNow' => $this->year(),
 			'link' => [
-				'status' => route('status'),
+				'status' => route('getQdnLinkAndData'),
 				'ajax' => route('ajax'),
 				'qdn_data' => route('qdn_data')
 			]

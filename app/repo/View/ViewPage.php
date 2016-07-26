@@ -16,7 +16,7 @@ class ViewPage {
 
     public function display(Info $qdn, $view)
     {
-        $this->qdn = $qdn;
+        $this->qdn = $qdn->with('InvolvePerson')->first();
         $this->view = $view;
 
         if (Gate::allows('mod-qdn', $this->qdn->slug))

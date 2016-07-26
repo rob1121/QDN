@@ -189,7 +189,7 @@
             <tbody>
             @foreach ($table as $row)
                 <tr>
-                    <td class='info'><a href="{{ route('qdn_link', ['slug'=>$row->slug]) }}">{{ $row->control_id }}</a>
+                    <td class='info'><a href="{{ route('link_for_pe_verification', ['slug'=>$row->slug]) }}">{{ $row->control_id }}</a>
                     </td>
                     <td class="justify">{{ $row->problem_description }}</td>
                     <td>{{ $row->discrepancy_category }}</td>

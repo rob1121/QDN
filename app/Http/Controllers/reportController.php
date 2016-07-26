@@ -52,9 +52,9 @@ class reportController extends Controller {
         return ViewPage::PDF($slug);
     }
 
-    public function form()
+    public function form(ViewPage $view, Info $slug)
     {
-        return view('report.form');
+        return $view->display($slug, 'report.form');
     }
 
     public function create()

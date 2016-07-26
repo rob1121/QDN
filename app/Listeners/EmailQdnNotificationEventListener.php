@@ -31,10 +31,11 @@ class EmailQdnNotificationEventListener implements ShouldQueue {
             'user' => $event->user->employee,
         ];
         Mail::send('notifications.issue_qdn', $data, function ($message) use ($event) {
-            $message->from('robinsonlegaspi@astigp.com', 'Rob');
-            $message->replyTo('robinsonlegaspi@astigp.com', 'Rob');
-            $message->sender('robinsonlegaspi@astigp.com', 'Rob');
+            $message->from('robinsonlegaspi@astigp.com', 'QDN System mailer');
+            $message->replyTo('robinsonlegaspi@astigp.com', 'QDN System mailer');
+            $message->sender('robinsonlegaspi@astigp.com', 'QDN System mailer');
             $message->to('robinsonlegaspi@astigp.com', 'Robinson Legaspi');
+           $message->to('telford_conf_ph@astigp.com', 'Telford Confenrece');
 //            $message->to('janicerodolfo@astigp.com', 'Janice Rodolfo');
 //            $message->to('rosalysanchez@astigp.com', 'Rosaly Sanchez');
 //            $message->to('alexanderalmonte@astigp.com', 'Alexander Almonte');

@@ -1,14 +1,14 @@
 
 <html>
-    <header>
+    <head>
         <title>QDN</title>
         <link rel="stylesheet" href="/css/all.css">
         <link rel="stylesheet" href="/css/intro.css">
-    </header>
+    </head>
     <body>
         <div class="header">
-
-            <div class="cover"></div>
+        <img src="/img/infographic.png" style="width: 100vw;height:100vh">
+            {{-- <div class="cover"></div> --}}
 
             <div class="logo">TELFORD</div>
 
@@ -22,19 +22,10 @@
 
             <div class="header__title">
                 <h1>QUALITY DEVIATION NOTICE</h1>
-                <a href="#login" id="login-btn">
-                    LOGIN
-                    <i class="fa fa-angle-down"></i>
-                </a>
-            </div>
-
-        </div>
 
         <form method="POST" action="{{ url('/login') }}">
             {!! csrf_field() !!}
             <div id="login">
-                <div class="login__title">LOGIN</div>
-
                 @if ($errors->any())
                     @foreach($errors->all() as $error)
                         <p class="error">{{ $error }}</p>
@@ -67,16 +58,7 @@
             </div>
         </form>
 
-        <div class="footer">
-            <p class="company">Telford Svc. Phils., Inc.</p>
-            <div class="qdn">
 
-                <h1>QDN</h1>
-                <p class="subtitle">Quality Deviation Notice</p>
-                <p>
-                    To provide a reference procedure in initiating, tracking, and verifying containment or corrective
-                    action for in-process and lot acceptance conditions that do not comply with established requirements.
-                </p>
             </div>
         </div>
         <script src="/js/all.js"></script>
@@ -86,7 +68,7 @@
                 $(window).scroll(function() {
 
                     var wScroll = $(window).scrollTop();
-                    $(".cover").css("transform", "translate(0px, " + wScroll/10 + "px)");
+                    $(".cover").css("transform", "translate(0px, " + wScroll/5 + "px)");
                 });
 
                 $("#login-btn").on('click', function (event) {

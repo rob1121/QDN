@@ -160,19 +160,18 @@ require('laravel-elixir-vueify');
 
 elixir(function(mix) {
     mix.browserify('vue-issue.js')
-        .sass('vue-issue.sass');
-});
-elixir(function(mix) {
-    mix.sass('intro.sass')
-        .sass('vue-for_pe_verification.sass')
-        .sass('vue-report.sass');
+        // .sass('welcome.sass')
+        // .sass('vue-issue.sass')
+        .sass('intro.sass')
+        // .sass('vue-for_pe_verification.sass')
+        // .sass('vue-report.sass');
 });
 
-elixir(function(mix) {
-    mix.browserify('vue-report.js')
-        .browserify('vue-for_pe_verification.js')
-        .browserify('vue-home.js');
-});
+// elixir(function(mix) {
+//     mix.browserify('vue-report.js')
+//         .browserify('vue-for_pe_verification.js')
+//         .browserify('vue-home.js');
+// });
 
 elixir(function(mix) {
     mix

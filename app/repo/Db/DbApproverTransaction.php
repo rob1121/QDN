@@ -5,7 +5,7 @@ use App\repo\Event\EventInterface;
 use App\repo\Event\StatusUpdateEvent;
 use Exception;
 use Illuminate\Http\Request;
-use Activity;
+use Illuminate\Support\Facades\Cache;
 
 class DbApproverTransaction {
     
@@ -30,14 +30,24 @@ class DbApproverTransaction {
     protected function save()
     {
 
-        if ('reject' == $this->request->approver_radio) 
+        if ($this->isRejected())
         {
             $this->qdn->closure()
                 ->update(['status' => 'Incomplete Fill-Up', $this->user->department => '']);
             
             return false;
         }
-        
+
+        return $this->updateClosure();
+    }
+
+    protected function isRejected()
+    {
+        return 'reject' == $this->request->approver_radio;
+    }
+
+    protected function updateClosure()
+    {
         return $this->syncClosure()
             ->updateApproveStatus()
             ->event(new StatusUpdateEvent);
@@ -58,11 +68,7 @@ class DbApproverTransaction {
     protected function updateApproveStatus()
     {
         Cache::forget($this->qdn->slug);
-
-        $status['status'] = $this->status()
-            ? 'Q.a. Verification'
-            : 'Incomplete Approval';
-
+        $status['status'] = $this->status() ? 'Q.a. Verification' : 'Incomplete Approval';
         $this->qdn->closure()->update($status);
         
         return $this;
@@ -76,13 +82,17 @@ class DbApproverTransaction {
     private function status()
     {
         $closure = Info::withClosure($this->qdn->slug)->closure;
-        $booleanClosure = $closure->other_department && $closure->production && $closure->quality_assurance && $closure->process_engineering;
-
-        if ($booleanClosure && $this->qdn->status == 'Q.a. Verification') 
-        {
+        if ($this->isApproverComplete($closure) && $this->qdn->status == 'Q.a. Verification')
             throw new Exception("QDN signatories is not yet complete and the status is already Q.a. Verification" . __LINE__ . " of " . __FILE__);
-        }
 
-        return $booleanClosure;
+        return $this->isApproverComplete($closure);
+    }
+
+    protected function isApproverComplete($closure)
+    {
+        return $closure->other_department
+            && $closure->production
+            && $closure->quality_assurance
+            && $closure->process_engineering;
     }
 }

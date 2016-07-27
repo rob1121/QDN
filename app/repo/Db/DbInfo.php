@@ -14,7 +14,6 @@ use App\repo\Event\StoreEvent;
 use App\repo\Traits\DateTime;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use Laracasts\Flash\Flash;
 
 class DbInfo implements DbInterface {
     use ValidatesRequests;
@@ -51,36 +50,36 @@ class DbInfo implements DbInterface {
 
     protected function save()
     {
-        if( ! $this->isExist)
-        {
-            $this->qdn  = Info::create($this->request->all());
-            $this->qdn->disposition = 'use as is';
-            $this->qdn->control_id = $this->control_id;
-            $this->qdn->customer = $this->getCustomer();
-
-            $this->qdn->save();
-        }
-
+        if( ! $this->isExist) $this->saveIssuedQdn();
         return $this;
+    }
+
+    protected function saveIssuedQdn()
+    {
+        $this->qdn = Info::create($this->request->all());
+        $this->qdn->disposition = 'use as is';
+        $this->qdn->control_id = $this->control_id;
+        $this->qdn->customer = $this->getCustomer();
+
+        $this->qdn->save();
+    }
+
+    protected function getCustomer()
+    {
+        $customer = "not yet specified" == $this->request->customer
+            ? $this->request->customerField
+            : $this->request->customer;
+        return $customer;
     }
 
     protected function syncRelationship()
     {
-        if( ! $this->isExist)
-        {
-            $this->syncInvolvePerson()
-                ->syncActions();
-        }
-
+        if( ! $this->isExist) $this->syncInvolvePerson()->syncActions();
         return $this;
     }
 
     protected function event()
     {
-//        $this->isExist
-//            ? Flash::warning('Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!')
-//            : $this->fire(new StoreEvent);
-
         return $this->isExist
             ? "Oh Snap!! This QDN is already registered. In doubt? ask QA to assist you!"
             : $this->fire(new StoreEvent);
@@ -88,21 +87,33 @@ class DbInfo implements DbInterface {
 
     protected function syncInvolvePerson()
     {
-        collect($this->request->receiver_name)->map(function($name) {
-            InvolvePerson::store($this->qdn->id, Employee::byName($name));
-        });
+        collect($this->request->receiver_name)
+            ->map(function($name) { $this->saveToInvolvePerson($name, $this); });
 
         return $this;
     }
 
+    protected function saveToInvolvePerson($name, $this)
+    {
+        InvolvePerson::store($this->qdn->id, Employee::byName($name));
+    }
+
     protected function syncActions()
     {
-        collect([new CauseOfDefect, new CorrectiveAction, new ContainmentAction, new PreventiveAction, new QdnCycle, new Closure])
-            ->map(function($model) { $model->create(['info_id' => $this->qdn->id]); });
-
-        Closure::whereInfoId($this->qdn->id)->update(['status' => 'p.e. verification']);
-
+        $this->setActions();
+        $this->setQdnStatus();
         return $this;
+    }
+
+    protected function setActions()
+    {
+        collect([new CauseOfDefect, new CorrectiveAction, new ContainmentAction, new PreventiveAction, new QdnCycle, new Closure])
+            ->map(function ($model) { $model->create(['info_id' => $this->qdn->id]); });
+    }
+
+    protected function setQdnStatus()
+    {
+        Closure::whereInfoId($this->qdn->id)->update(['status' => 'p.e. verification']);
     }
 
     protected function fire(EventInterface $event)
@@ -118,13 +129,5 @@ class DbInfo implements DbInterface {
         $control_id = $this->yearNow() == $lastInYear ? $lastInId + 1 : 1;
         $this->control_id = $this->date()->format('y') . "-" . sprintf("%'.04d", $control_id);
         return $this;
-    }
-
-    protected function getCustomer()
-    {
-        $customer = "not yet specified" == $this->request->customer
-            ? $this->request->customerField
-            : $this->request->customer;
-        return $customer;
     }
 }

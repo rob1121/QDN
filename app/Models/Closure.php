@@ -30,6 +30,11 @@ class Closure extends Model {
         return Closure::with('info')->whereStatus($status)->get();
     }
 
+	public static function CycleTimeForMonth($month)
+	{
+		return Closure::select(DB::raw("MONTH(created_at) as month"), 'created_at', 'date_sign')->where(DB::raw('MONTH(created_at)'), $month)->whereStatus('closed')->get();
+	}
+
 	// DEFINE RELATIONSHIPS --------------------------------------------------
 	public function info() {
 		return $this->belongsTo('App\Models\Info');

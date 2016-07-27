@@ -94,7 +94,18 @@ class Info extends Model implements SluggableInterface {
         return $info;
     }
 
-    // DEFINE RELATIONSHIPS --------------------------------------------------
+	public static function getCountPerStation()
+	{
+		return Info::select(DB::raw("COUNT(station) as count"), 'station')
+			->groupBy('station')->get();
+	}
+
+	public static function getTopContributorByStation()
+	{
+		return Info::getCountPerStation()->sortByDesc('count')->first()->station;
+	}
+
+	// DEFINE RELATIONSHIPS --------------------------------------------------
     public function causeOfDefect()
 	{
         return $this->hasOne('App\Models\CauseOfDefect');

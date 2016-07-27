@@ -35,7 +35,6 @@ class EmailQdnNotificationEventListener implements ShouldQueue {
             $message->replyTo('robinsonlegaspi@astigp.com', 'QDN System mailer');
             $message->sender('robinsonlegaspi@astigp.com', 'QDN System mailer');
             $message->to('robinsonlegaspi@astigp.com', 'Robinson Legaspi');
-           $message->to('telford_conf_ph@astigp.com', 'Telford Confenrece');
 //            $message->to('janicerodolfo@astigp.com', 'Janice Rodolfo');
 //            $message->to('rosalysanchez@astigp.com', 'Rosaly Sanchez');
 //            $message->to('alexanderalmonte@astigp.com', 'Alexander Almonte');

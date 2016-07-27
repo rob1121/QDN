@@ -7,7 +7,7 @@
     </head>
     <body>
         <div class="header">
-        <img src="/img/infographic.png" style="width: 100vw;height:100vh">
+        {{-- <img src="/img/infographic.png" style="width: 100vw;height:100vh"> --}}
             {{-- <div class="cover"></div> --}}
 
             <div class="logo">TELFORD</div>

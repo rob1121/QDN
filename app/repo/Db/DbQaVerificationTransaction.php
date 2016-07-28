@@ -30,13 +30,7 @@ class DbQaVerificationTransaction {
     protected function save()
     {
         Closure::where('info_id', $this->qdn->id)
-            ->update([
-                'containment_action_taken' => $this->request->containment_action_taken,
-                'corrective_action_taken' => $this->request->corrective_action_taken,
-                'close_by' => user()->employee->name,
-                'date_sign' => $this->date(),
-                'status' => 'closed',
-            ]);
+            ->update($this->setOfClosureCollection());
 
         return $this;
     }
@@ -44,5 +38,19 @@ class DbQaVerificationTransaction {
     private function event(EventInterface $event)
     {
         $event->fire(['info' => $this->qdn, 'request' => $this->request]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function setOfClosureCollection()
+    {
+        return [
+            'containment_action_taken' => $this->request->containment_action_taken,
+            'corrective_action_taken' => $this->request->corrective_action_taken,
+            'close_by' => user()->employee->name,
+            'date_sign' => $this->date(),
+            'status' => 'closed',
+        ];
     }
 }

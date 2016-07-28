@@ -116,19 +116,20 @@ class EmployeeRepo {
      */
     public function storeEmployee($request)
     {
+        $employee = $this->updateDepartmentAndStatus($request);
+        $this->saveAndUpdateUser($request, $employee);
+
+        return $employee;
+    }
+    
+    protected function updateDepartmentAndStatus($request)
+    {
         $employee = Employee::create($request->all());
         $employee->update([
-            'status'     => 'active',
-            'department' => Station::where('station', $request->station)->first()->department,
+            'status' => 'active',
+            'department' => Station::whereStation($request->station)->first()->department,
         ]);
-
-        $employee->user()->save(new user($request->all() ));
-        $employee->user()->update(['avatar' => 'default.png']);
-        $employee->question()->create([
-            'user_id' => $employee->id,
-            'question' => 'what are you',
-            'answer' => 'user']);
-
+        
         return $employee;
     }
 
@@ -146,13 +147,25 @@ class EmployeeRepo {
 
         return $employee->load('user');
     }
-
-    /**
-     * @param $id
-     */
+    
     public function delete($id)
     {
         Employee::whereId($id)->delete();
+    }
+    
+    protected function saveAndUpdateUser($request, $employee)
+    {
+        $employee->user()->save(new user($request->all()));
+        $employee->user()->update(['avatar' => 'default.png']);
+        $this->saveQuestion($employee);
+    }
+    
+    protected function saveQuestion($employee)
+    {
+        $employee->question()->create([
+            'user_id' => $employee->id,
+            'question' => 'what are you',
+            'answer' => 'user']);
     }
 
 }

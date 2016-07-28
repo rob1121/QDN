@@ -25,6 +25,11 @@
             animation-duration: .7s;
         }
 
+        #wrap {
+            margin-top: 10%;
+            height: 100vh;
+        }
+
         @keyframes slideUpAndFadeIn {
             from {
                 opacity:0;
@@ -44,7 +49,10 @@
     </style>
 </head>
 <body>
-@include('partial.nav')
+{{--@include('partial.nav')--}}
+<header id="nav">
+    <navigationbar></navigationbar>
+</header>
 <div id="wrap" hidden>
     {{-- HEADER SECTION --}}
     {{-- WE CAN PASS SECOND PARAMETER AS AN VARIABLE FOR NAV IN ARRAY FORMAT "['uri' => $uri]" --}}
@@ -58,6 +66,7 @@
 <script src="/js/all.js"></script>
 <script src="/vendor/js/wow.js"></script>
 <script src="/js/app.js"></script>
+<script src="/js/vue-navigationbar.js"></script>
 @yield('script')
 @stack('scripts')
 <script>

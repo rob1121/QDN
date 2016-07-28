@@ -159,7 +159,9 @@ require('laravel-elixir-vueify');
 //         });
 
 elixir(function(mix) {
-    mix.browserify('vue-issue.js')
+    mix
+        .browserify('vue-navigationbar.js')
+        .browserify('vue-issue.js')
         // .sass('welcome.sass')
         // .sass('vue-issue.sass')
         .sass('intro.sass')

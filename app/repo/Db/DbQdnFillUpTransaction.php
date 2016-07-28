@@ -11,7 +11,6 @@ use App\repo\File\ObjectiveEvidenceInterface;
 use App\repo\File\pa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Activity;
 
 class DbQdnFillUpTransaction {
 

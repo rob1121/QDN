@@ -62,8 +62,6 @@ class StationRepo {
      */
     public function update($request) {
         $station = $this->get($request->station);
-        if (!$station) {
-           return $this->store($request);
-        }
+        if (!$station) return $this->store($request);
     }
 }

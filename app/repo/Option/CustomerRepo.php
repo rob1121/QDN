@@ -62,9 +62,9 @@ class CustomerRepo {
      */
     public function update($name) {
         $machine = $this->get($name);
-        if (!$machine) {
+        if (!$machine)
             $this->store($name);
-        }
+            
         return $machine ? 'exist' : 'unique';
     }
 }

@@ -62,9 +62,8 @@ class MachineRepo {
      */
     public function update($name) {
 		$machine = $this->get($name);
-		if (!$machine) {
-			$this->store($name);
-		}
+		if (!$machine) $this->store($name);
+		
 		return $machine ? 'exist' : 'unique';
 	}
 }

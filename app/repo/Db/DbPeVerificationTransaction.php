@@ -80,12 +80,23 @@ class DbPeVerificationTransaction {
     {
         $emp = Employee::whereName($name)->first();
 
-        return new InvolvePerson([
+        return new InvolvePerson($this->InvolvePersonCollection($name, $emp));
+    }
+    
+    protected function InvolvePersonCollection($name, $emp)
+    {
+        return [
             'station' => $emp->station,
             'originator_id' => $this->involvePerson->originator_id,
             'originator_name' => $this->involvePerson->originator_name,
             'receiver_id' => $emp->user_id,
-            'receiver_name' => $name]);
+            'receiver_name' => $name];
+    }
+
+    public function collection()
+    {
+        $array = collect($this->request->all())->put('department',$this->getInvolvePersonStation());
+        return $array->put('slug', $this->qdn);
     }
 
     public function getInvolvePersonStation()
@@ -93,12 +104,6 @@ class DbPeVerificationTransaction {
         return collect($this->request->receiver_name)->unique()->map(function($name){
             return Employee::whereName($name)->first()->station;
         });
-    }
-
-    public function collection()
-    {
-        $array = collect($this->request->all())->put('department',$this->getInvolvePersonStation());
-        return $array->put('slug', $this->qdn);
     }
 
     private function listen(EventInterface $event, $variables)

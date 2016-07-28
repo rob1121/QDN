@@ -51,7 +51,12 @@
 <body>
 {{--@include('partial.nav')--}}
 <header id="nav">
-    <navigationbar></navigationbar>
+    <navigationbar
+        :user="{{ collect(Auth::User()->load('Employee'))->toJson() }}"
+        home="{{ route('home') }}"
+        issue_qdn="{{ route('issue_qdn') }}"
+        current-url="{{ Request::url() }}"
+    ></navigationbar>
 </header>
 <div id="wrap" hidden>
     {{-- HEADER SECTION --}}

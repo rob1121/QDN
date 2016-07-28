@@ -416,14 +416,13 @@ function restoreState (vm, state, isRoot) {
 }
 
 function format (id) {
-  var match = id.match(/[^\/]+\.vue$/)
-  return match ? match[0] : id
+  return id.match(/[^\/]+\.vue$/)[0]
 }
 
 },{}],3:[function(require,module,exports){
 (function (process,global){
 /*!
- * Vue.js v1.0.26
+ * Vue.js v1.0.25
  * (c) 2016 Evan You
  * Released under the MIT License.
  */
@@ -3833,7 +3832,7 @@ function traverse(val, seen) {
   }
   var isA = isArray(val);
   var isO = isObject(val);
-  if ((isA || isO) && Object.isExtensible(val)) {
+  if (isA || isO) {
     if (val.__ob__) {
       var depId = val.__ob__.dep.id;
       if (seen.has(depId)) {
@@ -5319,13 +5318,13 @@ var select = {
     this.vm.$on('hook:attached', function () {
       nextTick(_this.forceUpdate);
     });
-    if (!inDoc(el)) {
-      nextTick(this.forceUpdate);
-    }
   },
 
   update: function update(value) {
     var el = this.el;
+    if (!inDoc(el)) {
+      return nextTick(this.forceUpdate);
+    }
     el.selectedIndex = -1;
     var multi = this.multiple && isArray(value);
     var options = el.options;
@@ -10273,13 +10272,7 @@ var filters = {
 
   pluralize: function pluralize(value) {
     var args = toArray(arguments, 1);
-    var length = args.length;
-    if (length > 1) {
-      var index = value % 10 - 1;
-      return index in args ? args[index] : args[length - 1];
-    } else {
-      return args[0] + (value === 1 ? '' : 's');
-    }
+    return args.length > 1 ? args[value % 10 - 1] || args[args.length - 1] : args[0] + (value === 1 ? '' : 's');
   },
 
   /**
@@ -10481,7 +10474,7 @@ function installGlobalAPI (Vue) {
 
 installGlobalAPI(Vue);
 
-Vue.version = '1.0.26';
+Vue.version = '1.0.25';
 
 // devtools global hook
 /* istanbul ignore next */
@@ -10519,21 +10512,29 @@ exports.insert = function (css) {
 
 },{}],5:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("li {\n  list-style: none;\n}\n.nav__list {\n  position: fixed;\n  top: 0;\n  margin: 0;\n  padding: 0 90px;\n  color: #fff;\n  display: inline-block;\n  background: #600;\n  width: 100%;\n  min-width: 600px;\n  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.5);\n}\n.nav__list>li {\n  float: left;\n  padding: 10px 20px;\n  text-transform: uppercase;\n  color: #ccc;\n  text-align: center;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.nav__list>li:hover {\n  background: #7a0000;\n  color: #fff;\n}\n.nav__list>li:first-child {\n  float: left;\n}\n.nav__list>li:last-child {\n  float: right;\n}\n.nav__list>li:last-child:hover .dropdown {\n  display: block;\n}\n.nav__list a {\n  text-decoration: none;\n  text-align: center;\n  color: #ccc;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.nav__list a:hover {\n  color: #fff;\n}\n.dropdown {\n  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.5);\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n  display: none;\n  padding: 0;\n  padding-top: 5px;\n  position: absolute;\n  top: 40px;\n  margin-left: -20px;\n  background: #fff;\n  color: #000;\n  overflow: hidden;\n}\n.dropdown li {\n  padding-top: 5px;\n  padding-bottom: 5px;\n  padding-right: 10px;\n  padding-left: 5px;\n  text-align: left;\n  position: relative;\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n}\n.dropdown li:hover {\n  background-color: #e6e6e6;\n  -webkit-transform: translateX(3px);\n          transform: translateX(3px);\n}\n.dropdown li a {\n  color: #000;\n}\n.dropdown li a:hover {\n  color: #333;\n}\n")
-"use strict";
+var __vueify_style__ = __vueify_insert__.insert("li {\n  list-style: none;\n}\n.nav__list {\n  position: fixed;\n  z-index: 1;\n  top: 0;\n  margin: 0;\n  padding: 0 90px;\n  color: #fff;\n  display: inline-block;\n  background: #600;\n  width: 100%;\n  min-width: 600px;\n  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.5);\n}\n.nav__list>li {\n  float: left;\n  padding: 10px 20px;\n  text-transform: uppercase;\n  color: #ccc;\n  text-align: center;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.nav__list>li:hover {\n  background: #7a0000;\n  color: #fff;\n}\n.nav__list>li:first-child {\n  float: left;\n}\n.nav__list>li:last-child {\n  float: right;\n  position: relative;\n  padding: 5px;\n  cursor: pointer;\n}\n.nav__list>li:last-child .profile__photo {\n  width: 30px;\n  height: 30px;\n  border-radius: 50%;\n  border: 1px solid #fff;\n  margin-right: 10px;\n}\n.nav__list>li:last-child i.fa.fa-caret-up {\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n}\n.nav__list>li:last-child:hover .dropdown {\n  display: block;\n}\n.nav__list>li:last-child:hover i.fa.fa-caret-up {\n  -webkit-transform: rotate(-180deg);\n          transform: rotate(-180deg);\n}\n.nav__list a {\n  text-decoration: none;\n  text-align: center;\n  color: #ccc;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.nav__list a:hover {\n  color: #fff;\n}\n.dropdown {\n  width: auto;\n  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.5);\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n  display: none;\n  padding: 0;\n  padding-top: 5px;\n  position: absolute;\n  top: 40px;\n  left: 0;\n  right: 0;\n  background: #fff;\n  color: #000;\n  overflow: hidden;\n}\n.dropdown li {\n  padding-top: 5px;\n  padding-bottom: 5px;\n  padding-right: 10px;\n  padding-left: 5px;\n  text-align: left;\n  position: relative;\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n}\n.dropdown li a {\n  color: #000;\n}\n.dropdown li .dropdown__icon {\n  opacity: 0;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.dropdown li:hover {\n  background-color: #ffd6d6;\n}\n.dropdown li:hover a {\n  margin-left: 5px;\n  color: #333;\n}\n.dropdown li:hover .dropdown__icon {\n  opacity: 1;\n}\n.active-link {\n  background: #7a0000;\n  color: #fff;\n}\n")
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
-exports.default = {};
+exports.default = {
+    props: ['user', 'home', 'issue_qdn', 'currentUrl'],
+
+    methods: {
+        isActive: function isActive(url) {
+            if (this.currentUrl == url) return "active-link";
+        }
+    }
+};
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=\"nav__list\"><li><a href=\"#\">QDN</a></li><li><a href=\"#\">Home</a></li><li><a href=\"#\">Issue Qdn</a></li><li><div class=\"dropdown__toggler\">Name</div><ul class=\"dropdown\"><li><a href=\"#\"> Dashboard</a></li><li><a href=\"#\"> Profile</a></li><li><a href=\"#\"> Logout</a></li></ul></li></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=\"nav__list\"><li v-bind:class=\"isActive('/')\"><a href=\"/\">QDN</a></li><li v-bind:class=\"isActive(home)\"><a v-bind:href=\"home\">home</a></li><li v-bind:class=\"isActive(issue_qdn)\"><a v-bind:href=\"issue_qdn\">Issue qdn</a></li><li><img src=\"/uploads/avatar/{{ user.avatar }}\" alt=\"profile\" class=\"profile__photo\"/>{{ user.employee.name }} &nbsp;<i class=\"fa fa-caret-up\"></i><ul class=\"dropdown\"><li><a href=\"#\">Dashboard &nbsp;<i class=\"fa fa-table dropdown__icon\"></i></a></li><li><a href=\"#\">Profile &nbsp;<i class=\"fa fa-user dropdown__icon\"></i></a></li><li><a href=\"#\">Logout &nbsp;<i class=\"fa fa-sign-out dropdown__icon\"></i></a></li></ul></li></div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["li {\n  list-style: none;\n}\n.nav__list {\n  position: fixed;\n  top: 0;\n  margin: 0;\n  padding: 0 90px;\n  color: #fff;\n  display: inline-block;\n  background: #600;\n  width: 100%;\n  min-width: 600px;\n  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.5);\n}\n.nav__list>li {\n  float: left;\n  padding: 10px 20px;\n  text-transform: uppercase;\n  color: #ccc;\n  text-align: center;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.nav__list>li:hover {\n  background: #7a0000;\n  color: #fff;\n}\n.nav__list>li:first-child {\n  float: left;\n}\n.nav__list>li:last-child {\n  float: right;\n}\n.nav__list>li:last-child:hover .dropdown {\n  display: block;\n}\n.nav__list a {\n  text-decoration: none;\n  text-align: center;\n  color: #ccc;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.nav__list a:hover {\n  color: #fff;\n}\n.dropdown {\n  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.5);\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n  display: none;\n  padding: 0;\n  padding-top: 5px;\n  position: absolute;\n  top: 40px;\n  margin-left: -20px;\n  background: #fff;\n  color: #000;\n  overflow: hidden;\n}\n.dropdown li {\n  padding-top: 5px;\n  padding-bottom: 5px;\n  padding-right: 10px;\n  padding-left: 5px;\n  text-align: left;\n  position: relative;\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n}\n.dropdown li:hover {\n  background-color: #e6e6e6;\n  -webkit-transform: translateX(3px);\n          transform: translateX(3px);\n}\n.dropdown li a {\n  color: #000;\n}\n.dropdown li a:hover {\n  color: #333;\n}\n"] = false
+    __vueify_insert__.cache["li {\n  list-style: none;\n}\n.nav__list {\n  position: fixed;\n  z-index: 1;\n  top: 0;\n  margin: 0;\n  padding: 0 90px;\n  color: #fff;\n  display: inline-block;\n  background: #600;\n  width: 100%;\n  min-width: 600px;\n  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.5);\n}\n.nav__list>li {\n  float: left;\n  padding: 10px 20px;\n  text-transform: uppercase;\n  color: #ccc;\n  text-align: center;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.nav__list>li:hover {\n  background: #7a0000;\n  color: #fff;\n}\n.nav__list>li:first-child {\n  float: left;\n}\n.nav__list>li:last-child {\n  float: right;\n  position: relative;\n  padding: 5px;\n  cursor: pointer;\n}\n.nav__list>li:last-child .profile__photo {\n  width: 30px;\n  height: 30px;\n  border-radius: 50%;\n  border: 1px solid #fff;\n  margin-right: 10px;\n}\n.nav__list>li:last-child i.fa.fa-caret-up {\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n}\n.nav__list>li:last-child:hover .dropdown {\n  display: block;\n}\n.nav__list>li:last-child:hover i.fa.fa-caret-up {\n  -webkit-transform: rotate(-180deg);\n          transform: rotate(-180deg);\n}\n.nav__list a {\n  text-decoration: none;\n  text-align: center;\n  color: #ccc;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.nav__list a:hover {\n  color: #fff;\n}\n.dropdown {\n  width: auto;\n  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.5);\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n  display: none;\n  padding: 0;\n  padding-top: 5px;\n  position: absolute;\n  top: 40px;\n  left: 0;\n  right: 0;\n  background: #fff;\n  color: #000;\n  overflow: hidden;\n}\n.dropdown li {\n  padding-top: 5px;\n  padding-bottom: 5px;\n  padding-right: 10px;\n  padding-left: 5px;\n  text-align: left;\n  position: relative;\n  -webkit-transition: 0.1s ease-in-out;\n  transition: 0.1s ease-in-out;\n}\n.dropdown li a {\n  color: #000;\n}\n.dropdown li .dropdown__icon {\n  opacity: 0;\n  -webkit-transition: 0.3s ease-in-out;\n  transition: 0.3s ease-in-out;\n}\n.dropdown li:hover {\n  background-color: #ffd6d6;\n}\n.dropdown li:hover a {\n  margin-left: 5px;\n  color: #333;\n}\n.dropdown li:hover .dropdown__icon {\n  opacity: 1;\n}\n.active-link {\n  background: #7a0000;\n  color: #fff;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -10557,6 +10558,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 new _vue2.default({
     el: "#nav",
+
+    data: {
+        user: user
+    },
+
     components: { navigationbar: _navigationbar2.default }
 });
 

@@ -18,9 +18,17 @@ class GlobalComposer {
 
 		$currentUser = Auth::user();
 		$view->with('currentUser', $currentUser);
-		JavaScript::put(['user' => $currentUser->load('Employee')]);
 		if ($currentUser) {
+			$server = "";
+			// $server = "/qdn/public";
+			JavaScript::put([
+				'user' => $currentUser->load('Employee'),
+				'env_server' => $server
+				]);
 			$view->with('show', 'process' == $currentUser->Employee->department || 'Admin' == $currentUser->access_level);
+
+			$view->with('server', $server);
+
 		}
 	}
 

@@ -1,82 +1,17 @@
 @extends('layouts.app')
 
 @push('style')
-<link rel="stylesheet" href="/css/vue-issue.css">
+<link rel="stylesheet" href="{{ $server }}/css/vue-issue.css">
 @endpush
 
 @section('content')
     <form action="{{ route('issue_qdn') }}" method="POST">
         {!! csrf_field() !!}
-        <div class="form wow-reveal">
+        <div class="form">
             <h1>QDN ISSUANCE</h1>
 
             <qdn-alert :list="error"></qdn-alert>
 
-            <div class="form__employee">
-                <label>Issued To:
-                    <multiselect
-                            :selected.sync="input.receiver_name"
-                            :options="category.employees"
-                            :multiple="true"
-                            :searchable="true"
-                            placeholder="Type to search"
-                            :allow-empty="false"
-                            :limit="2"
-                            class="multiselect__employee_list"
-                    />
-                </label>
-            </div>
-
-            <div class="form__field">
-                <div class="form__customer">
-                    <label>Customer:
-                        <multiselect
-                                :selected.sync="input.customer"
-                                :options="category.customers"
-                                placeholder="Select customer"
-                                :allow-empty="false"
-                                class="multiselect__customer"
-                        />
-
-                    </label>
-
-                    <qdn-input name="other_customer"
-                               label="Other customer"
-                               :input.sync="input.other_customer"
-                               :show="input.customer == 'OTHER'"
-                    >
-                    </qdn-input>
-
-                </div>
-            </div>
-
-           <div class="select-group">
-               <div class="form__station">
-                   <label>Station:
-                       <multiselect
-                               :selected.sync="input.station"
-                               :options="category.stations"
-                               placeholder="Select station"
-                               :allow-empty="false"
-                               class="multiselect__station"
-                       />
-
-                   </label>
-               </div>
-
-               <div class="form__machine">
-                   <label>Machine:
-                       <multiselect
-                               :selected.sync="input.machine"
-                               :options="category.machines"
-                               placeholder="Select machine"
-                               :allow-empty="false"
-                               class="multiselect__machine"
-                       />
-
-                   </label>
-               </div>
-           </div>
 
             <div class="form__lot--checkbox">
                 <label>
@@ -113,7 +48,55 @@
 
             </div>
 
-            <div class="btn-group" data-toggle="buttons">
+           <div class="select-group">
+
+               <div class="form__station">
+                   <label>Station:
+                       <multiselect
+                           :selected.sync="input.station"
+                           :options="category.stations"
+                           placeholder="Select station"
+                           :allow-empty="false"
+                           class="multiselect__station"
+                       />
+
+                   </label>
+               </div>
+
+               <div class="form__machine">
+                   <label>Machine:
+                       <multiselect
+                               :selected.sync="input.machine"
+                               :options="category.machines"
+                               placeholder="Select machine"
+                               :allow-empty="false"
+                               class="multiselect__machine"
+                       />
+
+                   </label>
+               </div>
+
+               <div class="form__customer">
+                 <label>Customer:
+                     <multiselect
+                             :selected.sync="input.customer"
+                             :options="category.customers"
+                             placeholder="Select customer"
+                             :allow-empty="false"
+                             class="multiselect__customer"
+                     />
+                 </label>
+
+                  <qdn-input name="other_customer"
+                             label="Other customer"
+                             :input.sync="input.other_customer"
+                             :show="input.customer == 'OTHER'"
+                  >
+                  </qdn-input>
+               </div>
+           </div>
+
+{{--             <div class="btn-group" data-toggle="buttons">
                 <label>
                     <input type="radio"
                            value="true"
@@ -129,6 +112,20 @@
                     > Minor
                 </label>
 
+            </div> --}}
+            <div class="form__employee">
+                <label>Issued To:
+                    <multiselect
+                            :selected.sync="input.receiver_name"
+                            :options="category.employees"
+                            :multiple="true"
+                            :searchable="true"
+                            placeholder="Type to search"
+                            :allow-empty="false"
+                            :limit="2"
+                            class="multiselect__employee_list"
+                    />
+                </label>
             </div>
 
             <div class="form__category">
@@ -149,6 +146,8 @@
                                 :selected.sync="input.discrepancy_category"
                                 :options="category.discrepanciesOption"
                                 :allow-empty="false"
+                                selectLabel=""
+                                selectedLabel=""
                                 class="multiselect__discrepancy_category"
                         />
                     </label>
@@ -156,12 +155,12 @@
             </div>
 
             <div class="form__problem_description">
-                <label>Problem Description:</label>
-                        <textarea class="form__textarea"
-                                  rows="10"
-                                  placeholder="Required input"
-                                  v-model="input.problem_description"
-                        ></textarea>
+                <label>Problem Description:</label><br/>
+                <textarea class="form__textarea"
+                          rows="3"
+                          placeholder="Required input"
+                          v-model="input.problem_description"
+                ></textarea>
             </div>
 
             <div class="form__submit">
@@ -178,5 +177,5 @@
 @endsection
 
 @push('scripts')
-  <script src="/js/vue-issue.js"></script>
+  <script src="{{ $server }}/js/vue-issue.js"></script>
 @endpush

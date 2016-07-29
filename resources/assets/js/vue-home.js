@@ -13,5 +13,30 @@ new Vue({
 		qdn: qdn
 	},
 
+
 	components:{ qdnCollapse },
+
+	ready() {
+		this.getQdnCount();
+		setInterval(() => this.getQdnCount(), 60 * 1000);
+	},
+
+	methods: {
+		getQdnCount() {
+			this.$http.get(env_server + '/count')
+				.then(reponse => this.updateCountStatus(reponse.data))
+				.bind(this);
+			},
+
+		updateCountStatus(qdn) {
+			$('#text-today').text(qdn.today);
+			$('#text-week').text(qdn.week);
+			$('#text-month').text(qdn.month);
+			$('#text-year').text(qdn.year);
+			$('#text-peVerification').text(qdn.PeVerification);
+			$('#text-incomplete').text(qdn.Incomplete);
+			$('#text-approval').text(qdn.Approval);
+			$('#text-qaVerification').text(qdn.QaVerification);
+		}
+		}
 });

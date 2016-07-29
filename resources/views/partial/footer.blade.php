@@ -1,5 +1,4 @@
-<br><br><br>
-<div id="footer" class="col-xs-12" hidden>
+<div id="footer" class="col-xs-12">
 	<div class="row">
 		<div class="container">
 			<div class="col-md-12">
@@ -49,5 +48,3 @@
 		<div class="col-md-12 text-center">© Copyright {{ date('Y') }} Telford Svc. Phils., Inc.</div>
 	</div>
 </div>
-{{-- ACTION BUTTON TO BACK TO TOP WITH BOOTSTRAP TOOLTIP --}}
-<div id="toTop" class="btn" data-toggle="tooltip" data-placement="left" title="Back to top"><span class="fa fa-chevron-up"></span></div>

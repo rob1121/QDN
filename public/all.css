@@ -213,6 +213,15 @@ footer {
   padding-top: 32px;
   padding-bottom: 32px; }
 
+#toTop {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+  display: none;
+  background-color: rgba(34, 34, 34, 0.5);
+  color: #f5f5f5; }
+
 .footer-logo {
   padding-left: 15px;
   padding-right: 15px;
@@ -232,10 +241,7 @@ html, body {
 
 #wrap {
   margin-top: 10%;
-  margin-bottom: 30px;
-  width: 98vw;
-  min-height: 100vh;
-  display: inline-block; }
+  height: 100vh; }
 
 /*# sourceMappingURL=app.css.map */
 

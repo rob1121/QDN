@@ -1,6 +1,5 @@
 <template>
-    <div v-show="show">
-        <label>
+        <label  v-show="show">
             {{ label }}: <br/>
             <input type="text"
                    :name="name"
@@ -10,7 +9,6 @@
                    v-model="input"
             >
         </label>
-    </div>
 </template>
 <style lang="scss">
     $white: #ffffff;
@@ -18,10 +16,10 @@
     $semi-white: lighten($border-color, 45%);
 
     .form__input {
-        min-height: 44px;
+        min-width: 254px;
+        height: 40px;
         padding: 8px;
-        margin-right: 10px;
-        border-radius: 7px;
+        margin-right: 8px;
         border: 1px solid $border-color;
         background-color: $white;
         transition: .3s;
@@ -33,13 +31,7 @@
     }
 </style>
 <script>
-    export default{
-        data(){
-            return {
-                msg: 'hello vue'
-            }
-        },
-
+    export default {
         props: {
             'name': {default: ''},
             'placeholder': {default: 'Require input'},

@@ -416,7 +416,8 @@ function restoreState (vm, state, isRoot) {
 }
 
 function format (id) {
-  return id.match(/[^\/]+\.vue$/)[0]
+  var match = id.match(/[^\/]+\.vue$/)
+  return match ? match[0] : id
 }
 
 },{}],3:[function(require,module,exports){
@@ -2611,7 +2612,7 @@ module.exports = plugin;
 },{}],5:[function(require,module,exports){
 (function (process,global){
 /*!
- * Vue.js v1.0.25
+ * Vue.js v1.0.26
  * (c) 2016 Evan You
  * Released under the MIT License.
  */
@@ -6021,7 +6022,7 @@ function traverse(val, seen) {
   }
   var isA = isArray(val);
   var isO = isObject(val);
-  if (isA || isO) {
+  if ((isA || isO) && Object.isExtensible(val)) {
     if (val.__ob__) {
       var depId = val.__ob__.dep.id;
       if (seen.has(depId)) {
@@ -7507,13 +7508,13 @@ var select = {
     this.vm.$on('hook:attached', function () {
       nextTick(_this.forceUpdate);
     });
+    if (!inDoc(el)) {
+      nextTick(this.forceUpdate);
+    }
   },
 
   update: function update(value) {
     var el = this.el;
-    if (!inDoc(el)) {
-      return nextTick(this.forceUpdate);
-    }
     el.selectedIndex = -1;
     var multi = this.multiple && isArray(value);
     var options = el.options;
@@ -12461,7 +12462,13 @@ var filters = {
 
   pluralize: function pluralize(value) {
     var args = toArray(arguments, 1);
-    return args.length > 1 ? args[value % 10 - 1] || args[args.length - 1] : args[0] + (value === 1 ? '' : 's');
+    var length = args.length;
+    if (length > 1) {
+      var index = value % 10 - 1;
+      return index in args ? args[index] : args[length - 1];
+    } else {
+      return args[0] + (value === 1 ? '' : 's');
+    }
   },
 
   /**
@@ -12663,7 +12670,7 @@ function installGlobalAPI (Vue) {
 
 installGlobalAPI(Vue);
 
-Vue.version = '1.0.25';
+Vue.version = '1.0.26';
 
 // devtools global hook
 /* istanbul ignore next */
@@ -12701,20 +12708,13 @@ exports.insert = function (css) {
 
 },{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #2D324F;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 0px 1px #2D324F; }\n")
+var __vueify_style__ = __vueify_insert__.insert("/* line 6, stdin */\n.form__input {\n  min-width: 254px;\n  height: 40px;\n  padding: 8px;\n  margin-right: 8px;\n  border: 1px solid #2D324F;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 0px 1px #2D324F; }\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
-    data: function data() {
-        return {
-            msg: 'hello vue'
-        };
-    },
-
-
     props: {
         'name': { default: '' },
         'placeholder': { default: 'Require input' },
@@ -12724,13 +12724,13 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"show\">\n    <label>\n        {{ label }}: <br>\n        <input type=\"text\" :name=\"name\" :id=\"name\" class=\"form__input\" :placeholder=\"placeholder\" v-model=\"input\">\n    </label>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<label v-show=\"show\">\n    {{ label }}: <br>\n    <input type=\"text\" :name=\"name\" :id=\"name\" class=\"form__input\" :placeholder=\"placeholder\" v-model=\"input\">\n</label>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["/* line 6, stdin */\n.form__input {\n  min-height: 44px;\n  padding: 8px;\n  margin-right: 10px;\n  border-radius: 7px;\n  border: 1px solid #2D324F;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 0px 1px #2D324F; }\n"] = false
+    __vueify_insert__.cache["/* line 6, stdin */\n.form__input {\n  min-width: 254px;\n  height: 40px;\n  padding: 8px;\n  margin-right: 8px;\n  border: 1px solid #2D324F;\n  background-color: #ffffff;\n  -webkit-transition: .3s;\n  transition: .3s; }\n  /* line 15, stdin */\n  .form__input:focus {\n    outline: none;\n    box-shadow: 0px 0px 0px 1px #2D324F; }\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

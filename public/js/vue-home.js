@@ -4612,7 +4612,8 @@ function restoreState (vm, state, isRoot) {
 }
 
 function format (id) {
-  return id.match(/[^\/]+\.vue$/)[0]
+  var match = id.match(/[^\/]+\.vue$/)
+  return match ? match[0] : id
 }
 
 },{}],4:[function(require,module,exports){
@@ -5990,7 +5991,7 @@ var n=i(49);"string"==typeof n&&(n=[[t.id,n,""]]);i(2)(n,{});n.locals&&(t.export
 },{}],6:[function(require,module,exports){
 (function (process,global){
 /*!
- * Vue.js v1.0.25
+ * Vue.js v1.0.26
  * (c) 2016 Evan You
  * Released under the MIT License.
  */
@@ -9400,7 +9401,7 @@ function traverse(val, seen) {
   }
   var isA = isArray(val);
   var isO = isObject(val);
-  if (isA || isO) {
+  if ((isA || isO) && Object.isExtensible(val)) {
     if (val.__ob__) {
       var depId = val.__ob__.dep.id;
       if (seen.has(depId)) {
@@ -10886,13 +10887,13 @@ var select = {
     this.vm.$on('hook:attached', function () {
       nextTick(_this.forceUpdate);
     });
+    if (!inDoc(el)) {
+      nextTick(this.forceUpdate);
+    }
   },
 
   update: function update(value) {
     var el = this.el;
-    if (!inDoc(el)) {
-      return nextTick(this.forceUpdate);
-    }
     el.selectedIndex = -1;
     var multi = this.multiple && isArray(value);
     var options = el.options;
@@ -15840,7 +15841,13 @@ var filters = {
 
   pluralize: function pluralize(value) {
     var args = toArray(arguments, 1);
-    return args.length > 1 ? args[value % 10 - 1] || args[args.length - 1] : args[0] + (value === 1 ? '' : 's');
+    var length = args.length;
+    if (length > 1) {
+      var index = value % 10 - 1;
+      return index in args ? args[index] : args[length - 1];
+    } else {
+      return args[0] + (value === 1 ? '' : 's');
+    }
   },
 
   /**
@@ -16042,7 +16049,7 @@ function installGlobalAPI (Vue) {
 
 installGlobalAPI(Vue);
 
-Vue.version = '1.0.25';
+Vue.version = '1.0.26';
 
 // devtools global hook
 /* istanbul ignore next */
@@ -16141,7 +16148,7 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=\"box h2 wow-reveal\"><div v-for=\"qdn in list\" class=\"panel panel-primary\"><div class=\"panel-heading\"><h3 class=\"panel-title\">{{ qdn.status }}</h3></div><div v-bind:id=\"qdn.id\" class=\"panel-body\">{{ qdn.count }}</div><a href=\"#\" @click.prevent=\"filterQdnByStatus(qdn.status)\" class=\"h5\"><div href=\"#{{ qdn.link }}\" class=\"panel-footer\"><span>View Details<i class=\"fa fa-arrow-circle-right\"></i></span><div class=\"clearfix\"></div></div></a></div></div><div v-show=\"isShow\" class=\"well\"><div class=\"loader\"><pulse-loader v-bind:loading=\"isLoading\" color=\"#800000\" size=\"25px\"></pulse-loader></div><legend>{{ status | capitalize }}<table id=\"table-content\" v-show=\"! isLoading\" class=\"table table-hover\"><thead><tr><th>QDN No.</th><th class=\"col-md-5\">Desciption</th><th>Station</th><th>Customer</th><th>Receiver</th><th>Timestamp</th></tr></thead><tbody><tr v-for=\"qdn in baseTable\" v-if=\"baseTable.length &gt; 0\"><td>{{{ qdn.action_link }}}</td><td>{{ qdn.info.problem_description }}</td><td>{{ qdn.info.station }}</td><td>{{ qdn.info.customer }}</td><td><li v-for=\"person in qdn.receiver_name\">{{ person.receiver_name }}</li></td><td>{{ qdn.info.created_at | diffFromNow }}</td></tr><tr v-if=\"baseTable.length == 0\"><td colspan=\"6\" class=\"row-empty\">No data to display</td></tr></tbody></table></legend></div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "<div class=\"box h2\"><div v-for=\"qdn in list\" class=\"panel panel-primary\"><div class=\"panel-heading\"><h3 class=\"panel-title\">{{ qdn.status }}</h3></div><div :id=\"qdn.id\" class=\"panel-body\">{{ qdn.count }}</div><a href=\"#\" @click.prevent=\"filterQdnByStatus(qdn.status)\" class=\"h5\"><div href=\"#{{ qdn.link }}\" class=\"panel-footer\"><span>View Details<i class=\"fa fa-arrow-circle-right\"></i></span><div class=\"clearfix\"></div></div></a></div></div><div v-show=\"isShow\" class=\"well\"><div class=\"loader\"><pulse-loader :loading=\"isLoading\" color=\"#800000\" size=\"25px\"></pulse-loader></div><legend>{{ status | capitalize }}<table id=\"table-content\" v-show=\"! isLoading\" class=\"table table-hover\"><thead><tr><th>QDN No.</th><th class=\"col-md-5\">Desciption</th><th>Station</th><th>Customer</th><th>Receiver</th><th>Timestamp</th></tr></thead><tbody><tr v-for=\"qdn in baseTable\" v-if=\"baseTable.length &gt; 0\"><td>{{{ qdn.action_link }}}</td><td>{{ qdn.info.problem_description }}</td><td>{{ qdn.info.station }}</td><td>{{ qdn.info.customer }}</td><td><li v-for=\"person in qdn.receiver_name\">{{ person.receiver_name }}</li></td><td>{{ qdn.info.created_at | diffFromNow }}</td></tr><tr v-if=\"baseTable.length == 0\"><td colspan=\"6\" class=\"row-empty\">No data to display</td></tr></tbody></table></legend></div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -16181,7 +16188,37 @@ new _vue2.default({
 		qdn: qdn
 	},
 
-	components: { qdnCollapse: _qdnCollapse2.default }
+	components: { qdnCollapse: _qdnCollapse2.default },
+
+	ready: function ready() {
+		var _this = this;
+
+		this.getQdnCount();
+		setInterval(function () {
+			return _this.getQdnCount();
+		}, 60 * 1000);
+	},
+
+
+	methods: {
+		getQdnCount: function getQdnCount() {
+			var _this2 = this;
+
+			this.$http.get(env_server + '/count').then(function (reponse) {
+				return _this2.updateCountStatus(reponse.data);
+			}).bind(this);
+		},
+		updateCountStatus: function updateCountStatus(qdn) {
+			$('#text-today').text(qdn.today);
+			$('#text-week').text(qdn.week);
+			$('#text-month').text(qdn.month);
+			$('#text-year').text(qdn.year);
+			$('#text-peVerification').text(qdn.PeVerification);
+			$('#text-incomplete').text(qdn.Incomplete);
+			$('#text-approval').text(qdn.Approval);
+			$('#text-qaVerification').text(qdn.QaVerification);
+		}
+	}
 });
 
 },{"./components/qdnCollapse.vue":8,"vue":6,"vue-resource":4}]},{},[9]);

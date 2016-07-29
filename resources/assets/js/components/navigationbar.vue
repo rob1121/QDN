@@ -1,26 +1,31 @@
 <template lang="jade">
 .nav__list
-    li( v-bind:class="isActive('/')" )
-        a( href="/" ) QDN
+    li( :class="isActive('/')" )
+        a( href="/" )
+            .menu__container QDN
 
-    li( v-bind:class="isActive(home)" )
-        a( v-bind:href="home" ) home
+    li( :class="isActive(home)" )
+        a( :href="home" )
+            .menu__container  home
 
-    li( v-bind:class="isActive(issue_qdn)" )
-        a( v-bind:href="issue_qdn" ) Issue qdn
+    li( :class="isActive(issue_qdn)" )
+        a( :href="issue_qdn" )
+            .menu__container  Issue qdn
 
-    li
-        img.profile__photo(src="/uploads/avatar/{{ user.avatar }}" alt="profile")
+    li(v-if="user")
+        img.profile__photo(:src="env_server + '/uploads/avatar/' + user.avatar" alt="profile")
         {{ user.employee.name }} &nbsp;
         i.fa.fa-caret-up
-        ul.dropdown
-            li: a(href="#") Dashboard &nbsp;
-                i.fa.fa-table.dropdown__icon
 
-            li: a(href="#") Profile &nbsp;
+        ul.dropdown
+            li(v-if="user.access_level == 'admin'")
+                a(:href="dashboard") Dashboard &nbsp;
+                    i.fa.fa-table.dropdown__icon
+
+            li: a(:href="profile") Profile &nbsp;
                 i.fa.fa-user.dropdown__icon
 
-            li: a(href="#") Logout &nbsp;
+            li: a(href="{{ env_server + '/logout' }}") Logout &nbsp;
                 i.fa.fa-sign-out.dropdown__icon
 </template>
 
@@ -39,16 +44,18 @@ li
     display: inline-block
     background: #660000
     width: 100%
-    min-width: 600px
+    min-width: 700px
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5)
 
     &>li
         float: left
-        padding: 10px 20px
         text-transform: uppercase
         color: darken(#fff, 20%)
         text-align: center
         transition: .3s ease-in-out
+
+        .menu__container
+            padding: 10px 20px
 
         &:hover
             background: lighten(#660000, 5%)
@@ -132,14 +139,19 @@ li
 
 .active-link
     background: lighten(#660000, 5%)
-    color: #fff
+    a
+        color: #fff
 
 
 </style>
 
 <script>
 export default {
-    props: ['user', 'home','issue_qdn','currentUrl'],
+    data() {
+        return { env_server }
+    },
+
+    props: ['user', 'home','issue_qdn','currentUrl','dashboard', 'profile'],
 
     methods: {
         isActive(url) {

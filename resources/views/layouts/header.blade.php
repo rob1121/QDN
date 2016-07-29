@@ -1,7 +1,7 @@
         <meta charset="utf-8">
         <meta name="_token" content="{!! csrf_token() !!}"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <meta id="_token" value="{{ csrf_token() }}">
         <title>QDN</title>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

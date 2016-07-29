@@ -1,9 +1,9 @@
 <template lang="jade">
-.box.h2.wow-reveal
+.box.h2
 	.panel.panel-primary(v-for="qdn in list")
 		.panel-heading
 			h3.panel-title {{ qdn.status }}
-		.panel-body(v-bind:id="qdn.id") {{ qdn.count }}
+		.panel-body(:id="qdn.id") {{ qdn.count }}
 		a.h5(href="#" @click.prevent="filterQdnByStatus(qdn.status)")
 			.panel-footer(href="#{{ qdn.link }}")
 				span View Details
@@ -12,7 +12,7 @@
 
 .well(v-show="isShow")
 	.loader
-		pulse-loader(v-bind:loading="isLoading" color="#800000" size="25px")
+		pulse-loader(:loading="isLoading" color="#800000" size="25px")
 
 	legend {{ status | capitalize }}
 		table.table.table-hover#table-content(v-show="! isLoading")

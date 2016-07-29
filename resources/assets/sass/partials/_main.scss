@@ -7,7 +7,14 @@ body {
    height:100%;
 }
 
-.pace .pace-progress {
-    background: #800000;
+html, body {
+    background-image: url('../img/background-imager/Elegant_Background-7.jpg');
 }
 
+#wrap {
+    margin-top: 10%;
+    margin-bottom: 30px;
+    width: 98vw;
+    min-height: 100vh;
+    display: inline-block;
+}

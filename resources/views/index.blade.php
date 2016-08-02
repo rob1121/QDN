@@ -8,7 +8,9 @@
     <body>
         <div class="header">
         {{-- <img src="/img/infographic.png" style="width: 100vw;height:100vh"> --}}
-            {{-- <div class="cover"></div> --}}
+        <div class="bg">
+                 <img src="{{ $server }}/img/backdrop.png" class="cover">
+             </div>
 
             <div class="logo">TELFORD</div>
 

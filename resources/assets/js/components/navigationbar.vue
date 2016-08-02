@@ -2,7 +2,7 @@
 .nav__list
     li( :class="isActive('/')" )
         a( href="/" )
-            .menu__container QDN
+            .menu__container.logo QDN
 
     li( :class="isActive(home)" )
         a( :href="home" )
@@ -19,17 +19,19 @@
 
         ul.dropdown
             li(v-if="user.access_level == 'admin'")
-                a(:href="dashboard") Dashboard &nbsp;
-                    i.fa.fa-table.dropdown__icon
+                a(:href="dashboard"): .link Dashboard &nbsp;
+                        i.fa.fa-table.dropdown__icon
 
-            li: a(:href="profile") Profile &nbsp;
-                i.fa.fa-user.dropdown__icon
+            li: a(:href="profile"): .link Profile &nbsp;
+                    i.fa.fa-user.dropdown__icon
 
-            li: a(href="{{ env_server + '/logout' }}") Logout &nbsp;
-                i.fa.fa-sign-out.dropdown__icon
+            li: a(href="{{ env_server + '/logout' }}"): .link Logout &nbsp;
+                    i.fa.fa-sign-out.dropdown__icon
 </template>
 
 <style lang="stylus">
+.menu__container.logo
+    font-weight: bold
 
 li
     list-style: none
@@ -91,10 +93,10 @@ li
         text-align: center
         color: darken(#fff, 20%)
         transition: .3s ease-in-out
+        display: inline-block
 
         &:hover
             color: #fff
-
 
 .dropdown
     width: auto
@@ -121,6 +123,8 @@ li
         transition: .1s ease-in-out
 
         a
+            text-align: left
+            width: 100%
             color: #000
 
         .dropdown__icon
@@ -131,6 +135,7 @@ li
             background-color: lighten(#660000, 90%)
 
             a
+                display: inline-block
                 margin-left: 5px
                 color: lighten(#000, 20%)
 

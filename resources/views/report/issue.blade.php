@@ -96,23 +96,6 @@
                </div>
            </div>
 
-{{--             <div class="btn-group" data-toggle="buttons">
-                <label>
-                    <input type="radio"
-                           value="true"
-                           v-model="major"
-                    > Major
-                </label>
-
-                <label>
-                    <input type="radio"
-                           value="false"
-                           v-model="major"
-                           checked
-                    > Minor
-                </label>
-
-            </div> --}}
             <div class="form__employee">
                 <label>Issued To:
                     <multiselect

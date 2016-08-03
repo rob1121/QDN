@@ -159,24 +159,25 @@ mix
 //
 //
 //
-        .sass("app.scss", "resources/assets/css/app.css")
-        .styles([
-    "../vendor/bootstrap/dist/css/bootstrap.min.css",
-    "../vendor/font-awesome/css/font-awesome.min.css",
-    "../css/app.css"
-    ], "public/css/all.css")
+    //     .sass("app.scss", "resources/assets/css/app.css")
+    //     .styles([
+    // "../vendor/bootstrap/dist/css/bootstrap.min.css",
+    // "../vendor/font-awesome/css/font-awesome.min.css",
+    // "../css/app.css"
+    // ], "public/css/all.css")
 
-    .scripts([
-        "../vendor/PACE/pace.js",
-        "../vendor/jquery/dist/jquery.min.js",
-        "../vendor/bootstrap/dist/js/bootstrap.min.js"
-    ], "public/js/all.js");
+    // .scripts([
+    //     "../vendor/PACE/pace.js",
+    //     "../vendor/jquery/dist/jquery.min.js",
+    //     "../vendor/bootstrap/dist/js/bootstrap.min.js"
+    // ], "public/js/all.js");
 
         });
 
 elixir(function(mix) {
     mix
         .sass('welcome.sass')
+        .sass('profile.sass')
         .sass('vue-issue.sass')
         .sass('intro.sass')
         .sass('vue-for_pe_verification.sass')
@@ -189,6 +190,7 @@ elixir(function(mix) {
     .browserify('vue-for_pe_verification.js')
     .browserify('vue-navigationbar.js')
     .browserify('vue-issue.js')
+    .browserify('vue-profile.js')
     .browserify('vue-home.js');
 });
 

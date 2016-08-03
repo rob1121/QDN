@@ -9,13 +9,8 @@
     <script data-pace-options='{ "ajax": false }' src="{{ $server }}/vendor/js/pace.js"></script>
     @yield('style')
     @stack('style')
-    <style>
-        [v-cloak] {
-            display: none;
-        }
-    </style>
 </head>
-<body  v-cloak>
+<body>
 {{--@include('partial.nav')--}}
 <header id="nav">
     <navigationbar

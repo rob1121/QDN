@@ -8,7 +8,7 @@ class Question extends Model
 {
     protected $fillable = ['user_id','question','answer'];
 
-    public function info() {
+    public function employee() {
         return $this->belongsTo('App\Employee');
     }
 }

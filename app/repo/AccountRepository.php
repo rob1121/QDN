@@ -2,68 +2,40 @@
 namespace App\repo;
 
 use App\Employee;
+use App\repo\Account\UserInterface;
 use App\User;
-use Hash;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Image;
-
 
 
 class AccountRepository implements AccountRepositoryInterface {
-use ValidatesRequests;
+    use ValidatesRequests;
+    protected $request;
+    public $user;
 
-	public function findUser($id)
-    {
+    public function validateRequest($request, $user) {
+        $this->validate($request, User::rules);
+
+        $this->request = $request;
+        $this->user = $user;
+    }
+
+	public function findUser($id) {
 		return User::whereEmployeeId($id)->first();
 	}
 
 
-    public function findEmployee($id)
-    {
+    public function findEmployee($id) {
 		return Employee::whereUserId($id)->first();
 	}
 
 
-    public function isAnswerCorrect($request)
-    {
+    public function isAnswerCorrect($request) {
 		$user = $this->findEmployee($request->id);
 		return $user->question()->where('answer', $request->answer)->count();
 	}
-
-
-    public function updateEmployee($employee, $request)
+    
+    public function update(UserInterface $user)
     {
-        $array = collect(new Employee($request->all()))->toArray();
-        
-		$employee->update($array);
-	}
-
-
-    public function updateUser($employee, $request)
-    {
-        $employee->question()->update([
-            'question' => $request->question,
-            'answer' => $request->answer
-        ]);
-
-        $this->validate($request, User::rules);
-
-        $user = user();
-        if ($request->hasFile('avatar'))
-        {
-            $avatar = $request->file('avatar');
-            $filename = user()->id . '.' . $avatar->getClientOriginalExtension();
-            Image::make($avatar)->resize(300,300)->save(public_path('/uploads/avatar/' . $filename));
-
-            $user->avatar = $filename;
-        }
-
-		if ($request->password != '')
-        {
-            $user->password = Hash::make($request->password);
-        }
-
-        $user->save();
+        $user->update();
     }
-
 }

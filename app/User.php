@@ -14,7 +14,16 @@ class User extends Authenticatable {
 	// protected $fillable = [
 	//     'name', 'email', 'password',
 	// ];
-	const rules = ['avatar' => 'mimes:jpeg,bmp,png'];
+	const rules = [
+	'avatar' => 'image',
+	'name' => 'required',
+	'email' => 'required|email',
+	'position' => 'required',
+	'station' => 'required',
+	'question' => 'required',
+	'answer' => 'required',
+	'password' => 'confirmed|min:6|max:20'
+	];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
